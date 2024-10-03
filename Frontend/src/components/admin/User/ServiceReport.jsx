@@ -502,7 +502,6 @@ const Userlog = () => {
 
 
     const handleModal = async (rowIndex) => { 
-        console.log("Data", rowIndex)
         const data = { Data: selectStrategyType, Username: rowIndex?.Username }
 
 

@@ -55,7 +55,6 @@ const Strategygroup = () => {
     
     const ReloadFun = () => {
         setTimeout(() => {
-            console.log('Reload');
             window.location.reload();
 
         }, 2000);

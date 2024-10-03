@@ -404,8 +404,6 @@ const AddClient = () => {
 
     }, [])
 
-
-    console.log("Formik Values", allScripts?.[0]?.['Option Strategy'] || [])
     const fields = [
         {
             name: "Measurment_Type",
@@ -886,7 +884,7 @@ const AddClient = () => {
 
 
         if (formik.values.Measurment_Type && formik.values.Measurment_Type != temp) {
-            console.log("inside")
+           
             formik.setFieldValue('Strategy', "")
         }
 

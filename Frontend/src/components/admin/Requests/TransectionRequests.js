@@ -164,7 +164,7 @@ const Clientservice = () => {
                 try {
                     const rowIndex = row.rowIndex;
                     const data = getAllRequest.data[rowIndex];
-                    console.log('data', data);
+            
                     const req = {
                         datetime: data.DateTime,
                         Username: data.Username,

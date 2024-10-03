@@ -289,8 +289,6 @@ const AddClient = () => {
 
 const result = extractDetails(location.state.data.Symbol);
 
-console.log("Formik",location.state.data)
-console.log("Formik", formik.values.Trade_Count)
 
     useEffect(() => {
         formik.setFieldValue('Exchange', location.state.data.Exchange)

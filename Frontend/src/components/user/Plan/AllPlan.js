@@ -118,14 +118,12 @@ const ServicesList = () => {
 
 
     const SetPlan = (name) => {
-        console.log(name)
         if (BuyedPlan?.data.length === 0) {
             return null;
         }
 
         const plan = BuyedPlan?.data.find((plan) => plan.Planname === name);
         if (plan) {
-            console.log(plan)
             return <BadgeCheck size={24} color="green" />;
         }
         return null;

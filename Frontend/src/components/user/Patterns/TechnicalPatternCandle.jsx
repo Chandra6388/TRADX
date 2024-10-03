@@ -40,7 +40,6 @@ const ChartExample = ({ ChartData , timeFrame }) => {
     
   
     const newData = filterDataBetween9_15And15_30(formattedData);
-    console.log(newData)
     const chartOptions = {
       data: newData,
       footnote: {
@@ -93,7 +92,6 @@ const ChartExample = ({ ChartData , timeFrame }) => {
           position: "bottom",
           label: {
             format: (params) => {
-              console.log(params)
               const date = new Date(params.value);
               const dayOfWeek = date.getDay();  
           

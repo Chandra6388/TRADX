@@ -311,7 +311,7 @@ const Sidebar = () => {
                                             <i className="la la-palette" />
                                             <span>Trade History</span>
                                         </Link>
-                                        {console.log("activeItem", activeItem)}
+                                     
                                     </li>
                                     <li className={activeItem === 'traderesponse' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'traderesponse')}>
                                         <Link to="traderesponse" className="iq-waves-effect">

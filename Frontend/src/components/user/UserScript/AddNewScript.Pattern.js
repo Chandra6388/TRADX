@@ -11,41 +11,14 @@ const AddClient = () => {
     const location = useLocation()
     const userName = localStorage.getItem('name')
     const navigate = useNavigate()
-    const [getSymbolData, setSymbolData] = useState({
-        loading: true,
-        data: []
-    })
+    const [getSymbolData, setSymbolData] = useState({ loading: true, data: [] })
     const [getAllExchange, setAllExchange] = useState([])
-
-    const [getStricke, setStricke] = useState({
-        loading: true,
-        data: []
-    })
-
-    const [getTimeFrame, setTimeFrame] = useState({
-        loading: true,
-        data: []
-    })
-
-
-
-    const [getExpiryDate, setExpiryDate] = useState({
-        loading: true,
-        data: []
-    })
-
-    const [getChartPattern, setChartPattern] = useState({
-        loading: true,
-        data: []
-    })
-
-    const [getPattern, setPattern] = useState({
-        loading: true,
-        data: []
-    })
-
+    const [getStricke, setStricke] = useState({ loading: true, data: [] })
+    const [getTimeFrame, setTimeFrame] = useState({ loading: true, data: [] })
+    const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: [] })
+    const [getChartPattern, setChartPattern] = useState({ loading: true, data: [] })
+    const [getPattern, setPattern] = useState({ loading: true, data: [] })
     const [serviceEndDate, setServiceEndDate] = useState('')
-
 
     const SweentAlertFun = (text) => {
         Swal.fire({
@@ -55,10 +28,12 @@ const AddClient = () => {
             timer: 1500,
             timerProgressBar: true
         });
-
     }
-    const formik = useFormik({
+    useEffect(() => {
+        get_Exchange()
+    }, [])
 
+    const formik = useFormik({
         initialValues: {
             MainStrategy: location.state.data.selectStrategyType,
             Username: location.state.data.selectGroup,
@@ -263,7 +238,6 @@ const AddClient = () => {
         },
     });
 
-
     useEffect(() => {
         formik.setFieldValue('Strategy', "CandlestickPattern")
         formik.setFieldValue('Exchange', "NFO")
@@ -279,11 +253,7 @@ const AddClient = () => {
 
     }, [])
 
-
-
-
     const get_Exchange = async () => {
-
         await GetExchange()
             .then((response) => {
                 if (response.Status) {
@@ -298,9 +268,6 @@ const AddClient = () => {
 
             })
     }
-    useEffect(() => {
-        get_Exchange()
-    }, [])
 
     const fields = [
         {
@@ -420,11 +387,10 @@ const AddClient = () => {
             name: "Strategy",
             label: "Pattern Type",
             type: "select",
-            options: [
-                { label: "Candlestick Pattern", value: "CandlestickPattern" },
-                { label: "Charting Pattern", value: "ChartingPattern" },
-            ],
-
+            options: location?.state?.data?.scriptType.map((item) => ({
+                label: item,
+                value: item
+            })),
             label_size: 12,
             hiding: false,
             col_size: 4,
@@ -573,8 +539,6 @@ const AddClient = () => {
         },
     ];
 
-
-
     const getSymbol = async () => {
         if (formik.values.Exchange) {
             const data = { Exchange: formik.values.Exchange, Instrument: formik.values.Instrument }
@@ -627,6 +591,7 @@ const AddClient = () => {
 
 
     }
+
     useEffect(() => {
         getStrikePrice()
     }, [formik.values.Instrument, formik.values.Exchange, formik.values.Symbol])
@@ -663,7 +628,6 @@ const AddClient = () => {
         }
 
     }
-
 
     useEffect(() => {
         getExpiry()
@@ -730,8 +694,6 @@ const AddClient = () => {
         GetPatternCharting()
     }, [])
 
-
-
     const GetExpriyEndDate = async () => {
         const data = { Username: userName }
         await ExpriyEndDate(data)
@@ -753,8 +715,6 @@ const AddClient = () => {
         GetExpriyEndDate()
     }, [])
 
-
-
     useEffect(() => {
         formik.setFieldValue('expirydata1', "");
         formik.setFieldValue('Optiontype', "");
@@ -764,11 +724,10 @@ const AddClient = () => {
     useEffect(() => {
         formik.setFieldValue('ETPattern', "");
     }, [formik.values.Strategy])
-    
+
     useEffect(() => {
         formik.setFieldValue('Symbol', "");
-    }, [formik.values.Instrument ])
-
+    }, [formik.values.Instrument])
 
     useEffect(() => {
         if (formik.values.Instrument == "FUTIDX" || formik.values.Instrument == "FUTSTK") {

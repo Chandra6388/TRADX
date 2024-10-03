@@ -9,6 +9,8 @@ import { AddScript, CheckPnL } from '../../CommonAPI/User'
 
 const AddClient = () => {
     const location = useLocation()
+
+    console.log("location.state.data")
     const userName = localStorage.getItem('name')
     const navigate = useNavigate()
     const [getExpiry, setExpiry] = useState({

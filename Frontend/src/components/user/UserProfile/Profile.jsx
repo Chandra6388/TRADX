@@ -34,7 +34,6 @@ const Profile = () => {
         getprofiledata()
     }, []);
 
-    console.log(data)
 
     return (
         <div>

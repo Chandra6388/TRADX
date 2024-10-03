@@ -1175,6 +1175,9 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                         />
                                                     }
                                                 </div>
+
+
+                                                
                                             </div>
                                         </>
                                     )}

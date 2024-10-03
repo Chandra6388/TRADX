@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
-import { GetAllUserScript, DeleteUserScript } from '../../CommonAPI/User';
+import { GetAllUserScript, DeleteUserScript , GetUserScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
 import { getColumns, getColumns1, getColumns2 } from './Columns';
 import Swal from 'sweetalert2';
@@ -14,6 +14,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     const navigate = useNavigate();
     const [refresh, setRefresh] = useState(false)
     const [selectGroup, setSelectGroup] = useState('');
+    const [allScripts, setAllScripts] = useState([])
     const [getAllService, setAllservice] = useState({
         loading: true,
         ScalpingData: [],
@@ -24,6 +25,9 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         PremiumRotation: []
     });
  
+
+ 
+
     const handleAddScript1 = (data1) => {
         if (data2.status == false) {
             Swal.fire({
@@ -129,7 +133,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 <div className="col-sm-12">
                     <div className="iq-card">
                         <div className="iq-card-body " style={{ padding: '3px' }}>
-                            <div className="tab-content" id="myTabContent-3">
+                            <div className=""b id="myTabContent-3">
 
                                 <div className="tab-pane fade show active" id="home-justify" role="tabpanel" aria-labelledby="home-tab-justify">
                                     {data && (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Coptyscript from './Copyscript'
 import GroupScript from './Groupscript'
 import CurrentScript from './CurrentScript'
-import { GetAllUserGroup, OpenPosition } from '../../CommonAPI/User'
+import { GetAllUserGroup, OpenPosition , GetUserScripts } from '../../CommonAPI/User'
 import { ExpriyEndDate } from '../../CommonAPI/Admin'
 import FullDataTable from '../../../ExtraComponent/CommanDataTable'
 const Userdashboard = () => {
@@ -12,6 +12,7 @@ const Userdashboard = () => {
     const [subTab, setSubTab] = useState('Scalping')
     const [refresh, setRefresh] = useState(false)
     const [getGroup, setGroup] = useState('')
+    const [allScripts, setAllScripts] = useState([])
     const [serviceStatus, setServiceStatus] = useState({
         status: false,
         msg: ''
@@ -26,6 +27,30 @@ const Userdashboard = () => {
         Option: [],
         Pattern: []
     })
+
+
+    useEffect(() => {
+        GetUserAllScripts()
+    }, [])
+
+
+    console.log("All Scripts", allScripts)
+
+    const GetUserAllScripts = async () => {
+        const data = { Username: userName }
+        await GetUserScripts(data)
+            .then((response) => {
+                if (response.Status) {
+                    setAllScripts(response.data)
+                }
+                else {
+                    setAllScripts([])
+                }
+            })
+            .catch((err) => {
+                console.log("Error in finding the User Scripts", err)
+            })
+    }
 
     const getUserAllGroup = async () => {
         const data = { User: userName }
@@ -524,20 +549,12 @@ const Userdashboard = () => {
                                     </div>
                                 )}
                             </div>
-                            <div className="tab-content">
+                            <div className="">
                                 {activeTab1 === 'CurrentPosition' && (
-                                    <>
-                                        {/* {activeTab === 'copyScript' && (
-                                            <div className="tab-pane fade show active" id="home-justify" role="tabpanel">
-                                                <div className="tab-content mt-3">
-                                                    {subTab && <Coptyscript data={subTab} selectedType={activeTab} data2={serviceStatus && serviceStatus} />}
-                                                </div>
-                                            </div>
-                                        )} */}
-
+                                    <> 
                                         {activeTab === 'group' && (
                                             <div className="tab-pane fade show active" id="home-justify" role="tabpanel">
-                                                <div className="tab-content mt-3">
+                                                <div className="mt-3">
                                                     {getGroup == "copyScript" ? subTab && <Coptyscript data={subTab} selectedType={activeTab} data2={serviceStatus && serviceStatus} />
                                                         :
                                                         subTab && <GroupScript data={subTab} selectedType={activeTab} GroupName={getGroup} data2={serviceStatus && serviceStatus} />

@@ -21,9 +21,7 @@ const AddClient = () => {
     const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: [] })
     const [serviceEndDate, setServiceEndDate] = useState('')
     const [allScripts, setAllScripts] = useState([])
-    
-
-    console.log("allScripts", allScripts.Scalping)
+     
 
     useEffect(() => {
         GetUserAllScripts()
@@ -34,7 +32,7 @@ const AddClient = () => {
         await GetUserScripts(data)
             .then((response) => {
                 if (response.Status) {
-                    setAllScripts(response)
+                    setAllScripts(response.data)
                 }
                 else {
                     setAllScripts([])
@@ -346,13 +344,12 @@ const AddClient = () => {
         setinitialvalue(true)
     }, [location.state.data])
 
- 
     const fields = [
         {
             name: "Strategy",
             label: "Scalping Type",
             type: "radio2",
-            title: allScripts?.Scalping?.map((item) => ({ title: item, value: item })), 
+            title: allScripts && allScripts[0]?.Scalping.map((item) => ({ title: item, value: item })) || [], 
             hiding: false,
             label_size: 12,
             col_size: 12,

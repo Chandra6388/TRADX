@@ -4,8 +4,7 @@ import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import { GET_EXPIRY_DATE, ExpriyEndDate } from '../../CommonAPI/Admin'
-import { AddScript } from '../../CommonAPI/User'
-
+import { AddScript, GetUserScripts } from '../../CommonAPI/User'
 
 const AddClient = () => {
     const location = useLocation()
@@ -15,10 +14,30 @@ const AddClient = () => {
         loading: true,
         data: []
     })
-
     const [serviceEndDate, setServiceEndDate] = useState('')
+    const [allScripts, setAllScripts] = useState([])
 
 
+
+    useEffect(() => {
+        GetUserAllScripts()
+    }, [])
+
+    const GetUserAllScripts = async () => {
+        const data = { Username: userName }
+        await GetUserScripts(data)
+            .then((response) => {
+                if (response.Status) {
+                    setAllScripts(response.data)
+                }
+                else {
+                    setAllScripts([])
+                }
+            })
+            .catch((err) => {
+                console.log("Error in finding the User Scripts", err)
+            })
+    }
 
 
 
@@ -214,18 +233,17 @@ const AddClient = () => {
                 }
             }
 
-            console.log("Errors", errors)
- 
+
             return errors;
         },
         onSubmit: async (values) => {
 
-            
+
             const req = {
                 MainStrategy: location.state.data.selectStrategyType,
                 Username: userName,
                 Strategy: values.Strategy,
-                ETPattern: values.Measurment_Type != "Shifting/FourLeg" ? values.ETPattern : values.Strategy=="ShortShifting" || values.Strategy=="LongShifting" ? "Future" : "",
+                ETPattern: values.Measurment_Type != "Shifting/FourLeg" ? values.ETPattern : values.Strategy == "ShortShifting" || values.Strategy == "LongShifting" ? "Future" : "",
                 Timeframe: "",
                 Exchange: "NFO",
                 Symbol: values.Symbol,
@@ -273,9 +291,9 @@ const AddClient = () => {
                 return SweentAlertFun("Exit Time should be greater than Entry Time")
             }
 
-            if ((values.Striketype == "Premium_Range" && values.Measurment_Type != "Shifting/FourLeg" )&& (Number(values.Lower_Range) >= Number(values.Higher_Range))) {
+            if ((values.Striketype == "Premium_Range" && values.Measurment_Type != "Shifting/FourLeg") && (Number(values.Lower_Range) >= Number(values.Higher_Range))) {
 
-               
+
                 return SweentAlertFun("Higher Range should be Greater than Lower Range")
             }
 
@@ -340,7 +358,7 @@ const AddClient = () => {
     });
 
 
-  
+
 
 
 
@@ -387,20 +405,14 @@ const AddClient = () => {
     }, [])
 
 
+    console.log("Formik Values", allScripts?.[0]?.['Option Strategy'] || [])
     const fields = [
         {
             name: "Measurment_Type",
             label: "Option Type",
             type: "select",
-            options: [
-                { label: "Straddle/Strangle", value: "Straddle/Strangle" },
-                { label: "Butterfly/Condor", value: "Butterfly/Condor" },
-                { label: "Spread", value: "Spread" },
-                { label: "Ladder/Coverd", value: "Ladder/Coverd" },
-                { label: "Collar/Ratio", value: "Collar/Ratio" },
-                { label: "Shifting/FourLeg", value: "Shifting/FourLeg" },
-
-            ],
+            options: (allScripts?.[0]?.['Option Strategy'] || []).map((item) => {
+                return { label: item, value: item }}),
             hiding: false,
             label_size: 12,
             col_size: 4,
@@ -858,22 +870,22 @@ const AddClient = () => {
         if (formik.values.Measurment_Type == "Shifting/FourLeg") {
             formik.setFieldValue('ETPattern', "Future")
         }
- 
- 
+
+
     }, [formik.values.Strategy, formik.values.Striketype, formik.values.Measurment_Type])
 
 
     useEffect(() => {
 
-        const temp =  location.state.data.STG == 'ShortStrangle' || location.state.data.STG == 'LongStrangle' || location.state.data.STG == 'LongStraddle' || location.state.data.STG == 'ShortStraddle' ? "Straddle/Strangle" :
-        location.state.data.STG == 'LongIronButterfly' || location.state.data.STG == 'ShortIronButterfly' || location.state.data.STG == 'LongIronCondor' || location.state.data.STG == 'ShortIronCondor' ? "Butterfly/Condor" :
-            location.state.data.STG == 'BearCallSpread' || location.state.data.STG == 'BearPutSpread' || location.state.data.STG == 'BullCallSpread' || location.state.data.STG == 'BullPutSpread' ? 'Spread' :
-                location.state.data.STG == 'BullCallLadder' || location.state.data.STG == 'BullPutLadder' || location.state.data.STG == 'CoveredCall' || location.state.data.STG == 'CoveredPut' ? "Ladder/Coverd" :
-                    location.state.data.STG == 'LongCollar' || location.state.data.STG == 'ShortCollar' || location.state.data.STG == 'RatioCallSpread' || location.state.data.STG == 'RatioPutSpread' ? "Collar/Ratio" :
-                        location.state.data.STG == 'LongFourLegStretegy' || location.state.data.STG == 'ShortShifting' || location.state.data.STG == 'LongShifting' || location.state.data.STG == 'ShortFourLegStretegy' ? "Shifting/FourLeg" : ""
+        const temp = location.state.data.STG == 'ShortStrangle' || location.state.data.STG == 'LongStrangle' || location.state.data.STG == 'LongStraddle' || location.state.data.STG == 'ShortStraddle' ? "Straddle/Strangle" :
+            location.state.data.STG == 'LongIronButterfly' || location.state.data.STG == 'ShortIronButterfly' || location.state.data.STG == 'LongIronCondor' || location.state.data.STG == 'ShortIronCondor' ? "Butterfly/Condor" :
+                location.state.data.STG == 'BearCallSpread' || location.state.data.STG == 'BearPutSpread' || location.state.data.STG == 'BullCallSpread' || location.state.data.STG == 'BullPutSpread' ? 'Spread' :
+                    location.state.data.STG == 'BullCallLadder' || location.state.data.STG == 'BullPutLadder' || location.state.data.STG == 'CoveredCall' || location.state.data.STG == 'CoveredPut' ? "Ladder/Coverd" :
+                        location.state.data.STG == 'LongCollar' || location.state.data.STG == 'ShortCollar' || location.state.data.STG == 'RatioCallSpread' || location.state.data.STG == 'RatioPutSpread' ? "Collar/Ratio" :
+                            location.state.data.STG == 'LongFourLegStretegy' || location.state.data.STG == 'ShortShifting' || location.state.data.STG == 'LongShifting' || location.state.data.STG == 'ShortFourLegStretegy' ? "Shifting/FourLeg" : ""
 
-        
-        if(formik.values.Measurment_Type && formik.values.Measurment_Type != temp ){ 
+
+        if (formik.values.Measurment_Type && formik.values.Measurment_Type != temp) {
             console.log("inside")
             formik.setFieldValue('Strategy', "")
         }
@@ -885,8 +897,8 @@ const AddClient = () => {
         <>
             <AddForm
                 fields={fields.filter((field) => !field.showWhen || field.showWhen(formik.values))}
-                
-                page_title= {`Add Script - option , Group : ${location.state.data.Username}`}
+
+                page_title={`Add Script - option , Group : ${location.state.data.Username}`}
                 btn_name="Add"
                 btn_name1="Cancel"
                 formik={formik}

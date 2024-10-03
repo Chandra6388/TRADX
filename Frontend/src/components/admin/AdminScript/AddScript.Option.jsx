@@ -86,14 +86,12 @@ const AddClient = () => {
             if (!values.Symbol) {
                 errors.Symbol = "Please Select a Symbol Type.";
             }
-
-            if (!values.Targetvalue || values.Targetvalue == 0) {
+            if ((!values.Targetvalue || values.Targetvalue == 0) && (values.Measurment_Type != "Shifting/FourLeg" || (values.Measurment_Type == "Shifting/FourLeg" && (values.Strategy == 'ShortFourLegStretegy' || values.Strategy == 'LongFourLegStretegy')))) {
                 errors.Targetvalue = values.Targetvalue == 0 ? "Target Can Not be Zero" : "Please Enter a Target Value.";
             }
-            if (!values.Slvalue || values.Slvalue == 0) {
+            if ((!values.Slvalue || values.Slvalue == 0) && (values.Measurment_Type != "Shifting/FourLeg" || (values.Measurment_Type == "Shifting/FourLeg" && (values.Strategy == 'ShortFourLegStretegy' || values.Strategy == 'LongFourLegStretegy')))) {
                 errors.Slvalue = values.Slvalue == 0 ? "Stoploss Can Not be Zero" : "Please Enter a Stop Loss Value.";
             }
-
             if (!values.TStype) {
                 errors.TStype = "Please Select a Measurement Type.";
             }
@@ -102,20 +100,22 @@ const AddClient = () => {
             }
             if (!values.ExitTime) {
                 errors.ExitTime = "Please Select Exit Time.";
-              } else if (values.ExitTime > maxTime) {
+            }
+            else if (values.ExitTime > maxTime) {
                 errors.ExitTime = "Exit Time Must be Before 15:29:59.";
-              }
-              else if (values.ExitTime < minTime) {
+            }
+            else if (values.ExitTime < minTime) {
                 errors.ExitTime = "Exit Time Must be After 09:15:00.";
-              }
-              if (!values.EntryTime) {
+            }
+            if (!values.EntryTime) {
                 errors.EntryTime = "Please Select Entry Time.";
-              } else if (values.EntryTime < minTime) {
+            }
+            else if (values.EntryTime < minTime) {
                 errors.EntryTime = "Entry Time Must be After 09:15:00.";
-              }
-              else if (values.EntryTime > maxTime) {
+            }
+            else if (values.EntryTime > maxTime) {
                 errors.EntryTime = "Entry Time Must be Before 15:29:59.";
-              }
+            }
             if (!values.ExitDay) {
                 errors.ExitDay = "Please Select an Exit Day.";
             }
@@ -161,7 +161,6 @@ const AddClient = () => {
             if (!values.PEDepthHigher && (values.Strategy == 'ShortFourLegStretegy' || values.Strategy == 'LongFourLegStretegy') && values.PEDepthHigher == 0) {
                 errors.PEDepthHigher = values.PEDepthHigher == 0 ? "PE Main Higher can not be Zero" : "Please Enter PE Main Higher.";
             }
-
             if (values.Striketype == "Depth_of_Strike" && values.Measurment_Type != "Shifting/FourLeg" && values.Strategy != 'LongStraddle' && values.Strategy != 'ShortStraddle') {
                 if (values.DepthofStrike > 5 || values.DepthofStrike < -5 || values.DepthofStrike == 0) {
                     errors.DepthofStrike = values.DepthofStrike == 0 ? "Depth of Strike Cannot Be Zero." : "Enter Depth of Strike Value Between -5 to 5.";
@@ -192,7 +191,8 @@ const AddClient = () => {
                     errors.Shifting_Value = "Please Enter Number of Shifts Between 1-5.";
                 }
             }
-            
+
+            console.log("Errors", errors);
             return errors;
         },
 
@@ -201,7 +201,7 @@ const AddClient = () => {
                 MainStrategy: location.state.data.selectStrategyType,
                 Username: location.state.data.selectGroup,
                 Strategy: values.Strategy,
-                ETPattern: values.Measurment_Type != "Shifting/FourLeg" ? values.ETPattern : values.Strategy=="ShortShifting" || values.Strategy=="LongShifting" ? "Future" : "",
+                ETPattern: values.Measurment_Type != "Shifting/FourLeg" ? values.ETPattern : values.Strategy == "ShortShifting" || values.Strategy == "LongShifting" ? "Future" : "",
                 Timeframe: "",
                 Exchange: "NFO",
                 Symbol: values.Symbol,
@@ -279,7 +279,7 @@ const AddClient = () => {
 
             if (values.EntryTime >= values.ExitTime) {
                 return SweentAlertFun("Exit Time should be greater than Entry Time")
-              }
+            }
 
 
             try {
@@ -403,7 +403,7 @@ const AddClient = () => {
             type: "select",
             options: [
                 { label: "Weekly", value: "Weekly" },
-          
+
                 { label: "Monthly", value: "Monthly" },
 
             ],
@@ -503,7 +503,7 @@ const AddClient = () => {
                     { label: "Future", value: "Future" },
                     { label: "Leg vice", value: "Leg vice" },
                     { label: "Premium Addition", value: "Premium Addition" },
-                    
+
 
                 ],
             showWhen: (value) => value.Measurment_Type != "Shifting/FourLeg",
@@ -798,7 +798,7 @@ const AddClient = () => {
         <>
             <AddForm
                 fields={fields.filter((field) => !field.showWhen || field.showWhen(formik.values))}
-                 
+
                 page_title={`Add Script - Option Strategy  , Group Name : ${location.state.data.selectGroup}`}
                 btn_name="Add"
                 btn_name1="Cancel"

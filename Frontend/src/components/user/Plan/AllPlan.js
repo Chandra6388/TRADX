@@ -35,44 +35,7 @@ const Card = styled.div`
   }
 `;
 
-const Modal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-`;
-
-const ModalContent = styled.div`
-  background: #fff;
-  border-radius: 8px;
-  width: 600px;
-  padding: 20px;
-  position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  display: grid;
-  gap: 20px;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #333;
-  cursor: pointer;
-  &:hover {
-    color: #e74c3c;
-  }
-`;
-
+ 
 const Button = styled.button`
   padding: 10px 15px;
   font-size: 1rem;
@@ -254,11 +217,7 @@ const ServicesList = () => {
         }
     };
 
-
-
-
-
-
+ 
     return (
         <>
             <div className='row'>
@@ -279,16 +238,16 @@ const ServicesList = () => {
                                                 {plan.PlanName} {SetPlan(plan.PlanName)}
                                             </h2>
                                             <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
-                                            <h4 style={styles.subtitle}>No of Scripts: {plan.NumberofScript}</h4>
+                                            <h4 style={styles.subtitle}>No of Scripts: {plan?.NumberofScript}</h4>
                                             <div style={styles.prices}>
                                                 <p style={styles.priceItem}>
-                                                    <strong>Scalping Strategy:</strong> {plan.Scalping.join(", ")}
+                                                    <strong>Scalping Strategy:</strong> {plan?.Scalping?.length == 0 ? "ALL Strategy" : plan?.Scalping.join(", ")}
                                                 </p>
                                                 <p style={styles.priceItem}>
-                                                    <strong>Option Strategy:</strong> {plan['Option Strategy'].join(", ")}
+                                                    <strong>Option Strategy:</strong> {plan['Option Strategy']?.length == 0 ? "ALL Strategy" : plan['Option Strategy'].join(", ")}
                                                 </p>
                                                 <p style={styles.priceItem}>
-                                                    <strong>Pattern Strategy:</strong> {plan?.Pattern?.join(", ")}
+                                                    <strong>Pattern Strategy:</strong> {plan?.Pattern.length == 0 ? "ALL Strategy" : plan?.Pattern?.join(", ")}
                                                 </p>
                                             </div>
                                             {SetPlan(plan.PlanName) == null ? (
@@ -354,7 +313,7 @@ const styles = {
     title: {
         fontSize: "1.5rem",
         margin: "10px 0",
-        color: "#333",
+        color: "rgb(15 164 32)",
         fontWeight: "bold",
     },
     subtitle: {

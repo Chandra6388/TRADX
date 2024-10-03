@@ -10,10 +10,6 @@ import Loader from '../../../ExtraComponent/Loader';
 
 
 
-
-
-
-
 const AddPlanPage = () => {
     const navigate = useNavigate()
     const [selecteOptions, setSelectedOptions] = useState([])

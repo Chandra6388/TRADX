@@ -323,16 +323,16 @@ const AddClient = () => {
     }, [location.state.data])
 
     const fields = [
-        {
-            name: "Strategy",
-            label: "Scalping Type",
-            type: "radio2",
-            title: allScripts && allScripts[0]?.Scalping.map((item) => ({ title: item, value: item })) || [], 
-            hiding: false,
-            label_size: 12,
-            col_size: 12,
-            disable: false,
-        },
+        // {
+        //     name: "Strategy",
+        //     label: "Scalping Type",
+        //     type: "radio2",
+        //     title: allScripts && allScripts[0]?.Scalping.map((item) => ({ title: item, value: item })) || [], 
+        //     hiding: false,
+        //     label_size: 12,
+        //     col_size: 12,
+        //     disable: false,
+        // },
         {
             name: "Exchange",
             label: "Exchange",

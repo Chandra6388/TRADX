@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import { GET_EXPIRY_DATE, ExpriyEndDate } from '../../CommonAPI/Admin'
-import { AddScript, GetUserScripts } from '../../CommonAPI/User'
+import { AddScript } from '../../CommonAPI/User'
 
 const AddClient = () => {
     const location = useLocation()
@@ -15,32 +15,7 @@ const AddClient = () => {
         data: []
     })
     const [serviceEndDate, setServiceEndDate] = useState('')
-    const [allScripts, setAllScripts] = useState([])
-
-    console.log("allScripts", location?.state?.scriptType?.EndDate)
-
-
-
-    useEffect(() => {
-        GetUserAllScripts()
-    }, [])
-
-    const GetUserAllScripts = async () => {
-        const data = { Username: userName }
-        await GetUserScripts(data)
-            .then((response) => {
-                if (response.Status) {
-                    setAllScripts(response.data)
-                }
-                else {
-                    setAllScripts([])
-                }
-            })
-            .catch((err) => {
-                console.log("Error in finding the User Scripts", err)
-            })
-    }
-
+  
 
 
 

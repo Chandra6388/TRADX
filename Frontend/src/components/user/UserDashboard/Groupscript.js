@@ -13,10 +13,12 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
 
     const navigate = useNavigate();
     const [selectGroup, setSelectGroup] = useState('');
+    
     const [getAllService, setAllservice] = useState({
         loading: true,
         data: []
     });
+
 
 
 

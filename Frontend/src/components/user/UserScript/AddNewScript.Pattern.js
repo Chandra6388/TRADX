@@ -20,6 +20,8 @@ const AddClient = () => {
     const [getPattern, setPattern] = useState({ loading: true, data: [] })
     const [serviceEndDate, setServiceEndDate] = useState('')
 
+
+ 
     const SweentAlertFun = (text) => {
         Swal.fire({
             title: "Error",
@@ -78,12 +80,10 @@ const AddClient = () => {
             Trade_Execution: "Paper Trade",
         },
 
-
         validate: (values) => {
             let errors = {};
             const maxTime = "15:29:59";
             const minTime = "09:15:00";
-
             if (!values.Exchange) {
                 errors.Exchange = "Please Select Exchange Type.";
             }
@@ -156,8 +156,6 @@ const AddClient = () => {
             return errors;
         },
 
-
-
         onSubmit: async (values) => {
             const req = {
                 MainStrategy: location.state.data.selectStrategyType,
@@ -182,12 +180,11 @@ const AddClient = () => {
                 EntryTime: values.EntryTime,
                 ExitTime: values.ExitTime,
                 ExitDay: values.ExitDay,
-
                 TradeCount: Number(values.Trade_Count),
                 TradeExecution: values.Trade_Execution,
                 FixedSM: "",
                 TType: values.TType,
-                serendate: serviceEndDate,
+                serendate: location?.state?.data?.scriptType?.EndDate,
                 expirydata1: values.expirydata1,
                 Expirytype: "",
                 Striketype: "",
@@ -202,8 +199,8 @@ const AddClient = () => {
                 CEDeepHigher: 0.0,
                 PEDeepLower: 0.0,
                 PEDeepHigher: 0.0,
-            }
-
+                stretegytag: values.Strategy
+            } 
             if (values.EntryTime >= values.ExitTime) {
                 return SweentAlertFun("Exit Time should be greater than Entry Time")
             }
@@ -387,7 +384,7 @@ const AddClient = () => {
             name: "Strategy",
             label: "Pattern Type",
             type: "select",
-            options: location?.state?.data?.scriptType.map((item) => ({
+            options: location?.state?.data?.scriptType?.Pattern.map((item) => ({
                 label: item,
                 value: item
             })),

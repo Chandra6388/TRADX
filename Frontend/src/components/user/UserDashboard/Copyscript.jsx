@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
-import { GetAllUserScript, DeleteUserScript , GetUserScripts } from '../../CommonAPI/User';
+import { GetAllUserScript, DeleteUserScript, GetUserScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
 import { getColumns, getColumns1, getColumns2 } from './Columns';
 import Swal from 'sweetalert2';
@@ -10,7 +10,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     const userName = localStorage.getItem('name')
 
 
-   
+
     const navigate = useNavigate();
     const [refresh, setRefresh] = useState(false)
     const [selectGroup, setSelectGroup] = useState('');
@@ -24,9 +24,33 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         Marketwise: [],
         PremiumRotation: []
     });
- 
 
- 
+
+    console.log("allScripts", allScripts[0])
+
+    useEffect(() => {
+        GetUserAllScripts()
+    }, [])
+
+
+    const GetUserAllScripts = async () => {
+        const data = { Username: userName }
+        await GetUserScripts(data)
+            .then((response) => {
+                if (response.Status) {
+                    setAllScripts(response.data)
+                }
+                else {
+                    setAllScripts([])
+                }
+            })
+            .catch((err) => {
+                console.log("Error in finding the User Scripts", err)
+            })
+    }
+
+
+
 
     const handleAddScript1 = (data1) => {
         if (data2.status == false) {
@@ -42,8 +66,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.ScalpingData[selectedRowIndex];
-            const data = { selectGroup: selectGroup, selectStrategyType: "Scalping", type : "copy" , ...selectedRow };
-            navigate('/user/addscript/scalping', { state: { data } });
+            const data = { selectGroup: selectGroup, selectStrategyType: "Scalping", type: "copy", ...selectedRow };
+            navigate('/user/addscript/scalping', { state: { data: data, scriptType: allScripts?.[0] } });
         }
 
 
@@ -53,7 +77,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         if (data2.status == false) {
             Swal.fire({
                 title: "Error",
-                text:  data2.msg,
+                text: data2.msg,
                 icon: "error",
                 timer: 1500,
                 timerProgressBar: true
@@ -64,8 +88,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.OptionData[selectedRowIndex];
-            const data = { selectGroup: selectGroup, selectStrategyType: 'Option Strategy',type : "copy" ,  ...selectedRow };
-            navigate('/user/addscript/option', { state: { data } });
+            const data = { selectGroup: selectGroup, selectStrategyType: 'Option Strategy', type: "copy", ...selectedRow };
+            navigate('/user/addscript/option', { state: { data: data, scriptType: allScripts?.[0] } });
         }
     }
 
@@ -73,7 +97,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         if (data2.status == false) {
             Swal.fire({
                 title: "Error",
-                text:  data2.msg,
+                text: data2.msg,
                 icon: "error",
                 timer: 1500,
                 timerProgressBar: true
@@ -84,7 +108,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.PatternData[selectedRowIndex];
-            const data = { selectGroup: selectGroup, selectStrategyType: 'Pattern',type : "copy" , ...selectedRow };
+            const data = { selectGroup: selectGroup, selectStrategyType: 'Pattern', type: "copy", ...selectedRow };
             navigate('/user/addscript/pattern', { state: { data } });
         }
     }
@@ -133,7 +157,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 <div className="col-sm-12">
                     <div className="iq-card">
                         <div className="iq-card-body " style={{ padding: '3px' }}>
-                            <div className=""b id="myTabContent-3">
+                            <div className="" b id="myTabContent-3">
 
                                 <div className="tab-pane fade show active" id="home-justify" role="tabpanel" aria-labelledby="home-tab-justify">
                                     {data && (

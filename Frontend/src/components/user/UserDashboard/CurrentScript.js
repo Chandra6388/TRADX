@@ -373,7 +373,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         else {
             if (data === "Option Strategy") {
                 if (allScripts?.[0]?.['Option Strategy'].length >= 1) {
-                    navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy', scriptType: allScripts?.[0]?.['Option Strategy'] } } });
+                    navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy', scriptType: allScripts?.[0] } } });
                 }
                 else {
                     Swal.fire({
@@ -387,7 +387,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             }
             else if (data === "Pattern") {
                 if (allScripts?.[0]?.Pattern?.length >= 1) {
-                    navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts?.[0]?.Pattern } } });
+                    navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts?.[0] } } });
                 }
                 else {
                     Swal.fire({
@@ -404,7 +404,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 if (allScripts?.[0]?.Scalping?.length >= 1) {
                     navigate('/user/newscript/scalping', {
                         state: {
-                            data: { selectStrategyType: 'Scalping', scriptType: allScripts?.[0]?.Scalping }
+                            data: { selectStrategyType: 'Scalping', scriptType: allScripts?.[0] }
                         },
                     });
                 }

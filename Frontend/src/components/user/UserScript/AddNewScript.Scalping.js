@@ -15,15 +15,19 @@ const AddClient = () => {
     loading: true,
     data: []
   })
+
   const [getStricke, setStricke] = useState({
     loading: true,
     data: []
   })
+  
   const [getExpiryDate, setExpiryDate] = useState({
     loading: true,
     data: []
   })
+
   const [serviceEndDate, setServiceEndDate] = useState('')
+
   const SweentAlertFun = (text) => {
     Swal.fire({
       title: "Error",
@@ -33,6 +37,7 @@ const AddClient = () => {
       timerProgressBar: true
     });
   }
+
   const formik = useFormik({
     initialValues: {
       MainStrategy: "",
@@ -165,8 +170,6 @@ const AddClient = () => {
       if (!values.Slvalue) {
         errors.Slvalue = values.Strategy == "Fixed Price" ? "Please Enter Stop Loss Price." : "Please Select A Stop Loss Value.";
       }
-
-
       return errors;
     },
 
@@ -197,7 +200,7 @@ const AddClient = () => {
         ETPattern: "",
         Timeframe: "",
         Quantity: values.Quantity,
-        serendate: serviceEndDate,
+        serendate: location?.state?.data?.scriptType?.EndDate,
         FixedSM: "Single",
         Expirytype: "",
         Striketype: "",
@@ -214,7 +217,7 @@ const AddClient = () => {
         PEDeepHigher: 0.0,
         TradeCount: values.Trade_Count,
         TradeExecution: values.Trade_Execution,
-        stretegytag:""
+        stretegytag: values.Strategy
       }
 
       if (values.Set_First_Trade_Range == true && (Number(values.EntryPrice) >= Number(values.EntryRange) || Number(values.EntryRange) == 0 || Number(values.EntryPrice) == 0)) {
@@ -287,7 +290,7 @@ const AddClient = () => {
       name: "Strategy",
       label: "Scalping Type",
       type: "radio2",
-      title: location?.state?.data?.scriptType.map((item) => ({ title: item, value: item })),
+      title: location?.state?.data?.scriptType?.Scalping.map((item) => ({ title: item, value: item })),
       hiding: false,
       label_size: 12,
       col_size: 12,

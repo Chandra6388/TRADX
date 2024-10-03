@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import { Get_Symbol, Get_StrikePrice, GET_EXPIRY_DATE, GetExchange, ExpriyEndDate } from '../../CommonAPI/Admin'
-import { AddScript , GetUserScripts } from '../../CommonAPI/User'
+import { AddScript  } from '../../CommonAPI/User'
 
 const AddClient = () => {
     const userName = localStorage.getItem('name')
@@ -20,30 +20,8 @@ const AddClient = () => {
 
     const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: [] })
     const [serviceEndDate, setServiceEndDate] = useState('')
-    const [allScripts, setAllScripts] = useState([])
-     
-
-    useEffect(() => {
-        GetUserAllScripts()
-    }, [])
-
-    const GetUserAllScripts = async () => {
-        const data = { Username: userName }
-        await GetUserScripts(data)
-            .then((response) => {
-                if (response.Status) {
-                    setAllScripts(response.data)
-                }
-                else {
-                    setAllScripts([])
-                }
-            })
-            .catch((err) => {
-                console.log("Error in finding the User Scripts", err)
-            })
-    }
-
-
+   
+    console.log("location", location?.state?.scriptType?.EndDate)
 
 
     const SweentAlertFun = (text) => {

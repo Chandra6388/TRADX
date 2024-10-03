@@ -6,9 +6,6 @@ import AddForm from "../../../ExtraComponent/FormData";
 import { useFormik } from "formik";
 import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import { useNavigate } from 'react-router-dom';
-import Loader from '../../../ExtraComponent/Loader';
-
-
 
 const AddPlanPage = () => {
     const navigate = useNavigate()
@@ -53,6 +50,15 @@ const AddPlanPage = () => {
             if (!values.NumberofScript) {
                 errors.NumberofScript = "Please Enter Number of Script"
             }
+
+
+
+
+
+
+
+
+            
             if (!values.payment) {
                 errors.payment = "Please Enter Payment"
             }

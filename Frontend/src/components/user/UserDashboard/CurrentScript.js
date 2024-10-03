@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
-import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript } from '../../CommonAPI/User';
+import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
 import { getColumns3, getColumns4, getColumns5 } from './Columns';
 import Swal from 'sweetalert2';
@@ -10,10 +10,13 @@ import { useFormik } from 'formik';
 
 const Coptyscript = ({ data, selectedType, data2 }) => {
     const userName = localStorage.getItem('name')
-
-
     const navigate = useNavigate();
     const [refresh, setRefresh] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [EditDataScalping, setEditDataScalping] = useState({})
+    const [EditDataOption, setEditDataOption] = useState({})
+    const [EditDataPattern, setEditDataPattern] = useState({})
+    const [allScripts, setAllScripts] = useState([])
     const [getAllService, setAllservice] = useState({
         loading: true,
         ScalpingData: [],
@@ -23,13 +26,28 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         Marketwise: [],
         PremiumRotation: []
     });
-    const [showEditModal, setShowEditModal] = useState(false)
-    const [EditDataScalping, setEditDataScalping] = useState({})
-    const [EditDataOption, setEditDataOption] = useState({})
-    const [EditDataPattern, setEditDataPattern] = useState({})
+
+    useEffect(() => {
+        GetUserAllScripts()
+    }, [])
 
 
-    console.log("EditDataOption", EditDataOption)
+    const GetUserAllScripts = async () => {
+        const data = { Username: userName }
+        await GetUserScripts(data)
+            .then((response) => {
+                if (response.Status) {
+                    setAllScripts(response.data)
+                }
+                else {
+                    setAllScripts([])
+                }
+            })
+            .catch((err) => {
+                console.log("Error in finding the User Scripts", err)
+            })
+    }
+
     const SweentAlertFun = (text) => {
         Swal.fire({
             title: "Error",
@@ -103,7 +121,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                         if (response.Status) {
                             Swal.fire({
                                 title: "Square off Successfully!",
-                                text:  response.message,
+                                text: response.message,
                                 icon: "success",
                                 timer: 1500,
                                 timerProgressBar: true,
@@ -111,13 +129,13 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                     setRefresh(!refresh);
                                 }
                             });
-                            setTimeout(()=>{
+                            setTimeout(() => {
                                 window.location.reload()
-                            },1500)
+                            }, 1500)
                         } else {
                             Swal.fire({
                                 title: "Error !",
-                                text:  response.message,
+                                text: response.message,
                                 icon: "error",
                                 timer: 1500,
                                 timerProgressBar: true
@@ -226,7 +244,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                             if (response.Status) {
                                 Swal.fire({
                                     title: "Success",
-                                    text:  response.message,
+                                    text: response.message,
                                     icon: "success",
                                     timer: 2000,
                                     timerProgressBar: true
@@ -236,7 +254,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                             else {
                                 Swal.fire({
                                     title: "Error !",
-                                    text:  response.message,
+                                    text: response.message,
                                     icon: "error",
                                     timer: 2000,
                                     timerProgressBar: true
@@ -314,7 +332,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                     setRefresh(!refresh)
                                     Swal.fire({
                                         title: "Success",
-                                        text:  response.message,
+                                        text: response.message,
                                         icon: "success",
                                         timer: 1500,
                                         timerProgressBar: true
@@ -351,16 +369,55 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 timer: 1500,
                 timerProgressBar: true
             });
-
         }
         else {
-
             if (data === "Option Strategy") {
-                navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy' } } });
-            } else if (data === "Pattern") {
-                navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern' } } });
-            } else {
-                navigate('/user/newscript/scalping', { state: { data: { selectStrategyType: 'Scalping' } } });
+                if (allScripts?.[0]?.['Option Strategy'].length >= 1) {
+                    navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy', scriptType: allScripts?.[0]?.['Option Strategy'] } } });
+                }
+                else {
+                    Swal.fire({
+                        title: "Error",
+                        text: "You have no Plan to add this Script.",
+                        icon: "error",
+                        timer: 2500,
+                        timerProgressBar: true
+                    });
+                }
+            }
+            else if (data === "Pattern") {
+                if (allScripts?.[0]?.Pattern?.length >= 1) {
+                    navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts?.[0]?.Pattern } } });
+                }
+                else {
+                    Swal.fire({
+                        title: "Error",
+                        text: "You have no Plan to add this Script.",
+                        icon: "error",
+                        timer: 2500,
+                        timerProgressBar: true
+                    });
+                }
+
+            }
+            else {
+                if (allScripts?.[0]?.Scalping?.length >= 1) {
+                    navigate('/user/newscript/scalping', {
+                        state: {
+                            data: { selectStrategyType: 'Scalping', scriptType: allScripts?.[0]?.Scalping }
+                        },
+                    });
+                }
+                else {
+                    Swal.fire({
+                        title: "Error",
+                        text: "You have no Plan to add this Script.",
+                        icon: "error",
+                        timer: 2500,
+                        timerProgressBar: true
+                    });
+                }
+
             }
         }
 
@@ -536,7 +593,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                     if (response.Status) {
                         Swal.fire({
                             title: "Updated",
-                            text:  response.message,
+                            text: response.message,
                             icon: "success",
                             timer: 1500,
                             timerProgressBar: true,
@@ -548,7 +605,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                     } else {
                         Swal.fire({
                             title: "Error !",
-                            text:  response.message,
+                            text: response.message,
                             icon: "error",
                             timer: 1500,
                             timerProgressBar: true
@@ -642,7 +699,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 Timeframe: "",
                 Targetvalue: values.Targetvalue,
                 Slvalue: Number(values.Slvalue),
-                TStype:  values.TStype,
+                TStype: values.TStype,
                 Quantity: Number(values.Quantity),
                 LowerRange: EditDataOption.LowerRange,
                 HigherRange: EditDataOption.HigherRange,
@@ -665,7 +722,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 DepthofStrike: EditDataOption.DepthofStrike,
                 TradeCount: values.TradeCount
             }
-            
+
             if (values.EntryTime >= values.ExitTime) {
                 return SweentAlertFun("Exit Time should be greater than Entry Time")
             }
@@ -674,7 +731,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                     if (response.Status) {
                         Swal.fire({
                             title: "Updated",
-                            text:  response.message,
+                            text: response.message,
                             icon: "success",
                             timer: 1500,
                             timerProgressBar: true,
@@ -686,7 +743,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                     } else {
                         Swal.fire({
                             title: "Error !",
-                            text:  response.message,
+                            text: response.message,
                             icon: "error",
                             timer: 1500,
                             timerProgressBar: true
@@ -695,6 +752,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 })
         }
     });
+
     const formik2 = useFormik({
         initialValues: {
             MainStrategy: "",
@@ -822,7 +880,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                     } else {
                         Swal.fire({
                             title: "Error !",
-                            text:  response.message,
+                            text: response.message,
                             icon: "error",
                             timer: 1500,
                             timerProgressBar: true
@@ -1137,7 +1195,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             formik2.setFieldValue('Quantity', EditDataPattern.Quantity)
             formik2.setFieldValue('EntryTime', EditDataPattern.EntryTime)
             formik2.setFieldValue('ExitTime', EditDataPattern.ExitTime)
-          
+
 
             formik2.setFieldValue('TradeCount', EditDataPattern.TradeCount)
 
@@ -1175,9 +1233,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                         />
                                                     }
                                                 </div>
-
-
-                                                
                                             </div>
                                         </>
                                     )}

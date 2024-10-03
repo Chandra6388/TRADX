@@ -50,15 +50,6 @@ const AddPlanPage = () => {
             if (!values.NumberofScript) {
                 errors.NumberofScript = "Please Enter Number of Script"
             }
-
-
-
-
-
-
-
-
-            
             if (!values.payment) {
                 errors.payment = "Please Enter Payment"
             }

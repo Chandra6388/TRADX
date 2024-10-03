@@ -660,7 +660,7 @@ export const columns3 = [
     },
     {
         name: "Region",
-        label: "Region",
+        label: "Reason",
         options: {
             filter: true,
             sort: true,

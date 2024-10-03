@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Coptyscript from './Copyscript'
 import GroupScript from './Groupscript'
 import CurrentScript from './CurrentScript'
-import { GetAllUserGroup, OpenPosition , GetUserScripts } from '../../CommonAPI/User'
+import { GetAllUserGroup, OpenPosition  } from '../../CommonAPI/User'
 import { ExpriyEndDate } from '../../CommonAPI/Admin'
 import FullDataTable from '../../../ExtraComponent/CommanDataTable'
 const Userdashboard = () => {
@@ -12,7 +12,6 @@ const Userdashboard = () => {
     const [subTab, setSubTab] = useState('Scalping')
     const [refresh, setRefresh] = useState(false)
     const [getGroup, setGroup] = useState('')
-    const [allScripts, setAllScripts] = useState([])
     const [serviceStatus, setServiceStatus] = useState({
         status: false,
         msg: ''
@@ -28,29 +27,16 @@ const Userdashboard = () => {
         Pattern: []
     })
 
-
     useEffect(() => {
-        GetUserAllScripts()
+        GetExpriyEndDate() 
+        GetOpenPosition()
     }, [])
+ 
+    useEffect(() => {
+        getUserAllGroup()
+    }, [activeTab])
+ 
 
-
-    console.log("All Scripts", allScripts)
-
-    const GetUserAllScripts = async () => {
-        const data = { Username: userName }
-        await GetUserScripts(data)
-            .then((response) => {
-                if (response.Status) {
-                    setAllScripts(response.data)
-                }
-                else {
-                    setAllScripts([])
-                }
-            })
-            .catch((err) => {
-                console.log("Error in finding the User Scripts", err)
-            })
-    }
 
     const getUserAllGroup = async () => {
         const data = { User: userName }
@@ -74,10 +60,7 @@ const Userdashboard = () => {
                 console.log("Error in finding the group name", err)
             })
     }
-    useEffect(() => {
-        getUserAllGroup()
-    }, [activeTab])
-
+    
     const GetExpriyEndDate = async () => {
         const data = { Username: userName }
         await ExpriyEndDate(data)
@@ -91,10 +74,6 @@ const Userdashboard = () => {
                 console.log("Error in finding the Service end date", err)
             })
     }
-
-    useEffect(() => {
-        GetExpriyEndDate()
-    }, [])
 
     const GetOpenPosition = async () => {
         const data = { userName: userName }
@@ -122,9 +101,6 @@ const Userdashboard = () => {
                 console.log("Error in finding the open postion data", err)
             })
     }
-    useEffect(() => {
-        GetOpenPosition()
-    }, [])
 
     const columns1 = [
         {
@@ -222,6 +198,7 @@ const Userdashboard = () => {
             }
         },
     ];
+
     const columns2 = [
         {
             name: "S.No",
@@ -350,6 +327,7 @@ const Userdashboard = () => {
 
 
     ];
+
     const columns3 = [
         {
             name: "S.No",
@@ -508,8 +486,7 @@ const Userdashboard = () => {
                                                 <select className="form-select" required=""
                                                     onChange={(e) => { setActiveTab(e.target.value) }}
                                                     value={activeTab}>
-                                                    <option value="currentScript">Current Script</option>
-                                                    {/* <option value="copyScript">Copy Script</option> */}
+                                                    <option value="currentScript">Current Script</option> 
                                                     <option value="group">Group Script</option>
                                                 </select>
                                             </div>
@@ -544,8 +521,6 @@ const Userdashboard = () => {
                                                 </select>
                                             </div>
                                         </div>
-
-
                                     </div>
                                 )}
                             </div>

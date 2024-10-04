@@ -172,7 +172,7 @@ const ServicesList = () => {
           <div className='iq-card'>
             <div className='iq-card-header d-flex justify-content-between'>
               <div className='iq-header-title'>
-                <h4 className='card-title'>Client Service</h4>
+                <h4 className='card-title'>All Plan</h4>
               </div>
               <Link to='/admin/addplan' className='btn btn-primary rounded'>
                 Add Plan
@@ -218,26 +218,7 @@ const ServicesList = () => {
   );
 };
 
-const modalStyles = {
-  image: {
-    width: "100%",
-    height: "auto",
-    maxWidth: "250px", // Fixed width same as card
-    maxHeight: "150px", // Fixed height same as card
-    objectFit: "cover",
-    borderRadius: "8px",
-    marginBottom: "15px",
-  },
-  prices: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    color: "#555",
-    padding: "0",
-    listStyle: "none",
-  },
-};
-
+ 
 const styles = {
   container: {
     // display: "flex",
@@ -256,7 +237,7 @@ const styles = {
   title: {
     fontSize: "1.5rem",
     margin: "10px 0",
-    color: "#333",
+    color: "rgb(15 164 32)",
     fontWeight: "bold",
   },
   subtitle: {

@@ -501,7 +501,7 @@ const Header = () => {
                                             <li className="nav-item">
                                                 <button
                                                     type="button"
-                                                    className="btn btn-primary"
+                                                    className="btn btn-primary mt-4 btn1"
 
                                                 >
                                                     Demo Account

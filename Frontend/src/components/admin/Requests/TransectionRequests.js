@@ -131,7 +131,7 @@ const Clientservice = () => {
                             onChange={(e) => { handleApprovalChange(e, tableMeta); }}
                             value={value === "Process" ? '' : value === 'Reject' ? 'Reject' : ""}
                         >
-                            <option value='' disabled>Pending</option>
+                            {value === 'Reject' ? "" : <option value='' disabled>Pending</option>}
                             <option value='Complete'>Approve</option>
                             <option value='Reject'>Reject</option>
                         </select>
@@ -164,7 +164,7 @@ const Clientservice = () => {
                 try {
                     const rowIndex = row.rowIndex;
                     const data = getAllRequest.data[rowIndex];
-            
+
                     const req = {
                         datetime: data.DateTime,
                         Username: data.Username,
@@ -213,7 +213,7 @@ const Clientservice = () => {
                     <div className='iq-card'>
                         <div className='iq-card-header d-flex justify-content-between'>
                             <div className='iq-header-title'>
-                                <h4 className='card-title'>All Request</h4>
+                                <h4 className='card-title'>Transaction Request</h4>
                             </div>
                         </div>
                         <div className='iq-card-body'>

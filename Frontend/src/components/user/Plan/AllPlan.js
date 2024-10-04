@@ -35,7 +35,7 @@ const Card = styled.div`
   }
 `;
 
- 
+
 const Button = styled.button`
   padding: 10px 15px;
   font-size: 1rem;
@@ -215,7 +215,7 @@ const ServicesList = () => {
         }
     };
 
- 
+
     return (
         <>
             <div className='row'>
@@ -229,38 +229,40 @@ const ServicesList = () => {
                         <div className='iq-card-body'>
                             <div style={styles.container} className="row">
                                 {GetAllPlans?.data.map((plan, index) => (
-                                    <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3">
-                                        <img src={imgArr[getRandomNumber()]} alt={plan.PlanName} style={styles.image} />
-                                        <div style={styles.content}>
-                                            <h2 style={styles.title}>
-                                                {plan.PlanName} {SetPlan(plan.PlanName)}
-                                            </h2>
-                                            <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
-                                            <h4 style={styles.subtitle}>No of Scripts: {plan?.NumberofScript}</h4>
-                                            <div style={styles.prices}>
-                                                <p style={styles.priceItem}>
-                                                    <strong>Scalping Strategy:</strong> {plan?.Scalping?.length == 0 ? "ALL Strategy" : plan?.Scalping.join(", ")}
-                                                </p>
-                                                <p style={styles.priceItem}>
-                                                    <strong>Option Strategy:</strong> {plan['Option Strategy']?.length == 0 ? "ALL Strategy" : plan['Option Strategy'].join(", ")}
-                                                </p>
-                                                <p style={styles.priceItem}>
-                                                    <strong>Pattern Strategy:</strong> {plan?.Pattern.length == 0 ? "ALL Strategy" : plan?.Pattern?.join(", ")}
-                                                </p>
+                                    <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 ">
+                                        <div className="d-flex flex-column justify-content-between h-100">
+                                            <div>
+                                                <img src={imgArr[getRandomNumber()]} alt={plan.PlanName} style={styles.image} />
+                                                <div style={styles.content}>
+                                                    <h2 style={styles.title}>
+                                                        {plan.PlanName} {SetPlan(plan.PlanName)}
+                                                    </h2>
+                                                    <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
+                                                    <h4 style={styles.subtitle}>No of Scripts: {plan?.NumberofScript}</h4>
+                                                    <div style={styles.prices}>
+                                                        <p style={styles.priceItem}>
+                                                            <strong>Scalping Strategy:</strong> {plan?.Scalping?.length == 0 ? "ALL Strategy" : plan?.Scalping.join(", ")}
+                                                        </p>
+                                                        <p style={styles.priceItem}>
+                                                            <strong>Option Strategy:</strong> {plan['Option Strategy']?.length == 0 ? "ALL Strategy" : plan['Option Strategy'].join(", ")}
+                                                        </p>
+                                                        <p style={styles.priceItem}>
+                                                            <strong>Pattern Strategy:</strong> {plan?.Pattern.length == 0 ? "ALL Strategy" : plan?.Pattern?.join(", ")}
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            {SetPlan(plan.PlanName) == null ? (
-                                                <div style={styles.buttonContainer}>
+                                            <div style={styles.buttonContainer}>
+                                                {SetPlan(plan.PlanName) == null ? (
                                                     <Button primary style={styles.button} onClick={() => HandleBuyPlan(index)}>
                                                         BUY NOW
                                                     </Button>
-                                                </div>
-                                            ) : (
-                                                <div style={styles.buttonContainer}>
+                                                ) : (
                                                     <Button style={styles.subscribedButton}>
                                                         Subscribed
                                                     </Button>
-                                                </div>
-                                            )}
+                                                )}
+                                            </div>
                                         </div>
                                     </Card>
                                 ))}
@@ -273,25 +275,6 @@ const ServicesList = () => {
     );
 };
 
-const modalStyles = {
-    image: {
-        width: "100%",
-        height: "auto",
-        maxWidth: "250px", // Fixed width same as card
-        maxHeight: "150px", // Fixed height same as card
-        objectFit: "cover",
-        borderRadius: "8px",
-        marginBottom: "15px",
-    },
-    prices: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        color: "#555",
-        padding: "0",
-        listStyle: "none",
-    },
-};
 
 const styles = {
     container: {
@@ -341,7 +324,8 @@ const styles = {
         textAlign: "center",
         justifyContent: "center",
         alignItems: "center",
-    },
+    }
+
 };
 
 export default ServicesList;

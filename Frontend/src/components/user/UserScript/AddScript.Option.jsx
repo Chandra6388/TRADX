@@ -14,11 +14,9 @@ const AddClient = () => {
         loading: true,
         data: []
     })
+
+    console.log(location?.state?.scriptType?.['Option Strategy'])
     const [serviceEndDate, setServiceEndDate] = useState('')
-  
-
-
-
     const SweentAlertFun = (text) => {
         Swal.fire({
             title: "Error",
@@ -27,11 +25,9 @@ const AddClient = () => {
             timer: 30000,
             timerProgressBar: true
         });
-
     }
 
     const formik = useFormik({
-
         initialValues: {
             MainStrategy: location.state.data.selectStrategyType,
             Username: "",
@@ -333,11 +329,6 @@ const AddClient = () => {
         },
 
     });
-
-
-
-
-
 
     useEffect(() => {
         formik.setFieldValue('Measurment_Type',

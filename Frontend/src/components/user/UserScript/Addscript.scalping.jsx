@@ -21,7 +21,7 @@ const AddClient = () => {
     const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: [] })
     const [serviceEndDate, setServiceEndDate] = useState('')
    
-    console.log("location", location?.state?.scriptType?.EndDate)
+    console.log("location", location?.state?.scriptType?.Scalping)
 
 
     const SweentAlertFun = (text) => {
@@ -323,16 +323,16 @@ const AddClient = () => {
     }, [location.state.data])
 
     const fields = [
-        // {
-        //     name: "Strategy",
-        //     label: "Scalping Type",
-        //     type: "radio2",
-        //     title: allScripts && allScripts[0]?.Scalping.map((item) => ({ title: item, value: item })) || [], 
-        //     hiding: false,
-        //     label_size: 12,
-        //     col_size: 12,
-        //     disable: false,
-        // },
+        {
+            name: "Strategy",
+            label: "Scalping Type",
+            type: "radio2",
+            title: location?.state?.scriptType?.Scalping.map((item) => ({ title: item, value: item })) || [], 
+            hiding: false,
+            label_size: 12,
+            col_size: 12,
+            disable: false,
+        },
         {
             name: "Exchange",
             label: "Exchange",

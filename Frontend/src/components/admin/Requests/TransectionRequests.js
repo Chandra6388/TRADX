@@ -231,7 +231,7 @@ const Clientservice = () => {
                                     className="mb-3 custom-tabs"
                                     fill
                                 >
-                                    <Tab eventKey="PendingRequest" title="Pending Request">
+                                    <Tab eventKey="PendingRequest" title="Pending">
                                         <div className="">
                                             <h5 className="mb-4">
                                                 <FullDataTable
@@ -242,7 +242,7 @@ const Clientservice = () => {
                                             </h5>
                                         </div>
                                     </Tab>
-                                    <Tab eventKey="RejectRequest" title="Reject Request">
+                                    <Tab eventKey="RejectRequest" title="Reject">
                                         <div className="">
                                             <FullDataTable
                                                 columns={columns}
@@ -251,7 +251,7 @@ const Clientservice = () => {
                                             />
                                         </div>
                                     </Tab>
-                                    <Tab eventKey="AproveRequest" title="Aprove Request">
+                                    <Tab eventKey="AproveRequest" title="Aprove">
                                         <div className="">
                                             <FullDataTable
                                                 columns={columns}

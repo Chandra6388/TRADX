@@ -156,6 +156,8 @@ const Clientservice = () => {
         },
     ];
 
+
+
     const handleApprovalChange = async (e, row) => {
         const value = e.target.value;
         Swal.fire({
@@ -169,8 +171,7 @@ const Clientservice = () => {
             if (result.isConfirmed) {
                 try {
                     const rowIndex = row.rowIndex;
-                    const data = getAllRequest.data[rowIndex];
-
+                    const data = getAllRequest.pending[rowIndex];
                     const req = {
                         datetime: data.DateTime,
                         Username: data.Username,

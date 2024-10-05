@@ -16,10 +16,6 @@ const App = () => {
       navigate(location.pathname);
       return;
     }
-
-
-
-
     if (location.pathname === "/register") {
       navigate("/register");
       return;
@@ -54,19 +50,14 @@ const App = () => {
 
   return (
     <>
-
-      {/* <div className='wrapper'> */}
-      {/* <div id="content-page" className="content-page"> */}
+ 
       <Routes>
         <Route path="/admin/*" element={(Role === "Admin") ? <AdminRoute /> : <Login />} />
         <Route path="/user/*" element={(Role === "User") ? <UserRoute /> : <Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-      </Routes>
-
-      {/* </div> */}
-      {/* </div> */}
+      </Routes> 
 
     </>
   );

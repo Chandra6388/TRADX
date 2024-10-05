@@ -6,8 +6,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Swal from 'sweetalert2';
 
 const Clientservice = () => {
-    const [getAllRequest, setAllRequest] = useState({ pending: [], rejected: [], data: [] });
-
+    const [getAllRequest, setAllRequest] = useState({ pending: [], rejected: [], Complete: [], data: [] });
 
     useEffect(() => {
         fetchClientService();
@@ -19,9 +18,10 @@ const Clientservice = () => {
             if (response.Status) {
                 const pending = response.Process.filter((item) => item.TransactionRequest === 'Process');
                 const rejected = response.Process.filter((item) => item.TransactionRequest === 'Reject');
-                setAllRequest({ loading: false, pending: pending, rejected: rejected, data: response.Process });
+                const complete = response.Process.filter((item) => item.TransactionRequest === 'Complete');
+                setAllRequest({ loading: false, pending: pending, rejected: rejected, Complete: complete, data: response.Process });
             } else {
-                setAllRequest({ loading: false, pending: [], rejected: [], data: [] });
+                setAllRequest({ loading: false, pending: [], rejected: [], Complete: [], data: [] });
             }
         } catch (error) {
             console.log('Error in fetching client services', error);
@@ -117,7 +117,6 @@ const Clientservice = () => {
                 },
             },
         },
-
         {
             name: 'TransactionRequest',
             label: 'Action',
@@ -126,15 +125,22 @@ const Clientservice = () => {
                 sort: false,
                 customBodyRender: (value, tableMeta) => (
                     <div>
-                        <select
-                            className='form-control'
-                            onChange={(e) => { handleApprovalChange(e, tableMeta); }}
-                            value={value === "Process" ? '' : value === 'Reject' ? 'Reject' : ""}
-                        >
-                            {value === 'Reject' ? "" : <option value='' disabled>Pending</option>}
-                            <option value='Complete'>Approve</option>
-                            <option value='Reject'>Reject</option>
-                        </select>
+                        {
+                            value === "Process" ? (
+                                <select
+                                    className='form-control'
+                                    onChange={(e) => { handleApprovalChange(e, tableMeta); }}
+                                    value={value === "Process" ? '' : value === 'Reject' ? 'Reject' : ""}
+                                >
+                                    {value === 'Reject' ? "" : <option value='' disabled>Pending</option>}
+                                    <option value='Complete'>Approve</option>
+                                    <option value='Reject'>Reject</option>
+                                </select>
+                            ) : value === 'Reject' ?
+                                <div style={{ color: 'red', fontWeight: '800' }}>Rejected</div>
+                                :
+                                <div style={{ color: 'green', fontWeight: '800' }}>Approved</div>
+                        }
                     </div>
                 ),
             },
@@ -240,6 +246,15 @@ const Clientservice = () => {
                                             <FullDataTable
                                                 columns={columns}
                                                 data={getAllRequest.rejected}
+                                                checkBox={false}
+                                            />
+                                        </div>
+                                    </Tab>
+                                    <Tab eventKey="AproveRequest" title="Aprove Request">
+                                        <div className="">
+                                            <FullDataTable
+                                                columns={columns}
+                                                data={getAllRequest.Complete}
                                                 checkBox={false}
                                             />
                                         </div>

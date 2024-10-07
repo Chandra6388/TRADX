@@ -273,7 +273,7 @@ const AddClient = () => {
   });
 
   useEffect(() => {
-    formik.setFieldValue('Strategy', "Fixed Price")
+    formik.setFieldValue('Strategy', location?.state?.data?.scriptType?.Scalping[0])
     formik.setFieldValue('Exchange', "NFO")
     formik.setFieldValue("TType", "BUY")
     formik.setFieldValue("ExitDay", "Intraday")

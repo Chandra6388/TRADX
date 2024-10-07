@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { GetAllGroupService } from '../../CommonAPI/Admin';
+import { GetUserScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
 import { getColumns, getColumns1, getColumns2 } from './Columns';
 import Swal from 'sweetalert2';
@@ -13,13 +14,33 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
 
     const navigate = useNavigate();
     const [selectGroup, setSelectGroup] = useState('');
-    
+    const [allScripts, setAllScripts] = useState([])
     const [getAllService, setAllservice] = useState({
         loading: true,
         data: []
     });
 
+    useEffect(() => {
+        GetUserAllScripts()
+    }, [])
 
+    console.log(allScripts)
+
+    const GetUserAllScripts = async () => {
+        const data = { Username: userName }
+        await GetUserScripts(data)
+            .then((response) => {
+                if (response.Status) {
+                    setAllScripts(response.data)
+                }
+                else {
+                    setAllScripts([])
+                }
+            })
+            .catch((err) => {
+                console.log("Error in finding the User Scripts", err)
+            })
+    }
 
 
     const handleAddScript1 = (data1) => {
@@ -32,14 +53,31 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                 timerProgressBar: true
             });
         }
+        else if (allScripts.length == 0) {
+            Swal.fire({
+                title: "Warning",
+                text: "Don't have any script left Please buy some strategy",
+                icon: "warning",
+                timer: 1500,
+                timerProgressBar: true
+            });
+        }
         else {
-           
-
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.data[selectedRowIndex];
-            const data = { selectStrategyType: "Scalping",type : "group" ,  ...selectedRow };
-         
-            navigate('/user/addscript/scalping', { state: { data } });
+            const isExist = allScripts?.[0].Scalping?.find((item) => item === selectedRow.ScalpType) ?? ""
+            if (!isExist) {
+                Swal.fire({
+                    title: "Warning",
+                    text: "This script is not available for you",
+                    icon: "warning",
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                return;
+            }
+            const data = { selectStrategyType: "Scalping", type: "group", ...selectedRow };
+            navigate('/user/addscript/scalping', { state: { data: data, scriptType: allScripts?.[0] } });
         }
     }
 
@@ -53,14 +91,56 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                 timerProgressBar: true
             });
         }
+        else if (allScripts.length == 0) {
+            Swal.fire({
+                title: "Warning",
+                text: "Don't have any script left Please buy some strategy",
+                icon: "warning",
+                timer: 1500,
+                timerProgressBar: true
+            });
+        }
         else {
 
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.data[selectedRowIndex];
-            const data = { selectGroup: selectGroup, selectStrategyType: 'Option Strategy', type : "group" ,  ...selectedRow };
-            navigate('/user/addscript/option', { state: { data } });
+            if (
+                allScripts?.[0]?.['Option Strategy']?.includes('Straddle_Strangle') &&
+                ['ShortStrangle', 'LongStrangle', 'LongStraddle', 'ShortStraddle'].includes(selectedRow.STG) ||
+
+                allScripts?.[0]?.['Option Strategy']?.includes('Butterfly_Condor') &&
+                ['LongIronButterfly', 'ShortIronButterfly', 'LongIronCondor', 'ShortIronCondor'].includes(selectedRow.STG) ||
+
+                allScripts?.[0]?.['Option Strategy']?.includes('Spread') &&
+                ['BearCallSpread', 'BearPutSpread', 'BullCallSpread', 'BullPutSpread'].includes(selectedRow.STG) ||
+
+                allScripts?.[0]?.['Option Strategy']?.includes('Ladder_Coverd') &&
+                ['BullCallLadder', 'BullPutLadder', 'CoveredCall', 'CoveredPut'].includes(selectedRow.STG) ||
+
+                allScripts?.[0]?.['Option Strategy']?.includes('Collar_Ratio') &&
+                ['LongCollar', 'ShortCollar', 'RatioCallSpread', 'RatioPutSpread'].includes(selectedRow.STG) ||
+
+                allScripts?.[0]?.['Option Strategy']?.includes('Shifting_FourLeg') &&
+                ['LongFourLegStretegy', 'ShortShifting', 'LongShifting', 'ShortFourLegStretegy'].includes(selectedRow.STG)
+            ) {
+                const data = { selectGroup: selectGroup, selectStrategyType: 'Option Strategy', type: "copy", ...selectedRow };
+                navigate('/user/addscript/option', { state: { data: data, scriptType: allScripts?.[0] } });
+            }
+            else {
+                Swal.fire({
+                    title: "Warning",
+                    text: "This script is not available for you",
+                    icon: "warning",
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                return;
+            }
+
         }
     }
+
+
 
     const handleAddScript3 = (data1) => {
         if (data2.status == false) {
@@ -72,11 +152,32 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                 timerProgressBar: true
             });
         }
+        else if (allScripts.length == 0) {
+            Swal.fire({
+                title: "Warning",
+                text: "Don't have any script left Please buy some strategy",
+                icon: "warning",
+                timer: 1500,
+                timerProgressBar: true
+            });
+        }
         else {
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.data[selectedRowIndex];
-            const data = { selectGroup: selectGroup, selectStrategyType: 'Pattern', type : "group" ,  ...selectedRow };
-            navigate('/user/addscript/pattern', { state: { data } });
+            const isExist = allScripts?.[0].Pattern?.find((item) => item === selectedRow.TradePattern) ?? ""
+            if (!isExist) {
+                Swal.fire({
+                    title: "Warning",
+                    text: "This script is not available for you",
+                    icon: "warning",
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                return;
+            }
+
+            const data = { selectGroup: selectGroup, selectStrategyType: 'Pattern', type: "group", ...selectedRow };
+            navigate('/user/addscript/pattern', { state: { data: data, scriptType: allScripts?.[0] } });
         }
     }
 

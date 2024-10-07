@@ -21,7 +21,6 @@ const AddClient = () => {
     const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: [] })
     const [serviceEndDate, setServiceEndDate] = useState('')
    
-    console.log("location", location?.state?.scriptType?.Scalping)
 
 
     const SweentAlertFun = (text) => {
@@ -33,6 +32,9 @@ const AddClient = () => {
             timerProgressBar: true
         });
     }
+    
+    console.log("CPPPP" , location?.state?.scriptType?.EndDate)
+
 
     const formik = useFormik({
         initialValues: {
@@ -206,7 +208,7 @@ const AddClient = () => {
                 ETPattern: "",
                 Timeframe: "",
                 Quantity: values.Quantity,
-                serendate: serviceEndDate,
+                serendate: location?.state?.scriptType?.EndDate,
                 FixedSM: "Single",
                 Expirytype: "",
                 Striketype: "",
@@ -222,9 +224,9 @@ const AddClient = () => {
                 PEDeepLower: 0.0,
                 PEDeepHigher: 0.0,
                 TradeCount: values.Trade_Count,
-                TradeExecution: values.Trade_Execution
+                TradeExecution: values.Trade_Execution,
+                stretegytag: values.Strategy
             }
-
             if (values.Set_First_Trade_Range == true && (Number(values.EntryPrice) >= Number(values.EntryRange) || Number(values.EntryRange) == 0 || Number(values.EntryPrice) == 0)) {
                 return SweentAlertFun("First Trade Higher Range should be greater than First Trade Lower Range")
             }
@@ -321,6 +323,8 @@ const AddClient = () => {
         formik.setFieldValue('Strike', result ? result.number : "")
         setinitialvalue(true)
     }, [location.state.data])
+
+
 
     const fields = [
         {

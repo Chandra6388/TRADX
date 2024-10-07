@@ -27,8 +27,6 @@ const AddClient = () => {
         data: []
     })
 
-
-
     const [getExpiryDate, setExpiryDate] = useState({
         loading: true,
         data: []
@@ -180,8 +178,6 @@ const AddClient = () => {
                 errors.EntryTime = "Entry Time Must be Before 15:29:59.";
             }
 
-
-              console.log("values " , errors)
             return errors;
         },
 
@@ -214,7 +210,7 @@ const AddClient = () => {
                 TradeExecution: values.Trade_Execution,
                 FixedSM: "",
                 TType: values.TType,
-                serendate: serviceEndDate,
+                serendate: location?.state?.scriptType?.EndDate,
                 expirydata1: values.Exchange == "NSE" ? getExpiryDate.data[0] : values.expirydata1,
                 Expirytype: "",
                 Striketype: "",
@@ -229,6 +225,7 @@ const AddClient = () => {
                 CEDeepHigher: 0.0,
                 PEDeepLower: 0.0,
                 PEDeepHigher: 0.0,
+                stretegytag: values.Strategy
             }
 
 

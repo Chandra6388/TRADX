@@ -242,7 +242,7 @@ const Clientservice = () => {
                                             </h5>
                                         </div>
                                     </Tab>
-                                    <Tab eventKey="RejectRequest" title="Reject">
+                                    <Tab eventKey="RejectRequest" title="Rejected">
                                         <div className="">
                                             <FullDataTable
                                                 columns={columns}
@@ -251,7 +251,7 @@ const Clientservice = () => {
                                             />
                                         </div>
                                     </Tab>
-                                    <Tab eventKey="AproveRequest" title="Aprove">
+                                    <Tab eventKey="AproveRequest" title="Approved">
                                         <div className="">
                                             <FullDataTable
                                                 columns={columns}

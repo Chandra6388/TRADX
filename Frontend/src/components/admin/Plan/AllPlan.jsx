@@ -96,19 +96,12 @@ const Button = styled.button`
 `;
 const ServicesList = () => {
 
-  const [selectedPlan, setSelectedPlan] = useState(null);
   const [GetAllPlans, setAllPlans] = useState({ loading: true, data: [] });
 
 
   useEffect(() => {
     GetAllPlansData();
   }, []);
-
-  const handleViewClick = (plan) => {
-    setSelectedPlan(plan);
-  };
-
-
 
   const GetAllPlansData = async () => {
     await Get_All_Plans()
@@ -132,7 +125,7 @@ const ServicesList = () => {
 
 
   let servicegivenmonth = localStorage.getItem("servicegivenmonth");
- 
+
 
   const SetPlan = (index) => {
     if (servicegivenmonth === 0) {
@@ -218,7 +211,7 @@ const ServicesList = () => {
   );
 };
 
- 
+
 const styles = {
   container: {
     // display: "flex",

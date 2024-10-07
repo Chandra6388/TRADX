@@ -27,6 +27,8 @@ const AddClient = () => {
         });
     }
 
+    console.log("ssss" , location.state)
+
     const formik = useFormik({
         initialValues: {
             MainStrategy: location.state.data.selectStrategyType,
@@ -97,9 +99,7 @@ const AddClient = () => {
             }
             if (!values.Symbol) {
                 errors.Symbol = "Please Select a Symbol Type.";
-            }
-
-
+            } 
             if ((!values.Targetvalue || values.Targetvalue == 0) && (formik.values.Measurment_Type != 'Shifting_FourLeg')) {
                 errors.Targetvalue = values.Targetvalue == 0 ? "Target Can Not be Zero" : "Please Enter a Target Value.";
             }

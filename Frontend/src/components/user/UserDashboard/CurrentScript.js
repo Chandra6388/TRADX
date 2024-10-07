@@ -377,12 +377,13 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 }
                 else {
                     Swal.fire({
-                        title: "Error",
-                        text: "You have no Plan to add this Script.",
-                        icon: "error",
-                        timer: 2500,
+                        title: "Warning",
+                        text: "Don't have any script left Please buy some strategy",
+                        icon: "warning",
+                        timer: 2000,
                         timerProgressBar: true
                     });
+                    
                 }
             }
             else if (data === "Pattern") {
@@ -391,10 +392,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 }
                 else {
                     Swal.fire({
-                        title: "Error",
-                        text: "You have no Plan to add this Script.",
-                        icon: "error",
-                        timer: 2500,
+                        title: "Warning",
+                        text: "Don't have any script left Please buy some strategy",
+                        icon: "warning",
+                        timer: 2000,
                         timerProgressBar: true
                     });
                 }
@@ -410,10 +411,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 }
                 else {
                     Swal.fire({
-                        title: "Error",
-                        text: "You have no Plan to add this Script.",
-                        icon: "error",
-                        timer: 2500,
+                        title: "Warning",
+                        text: "Don't have any script left Please buy some strategy",
+                        icon: "warning",
+                        timer: 2000,
                         timerProgressBar: true
                     });
                 }

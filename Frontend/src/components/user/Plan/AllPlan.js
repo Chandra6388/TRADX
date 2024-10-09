@@ -139,18 +139,25 @@ const ServicesList = () => {
         try {
             // Get plan details
             const planDetails = GetAllPlans?.data[index];
+
+            console.log('Plan Details:', planDetails['Plan Validity']);
             const req = {
                 Username: username,
                 Scalping: planDetails.Scalping,
                 Option: planDetails['Option Strategy'],
                 PatternS: planDetails.Pattern,
                 NumberofScript: planDetails.NumberofScript,
-                Duration: ['One Month', 'Quarterly', 'Half Yearly', 'Yearly'][planDetails['Plan Validity'] - 1],
+                Duration: planDetails['Plan Validity'],
                 Planname: planDetails.PlanName,
                 payment: planDetails.payment
             };
             const req1 = { Username: username, transactiontype: 'Purchase', money: planDetails.payment };
 
+
+
+
+            // console.log('Buy Plan Request:', req);
+            // return 
             // Show confirmation alert
             const result = await Swal.fire({
                 title: 'Are you sure?',

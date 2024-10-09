@@ -128,8 +128,7 @@ const AddPlanPage = () => {
             hiding: false,
             col_size: 6,
             disable: false,
-        },
-    
+        }, 
         {
             name: "Duration",
             label: "Duration",

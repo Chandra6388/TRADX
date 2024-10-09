@@ -129,15 +129,16 @@ const AddPlanPage = () => {
             col_size: 6,
             disable: false,
         },
+    
         {
             name: "Duration",
             label: "Duration",
             type: "select1",
             options: [
-                { value: "1", label: "One Month" },
-                { value: "2", label: "Quarterly" },
-                { value: "3", label: "Half Yearly" },
-                { value: "4", label: "Yearly" },
+                { value: "One_Month", label: "One Month" },
+                { value: "Quarterly", label: "Quarterly" },
+                { value: "Half_Yearly", label: "Half Yearly" },
+                { value: "Yearly", label: "Yearly" },
             ],
             label_size: 12,
             hiding: false,

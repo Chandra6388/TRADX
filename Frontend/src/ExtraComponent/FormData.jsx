@@ -272,6 +272,7 @@ const DynamicForm = ({
                               <label
                                 className={` col-lg-${field.label_size}`}
                                 htmlFor={field.name}
+                                
                               >
                                 {field.label}
                                 <span className="text-danger">*</span>
@@ -284,14 +285,12 @@ const DynamicForm = ({
                                   disabled={field.disable}
                                   id={field.name}
                                   {...formik.getFieldProps(field.name)}
-                                >
-                                  <option value="">{`Select ${field.label}`}</option>
+                                > 
+                                <option value="">{`Select ${field.label}`}</option>
                                   {field.options.map((option, index) => (
-
-                                    <option
+                                    <option  className={field?.options1?.includes(option?.label) ? "green" : "black"} 
                                       key={option.value}
-                                      value={option.value}
-
+                                      value={option.value} 
                                     >
                                       {option.label}
                                     </option>

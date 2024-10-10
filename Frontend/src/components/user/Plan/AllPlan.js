@@ -152,13 +152,7 @@ const ServicesList = () => {
                 payment: planDetails.payment
             };
             const req1 = { Username: username, transactiontype: 'Purchase', money: planDetails.payment };
-
-
-
-
-            // console.log('Buy Plan Request:', req);
-            // return 
-            // Show confirmation alert
+            
             const result = await Swal.fire({
                 title: 'Are you sure?',
                 text: `Do you want to buy the plan: ${planDetails.PlanName} for ₹${planDetails.payment}?`,

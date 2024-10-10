@@ -7,7 +7,9 @@ import { useFormik } from 'formik';
 import DropdownMultiselect from 'react-multiselect-dropdown-bootstrap';
 import AddForm from '../../../ExtraComponent/FormData';
 import Swal from 'sweetalert2';
-import { Get_All_Plans } from "../../CommonAPI/User";
+import { Get_All_Plans , GetUserBalence } from "../../CommonAPI/User";
+
+
 const Clientservice = () => {
     const [clientService, setClientService] = useState({ loading: true, data: [] });
     const [showModal, setShowModal] = useState(false);
@@ -15,16 +17,15 @@ const Clientservice = () => {
     const [optionsArray, setOptionsArray] = useState([]);
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [groupData, setGroupData] = useState({ loading: true, data: [] });
-    const [brokers, setBrokers] = useState([]); 
+    const [brokers, setBrokers] = useState([]);
     const [searchInput, setSearchInput] = useState('')
     const [GetAllPlans, setAllPlans] = useState({ LivePlanName: [], DemoPlanName: [], data: [] });
-
- 
-
+    const [walletBalance, setWalletBalance] = useState('');
+  
     useEffect(() => {
         fetchBrokerName();
         fetchGroupDetails();
-        GetAllPlansData(); 
+        GetAllPlansData();
     }, []);
 
     useEffect(() => {
@@ -32,6 +33,23 @@ const Clientservice = () => {
     }, [searchInput]);
 
 
+
+    const GetBalence = async (Username) => {
+        const req = {userName: Username}
+        await GetUserBalence(req)
+          .then((response) => {
+              if (response.Status) {
+                  setWalletBalance(response.Balance)
+              }
+              else {
+                  setWalletBalance('')
+              }
+          })
+          .catch((error) => {
+              console.error("Error in GetUserBalence request", error);
+          });   
+      }
+  
 
     const fetchBrokerName = async () => {
         try {
@@ -146,6 +164,28 @@ const Clientservice = () => {
                 clientpay: Number(values.clientpay),
                 Planname: values.Planname,
             };
+            if(walletBalance < values.clientpay){
+                Swal.fire({
+                    title: "warning",
+                    text: "Insufficient Balance",
+                    icon: "warning",
+                    timer: 1500,
+                    timerProgressBar: true
+                });
+                return 
+            }
+
+            const FilterPlanAmount = GetAllPlans.data.filter((item) => item.PlanName === values.Planname);
+            if (FilterPlanAmount[0].payment > values.clientpay && FilterPlanAmount[0].payment !== '') {
+                Swal.fire({
+                    title: "Invalid Amount",
+                    text: `The plan amount is ${FilterPlanAmount[0].payment}, but you've entered ${values.clientpay}. Please enter an amount greater than the plan amount.`,
+                    icon: "worning",
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                return   
+            } 
             try {
                 const response = await EditClientPanle(req);
                 if (response.Status) {
@@ -196,6 +236,7 @@ const Clientservice = () => {
             label: 'Plan Name',
             type: 'select',
             options: GetAllPlans.LivePlanName && GetAllPlans.LivePlanName.map(item => ({ label: item.PlanName, value: item.PlanName })),
+            options1: selectedIndex.Planname && selectedIndex.Planname,
             label_size: 12,
             col_size: 6,
         },
@@ -229,15 +270,17 @@ const Clientservice = () => {
                 sort: true,
                 customBodyRender: (value, tableMeta) => (
                     <SquarePen
-                        onClick={() => {
-                            setShowModal(true);
-                            const rowDataWithKeys = {};
-                            columns.forEach((column, index) => {
-                                rowDataWithKeys[column.name] = tableMeta.rowData[index];
-                            });
-                            setSelectedIndex(rowDataWithKeys);
-                        }}
+                    onClick={() => {
+                        setShowModal(true);
+                        const rowDataWithKeys = {};
+                        columns.forEach((column, index) => {
+                            rowDataWithKeys[column.name] = tableMeta.rowData[index];
+                        });
+                        setSelectedIndex(rowDataWithKeys);
+                        GetBalence(rowDataWithKeys.Username)
+                    }}
                     />
+                    
                 ),
             },
         },
@@ -336,12 +379,12 @@ const Clientservice = () => {
         },
     ];
 
- 
+
 
     useEffect(() => {
         if (showModal) {
             formik.setFieldValue('Broker', selectedIndex.BrokerName);
-            formik.setFieldValue('clientpay', selectedIndex.clientpay);
+            // formik.setFieldValue('clientpay', selectedIndex.clientpay);
             // formik.setFieldValue('Planname', selectedIndex.Planname[0]);
             formik.setFieldValue('User', selectedIndex.Username);
             setSelectedOptions(showModal && selectedIndex.Group)

@@ -109,12 +109,12 @@ const ServicesList = () => {
 
 
 
-    const imgArr = [
-        "https://cdn.pixabay.com/photo/2024/05/31/05/24/trading-8799817_640.png",
-        "https://cdn.pixabay.com/photo/2016/11/27/21/42/stock-1863880_640.jpg",
-        "https://cdn.pixabay.com/photo/2020/04/16/15/40/stock-5051155_640.jpg",
-        "https://cdn.pixabay.com/photo/2023/07/28/08/06/finance-8154775_640.jpg",
-    ];
+    // const imgArr = [
+    //     "https://cdn.pixabay.com/photo/2024/05/31/05/24/trading-8799817_640.png",
+    //     "https://cdn.pixabay.com/photo/2016/11/27/21/42/stock-1863880_640.jpg",
+    //     "https://cdn.pixabay.com/photo/2020/04/16/15/40/stock-5051155_640.jpg",
+    //     "https://cdn.pixabay.com/photo/2023/07/28/08/06/finance-8154775_640.jpg",
+    // ];
 
 
     const SetPlan = (name) => {
@@ -152,7 +152,7 @@ const ServicesList = () => {
                 payment: planDetails.payment
             };
             const req1 = { Username: username, transactiontype: 'Purchase', money: planDetails.payment };
-            
+
             const result = await Swal.fire({
                 title: 'Are you sure?',
                 text: `Do you want to buy the plan: ${planDetails.PlanName} for ₹${planDetails.payment}?`,
@@ -233,13 +233,15 @@ const ServicesList = () => {
                                     <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 ">
                                         <div className="d-flex flex-column justify-content-between h-100">
                                             <div>
-                                                <img src={imgArr[getRandomNumber()]} alt={plan.PlanName} style={styles.image} />
+                                                {/* <img src={imgArr[getRandomNumber()]} alt={plan.PlanName} style={styles.image} /> */}
                                                 <div style={styles.content}>
                                                     <h2 style={styles.title}>
                                                         {plan.PlanName} {SetPlan(plan.PlanName)}
                                                     </h2>
                                                     <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
+                                                    <h4 style={styles.subtitle}>Duration: {plan?.['Plan Validity']}</h4>
                                                     <h4 style={styles.subtitle}>No of Scripts: {plan?.NumberofScript}</h4>
+
                                                     <div style={styles.prices}>
                                                         <p style={styles.priceItem}>
                                                             <strong>Scalping Strategy:</strong> {plan?.Scalping?.length == 0 ? "ALL Strategy" : plan?.Scalping.join(", ")}

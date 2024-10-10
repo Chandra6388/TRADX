@@ -427,6 +427,16 @@ const Header = () => {
                                         </button>
                                     </li>
 
+                                    <li className="nav-item">
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary mt-3 mx-3 btn1"
+                                            onClick={(e) => navigate('/admin/transectionrequest')}
+                                        >
+                                            Transaction Requests
+                                        </button>
+                                    </li>
+
                                     <li className="nav-item iq-full-screen" onClick={toggleFullscreen}>
                                         <a href="#" className="iq-waves-effect" id="btnFullscreen">
                                             <i className={isFullscreen ? 'ri-fullscreen-exit-line' : 'ri-fullscreen-line'} />

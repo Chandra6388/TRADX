@@ -250,12 +250,12 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
 
-                                    <li className={activeItem === 'transectionrequest' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'transectionrequest')}>
+                                    {/* <li className={activeItem === 'transectionrequest' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'transectionrequest')}>
                                         <Link to="/admin/transectionrequest" className="iq-waves-effect">
                                             <i className="la la-file-alt" />
                                             <span>Transaction Requests</span>
                                         </Link>
-                                    </li>
+                                    </li> */}
 
 
                                     <li className={activeItem === 'smtp' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'smtp')}>

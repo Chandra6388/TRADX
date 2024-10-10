@@ -175,13 +175,15 @@ const ServicesList = () => {
               <div style={styles.container} className="row">
                 {GetAllPlans?.data.map((plan, index) => (
                   <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3">
-                    <img src={imgArr[getRandomNumber()]} alt={plan.PlanName} style={styles.image} />
+                    {/* <img src={imgArr[getRandomNumber()]} alt={plan.PlanName} style={styles.image} /> */}
                     <div style={styles.content}>
                       <h2 style={styles.title}>
                         {plan.PlanName} {SetPlan(index)}
                       </h2>
                       <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
                       <h5 style={styles.prices}>No of Scripts: {plan.NumberofScript}</h5>
+                      <h5 style={styles.prices}>Duration: {plan?.['Plan Validity']}</h5>
+
                       <div style={styles.prices}>
                         <p style={styles.priceItem}>
                           <strong>Scalping Strategy:</strong> {plan.Scalping.join(", ")}

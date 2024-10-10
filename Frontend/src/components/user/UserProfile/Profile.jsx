@@ -88,14 +88,16 @@ const Profile = () => {
                                         <div className="col-4">BrokerName :</div>
                                         <div className="col-8">{data && data.data.BrokerName}</div>
                                         <div className="col-4">Services :</div>
-                                        <div className="col-8">
-                                            {data && data.data.ServiceCount}
-                                        </div>
+                                        <div className="col-8">{data && data.data.ServiceCount}</div>
                                         <div className="col-4">Group :</div>
-                                        {data.loading && data && data.data.Group.length > 0 ? <div className="col-8">{data && data.data.Group.join(' , ')}</div> :
-                                            <div className="col-8">
-                                                No Group Available
-                                            </div>
+                                        {
+                                            data.loading && data && data.data.Group.length > 0 ? <div className="col-8">{data && data.data.Group.join(' , ')}</div> :
+                                                <div className="col-8">No Group Available</div>
+                                        }
+                                        <div className="col-4">Plan Name :</div>
+                                        {
+                                            data.loading && data && data?.data?.Planname?.length > 0 ? <div className="col-8">{data && data?.data?.Planname.join(' , ')}</div> :
+                                                <div className="col-8">No Plan Available</div>
                                         }
                                     </div>
                                 </div>

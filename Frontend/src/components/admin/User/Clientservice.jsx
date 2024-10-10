@@ -383,9 +383,7 @@ const Clientservice = () => {
 
     useEffect(() => {
         if (showModal) {
-            formik.setFieldValue('Broker', selectedIndex.BrokerName);
-            // formik.setFieldValue('clientpay', selectedIndex.clientpay);
-            // formik.setFieldValue('Planname', selectedIndex.Planname[0]);
+            formik.setFieldValue('Broker', selectedIndex.BrokerName); 
             formik.setFieldValue('User', selectedIndex.Username);
             setSelectedOptions(showModal && selectedIndex.Group)
         }

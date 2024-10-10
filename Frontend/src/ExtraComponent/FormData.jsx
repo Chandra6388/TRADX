@@ -272,7 +272,7 @@ const DynamicForm = ({
                               <label
                                 className={` col-lg-${field.label_size}`}
                                 htmlFor={field.name}
-                                
+
                               >
                                 {field.label}
                                 <span className="text-danger">*</span>
@@ -285,16 +285,34 @@ const DynamicForm = ({
                                   disabled={field.disable}
                                   id={field.name}
                                   {...formik.getFieldProps(field.name)}
-                                > 
-                                <option value="">{`Select ${field.label}`}</option>
-                                  {field.options.map((option, index) => (
-                                    <option  className={field?.options1?.includes(option?.label) ? "green" : "black"} 
-                                      key={option.value}
-                                      value={option.value} 
-                                    >
-                                      {option.label}
-                                    </option>
-                                  ))}
+                                >
+                                  <option value="">{`Select ${field.label}`}</option>
+
+                                  {/* Show filtered options (with the class 'green') first */}
+                                  {field.options
+                                    .filter(option => field?.options1?.includes(option?.label))
+                                    .map((option, index) => (
+                                      <option
+                                        className="green"
+                                        key={option.value}
+                                        value={option.value}
+                                      >
+                                        {option.label}
+                                      </option>
+                                    ))}
+
+                                  {/* Show non-filtered options (with the class 'black') next */}
+                                  {field.options
+                                    .filter(option => !field?.options1?.includes(option?.label))
+                                    .map((option, index) => (
+                                      <option
+                                        className="black"
+                                        key={option.value}
+                                        value={option.value}
+                                      >
+                                        {option.label}
+                                      </option>
+                                    ))}
                                 </select>
 
                                 {formik.touched[field.name] &&
@@ -493,12 +511,12 @@ const DynamicForm = ({
                                 </div>
                               ))}
                             </div>
-                          {formik.touched[field.name] &&
-                            formik.errors[field.name] ? (
-                            <div style={{ color: "red" }}>
-                              {formik.errors[field.name]}
-                            </div>
-                          ) : null}
+                            {formik.touched[field.name] &&
+                              formik.errors[field.name] ? (
+                              <div style={{ color: "red" }}>
+                                {formik.errors[field.name]}
+                              </div>
+                            ) : null}
                           </div>
                         </>
                       ) : field.type === "radio2" ? (

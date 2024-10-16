@@ -3,7 +3,7 @@ import AddForm from "../../../ExtraComponent/FormData";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
-import { GET_EXPIRY_DATE, Get_StrikePrice, Get_Symbol, Get_Pattern_Time_Frame, Get_Pattern_Charting, Get_Pattern_Name, GetExchange, ExpriyEndDate } from '../../CommonAPI/Admin'
+import { GET_EXPIRY_DATE, Get_StrikePrice, Get_Symbol, Get_Pattern_Time_Frame, Get_Pattern_Charting, Get_Pattern_Name, GetExchange } from '../../CommonAPI/Admin'
 import { AddScript } from '../../CommonAPI/User'
 
 const AddClient = () => {
@@ -11,38 +11,13 @@ const AddClient = () => {
     const location = useLocation()
     const userName = localStorage.getItem('name')
     const navigate = useNavigate()
-    const [getSymbolData, setSymbolData] = useState({
-        loading: true,
-        data: []
-    })
+    const [getSymbolData, setSymbolData] = useState({ loading: true, data: [] })
     const [getAllExchange, setAllExchange] = useState([])
-
-    const [getStricke, setStricke] = useState({
-        loading: true,
-        data: []
-    })
-
-    const [getTimeFrame, setTimeFrame] = useState({
-        loading: true,
-        data: []
-    })
-
-    const [getExpiryDate, setExpiryDate] = useState({
-        loading: true,
-        data: []
-    })
-
-    const [getChartPattern, setChartPattern] = useState({
-        loading: true,
-        data: []
-    })
-
-    const [getPattern, setPattern] = useState({
-        loading: true,
-        data: []
-    })
-
-    const [serviceEndDate, setServiceEndDate] = useState('')
+    const [getStricke, setStricke] = useState({ loading: true, data: [] })
+    const [getTimeFrame, setTimeFrame] = useState({ loading: true, data: [] })
+    const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: [] })
+    const [getChartPattern, setChartPattern] = useState({ loading: true, data: [] })
+    const [getPattern, setPattern] = useState({ loading: true, data: [] })
 
 
     const SweentAlertFun = (text) => {
@@ -53,10 +28,19 @@ const AddClient = () => {
             timer: 1500,
             timerProgressBar: true
         });
-
     }
 
- 
+    const getEndData = (stg) => {
+        const dataWithoutLastItem = location?.state?.scriptType?.data.slice(0, -1);
+        const foundItem = dataWithoutLastItem.find((item) => {
+            return item.Pattern.includes(stg);
+        });
+        return foundItem.EndDate;
+    };
+
+
+
+
     const formik = useFormik({
 
         initialValues: {
@@ -210,7 +194,7 @@ const AddClient = () => {
                 TradeExecution: values.Trade_Execution,
                 FixedSM: "",
                 TType: values.TType,
-                serendate: location?.state?.scriptType?.EndDate,
+                serendate: getEndData(values.Strategy),
                 expirydata1: values.Exchange == "NSE" ? getExpiryDate.data[0] : values.expirydata1,
                 Expirytype: "",
                 Striketype: "",
@@ -227,14 +211,10 @@ const AddClient = () => {
                 PEDeepHigher: 0.0,
                 stretegytag: values.Strategy
             }
-
-
             if (values.EntryTime >= values.ExitTime) {
                 return SweentAlertFun("Exit Time should be greater than Entry Time")
             }
-        
 
-           
             await AddScript(req)
                 .then((response) => {
                     if (response.Status) {
@@ -268,23 +248,23 @@ const AddClient = () => {
     });
 
 
- // Symbol Break
- const extractDetails = (inputString) => {
-    const regex = /([PC])(?!.*[PC])(\d+)/;
-    const match = inputString.match(regex);
-    if (match) {
-        const number = match[2];
-        const optionType = match[1];
-        const type = optionType == "C" ? "CE" : "PE"
-        return { number, type };
-    } else {
-        return null;
-    }
-};
+    // Symbol Break
+    const extractDetails = (inputString) => {
+        const regex = /([PC])(?!.*[PC])(\d+)/;
+        const match = inputString.match(regex);
+        if (match) {
+            const number = match[2];
+            const optionType = match[1];
+            const type = optionType == "C" ? "CE" : "PE"
+            return { number, type };
+        } else {
+            return null;
+        }
+    };
 
 
 
-const result = extractDetails(location.state.data.Symbol);
+    const result = extractDetails(location.state.data.Symbol);
 
 
     useEffect(() => {
@@ -453,11 +433,10 @@ const result = extractDetails(location.state.data.Symbol);
             name: "Strategy",
             label: "Pattern Type",
             type: "select",
-            options: [
-                { label: "Candlestick Pattern", value: "CandlestickPattern" },
-                { label: "Charting Pattern", value: "ChartingPattern" },
-            ],
-
+            options: location.state.scriptType.data[location.state.scriptType.len].CombinePattern.map((item) => ({
+                label: item == "ChartingPattern" ? "Charting Pattern" : item == "CandlestickPattern" ? 'Candlestick Pattern' : item,
+                value: item
+            })),
             label_size: 12,
             hiding: false,
             col_size: 4,
@@ -656,8 +635,6 @@ const result = extractDetails(location.state.data.Symbol);
                     }
                 })
         }
-
-
     }
 
     useEffect(() => {
@@ -765,38 +742,16 @@ const result = extractDetails(location.state.data.Symbol);
         GetPatternCharting()
     }, [])
 
-    const GetExpriyEndDate = async () => {
-        const data = { Username: userName }
-        await ExpriyEndDate(data)
-            .then((response) => {
-                if (response.Status) {
 
-                    setServiceEndDate(response.Data[0].ExpiryDate)
-                }
-                else {
-                    setServiceEndDate('')
-                }
-            })
-            .catch((err) => {
-                console.log("Error in finding the Service end date", err)
-            })
-    }
-
-    useEffect(() => {
-        GetExpriyEndDate()
-    }, [])
-
-
-     
     useEffect(() => {
         if (formik.values.Symbol && formik.values.Symbol !== location.state.data.MainSymbol) {
-            formik.setFieldValue('expirydata1', "");  
-            formik.setFieldValue('Optiontype', "");  
-            formik.setFieldValue('Strike', "");  
+            formik.setFieldValue('expirydata1', "");
+            formik.setFieldValue('Optiontype', "");
+            formik.setFieldValue('Strike', "");
         }
-        if(formik.values.Strategy && formik.values.Strategy !== location.state.data.TradePattern) {
-           
-            formik.setFieldValue('ETPattern', "");  
+        if (formik.values.Strategy && formik.values.Strategy !== location.state.data.TradePattern) {
+
+            formik.setFieldValue('ETPattern', "");
         }
         if (formik.values.Instrument == "FUTIDX" || formik.values.Instrument == "FUTSTK") {
             formik.setFieldValue('Optiontype', "")
@@ -805,9 +760,9 @@ const result = extractDetails(location.state.data.Symbol);
         if (formik.values.Exchange == "NSE") {
             formik.setFieldValue('Instrument', "")
         }
-    }, [formik.values.Instrument, formik.values.Exchange , formik.values.Symbol , formik.values.Strategy])
+    }, [formik.values.Instrument, formik.values.Exchange, formik.values.Symbol, formik.values.Strategy])
 
-    
+
 
     return (
         <>

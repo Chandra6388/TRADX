@@ -15,8 +15,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     const [showEditModal, setShowEditModal] = useState(false)
     const [EditDataScalping, setEditDataScalping] = useState({})
     const [EditDataOption, setEditDataOption] = useState({})
-    const [EditDataPattern, setEditDataPattern] = useState({})
-    const [allScripts, setAllScripts] = useState([])
+    const [EditDataPattern, setEditDataPattern] = useState({}) 
+    const [allScripts, setAllScripts] = useState({ data: [], len: 0 })
     const [getAllService, setAllservice] = useState({
         loading: true,
         ScalpingData: [],
@@ -26,21 +26,26 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         Marketwise: [],
         PremiumRotation: []
     });
-
+    
     useEffect(() => {
         GetUserAllScripts()
     }, [])
-
 
     const GetUserAllScripts = async () => {
         const data = { Username: userName }
         await GetUserScripts(data)
             .then((response) => {
                 if (response.Status) {
-                    setAllScripts(response.data)
+                    setAllScripts({
+                        data: response.data,
+                        len: response.data.length - 1
+                    })
                 }
                 else {
-                    setAllScripts([])
+                    setAllScripts({
+                        data: [],
+                        len: 0
+                    })
                 }
             })
             .catch((err) => {
@@ -57,7 +62,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             timerProgressBar: true
         });
     }
-
 
     const handleDelete = async (rowData) => {
         const index = rowData.rowIndex
@@ -151,7 +155,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
     }
 
-
     const handleEdit = async (rowData) => {
         setShowEditModal(true)
         const index = rowData.rowIndex
@@ -168,7 +171,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             setEditDataPattern(getAllService.PatternData[index])
         }
     }
-
 
     const HandleContinueDiscontinue = async (rowData) => {
         const index = rowData.rowIndex
@@ -359,6 +361,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
 
     }
+ 
 
     const AddScript = (data) => {
         if (data2.status == false) {

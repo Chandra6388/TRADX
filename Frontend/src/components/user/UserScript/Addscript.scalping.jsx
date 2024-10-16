@@ -4,24 +4,17 @@ import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import { Get_Symbol, Get_StrikePrice, GET_EXPIRY_DATE, GetExchange, ExpriyEndDate } from '../../CommonAPI/Admin'
-import { AddScript  } from '../../CommonAPI/User'
+import { AddScript } from '../../CommonAPI/User'
 
 const AddClient = () => {
     const userName = localStorage.getItem('name')
     const navigate = useNavigate()
     const location = useLocation()
     const [getAllExchange, setAllExchange] = useState([])
-    const [getSymbolData, setSymbolData] = useState({
-        loading: true,
-        data: []
-    })
+    const [getSymbolData, setSymbolData] = useState({ loading: true, data: [] })
     const [initialvalue, setinitialvalue] = useState(false)
     const [getStricke, setStricke] = useState({ loading: true, data: [] })
-
-    const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: [] })
-    const [serviceEndDate, setServiceEndDate] = useState('')
-   
-
+    const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: []})
 
     const SweentAlertFun = (text) => {
         Swal.fire({
@@ -32,9 +25,14 @@ const AddClient = () => {
             timerProgressBar: true
         });
     }
-    
-    console.log("CPPPP" , location?.state?.scriptType?.EndDate)
 
+    const getEndData = (stg) => {
+        const dataWithoutLastItem = location?.state?.scriptType?.data.slice(0, -1);
+        const foundItem = dataWithoutLastItem.find((item) => {
+            return item.Scalping.includes(stg);
+        });
+        return foundItem.EndDate;
+    };
 
     const formik = useFormik({
         initialValues: {
@@ -99,13 +97,9 @@ const AddClient = () => {
             if (!values.Exchange) {
                 errors.Exchange = "Please Select Exchange Type.";
             }
-
-
             if (!values.Exchange) {
                 errors.Exchange = "Please Select Exchange Type.";
             }
-
-
             if (!values.Instrument && values.Exchange !== 'NSE') {
                 errors.Instrument = "Please Select Instrument Type.";
             }
@@ -176,12 +170,8 @@ const AddClient = () => {
             if (!values.Slvalue) {
                 errors.Slvalue = values.Strategy == "Fixed Price" ? "Please Enter Stop Loss Price." : "Please Select A Stop Loss Value.";
             }
- 
             return errors;
         },
-
-
-
         onSubmit: async (values) => {
             const req = {
                 MainStrategy: location.state.data.selectStrategyType,
@@ -208,7 +198,7 @@ const AddClient = () => {
                 ETPattern: "",
                 Timeframe: "",
                 Quantity: values.Quantity,
-                serendate: location?.state?.scriptType?.EndDate,
+                serendate: getEndData(values.Strategy),
                 FixedSM: "Single",
                 Expirytype: "",
                 Striketype: "",
@@ -325,13 +315,14 @@ const AddClient = () => {
     }, [location.state.data])
 
 
+    let lengthOfStrategyArr = location?.state?.scriptType.len
 
     const fields = [
         {
             name: "Strategy",
             label: "Scalping Type",
             type: "radio2",
-            title: location?.state?.scriptType?.Scalping.map((item) => ({ title: item, value: item })) || [], 
+            title: location?.state?.scriptType?.data[lengthOfStrategyArr]?.CombineScalping.map((item) => ({ title: item, value: item })) || [],
             hiding: false,
             label_size: 12,
             col_size: 12,
@@ -655,45 +646,22 @@ const AddClient = () => {
 
     useEffect(() => {
         if (initialvalue) {
-            if (formik.values.Symbol !== location.state.data.MainSymbol) {
+            if (formik.values.Symbol !== location.state.data.MainSymbol) { 
                 formik.setFieldValue('expirydata1', "");
                 formik.setFieldValue('Strike', "")
             }
-            if(formik.values.Strategy !== location.state.data.ScalpType){
+            if (formik.values.Strategy !== location.state.data.ScalpType) {
                 formik.setFieldValue('Group', "")
                 formik.setFieldValue('HoldExit', "")
                 formik.setFieldValue('HigherRange', 0)
-                formik.setFieldValue('LowerRange', 0) 
+                formik.setFieldValue('LowerRange', 0)
                 formik.setFieldValue('TStype', "")
                 formik.setFieldValue('EntryRange', 0)
-                formik.setFieldValue('EntryPrice', 0) 
+                formik.setFieldValue('EntryPrice', 0)
             }
         }
     }, [formik.values.Strategy, formik.values.Symbol])
 
-
-
-    const GetExpriyEndDate = async () => {
-        const data = { Username: userName }
-        await ExpriyEndDate(data)
-            .then((response) => {
-                if (response.Status) {
-                    setServiceEndDate(response.Data[0].ExpiryDate)
-                }
-                else {
-                    setServiceEndDate('')
-                }
-            })
-            .catch((err) => {
-                console.log("Error in finding the Service end date", err)
-            })
-    }
-
-
-
-    useEffect(() => {
-        GetExpriyEndDate()
-    }, [])
 
     const getSymbol = async () => {
         if (formik.values.Exchange) {
@@ -752,7 +720,6 @@ const AddClient = () => {
 
 
     const get_Exchange = async () => {
-
         await GetExchange()
             .then((response) => {
                 if (response.Status) {
@@ -770,8 +737,6 @@ const AddClient = () => {
     useEffect(() => {
         get_Exchange()
     }, [])
-
-
 
 
     const getExpiry = async () => {
@@ -810,8 +775,6 @@ const AddClient = () => {
     useEffect(() => {
         getExpiry()
     }, [formik.values.Instrument, formik.values.Exchange, formik.values.Symbol, formik.values.Strike])
-
- 
 
 
     return (

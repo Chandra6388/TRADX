@@ -10,13 +10,8 @@ const AddClient = () => {
     const location = useLocation()
     const userName = localStorage.getItem('name')
     const navigate = useNavigate()
-    const [getExpiry, setExpiry] = useState({
-        loading: true,
-        data: []
-    })
+    const [getExpiry, setExpiry] = useState({ loading: true,data: [] })
 
-    console.log(location?.state?.scriptType?.['Option Strategy'])
-    const [serviceEndDate, setServiceEndDate] = useState('')
     const SweentAlertFun = (text) => {
         Swal.fire({
             title: "Error",
@@ -26,9 +21,15 @@ const AddClient = () => {
             timerProgressBar: true
         });
     }
-
-    console.log("ssss" , location.state)
-
+    
+    const getEndData = (stg) => {
+        const dataWithoutLastItem = location?.state?.scriptType?.data.slice(0, -1);
+        const foundItem = dataWithoutLastItem.find((item) => {
+            return item['Option Strategy'].includes(stg);
+        }); 
+        return foundItem.EndDate;
+    };
+ 
     const formik = useFormik({
         initialValues: {
             MainStrategy: location.state.data.selectStrategyType,
@@ -210,8 +211,6 @@ const AddClient = () => {
             return errors;
         },
         onSubmit: async (values) => {
-
-
             const req = {
                 MainStrategy: location.state.data.selectStrategyType,
                 Username: userName,
@@ -237,7 +236,7 @@ const AddClient = () => {
                 ExitDay: values.ExitDay,
                 FixedSM: "",
                 TType: "",
-                serendate: location?.state?.scriptType?.EndDate,
+                serendate: getEndData(values.Measurment_Type),
                 expirydata1: values.Expirytype == "Weekly" ? getExpiry && getExpiry.data[0] : values.Expirytype == "Next Week" ? getExpiry && getExpiry.data[1] : getExpiry && getExpiry.data[2],
                 Expirytype: values.Expirytype,
                 Striketype: formik.values.Strategy != "ShortStraddle" && formik.values.Strategy != "LongStraddle" && formik.values.Measurment_Type != "Shifting_FourLeg" && formik.values.Strategy != 'ShortStraddle' && formik.values.Strategy != 'LongStraddle' ? values.Striketype : '',
@@ -320,7 +319,6 @@ const AddClient = () => {
                             timer: 1500,
                             timerProgressBar: true
                         });
-
                     }
                 })
                 .catch((err) => {
@@ -375,7 +373,7 @@ const AddClient = () => {
             name: "Measurment_Type",
             label: "Option Type",
             type: "select",
-            options: (location?.state?.scriptType?.['Option Strategy'] || []).map((item) => {
+            options: (location?.state?.scriptType?.data[location?.state?.scriptType?.len]?.CombineOption || []).map((item) => {
                 return { label: item, value: item }
             }),
             hiding: false,
@@ -783,33 +781,7 @@ const AddClient = () => {
 
     useEffect(() => {
         getExpriyData()
-
     }, [formik.values.Symbol])
-
-
-
-    const GetExpriyEndDate = async () => {
-        const data = { Username: userName }
-        await ExpriyEndDate(data)
-            .then((response) => {
-                if (response.Status) {
-
-                    setServiceEndDate(response.Data[0].ExpiryDate)
-                }
-                else {
-                    setServiceEndDate('')
-                }
-            })
-            .catch((err) => {
-                console.log("Error in finding the Service end date", err)
-            })
-    }
-
-
-    useEffect(() => {
-        GetExpriyEndDate()
-    }, [])
-
 
 
     useEffect(() => {
@@ -841,7 +813,6 @@ const AddClient = () => {
 
 
     useEffect(() => {
-
         const temp = location.state.data.STG == 'ShortStrangle' || location.state.data.STG == 'LongStrangle' || location.state.data.STG == 'LongStraddle' || location.state.data.STG == 'ShortStraddle' ? "Straddle_Strangle" :
             location.state.data.STG == 'LongIronButterfly' || location.state.data.STG == 'ShortIronButterfly' || location.state.data.STG == 'LongIronCondor' || location.state.data.STG == 'ShortIronCondor' ? "Butterfly_Condor" :
                 location.state.data.STG == 'BearCallSpread' || location.state.data.STG == 'BearPutSpread' || location.state.data.STG == 'BullCallSpread' || location.state.data.STG == 'BullPutSpread' ? 'Spread' :

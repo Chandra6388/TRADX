@@ -87,7 +87,7 @@ const Profile = () => {
                                         <div className="col-8">{data && data.data.EmailId}</div>
                                         <div className="col-4">BrokerName :</div>
                                         <div className="col-8">{data && data.data.BrokerName}</div>
-                                        <div className="col-4">Services :</div>
+                                        <div className="col-4">Number of Script :</div>
                                         <div className="col-8">{data && data.data.ServiceCount}</div>
                                         <div className="col-4">Group :</div>
                                         {

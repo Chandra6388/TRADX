@@ -34,66 +34,6 @@ const Card = styled.div`
   }
 `;
 
-const Modal = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-`;
-
-const ModalContent = styled.div`
-  background: #fff;
-  border-radius: 8px;
-  width: 600px;
-  padding: 20px;
-  position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  display: grid;
-  gap: 20px;
-`;
-
-const CloseButton = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  color: #333;
-  cursor: pointer;
-  &:hover {
-    color: #e74c3c;
-  }
-`;
-
-const Button = styled.button`
-  padding: 10px 15px;
-  font-size: 1rem;
-  color: #fff;
-  background-color: ${(props) => (props.primary ? "#007BFF" : "#28a745")};
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 5px;
-  transition: background-color 0.3s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: ${(props) => (props.primary ? "#0056b3" : "#218838")};
-  }
-
-  svg {
-    margin-right: 5px;
-  }
-`;
 const ServicesList = () => {
 
   const [GetAllPlans, setAllPlans] = useState({ loading: true, data: [] });
@@ -107,13 +47,20 @@ const ServicesList = () => {
     await Get_All_Plans()
       .then((response) => {
         if (response.Status) {
+          const filterPlan = response?.Admin?.filter(
+            (plan) =>
+              plan.PlanName !== "Three Days Live" &&
+              plan.PlanName !== "Two Days Demo" &&
+              plan.PlanName !== "One Week Demo"
+          );
           setAllPlans({
             loading: false,
-            data: response.Admin,
+            data: filterPlan,
           });
         }
       });
   };
+
 
 
   const imgArr = [
@@ -132,7 +79,6 @@ const ServicesList = () => {
       return null;
     }
 
-    // Define the ranges
     const ranges = [
       { min: 1, max: 2, index: 0 },
       { min: 3, max: 5, index: 1 },
@@ -140,7 +86,6 @@ const ServicesList = () => {
       { min: 12, max: 12, index: 3 },
     ];
 
-    // Find the matching range for the given month and index
     const matchedRange = ranges.find(
       (range) =>
         servicegivenmonth >= range.min &&
@@ -148,7 +93,6 @@ const ServicesList = () => {
         range.index === index
     );
 
-    // Return BadgeCheck if the range matches, otherwise return null
     return matchedRange ? <BadgeCheck style={{ color: "green" }} /> : null;
   };
 

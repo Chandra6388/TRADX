@@ -41,6 +41,15 @@ const AddClient = () => {
 
     }
 
+    
+  const getEndData = (stg) => {
+    const dataWithoutLastItem =location?.state?.data?.scriptType?.data.slice(0, -1);
+    const foundItem = dataWithoutLastItem.find((item) => {
+      return item['Option Strategy'].includes(stg);
+    });
+    return foundItem.EndDate;
+  };
+
 
     const formik = useFormik({
         initialValues: {
@@ -247,7 +256,7 @@ const AddClient = () => {
                 ExitDay: values.ExitDay,
                 FixedSM: "",
                 TType: "",
-                serendate: location?.state?.data?.scriptType?.EndDate,
+                serendate: getEndData(formik.values.Measurment_Type),
                 expirydata1: values.Expirytype == "Weekly" ? getExpiry && getExpiry.data[0] : values.Expirytype == "Next Week" ? getExpiry && getExpiry.data[1] : getExpiry && getExpiry.data[2],
                 Expirytype: values.Expirytype,
                 Striketype: formik.values.Strategy != "ShortStraddle" && formik.values.Strategy != "LongStraddle" && formik.values.Measurment_Type != "Shifting_FourLeg" && formik.values.Strategy != 'ShortStraddle' && formik.values.Strategy != 'LongStraddle' ? values.Striketype : '',
@@ -266,7 +275,6 @@ const AddClient = () => {
                 TradeExecution: values.Trade_Execution,
                  stretegytag: values.Measurment_Type,
             }
-
 
             if (values.Striketype == "Depth_of_Strike" && (Number(values.DepthofStrike) < 0 || Number(values.DepthofStrike) > 10)) {
 
@@ -339,8 +347,10 @@ const AddClient = () => {
         },
     });
 
+
+
     useEffect(() => {
-        formik.setFieldValue('Measurment_Type', location?.state?.data?.scriptType?.['Option Strategy'][0])
+        formik.setFieldValue('Measurment_Type', location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.['Option Strategy'][0])
         formik.setFieldValue('Symbol', "BANKNIFTY")
         formik.setFieldValue('Expirytype', "Weekly")
         formik.setFieldValue('ETPattern', "Future")
@@ -367,7 +377,7 @@ const AddClient = () => {
             name: "Measurment_Type",
             label: "Option Type",
             type: "select",
-            options:location?.state?.data?.scriptType?.['Option Strategy'].map((item) => {
+            options: location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.['Option Strategy'].map((item) => {
                 return { label: item, value: item }
             }),
             hiding: false,
@@ -894,7 +904,7 @@ const AddClient = () => {
             TradeExecution: formik.values.Trade_Execution,
             FixedSM: "",
             TType: "",
-            serendate: serviceEndDate,
+            serendate: getEndData(formik.values.Measurment_Type),
             expirydata1: formik.values.Expirytype == "Weekly" ? getExpiry && getExpiry.data[0] : formik.values.Expirytype == "Next Week" ? getExpiry && getExpiry.data[1] : getExpiry && getExpiry.data[2],
             Expirytype: formik.values.Expirytype,
             Striketype: formik.values.Strategy != "ShortStraddle" && formik.values.Strategy != "LongStraddle" && formik.values.Measurment_Type != "Shifting_FourLeg" && formik.values.Strategy != 'ShortStraddle' && formik.values.Strategy != 'LongStraddle' ? formik.values.Striketype : '',
@@ -910,7 +920,7 @@ const AddClient = () => {
             PEDeepLower: Number(formik.values.PEDeepLower),
             PEDeepHigher: Number(formik.values.PEDeepHigher),
             TradeCount: Number(formik.values.Trade_Count),
-        }
+        } 
         await CheckPnL(req)
             .then((response) => {
                 if (response.Status) {

@@ -48,6 +48,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     }
 
     const handleAddScript1 = (data1) => {
+        
         if (data2.status == false) {
             Swal.fire({
                 title: "Error",
@@ -57,7 +58,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts.length == 0) {
+        else if (allScripts?.data?.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -70,7 +71,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.ScalpingData[selectedRowIndex];
             const isExist = allScripts?.data[allScripts?.len].CombineScalping?.find((item) => item === selectedRow.ScalpType) ?? ""
-
             if (!isExist) {
                 Swal.fire({
                     title: "Warning",
@@ -96,7 +96,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts.length == 0) {
+        else if (allScripts?.data?.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -106,7 +106,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             });
         }
         else {
-
+            
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.OptionData[selectedRowIndex];
             let OptionStgArr = allScripts?.data[allScripts?.len].CombineOption
@@ -156,7 +156,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts.length == 0) {
+        else if (allScripts?.data?.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -165,8 +165,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else {
-
+        else { 
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.PatternData[selectedRowIndex];
             const isExist = allScripts?.data[allScripts?.len].CombinePattern?.find((item) => item === selectedRow.TradePattern) ?? ""
@@ -188,7 +187,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
     const GetAllUserScriptDetails = async () => {
         const data = { userName: userName };
-
         await GetAllUserScript(data)
             .then((response) => {
                 if (response.Status) {

@@ -18,7 +18,6 @@ const AddClient = () => {
     const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: [] })
     const [getChartPattern, setChartPattern] = useState({ loading: true, data: [] })
     const [getPattern, setPattern] = useState({ loading: true, data: [] })
-    const [serviceEndDate, setServiceEndDate] = useState('')
 
 
  
@@ -31,11 +30,23 @@ const AddClient = () => {
             timerProgressBar: true
         });
     }
+
+    const getEndData = (stg) => {
+        const dataWithoutLastItem = location?.state.data.scriptType.data.slice(0, -1);
+        const foundItem = dataWithoutLastItem.find((item) => {
+          return item.Pattern.includes(stg);
+        });
+        console.log(foundItem)
+        return foundItem.EndDate;
+      };
+
+
     useEffect(() => {
         get_Exchange()
     }, [])
 
     const formik = useFormik({
+        
         initialValues: {
             MainStrategy: location.state.data.selectStrategyType,
             Username: location.state.data.selectGroup,
@@ -184,7 +195,7 @@ const AddClient = () => {
                 TradeExecution: values.Trade_Execution,
                 FixedSM: "",
                 TType: values.TType,
-                serendate: location?.state?.data?.scriptType?.EndDate,
+                serendate: getEndData(values.Strategy),
                 expirydata1: values.expirydata1,
                 Expirytype: "",
                 Striketype: "",
@@ -384,7 +395,7 @@ const AddClient = () => {
             name: "Strategy",
             label: "Pattern Type",
             type: "select",
-            options: location?.state?.data?.scriptType?.Pattern.map((item) => ({
+            options: location?.state?.data?.scriptType?.data[location?.state?.data?.scriptType?.len]?.CombinePattern.map((item) => ({
                 label: item,
                 value: item
             })),
@@ -689,27 +700,6 @@ const AddClient = () => {
         GetPatternTimeFrame()
         GetPatternName()
         GetPatternCharting()
-    }, [])
-
-    const GetExpriyEndDate = async () => {
-        const data = { Username: userName }
-        await ExpriyEndDate(data)
-            .then((response) => {
-                if (response.Status) {
-
-                    setServiceEndDate(response.Data[0].ExpiryDate)
-                }
-                else {
-                    setServiceEndDate('')
-                }
-            })
-            .catch((err) => {
-                console.log("Error in finding the Service end date", err)
-            })
-    }
-
-    useEffect(() => {
-        GetExpriyEndDate()
     }, [])
 
     useEffect(() => {

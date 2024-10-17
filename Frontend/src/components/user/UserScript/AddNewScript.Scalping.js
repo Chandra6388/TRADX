@@ -20,7 +20,7 @@ const AddClient = () => {
     loading: true,
     data: []
   })
-  
+
   const [getExpiryDate, setExpiryDate] = useState({
     loading: true,
     data: []
@@ -37,6 +37,15 @@ const AddClient = () => {
       timerProgressBar: true
     });
   }
+
+  const getEndData = (stg) => {
+    const dataWithoutLastItem = location?.state.data.scriptType.data.slice(0, -1);
+    const foundItem = dataWithoutLastItem.find((item) => {
+      return item.Scalping.includes(stg);
+    });
+    return foundItem.EndDate;
+  };
+
 
   const formik = useFormik({
     initialValues: {
@@ -170,110 +179,115 @@ const AddClient = () => {
       if (!values.Slvalue) {
         errors.Slvalue = values.Strategy == "Fixed Price" ? "Please Enter Stop Loss Price." : "Please Select A Stop Loss Value.";
       }
+
       return errors;
     },
 
     onSubmit: async (values) => {
 
-      const req = {
-        MainStrategy: location.state.data.selectStrategyType,
-        Username: userName,
-        Strategy: values.Strategy,
-        Exchange: values.Exchange,
-        Instrument: values.Exchange == "NSE" ? "" : values.Instrument,
-        Symbol: values.Symbol,
-        Optiontype: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" ? values.Optiontype : "",
-        Strike: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" ? values.Strike : "",
-        expirydata1: values.Exchange == "NSE" ? getExpiryDate.data[0] : values.expirydata1,
-        TType: values.TType == 0 ? "" : values.TType,
-        TStype: values.Strategy != "Fixed Price" ? values.TStype : '',
-        Targetvalue: values.Targetvalue,
-        Slvalue: values.Slvalue,
-        HoldExit: (values.Strategy === "Multi Directional" || values.Strategy === "One Directional") ? values.HoldExit : "",
-        ExitDay: values.ExitDay,
-        EntryTime: values.EntryTime,
-        ExitTime: values.ExitTime,
-        EntryPrice: Number(values.EntryPrice),
-        EntryRange: Number(values.EntryRange),
-        LowerRange: values.Strategy === "Fixed Price" ? 0 : Number(values.LowerRange),
-        HigherRange: values.Strategy === "Fixed Price" ? 0 : Number(values.HigherRange),
-        ETPattern: "",
-        Timeframe: "",
-        Quantity: values.Quantity,
-        serendate: location?.state?.data?.scriptType?.EndDate,
-        FixedSM: "Single",
-        Expirytype: "",
-        Striketype: "",
-        DepthofStrike: 0,
-        DeepStrike: 0,
-        Group: values.Strategy == "Fixed Price" ? values.Group : '',
-        CEDepthLower: 0.0,
-        CEDepthHigher: 0.0,
-        PEDepthLower: 0.0,
-        PEDepthHigher: 0.0,
-        CEDeepLower: 0.0,
-        CEDeepHigher: 0.0,
-        PEDeepLower: 0.0,
-        PEDeepHigher: 0.0,
-        TradeCount: values.Trade_Count,
-        TradeExecution: values.Trade_Execution,
-        stretegytag: values.Strategy
+      try {
+        const req = {
+          MainStrategy: location.state.data.selectStrategyType,
+          Username: userName,
+          Strategy: values.Strategy,
+          Exchange: values.Exchange,
+          Instrument: values.Exchange == "NSE" ? "" : values.Instrument,
+          Symbol: values.Symbol,
+          Optiontype: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" ? values.Optiontype : "",
+          Strike: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" ? values.Strike : "",
+          expirydata1: values.Exchange == "NSE" ? getExpiryDate.data[0] : values.expirydata1,
+          TType: values.TType == 0 ? "" : values.TType,
+          TStype: values.Strategy != "Fixed Price" ? values.TStype : '',
+          Targetvalue: values.Targetvalue,
+          Slvalue: values.Slvalue,
+          HoldExit: (values.Strategy === "Multi Directional" || values.Strategy === "One Directional") ? values.HoldExit : "",
+          ExitDay: values.ExitDay,
+          EntryTime: values.EntryTime,
+          ExitTime: values.ExitTime,
+          EntryPrice: Number(values.EntryPrice),
+          EntryRange: Number(values.EntryRange),
+          LowerRange: values.Strategy === "Fixed Price" ? 0 : Number(values.LowerRange),
+          HigherRange: values.Strategy === "Fixed Price" ? 0 : Number(values.HigherRange),
+          ETPattern: "",
+          Timeframe: "",
+          Quantity: values.Quantity,
+          serendate: getEndData(values.Strategy),
+          FixedSM: "Single",
+          Expirytype: "",
+          Striketype: "",
+          DepthofStrike: 0,
+          DeepStrike: 0,
+          Group: values.Strategy == "Fixed Price" ? values.Group : '',
+          CEDepthLower: 0.0,
+          CEDepthHigher: 0.0,
+          PEDepthLower: 0.0,
+          PEDepthHigher: 0.0,
+          CEDeepLower: 0.0,
+          CEDeepHigher: 0.0,
+          PEDeepLower: 0.0,
+          PEDeepHigher: 0.0,
+          TradeCount: values.Trade_Count,
+          TradeExecution: values.Trade_Execution,
+          stretegytag: values.Strategy
+        }
+        if (values.Set_First_Trade_Range == true && (Number(values.EntryPrice) >= Number(values.EntryRange) || Number(values.EntryRange) == 0 || Number(values.EntryPrice) == 0)) {
+          return SweentAlertFun("First Trade Higher Range should be greater than First Trade Lower Range")
+        }
+
+        if (values.Strategy != 'Fixed Price' && values.set_Range == true && (Number(values.LowerRange) >= Number(values.HigherRange) || Number(values.LowerRange) == 0 || Number(values.HigherRange) == 0)) {
+          return SweentAlertFun("Higher Price should be greater than Lower Range")
+        }
+
+        if (values.Strategy == 'Fixed Price' && values.TType == 'BUY' && (Number(values.EntryPrice) >= Number(values.EntryRange) || Number(values.Targetvalue) <= Number(values.EntryRange) || Number(values.Slvalue) >= Number(values.EntryPrice))) {
+          return SweentAlertFun(Number(values.Targetvalue) <= Number(values.EntryRange) ? "Target should be Greater than Higher Price " : Number(values.EntryRange) <= Number(values.EntryPrice) ? "Higher Price should be Greater than Lower Price" : "Stoploss should be Smaller than Lower Price")
+        }
+
+
+        if (values.Strategy == 'Fixed Price' && values.TType == 'SELL' && (Number(values.Targetvalue) >= Number(values.EntryPrice) || values.Slvalue <= Number(values.EntryRange))) {
+          return SweentAlertFun(Number(values.Targetvalue) >= Number(values.EntryPrice) ? "Target should be Smaller than Lower Price" : "Stoploss should be Greater than Higher Price")
+        }
+
+        if (values.EntryTime >= values.ExitTime) {
+          return SweentAlertFun("Exit Time should be greater than Entry Time")
+        }
+
+
+        await AddScript(req)
+          .then((response) => {
+            if (response.Status) {
+              Swal.fire({
+                title: "Script Added !",
+                text: response.message,
+                icon: "success",
+                timer: 1500,
+                timerProgressBar: true
+              });
+              setTimeout(() => {
+                navigate('/user/dashboard')
+              }, 1500)
+            }
+            else {
+              Swal.fire({
+                title: "Error !",
+                text: response.message,
+                icon: "error",
+                timer: 1500,
+                timerProgressBar: true
+              });
+            }
+          })
+          .catch((err) => {
+            console.log("Error in added new Script", err)
+          })
       }
-
-      if (values.Set_First_Trade_Range == true && (Number(values.EntryPrice) >= Number(values.EntryRange) || Number(values.EntryRange) == 0 || Number(values.EntryPrice) == 0)) {
-        return SweentAlertFun("First Trade Higher Range should be greater than First Trade Lower Range")
+      catch (err) {
+        console.log("Error in Add Script", err)
       }
-
-      if (values.Strategy != 'Fixed Price' && values.set_Range == true && (Number(values.LowerRange) >= Number(values.HigherRange) || Number(values.LowerRange) == 0 || Number(values.HigherRange) == 0)) {
-        return SweentAlertFun("Higher Price should be greater than Lower Range")
-      }
-
-      if (values.Strategy == 'Fixed Price' && values.TType == 'BUY' && (Number(values.EntryPrice) >= Number(values.EntryRange) || Number(values.Targetvalue) <= Number(values.EntryRange) || Number(values.Slvalue) >= Number(values.EntryPrice))) {
-        return SweentAlertFun(Number(values.Targetvalue) <= Number(values.EntryRange) ? "Target should be Greater than Higher Price " : Number(values.EntryRange) <= Number(values.EntryPrice) ? "Higher Price should be Greater than Lower Price" : "Stoploss should be Smaller than Lower Price")
-      }
-
-
-      if (values.Strategy == 'Fixed Price' && values.TType == 'SELL' && (Number(values.Targetvalue) >= Number(values.EntryPrice) || values.Slvalue <= Number(values.EntryRange))) {
-        return SweentAlertFun(Number(values.Targetvalue) >= Number(values.EntryPrice) ? "Target should be Smaller than Lower Price" : "Stoploss should be Greater than Higher Price")
-      }
-
-      if (values.EntryTime >= values.ExitTime) {
-        return SweentAlertFun("Exit Time should be greater than Entry Time")
-      }
-
-
-      await AddScript(req)
-        .then((response) => {
-          if (response.Status) {
-            Swal.fire({
-              title: "Script Added !",
-              text: response.message,
-              icon: "success",
-              timer: 1500,
-              timerProgressBar: true
-            });
-            setTimeout(() => {
-              navigate('/user/dashboard')
-            }, 1500)
-          }
-          else {
-            Swal.fire({
-              title: "Error !",
-              text: response.message,
-              icon: "error",
-              timer: 1500,
-              timerProgressBar: true
-            });
-          }
-        })
-        .catch((err) => {
-          console.log("Error in added new Script", err)
-        })
     },
   });
 
   useEffect(() => {
-    formik.setFieldValue('Strategy', location?.state?.data?.scriptType?.Scalping[0])
+    formik.setFieldValue('Strategy', location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.Scalping[0])
     formik.setFieldValue('Exchange', "NFO")
     formik.setFieldValue("TType", "BUY")
     formik.setFieldValue("ExitDay", "Intraday")
@@ -290,7 +304,7 @@ const AddClient = () => {
       name: "Strategy",
       label: "Scalping Type",
       type: "radio2",
-      title: location?.state?.data?.scriptType?.Scalping.map((item) => ({ title: item, value: item })),
+      title: location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.Scalping.map((item) => ({ title: item, value: item })),
       hiding: false,
       label_size: 12,
       col_size: 12,

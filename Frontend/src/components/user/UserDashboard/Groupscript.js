@@ -56,7 +56,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts.length == 0) {
+        else if (allScripts.data.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -94,7 +94,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts.length == 0) {
+        else if (allScripts.data.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -144,9 +144,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
 
         }
     }
-
-
-
+ 
     const handleAddScript3 = (data1) => {
         if (data2.status == false) {
             Swal.fire({
@@ -157,7 +155,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts.length == 0) {
+        else if (allScripts.data.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -185,11 +183,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
         }
     }
 
-
-
     const GetAllUserScriptDetails = async () => {
-
-
         const data = { Strategy: stgType, Group: GroupName }
 
         await GetAllGroupService(data)

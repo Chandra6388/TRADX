@@ -361,7 +361,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
 
     }
- 
 
     const AddScript = (data) => {
         if (data2.status == false) {
@@ -375,8 +374,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         }
         else {
             if (data === "Option Strategy") {
-                if (allScripts?.[0]?.['Option Strategy'].length >= 1) {
-                    navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy', scriptType: allScripts?.[0] } } });
+                if (allScripts?.data?.length >= 1) {
+                    navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy', scriptType: allScripts } } });
                 }
                 else {
                     Swal.fire({
@@ -390,8 +389,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 }
             }
             else if (data === "Pattern") {
-                if (allScripts?.[0]?.Pattern?.length >= 1) {
-                    navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts?.[0] } } });
+                if (allScripts?.data?.length >= 1) {
+                    navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts }}});
                 }
                 else {
                     Swal.fire({
@@ -405,10 +404,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
             }
             else {
-                if (allScripts?.[0]?.Scalping?.length >= 1) {
+                if (allScripts?.data?.length>= 1) {
                     navigate('/user/newscript/scalping', {
                         state: {
-                            data: { selectStrategyType: 'Scalping', scriptType: allScripts?.[0] }
+                            data: { selectStrategyType: 'Scalping', scriptType: allScripts }
                         },
                     });
                 }
@@ -463,7 +462,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     useEffect(() => {
         GetAllUserScriptDetails();
     }, [selectedType, refresh, showEditModal]);
-
 
     const formik = useFormik({
         initialValues: {
@@ -1020,6 +1018,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         },
 
     ];
+
     const fields1 = [
         {
             name: "TStype",
@@ -1092,6 +1091,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         },
 
     ];
+
     const fields2 = [
         {
             name: "TStype",
@@ -1205,7 +1205,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
         }
     }, [showEditModal, data])
-
 
     return (
         <div className="container-fluid">

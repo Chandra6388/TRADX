@@ -63,7 +63,6 @@ const ServicesList = () => {
     const [GetAllPlans, setAllPlans] = useState({ loading: true, data: [] });
     const [BuyedPlan, setBuyedPlan] = useState({ loading: true, data: [] });
 
-    console.log("BuyedPlan", BuyedPlan)
 
     useEffect(() => {
         GetAllPlansData();

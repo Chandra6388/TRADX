@@ -134,8 +134,6 @@ const Clientservice = () => {
             User: "",
             Broker: "",
             GroupName: "",
-            clientpay: "",
-            Planname: "",
         },
         validate: values => {
             const errors = {};
@@ -145,13 +143,7 @@ const Clientservice = () => {
             if (!values.Broker && showModal) {
                 errors.Broker = 'Please Select the Broker';
             }
-            if (!values.clientpay && showModal) {
-                errors.clientpay = 'Please enter the Amount';
-            }
-            if (!values.Planname && showModal) {
-                errors.Planname = 'Please Select the Plan Name';
-            }
-            // console.log("errors", errors)
+           
             return errors;
         },
 
@@ -161,30 +153,6 @@ const Clientservice = () => {
                 User: values.User,
                 GroupName: selectedOptions,
                 Broker: values.Broker,
-                clientpay: Number(values.clientpay),
-                Planname: values.Planname,
-            };
-            if(walletBalance < values.clientpay){
-                Swal.fire({
-                    title: "warning",
-                    text: "Insufficient Balance",
-                    icon: "warning",
-                    timer: 1500,
-                    timerProgressBar: true
-                });
-                return 
-            }
-
-            const FilterPlanAmount = GetAllPlans.data.filter((item) => item.PlanName === values.Planname);
-            if (FilterPlanAmount[0].payment > values.clientpay && FilterPlanAmount[0].payment !== '') {
-                Swal.fire({
-                    title: "Invalid Amount",
-                    text: `The plan amount is ${FilterPlanAmount[0].payment}, but you've entered ${values.clientpay}. Please enter an amount greater than the plan amount.`,
-                    icon: "worning",
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-                return   
             } 
             try {
                 const response = await EditClientPanle(req);
@@ -217,36 +185,36 @@ const Clientservice = () => {
     });
 
     const fields = [
-        {
-            name: 'User',
-            label: 'User',
-            type: 'text',
-            label_size: 12,
-            col_size: 6,
-        },
-        {
-            name: 'clientpay',
-            label: 'Amount',
-            type: 'text3',
-            label_size: 12,
-            col_size: 6,
-        },
-        {
-            name: 'Planname',
-            label: 'Plan Name',
-            type: 'select',
-            options: GetAllPlans.LivePlanName && GetAllPlans.LivePlanName.map(item => ({ label: item.PlanName, value: item.PlanName })),
-            options1: selectedIndex.Planname && selectedIndex.Planname,
-            label_size: 12,
-            col_size: 6,
-        },
+        // {
+        //     name: 'User',
+        //     label: 'User',
+        //     type: 'text',
+        //     label_size: 12,
+        //     col_size: 6,
+        // },
+        // {
+        //     name: 'clientpay',
+        //     label: 'Amount',
+        //     type: 'text3',
+        //     label_size: 12,
+        //     col_size: 6,
+        // },
+        // {
+        //     name: 'Planname',
+        //     label: 'Plan Name',
+        //     type: 'select',
+        //     options: GetAllPlans.LivePlanName && GetAllPlans.LivePlanName.map(item => ({ label: item.PlanName, value: item.PlanName })),
+        //     options1: selectedIndex.Planname && selectedIndex.Planname,
+        //     label_size: 12,
+        //     col_size: 6,
+        // },
         {
             name: 'Broker',
             label: 'Broker',
             type: 'select',
             options: brokers && brokers.map(item => ({ label: item.BrokerName, value: item.BrokerName })),
             label_size: 12,
-            col_size: 6,
+            col_size: 12,
         },
 
     ];
@@ -422,7 +390,7 @@ const Clientservice = () => {
                         <div className='modal-content'>
                             <div className='modal-header clientheader border-0 pb-0'>
                                 <div className='form-header modal-header-title text-start mb-0'>
-                                    <h4 className='mb-0'>Edit Client</h4>
+                                    <h4 className='mb-0'>Edit Client : {selectedIndex?.Username}</h4>
                                 </div>
                                 <button
                                     type='button'
@@ -447,7 +415,7 @@ const Clientservice = () => {
                                 additional_field={
                                     <div className='mt-2'>
                                         <div className='row'>
-                                            <div className='col-lg-6'>
+                                            <div className='col-lg-12'>
                                                 <h6>Select Group</h6>
                                                 <DropdownMultiselect
                                                     options={optionsArray}

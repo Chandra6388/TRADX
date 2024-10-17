@@ -63,7 +63,6 @@ const ServicesList = () => {
     const [GetAllPlans, setAllPlans] = useState({ loading: true, data: [] });
     const [BuyedPlan, setBuyedPlan] = useState({ loading: true, data: [] });
 
-
     useEffect(() => {
         GetAllPlansData();
         AllBuyedPlans();
@@ -108,15 +107,6 @@ const ServicesList = () => {
     }
 
 
-
-    // const imgArr = [
-    //     "https://cdn.pixabay.com/photo/2024/05/31/05/24/trading-8799817_640.png",
-    //     "https://cdn.pixabay.com/photo/2016/11/27/21/42/stock-1863880_640.jpg",
-    //     "https://cdn.pixabay.com/photo/2020/04/16/15/40/stock-5051155_640.jpg",
-    //     "https://cdn.pixabay.com/photo/2023/07/28/08/06/finance-8154775_640.jpg",
-    // ];
-
-
     const SetPlan = (name) => {
         if (BuyedPlan?.data.length === 0) {
             return null;
@@ -131,28 +121,11 @@ const ServicesList = () => {
     };
 
 
-    function getRandomNumber() {
-        return Math.floor(Math.random() * 3) + 1;
-    }
 
-    const HandleBuyPlan = async (index) => {
+    const HandleBuyPlan = async (index, type) => {
         try {
-            // Get plan details
             const planDetails = GetAllPlans?.data[index];
-
-            console.log('Plan Details:', planDetails['Plan Validity']);
-            const req = {
-                Username: username,
-                Scalping: planDetails.Scalping,
-                Option: planDetails['Option Strategy'],
-                PatternS: planDetails.Pattern,
-                NumberofScript: planDetails.NumberofScript,
-                Duration: planDetails['Plan Validity'],
-                Planname: planDetails.PlanName,
-                payment: planDetails.payment
-            };
             const req1 = { Username: username, transactiontype: 'Purchase', money: planDetails.payment };
-
             const result = await Swal.fire({
                 title: 'Are you sure?',
                 text: `Do you want to buy the plan: ${planDetails.PlanName} for ₹${planDetails.payment}?`,
@@ -164,9 +137,96 @@ const ServicesList = () => {
             });
 
             if (result.isConfirmed) {
-                // Check balance and proceed with the purchase
                 const CheckBalanceResponse = await AddBalance(req1);
-                if (CheckBalanceResponse.Status) {
+                if (CheckBalanceResponse.Status && type == 0) {
+                    const result = await Swal.fire({
+                        title: 'What do you want to do?',
+                        text: `This is your Scubscribed Script so what do you do Extend the EndDate or Extend the Number of Scripts`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Extend End Date',
+                        cancelButtonText: 'Extend Number of Scripts',
+                        reverseButtons: true
+                    });
+                    if (result.isConfirmed) {
+                        const req = {
+                            Username: username,
+                            Scalping: planDetails.Scalping,
+                            Option: planDetails['Option Strategy'],
+                            PatternS: planDetails.Pattern,
+                            NumberofScript: planDetails.NumberofScript,
+                            Duration: planDetails['Plan Validity'],
+                            Planname: planDetails.PlanName,
+                            payment: planDetails.payment,
+                            Extendtype: "ExtendServiceEndDate"
+                        };
+                        const buyPlanResponse = await BuyPlan(req);
+                        if (buyPlanResponse.Status) {
+                            AllBuyedPlans();
+                            Swal.fire({
+                                title: "Success!",
+                                text: buyPlanResponse.message,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true,
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Error!",
+                                text: buyPlanResponse.message,
+                                icon: "error",
+                                timer: 1500,
+                                timerProgressBar: true,
+                            });
+                        }
+
+                    }
+                    else {
+                        const req = {
+                            Username: username,
+                            Scalping: planDetails.Scalping,
+                            Option: planDetails['Option Strategy'],
+                            PatternS: planDetails.Pattern,
+                            NumberofScript: planDetails.NumberofScript,
+                            Duration: planDetails['Plan Validity'],
+                            Planname: planDetails.PlanName,
+                            payment: planDetails.payment,
+                            Extendtype: "ExtendServiceCount"
+                        };
+                        const buyPlanResponse = await BuyPlan(req);
+                        if (buyPlanResponse.Status) {
+                            AllBuyedPlans();
+                            Swal.fire({
+                                title: "Success!",
+                                text: buyPlanResponse.message,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true,
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Error!",
+                                text: buyPlanResponse.message,
+                                icon: "error",
+                                timer: 1500,
+                                timerProgressBar: true,
+                            });
+                        }
+
+                    }
+                }
+                else if (CheckBalanceResponse.Status && type == 1) {
+                    const req = {
+                        Username: username,
+                        Scalping: planDetails.Scalping,
+                        Option: planDetails['Option Strategy'],
+                        PatternS: planDetails.Pattern,
+                        NumberofScript: planDetails.NumberofScript,
+                        Duration: planDetails['Plan Validity'],
+                        Planname: planDetails.PlanName,
+                        payment: planDetails.payment,
+                        Extendtype: ""
+                    };
                     const buyPlanResponse = await BuyPlan(req);
                     if (buyPlanResponse.Status) {
                         AllBuyedPlans();
@@ -186,15 +246,18 @@ const ServicesList = () => {
                             timerProgressBar: true,
                         });
                     }
-                } else {
+
+                }
+                else {
                     Swal.fire({
                         title: "Error!",
                         text: CheckBalanceResponse.message,
-                        icon: "error",
+                        icon: "worning",
                         timer: 1500,
                         timerProgressBar: true,
                     });
                 }
+
             } else {
                 Swal.fire({
                     title: 'Cancelled',
@@ -217,6 +280,23 @@ const ServicesList = () => {
     };
 
 
+
+    const getUpdatedPlans = GetAllPlans.data?.filter((plan) => {
+
+        if (plan.PlanName == "Three Days Live" || plan.PlanName == "Two Days Demo" || plan.PlanName == "One Week Demo") {
+            if (BuyedPlan.data && BuyedPlan.data.length > 0) {
+                const isBuyed = BuyedPlan.data.find((buyedPlan) => buyedPlan.Planname == plan.PlanName);
+                console.log("isBuyed", isBuyed);
+                return isBuyed != undefined && isBuyed
+            }
+
+        } else {
+
+            return plan
+        }
+
+    });
+
     return (
         <>
             <div className='row'>
@@ -229,11 +309,11 @@ const ServicesList = () => {
                         </div>
                         <div className='iq-card-body'>
                             <div style={styles.container} className="row">
-                                {GetAllPlans?.data.map((plan, index) => (
+                                {getUpdatedPlans.map((plan, index) => (
+
                                     <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 ">
                                         <div className="d-flex flex-column justify-content-between h-100">
                                             <div>
-                                                {/* <img src={imgArr[getRandomNumber()]} alt={plan.PlanName} style={styles.image} /> */}
                                                 <div style={styles.content}>
                                                     <h2 style={styles.title}>
                                                         {plan.PlanName} {SetPlan(plan.PlanName)}
@@ -257,12 +337,12 @@ const ServicesList = () => {
                                             </div>
                                             <div style={styles.buttonContainer}>
                                                 {SetPlan(plan.PlanName) == null ? (
-                                                    <Button primary style={styles.button} onClick={() => HandleBuyPlan(index)}>
+                                                    <Button primary style={styles.button} onClick={() => HandleBuyPlan(index, 1)}>
                                                         BUY NOW
                                                     </Button>
                                                 ) : (
-                                                    <Button style={styles.subscribedButton}>
-                                                        Subscribed
+                                                    <Button style={styles.subscribedButton} onClick={() => HandleBuyPlan(index, 0)}>
+                                                        BUY NOW
                                                     </Button>
                                                 )}
                                             </div>

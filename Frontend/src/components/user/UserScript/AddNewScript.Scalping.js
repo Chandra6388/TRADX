@@ -16,6 +16,7 @@ const AddClient = () => {
     data: []
   })
 
+ 
   const [getStricke, setStricke] = useState({
     loading: true,
     data: []
@@ -287,7 +288,7 @@ const AddClient = () => {
   });
 
   useEffect(() => {
-    formik.setFieldValue('Strategy', location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.Scalping[0])
+    formik.setFieldValue('Strategy', location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len]?.CombineScalping[0])
     formik.setFieldValue('Exchange', "NFO")
     formik.setFieldValue("TType", "BUY")
     formik.setFieldValue("ExitDay", "Intraday")
@@ -298,13 +299,12 @@ const AddClient = () => {
     formik.setFieldValue("TStype", "Point")
   }, [])
 
-
   const fields = [
     {
       name: "Strategy",
       label: "Scalping Type",
       type: "radio2",
-      title: location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.Scalping.map((item) => ({ title: item, value: item })),
+      title: location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len]?.CombineScalping.map((item) => ({ title: item, value: item })),
       hiding: false,
       label_size: 12,
       col_size: 12,

@@ -363,6 +363,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     }
 
     const AddScript = (data) => {
+        console.log(allScripts)
         if (data2.status == false) {
             Swal.fire({
                 title: "Error",
@@ -375,6 +376,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         else {
             if (data === "Option Strategy") {
                 if (allScripts?.data?.length >= 1) {
+                   
                     navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy', scriptType: allScripts } } });
                 }
                 else {

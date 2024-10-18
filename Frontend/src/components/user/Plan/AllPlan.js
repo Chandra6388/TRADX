@@ -286,7 +286,7 @@ const ServicesList = () => {
         if (plan.PlanName == "Three Days Live" || plan.PlanName == "Two Days Demo" || plan.PlanName == "One Week Demo") {
             if (BuyedPlan.data && BuyedPlan.data.length > 0) {
                 const isBuyed = BuyedPlan.data.find((buyedPlan) => buyedPlan.Planname == plan.PlanName);
-                console.log("isBuyed", isBuyed);
+        
                 return isBuyed != undefined && isBuyed
             }
 

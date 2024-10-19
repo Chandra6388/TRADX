@@ -348,6 +348,7 @@ const AddClient = () => {
     });
 
 
+    console.log("Formik Values", location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.['Option Strategy'][0]) 
 
     useEffect(() => {
         formik.setFieldValue('Measurment_Type', location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.['Option Strategy'][0])
@@ -372,12 +373,14 @@ const AddClient = () => {
         formik.setFieldValue('Trade_Count', 1)
     }, [])
 
+
+    
     const fields = [
         {
             name: "Measurment_Type",
             label: "Option Type",
             type: "select",
-            options: location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.['Option Strategy'].map((item) => {
+            options: location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len]?.CombineOption.map((item) => {
                 return { label: item, value: item }
             }),
             hiding: false,

@@ -163,7 +163,7 @@ const Adduser = () => {
                 password: values.password,
                 cpassword: values.cpassword,
                 mobile_no: values.mobile_no,
-                bname: values.bname,
+                bname: formik.values.Select_License==1 ? "Demo" : values.bname,
                 ClientAmmount: formik.values.Select_License == 1 ? 0 : Number(values.ClientAmmount),
                 planname: values.planname,
                 group: selectedOptions && selectedOptions
@@ -262,7 +262,7 @@ const Adduser = () => {
         },
         {
 
-            name: "Select_License",
+           
             name: "Select_License",
             label: "License Type",
             type: "select1",

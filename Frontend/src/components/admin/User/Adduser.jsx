@@ -169,9 +169,6 @@ const Adduser = () => {
                 group: selectedOptions && selectedOptions
             }
 
-            console.log("Request", req)
-            return 
-
             const FilterPlanAmount = GetAllPlans.data.filter((item) => item.PlanName === values.planname);
             if (FilterPlanAmount[0].payment > values.ClientAmmount && FilterPlanAmount[0].payment !== '') {
                 Swal.fire({

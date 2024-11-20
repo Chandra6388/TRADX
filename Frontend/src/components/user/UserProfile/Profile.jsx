@@ -58,11 +58,7 @@ const Profile = () => {
                                         <h4>
                                             <b>{data.Username}</b>
                                         </h4>
-
-
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>

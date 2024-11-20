@@ -143,6 +143,8 @@ const Clientservice = () => {
             if (!values.Broker && showModal) {
                 errors.Broker = 'Please Select the Broker';
             }
+
+            console.log('errors', errors);
            
             return errors;
         },

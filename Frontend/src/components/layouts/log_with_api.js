@@ -75,9 +75,31 @@ const loginWithApi = async (UserDetails) => {
                 .catch((error) => {
                     console.log("Error", error);
                 });
-
-
         }
+
+        if (UserDetails.BrokerName.toUpperCase() === "MARKETHUB") {
+
+            let config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: Config.base_url + 'Markethub/' + UserDetails.Username,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            };
+
+            axios.request(config)
+                .then((response) => {
+                    if (response.data.Status == true) {
+                        window.location.href = response.data.Api;
+                    }
+                })
+                .catch((error) => {
+                    console.log("Error", error);
+                });
+        }
+
 
         if (UserDetails.BrokerName.toUpperCase() === "ICICI") {
 
@@ -301,7 +323,6 @@ const loginWithApi = async (UserDetails) => {
                 });
         }
 
-
         if (UserDetails.BrokerName.toUpperCase() === "MANDOT") {
             let config = {
                 method: 'get',
@@ -340,7 +361,6 @@ const loginWithApi = async (UserDetails) => {
                     console.log("Error", error);
                 });
         }
-
 
         if (UserDetails.BrokerName.toUpperCase() === "INDIRA") {
             let config = {

@@ -61,3 +61,41 @@ export const createAdmin = async (data) => {
 
 }
 
+export const getCompanyName = async (data) => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.get(`${Config.base_url}Companynames`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}
+
+export const companyDetails = async (data) => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.get(`${Config.base_url}AmmountDetails/${data.comapnyName}`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}
+

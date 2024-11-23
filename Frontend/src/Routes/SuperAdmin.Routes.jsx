@@ -5,6 +5,7 @@ import Sidebar from '../components/layouts/Sidebar';
 import Header from '../components/layouts/Header';
 import AdminDetails from '../components/superAdmin/adminDetails/Admindetails';
 import CreateAdmin from '../components/superAdmin/accountCreate/CreateAccount';
+import AmountDetails from '../components/superAdmin/amountdetails/AmmountDetails';
 
 
 const SuperAdminRoute = () => {
@@ -18,6 +19,7 @@ const SuperAdminRoute = () => {
             <Route path="/dashboard" element={<Dashboards />} />
             <Route path="/admin-details" element={<AdminDetails />} />
             <Route path="/create-admin" element={<CreateAdmin />} />
+            <Route path="/amount-details" element={<AmountDetails />} />
           </Routes>
         </div>
       </div>

@@ -280,6 +280,12 @@ const Sidebar = () => {
                                                 <span>Amount Details</span>
                                             </Link>
                                         </li>
+                                        <li className={activeItem === '/superadmin/admin-activity' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/admin-activity')}>
+                                            <Link to='/superadmin/admin-activity' className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>Admin Activity</span>
+                                            </Link>
+                                        </li>
                                     </>
                                 )
                                 : (

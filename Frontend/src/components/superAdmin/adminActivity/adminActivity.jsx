@@ -1,134 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import { GetClientService, GetGroupNames, EditClientPanle, Get_Broker_Name } from '../../CommonAPI/Admin';
+import { adminActivity} from '../../CommonAPI/SuperAdmin';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { Link } from 'react-router-dom';
 import { SquarePen } from 'lucide-react';
 import { useFormik } from 'formik';
 import DropdownMultiselect from 'react-multiselect-dropdown-bootstrap';
 import AddForm from '../../../ExtraComponent/FormData';
-import Swal from 'sweetalert2';
-import { Get_All_Plans , GetUserBalence } from "../../CommonAPI/User";
 
 
-const Clientservice = () => {
+const AdminActivity = () => {
     const [clientService, setClientService] = useState({ loading: true, data: [] });
     const [showModal, setShowModal] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [optionsArray, setOptionsArray] = useState([]);
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const [groupData, setGroupData] = useState({ loading: true, data: [] });
     const [brokers, setBrokers] = useState([]);
     const [searchInput, setSearchInput] = useState('')
-    const [GetAllPlans, setAllPlans] = useState({ LivePlanName: [], DemoPlanName: [], data: [] });
-    const [walletBalance, setWalletBalance] = useState('');
   
     useEffect(() => {
-        fetchBrokerName();
-        fetchGroupDetails();
-        GetAllPlansData();
-    }, []);
-
-    useEffect(() => {
-        fetchClientService();
+        fetchAdminActivity();
     }, [searchInput]);
 
 
-
-    const GetBalence = async (Username) => {
-        const req = {userName: Username}
-        await GetUserBalence(req)
-          .then((response) => {
-              if (response.Status) {
-                  setWalletBalance(response.Balance)
-              }
-              else {
-                  setWalletBalance('')
-              }
-          })
-          .catch((error) => {
-              console.error("Error in GetUserBalence request", error);
-          });   
-      }
+    const fetchAdminActivity = async () => {
+        const req = {}
   
-
-    const fetchBrokerName = async () => {
-        try {
-            const response = await Get_Broker_Name();
-            if (response.Status) {
-                const brokerList = response.Brokernamelist.filter(item => item.BrokerName !== 'DEMO');
-                setBrokers(brokerList);
-            } else {
-                setBrokers([]);
-            }
-        } catch (error) {
-            console.log('Error in fetching brokers', error);
-        }
+            await adminActivity()
+           
+       
     };
-
-
-    const fetchClientService = async () => {
-        try {
-            const response = await GetClientService();
-            if (response.Status) {
-                const filteredData = response.Data.filter(item => {
-                    const searchInputMatch =
-                        searchInput === '' ||
-                        item.Username.toLowerCase().includes(searchInput.toLowerCase()) ||
-                        item.Mobile_No.toLowerCase().includes(searchInput.toLowerCase()) ||
-                        item.EmailId.toLowerCase().includes(searchInput.toLowerCase()) ||
-                        item.BrokerName.toLowerCase().includes(searchInput.toLowerCase())
-                    return searchInputMatch
-                })
-
-                setClientService({
-                    loading: false,
-                    data: searchInput ? filteredData : response.Data,
-                });
-            } else {
-                setClientService({ loading: false, data: [] });
-            }
-        } catch (error) {
-            console.log('Error in fetching client services', error);
-        }
-    };
-
-    const fetchGroupDetails = async () => {
-        try {
-            const response = await GetGroupNames();
-            if (response.Status) {
-                const options = response.Data.map(item => ({
-                    label: item.GroupName,
-                    key: item.GroupName,
-                }));
-                setOptionsArray(options);
-                setGroupData({ loading: false, data: response.Data });
-            } else {
-                setGroupData({ loading: false, data: [] });
-            }
-        } catch (error) {
-            console.log('Error in fetching group data', error);
-        }
-    };
-
-
-    const GetAllPlansData = async () => {
-        await Get_All_Plans()
-            .then((response) => {
-                if (response.Status) {
-                    const LivePlanName = response.Admin.filter((item) => item.PlanName !== 'One Week Demo' && item.PlanName !== 'Two Days Demo');
-                    const DemoPlanName = response.Admin.filter((item) => item.PlanName === 'One Week Demo' || item.PlanName === 'Two Days Demo');
-                    setAllPlans({ DemoPlanName: DemoPlanName, LivePlanName: LivePlanName, data: response.Admin });
-                }
-                else {
-                    setAllPlans({ DemoPlanName: [], LivePlanName: [], data: [] });
-                }
-            })
-            .catch((err) => {
-                console.log("Error in fetching the plans", err)
-            })
-    };
-
-
     const formik = useFormik({
         initialValues: {
             User: "",
@@ -137,12 +37,7 @@ const Clientservice = () => {
         },
         validate: values => {
             const errors = {};
-            if (!values.User && showModal) {
-                errors.User = 'Please enter the User';
-            }
-            if (!values.Broker && showModal) {
-                errors.Broker = 'Please Select the Broker';
-            }
+           
 
             console.log('errors', errors);
            
@@ -156,34 +51,7 @@ const Clientservice = () => {
                 GroupName: selectedOptions,
                 Broker: values.Broker,
             }   
-            try {
-                const response = await EditClientPanle(req);
-                if (response.Status) {
-                    Swal.fire({
-                        title: "Updated",
-                        text: response.message,
-                        icon: "success",
-                        timer: 1500,
-                        timerProgressBar: true
-                    });
-                    setTimeout(() => {
-                        setShowModal(false);
-                        formik.resetForm();
-                        setSelectedOptions([]);
-                    }, 1500);
-                    fetchClientService();
-                } else {
-                    Swal.fire({
-                        title: "Error",
-                        text: response.message,
-                        icon: "error",
-                        timer: 1500,
-                        timerProgressBar: true
-                    });
-                }
-            } catch (err) {
-                console.log("Error in update client", err);
-            }
+            
         },
     });
 
@@ -225,7 +93,7 @@ const Clientservice = () => {
                             rowDataWithKeys[column.name] = tableMeta.rowData[index];
                         });
                         setSelectedIndex(rowDataWithKeys);
-                        GetBalence(rowDataWithKeys.Username)
+                       
                     }}
                     />
                     
@@ -331,17 +199,6 @@ const Clientservice = () => {
         },
     ];
 
-
-
-    useEffect(() => {
-        if (showModal) {
-            formik.setFieldValue('Broker', selectedIndex.BrokerName=='Demo' ? "" : selectedIndex.BrokerName); 
-            formik.setFieldValue('User', selectedIndex.Username);
-            setSelectedOptions(showModal && selectedIndex.Group)
-        }
-    }, [showModal])
-
-
     return (
         <>
             <div className='row'>
@@ -349,11 +206,8 @@ const Clientservice = () => {
                     <div className='iq-card'>
                         <div className='iq-card-header d-flex justify-content-between'>
                             <div className='iq-header-title'>
-                                <h4 className='card-title'>Client Service</h4>
+                                <h4 className='card-title'>Admin Activity</h4>
                             </div>
-                            <Link to='/admin/adduser' className='btn btn-primary rounded'>
-                                Create Account
-                            </Link>
                         </div>
                         <div className='iq-card-body'>
                             <div className='mb-3 col-lg-3'>
@@ -416,4 +270,4 @@ const Clientservice = () => {
     );
 };
 
-export default Clientservice;
+export default AdminActivity;

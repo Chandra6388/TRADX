@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GetClientService, GetGroupNames, ExtendEndDate, EditClientPanle, ServiceCount, Get_Broker_Name, GetAllStratgy } from '../../CommonAPI/Admin';
+import { GetClientService, GetGroupNames, EditClientPanle, Get_Broker_Name } from '../../CommonAPI/Admin';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { Link } from 'react-router-dom';
 import { SquarePen } from 'lucide-react';
@@ -171,6 +171,7 @@ const Clientservice = () => {
                         formik.resetForm();
                         setSelectedOptions([]);
                     }, 1500);
+                    fetchClientService();
                 } else {
                     Swal.fire({
                         title: "Error",
@@ -187,29 +188,6 @@ const Clientservice = () => {
     });
 
     const fields = [
-        // {
-        //     name: 'User',
-        //     label: 'User',
-        //     type: 'text',
-        //     label_size: 12,
-        //     col_size: 6,
-        // },
-        // {
-        //     name: 'clientpay',
-        //     label: 'Amount',
-        //     type: 'text3',
-        //     label_size: 12,
-        //     col_size: 6,
-        // },
-        // {
-        //     name: 'Planname',
-        //     label: 'Plan Name',
-        //     type: 'select',
-        //     options: GetAllPlans.LivePlanName && GetAllPlans.LivePlanName.map(item => ({ label: item.PlanName, value: item.PlanName })),
-        //     options1: selectedIndex.Planname && selectedIndex.Planname,
-        //     label_size: 12,
-        //     col_size: 6,
-        // },
         {
             name: 'Broker',
             label: 'Broker',

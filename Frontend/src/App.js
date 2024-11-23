@@ -3,6 +3,7 @@ import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import AdminRoute from './Routes/Admin.Routes'
 import UserRoute from './Routes/User.Routes'
 import Login from './components/auth/Login';
+import SuperAdminRoute from './Routes/SuperAdmin.Routes'
 import Register from './components/auth/Register'
 
 
@@ -54,6 +55,7 @@ const App = () => {
       <Routes>
         <Route path="/admin/*" element={(Role === "Admin") ? <AdminRoute /> : <Login />} />
         <Route path="/user/*" element={(Role === "User") ? <UserRoute /> : <Login />} />
+        <Route path="/superadmin/*" element={(Role === "Superadmin") ? <SuperAdminRoute /> : <Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 

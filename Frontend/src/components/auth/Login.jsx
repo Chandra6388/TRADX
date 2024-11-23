@@ -39,11 +39,12 @@ const Login = () => {
                             navigate('/admin/dashboard');
                         } else if (response.Role === 'User') {
                             navigate('/user/dashboard');
+                        } else if (response.Role === 'Superadmin') {
+                            navigate('/superadmin/dashboard');
                         }
                     }, 1500)
                 }
                 else {
-
                     Swal.fire({
                         title: "Error!",
                         text: response.message,
@@ -57,8 +58,8 @@ const Login = () => {
             .catch((err) => {
                 console.log("Error in user login", err)
             })
-
     };
+
     const toggle = (e) => {
         e.preventDefault();
         if (changeType === "password") {
@@ -156,7 +157,7 @@ const Login = () => {
     const get_header_img1 = async () => {
         await GetHeaderImg1()
             .then((response) => {
-                if (response.status) { 
+                if (response.status) {
                     localStorage.setItem("header_img1", "data:image/png;base64," + response.image_data)
                 } else {
                 }
@@ -215,7 +216,6 @@ const Login = () => {
         Getfaviconimg();
         GetPanel_Name();
         GetLogoimage();
-
     }, [])
 
     return (
@@ -225,7 +225,7 @@ const Login = () => {
                     <div className="col-md-6 text-center">
                         <div className="sign-in-detail text-white">
                             <a className="sign-in-logo mb-5" href="index.html">
-                                <img  className="img-fluid" alt="logo" id="imglogo" />
+                                <img className="img-fluid" alt="logo" id="imglogo" />
                             </a>
                             <div
                                 className="owl-carousel owl-loaded owl-drag"

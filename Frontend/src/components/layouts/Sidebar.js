@@ -268,6 +268,12 @@ const Sidebar = () => {
                                                 <span>Admin Details</span>
                                             </Link>
                                         </li>
+                                        <li className={activeItem === '/superadmin/create-admin' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/create-admin')}>
+                                            <Link to='/superadmin/create-admin' className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>Create Admin</span>
+                                            </Link>
+                                        </li>
                                     </>
                                 )
                                 : (

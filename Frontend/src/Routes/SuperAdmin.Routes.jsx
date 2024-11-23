@@ -4,6 +4,7 @@ import Dashboards from '../components/superAdmin/dashboard/Dashboard';
 import Sidebar from '../components/layouts/Sidebar';
 import Header from '../components/layouts/Header';
 import AdminDetails from '../components/superAdmin/adminDetails/Admindetails';
+import CreateAdmin from '../components/superAdmin/accountCreate/CreateAccount';
 
 
 const SuperAdminRoute = () => {
@@ -16,7 +17,7 @@ const SuperAdminRoute = () => {
           <Routes>
             <Route path="/dashboard" element={<Dashboards />} />
             <Route path="/admin-details" element={<AdminDetails />} />
-
+            <Route path="/create-admin" element={<CreateAdmin />} />
           </Routes>
         </div>
       </div>

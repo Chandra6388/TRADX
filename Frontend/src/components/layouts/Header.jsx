@@ -7,7 +7,7 @@ import axios from "axios";
 import { TradingStatus } from "../CommonAPI/User";
 import Swal from 'sweetalert2';
 import { IndianRupee, Eye } from 'lucide-react';
-import { LastPattern, DataStart, AutoLogin  } from '../CommonAPI/Admin'
+import { LastPattern, DataStart, AutoLogin } from '../CommonAPI/Admin'
 import { GetUserBalence } from '../CommonAPI/User'
 
 
@@ -44,7 +44,7 @@ const Header = () => {
     const [getBrokerName, setBrokerName] = useState("");
     const [walletBalance, setWalletBalance] = useState('');
 
-     
+
     useEffect(() => {
         GetBalence()
     }, [])
@@ -310,19 +310,19 @@ const Header = () => {
     }
 
     const GetBalence = async () => {
-      const req = {userName: Username}
-      await GetUserBalence(req)
-        .then((response) => {
-            if (response.Status) {
-                setWalletBalance(response.Balance)
-            }
-            else {
-                setWalletBalance('')
-            }
-        })
-        .catch((error) => {
-            console.error("Error in GetUserBalence request", error);
-        });   
+        const req = { userName: Username }
+        await GetUserBalence(req)
+            .then((response) => {
+                if (response.Status) {
+                    setWalletBalance(response.Balance)
+                }
+                else {
+                    setWalletBalance('')
+                }
+            })
+            .catch((error) => {
+                console.error("Error in GetUserBalence request", error);
+            });
     }
 
 
@@ -351,8 +351,8 @@ const Header = () => {
         }
     }
 
-    const walletmodal = () => { 
-            navigate('/user/all/transection') 
+    const walletmodal = () => {
+        navigate('/user/all/transection')
     };
 
     const toggleFundsVisibility = () => {
@@ -466,7 +466,7 @@ const Header = () => {
                             </div>
 
                         </nav>
-                    ) : (
+                    ) : role === 'user' ? (
                         <nav className="navbar navbar-expand-lg navbar-light p-0">
 
                             <button
@@ -623,7 +623,66 @@ const Header = () => {
                             </div>
 
                         </nav>
-                    )}
+                    ) :
+                        (
+                            <nav className="navbar navbar-expand-lg navbar-light p-0">
+
+                               
+
+                              
+                                <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                                    <div className="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline ms-5">
+                                       
+
+                                    </div>
+                                    <ul className="navbar-nav ms-auto navbar-list align-items-center">
+                                       
+                                       
+
+                                        <li className="nav-item iq-full-screen" onClick={toggleFullscreen}>
+                                            <a href="#" className="iq-waves-effect" id="btnFullscreen">
+                                                <i className={isFullscreen ? 'ri-fullscreen-exit-line' : 'ri-fullscreen-line'} />
+                                            </a>
+                                        </li>
+
+
+                                        <li className={`nav-item ${activeElement === 'profile' ? 'iq-show' : ''}`}>
+
+                                            <a href="#"
+
+                                                className={`search-toggle d-flex align-items-center iq-waves-effectt ${activeElement === 'profile' ? 'active' : ''}`}
+
+                                                onClick={(e) => handleClick(e, 'profile')}
+                                            >
+                                                <img
+                                                    src="/assets/images/user/1.jpg"
+                                                    className="img-fluid rounded-circle me-3"
+                                                    alt="user"
+                                                />
+                                                <div className="caption">
+                                                    <h6 className="mb-0 line-height">{Username}</h6>
+                                                    <span className="font-size-12">online</span>
+                                                </div>
+                                            </a>
+                                            <div className="iq-sub-dropdown iq-user-dropdown">
+                                                <div className="iq-card shadow-none m-0">
+                                                    <div className="iq-card-body p-0 ">
+                                                        
+                                                        <div className="d-inline-block w-100 text-center p-3">
+                                                            <button className="btn btn-primary iq-sign-btn" onClick={logout} role="button">
+                                                                Log out
+                                                                <i className="ri-login-box-line ms-2" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </nav>
+                        )}
 
                 </div>
 

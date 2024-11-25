@@ -24,12 +24,7 @@ const TradeResponse = () => {
 
     })
 
- 
-
-     
-
     const Username = localStorage.getItem('name')
-      // set Defult Date 
       const currentDate = new Date();
       currentDate.setDate(currentDate.getDate());
       const year = currentDate.getFullYear();

@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from 'react'
-import { getCompanyName, clientThreadeReport } from '../../CommonAPI/SuperAdmin'
+import { getCompanyName, clientThreadeReport, getClientName } from '../../CommonAPI/SuperAdmin'
 import FullDataTable from '../../../ExtraComponent/CommanDataTable'
 
-const ClientThreadReport = () => {
+const ClientThreadResponse = () => {
 
-    const [getAllClientThreadeReport, setAllClientThreadeReport] = useState([])
+    const [getAllClientThreadeResponse, setAllClientThreadeResponse] = useState([])
     const [comapnyName, setCompanyName] = useState('')
     const [getAllComapny, setAllComapny] = useState([])
+    const [scriptType, setScriptType] = useState('')
+    const [getAllClientName, setAllClientName] = useState([])
+    const [clientName, setClientName] = useState('')
 
+
+    console.log('clientName', clientName)
+ 	
     useEffect(() => {
         ComapnyDetails()
     }, [])
 
     useEffect(() => {
-        getClientThreadeReport()
+        ClientName()
+
+        
+
     }, [comapnyName])
 
-
+  
     const ComapnyDetails = async () => {
         await getCompanyName()
             .then((response) => {
@@ -32,18 +41,53 @@ const ClientThreadReport = () => {
             })
     }
 
-    const getClientThreadeReport = async () => {
+    const ClientName = async () => {  
         if (comapnyName == '') {
+            return
+        }  
+        const req = { comapnyName: comapnyName }
+        await getClientName(req)
+            .then((response) => {
+                if (response.Status) {
+                    setAllClientName(response.Data)
+                }
+                else {
+                    setAllClientName([])
+                }
+            })
+            .catch((err) => {
+                console.log("Error in fainding the service", err)
+            })
+    }
+
+
+    // {
+    //     "Companyname":"Pnp",
+    //     "MainStrategy": "Scalping",
+    //     "Strategy": "Multi Directional",
+    //     "Symbol": "BANKNIFTY24NOVFUT",
+    //     "Username": "komal",
+    //     "ETPattern": "",
+    //     "Timeframe": "",
+    //     "From_date": "2024.11.19 00:00:00",
+    //     "To_date": "2024.11.20 00:00:00",
+    //     "TradePattern": "",
+    //     "PatternName":"",
+    //     "Group":""
+    //     }
+
+    const getClientThreadeReport = async () => {
+        if (comapnyName == '' || clientName == '' || scriptType == '') {
             return
         }
         const req = { comapnyName: comapnyName }
         await clientThreadeReport(req)
             .then((response) => {
                 if (response.Status) {
-                    setAllClientThreadeReport(response.Data)
+                    setAllClientThreadeResponse(response.Data)
                 }
                 else {
-                    setAllClientThreadeReport([])
+                    setAllClientThreadeResponse([])
                 }
             })
             .catch((err) => {
@@ -147,13 +191,13 @@ const ClientThreadReport = () => {
                     <div className="iq-card">
                         <div className="iq-card-header d-flex justify-content-between">
                             <div className="iq-header-title">
-                                <h4 className="card-title">Client Thread Report</h4>
+                                <h4 className="card-title">Client Thread Response</h4>
                             </div>
                         </div>
                         <div className="iq-card-body">
                             <div className="was-validated ">
                                 <div className='d-flex'>
-                                    <div className="form-group col-md-3 ms-2">
+                                    <div className="form-group col-md-4 ms-2">
                                         <label>Select Panel Name</label>
                                         <select className="form-select" required=""
                                             onChange={(e) => setCompanyName(e.target.value)}
@@ -166,24 +210,36 @@ const ClientThreadReport = () => {
                                             })}
                                         </select>
                                     </div>
-                                    {/* <div className="form-group col-md-3 ms-2">
+                                    <div className="form-group col-md-4 ms-2">
                                         <label>Select Username</label>
                                         <select className="form-select" required=""
-                                            onChange={(e) => setCompanyName(e.target.value)}
-                                            value={comapnyName}
+                                            onChange={(e) => setClientName(e.target.value)}
+                                            value={clientName}
                                         >
-                                            {getAllComapny && getAllComapny.map((item, index) => {
+                                            <option value="">Please Select Username</option>
+                                            {getAllClientName && getAllClientName.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item}>{item}</option>
                                                 )
                                             })}
                                         </select>
-                                    </div> */}
+                                    </div>
+                                    <div className="form-group col-md-4 ms-2">
+                                        <label>Select Script Type</label>
+                                        <select className="form-select" required=""
+                                            onChange={(e) => setScriptType(e.target.value)}
+                                            value={scriptType}
+                                        >
+                                            <option value={'scalping'}>Scalping</option>
+                                            <option value={'option'}>Option</option>
+                                            <option value={'pattern'}>Pattern</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <FullDataTable
                                 columns={columns}
-                                data={getAllClientThreadeReport}
+                                data={getAllClientThreadeResponse}
                                 checkBox={false}
                             />
                         </div>
@@ -194,4 +250,4 @@ const ClientThreadReport = () => {
     )
 }
 
-export default ClientThreadReport
+export default ClientThreadResponse

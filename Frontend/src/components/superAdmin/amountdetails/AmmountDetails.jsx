@@ -138,7 +138,7 @@ const AmountDetails = () => {
                             <div className="was-validated ">
                                 <div className='d-flex'>
                                     <div className="form-group col-md-4 ms-2">
-                                        <label>Select Companynam</label>
+                                        <label>Select Company</label>
                                         <select className="form-select" required=""
                                             onChange={(e) => setCompanyName(e.target.value)}
                                             value={comapnyName}

@@ -14,7 +14,8 @@ import { GetUserBalence } from '../CommonAPI/User'
 const Header = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [showFunds, setShowFunds] = useState(false);
-
+    const [showAddFundModal, setShowAddFundModal] = useState(false);
+    
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
@@ -43,6 +44,9 @@ const Header = () => {
     const [getTradingStatus, setTradingStatus] = useState(false);
     const [getBrokerName, setBrokerName] = useState("");
     const [walletBalance, setWalletBalance] = useState('');
+    const [showAddBrokerModal, setShowAddBrokerModal] = useState(false);
+    const [fundValue, setFundValue] = useState('');
+    const [addBrokerName, setAddBrokerName] = useState('');
 
 
     useEffect(() => {
@@ -325,10 +329,6 @@ const Header = () => {
             });
     }
 
-
-
-
-
     function formatNumber(value) {
         if (value < 1000) {
             return value.toString();
@@ -361,6 +361,12 @@ const Header = () => {
 
     };
 
+    const handleAddBroker = async () => {}
+        
+    const handleAddFund = async () => {}
+
+
+
     return (
         <>
             <div className={`iq-top-navbar ${isFixed ? 'fixed-header' : ''}`}>
@@ -369,7 +375,6 @@ const Header = () => {
                         <div className="top-logo">
                             <a href="index.html" className="logo">
                                 <img src="assets/images/inalgo.png" className="img-fluid" alt="" />
-                                {/* <span>XRay</span> */}
                             </a>
                         </div>
                     </div>
@@ -392,29 +397,6 @@ const Header = () => {
                             <button className='me-3 menusidebar' onClick={toggleSidebar}>
                                 <i className="ri-more-fill" />
                             </button>
-
-                            {/* <div className="iq-menu-bt-sidebar">
-                                <div className="iq-menu-bt align-self-center">
-                                    <div onClick={handleClick} className={`wrapper-menu ${isActive ? 'open' : ''}`}>
-                                        <div className="main-circle">
-                                            <i className="ri-more-fill" />
-                                        </div>
-                                        <div className="hover-circle">
-                                            <i className="ri-more-2-fill" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> 
-                            <div className="iq-menu-bt align-self-center" style={{ color: "#000" }} onClick={toggleSidebar}>
-                                <div className="wrapper-menu">
-                                    <div className="main-circle">
-                                        <i className="ri-more-fill" />
-                                    </div>
-                                    <div className="hover-circle">
-                                        <i className="ri-more-2-fill" />
-                                    </div>
-                                </div>
-                            </div> */}
                             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
                                     <li className="nav-item">
@@ -466,7 +448,7 @@ const Header = () => {
                             </div>
 
                         </nav>
-                    ) : role === 'user' ? (
+                    ) : role === 'User' ? (
                         <nav className="navbar navbar-expand-lg navbar-light p-0">
 
                             <button
@@ -623,66 +605,122 @@ const Header = () => {
                             </div>
 
                         </nav>
-                    ) :
-                        (
-                            <nav className="navbar navbar-expand-lg navbar-light p-0">
+                    ) : (
+                        <nav className="navbar navbar-expand-lg navbar-light p-0">
 
-                               
+                            <button
+                                className="navbar-toggler"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                href="#navbarSupportedContent"
+                                aria-controls="navbarSupportedContent"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation"
+                            >
+                                <i className="ri-menu-3-line" />
+                            </button>
 
-                              
-                                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                                    <div className="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline ms-5">
-                                       
+                            <button className='me-3 menusidebar' onClick={toggleSidebar}>
+                                <i className="ri-more-fill" />
+                            </button>
+                            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                                <div className="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline ms-5">
+                                    <div className="custom-switch-inner">
 
+                                        <input
+                                            type="checkbox"
+                                            className="custom-control-input"
+                                            id="customSwitch-11"
+                                            checked={getTradingStatus}
+                                            onChange={handleToggle}
+
+                                        />
+                                        <label
+                                            className="custom-control-label"
+                                            htmlFor="customSwitch-11"
+                                            data-on-label="Live trading on"
+                                            data-off-label="Paper trading on"
+                                        ></label>
                                     </div>
-                                    <ul className="navbar-nav ms-auto navbar-list align-items-center">
-                                       
-                                       
 
-                                        <li className="nav-item iq-full-screen" onClick={toggleFullscreen}>
-                                            <a href="#" className="iq-waves-effect" id="btnFullscreen">
-                                                <i className={isFullscreen ? 'ri-fullscreen-exit-line' : 'ri-fullscreen-line'} />
-                                            </a>
-                                        </li>
+                                </div>
+                                <ul className="navbar-nav ms-auto navbar-list align-items-center">
+                                    <li className="nav-item mx-2">
+                                        <button type="button" className="btn btn-primary mt-4 btn1"
+                                            onClick={(e) => setShowAddFundModal(true)}
+                                        >
+                                            Add Fund
+                                        </button>
+                                    </li>
+                                    <li className="nav-item mx-2">
+                                        <button type="button" className="btn btn-primary mt-4 btn1"
+                                            onClick={(e) => setShowAddBrokerModal(true)}
+                                        >
+                                            Add Broker
+                                        </button>
+                                    </li>
+                                    <li className={`nav-item ${activeElement === 'profile' ? 'iq-show' : ''}`}>
 
+                                        <a href="#"
 
-                                        <li className={`nav-item ${activeElement === 'profile' ? 'iq-show' : ''}`}>
+                                            className={`search-toggle d-flex align-items-center iq-waves-effectt ${activeElement === 'profile' ? 'active' : ''}`}
 
-                                            <a href="#"
-
-                                                className={`search-toggle d-flex align-items-center iq-waves-effectt ${activeElement === 'profile' ? 'active' : ''}`}
-
-                                                onClick={(e) => handleClick(e, 'profile')}
-                                            >
-                                                <img
-                                                    src="/assets/images/user/1.jpg"
-                                                    className="img-fluid rounded-circle me-3"
-                                                    alt="user"
-                                                />
-                                                <div className="caption">
-                                                    <h6 className="mb-0 line-height">{Username}</h6>
-                                                    <span className="font-size-12">online</span>
-                                                </div>
-                                            </a>
-                                            <div className="iq-sub-dropdown iq-user-dropdown">
-                                                <div className="iq-card shadow-none m-0">
-                                                    <div className="iq-card-body p-0 ">
-                                                        
-                                                        <div className="d-inline-block w-100 text-center p-3">
-                                                            <button className="btn btn-primary iq-sign-btn" onClick={logout} role="button">
-                                                                Log out
-                                                                <i className="ri-login-box-line ms-2" />
-                                                            </button>
+                                            onClick={(e) => handleClick(e, 'profile')}
+                                        >
+                                            <img
+                                                src="/assets/images/user/1.jpg"
+                                                className="img-fluid rounded-circle me-3"
+                                                alt="user"
+                                            />
+                                            <div className="caption">
+                                                <h6 className="mb-0 line-height">{Username}</h6>
+                                                <span className="font-size-12">online</span>
+                                            </div>
+                                        </a>
+                                        <div className="iq-sub-dropdown iq-user-dropdown">
+                                            <div className="iq-card shadow-none m-0">
+                                                <div className="iq-card-body p-0 ">
+                                                    <div className="bg-primary p-3">
+                                                        <h5 className="mb-0 text-white line-height">{Username}</h5>
+                                                        <span className="text-white font-size-12">online</span>
+                                                    </div>
+                                                    <Link to="/user/profile" className="iq-sub-card iq-bg-primary-hover">
+                                                        <div className="media align-items-center d-flex">
+                                                            <div className="rounded card-icon bg-soft-primary">
+                                                                <i className="ri-file-user-line" />
+                                                            </div>
+                                                            <div className="media-body ms-3">
+                                                                <h6 className="mb-0 ">My Profile</h6>
+                                                                <p className="mb-0 font-size-12">View personal profile details.</p>
+                                                            </div>
                                                         </div>
+                                                    </Link>
+                                                    <Link to="/user/editprofile" className="iq-sub-card iq-bg-warning-hover">
+                                                        <div className="media align-items-center d-flex">
+                                                            <div className="rounded card-icon bg-soft-warning">
+                                                                <i className="ri-profile-line" />
+                                                            </div>
+                                                            <div className="media-body ms-3">
+                                                                <h6 className="mb-0 ">Change Password</h6>
+                                                            </div>
+                                                        </div>
+                                                    </Link>
+
+                                                    <div className="d-inline-block w-100 text-center p-3">
+                                                        <button className="btn btn-primary iq-sign-btn" onClick={logout} role="button">
+                                                            Log out
+                                                            <i className="ri-login-box-line ms-2" />
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </li>
-                                    </ul>
-                                </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
 
-                            </nav>
-                        )}
+                        </nav>
+                    )}
 
                 </div>
 
@@ -738,9 +776,83 @@ const Header = () => {
                 </div>
             }
 
+            {
+                showAddFundModal && <div className="modal show" id="exampleModal" style={{ display: "block" }}>
+                    <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"></div>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">
+                                    Add Fund
+                                </h5>
+
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    onClick={() => setShowAddFundModal(false)}
+                                />
+                            </div>
+                            <div>
+                                <div className='mx-4'>
+                                    <label className='mt-4'>Amount</label>
+                                    <input type="text"
+                                        className='form-control mb-4'
+                                        placeholder='Enter Amount'
+                                        onChange={(e) => setFundValue(e.target.value)}
+                                        value={fundValue}
+                                    />
+                                </div>
+                                <div className='d-flex justify-content-end mb-4 mx-4'>
+                                    <button className='btn btn-primary' onClick={handleAddFund}>Save</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+            {
+                showAddBrokerModal && <div className="modal show" id="exampleModal" style={{ display: "block" }}>
+                    <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"></div>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">
+                                    Add Broker
+                                </h5>
+
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    onClick={() => setShowAddBrokerModal(false)}
+                                />
+                            </div>
+                            <div>
+                                <div className='mx-4'>
+                                    <label className='mt-4'>Broker Name</label>
+                                    <input type="text"
+                                        className='form-control mb-4'
+                                        placeholder='Enter Broker Name'
+                                        onChange={(e) => setAddBrokerName(e.target.value)}
+                                        value={addBrokerName}
+                                    />
+                                </div>
+                                <div className='d-flex justify-content-end mb-4 mx-4'>
+                                    <button className='btn btn-primary' onClick={handleAddBroker}>Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
 
             <UpdateBrokerKey isVisible={isModalVisible} closeModal={handleCloseModal} Role={role} />
-
         </>
     );
 };

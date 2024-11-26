@@ -659,7 +659,7 @@ export const columns3 = [
         }
     },
     {
-        name: "Region",
+        name: "Reason",
         label: "Reason",
         options: {
             filter: true,

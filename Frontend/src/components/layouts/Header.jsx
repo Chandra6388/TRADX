@@ -8,14 +8,15 @@ import { TradingStatus } from "../CommonAPI/User";
 import Swal from 'sweetalert2';
 import { IndianRupee, Eye } from 'lucide-react';
 import { LastPattern, DataStart, AutoLogin } from '../CommonAPI/Admin'
+import { addBroker } from '../CommonAPI/SuperAdmin'
+
 import { GetUserBalence } from '../CommonAPI/User'
 
 
 const Header = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [showFunds, setShowFunds] = useState(false);
-    const [showAddFundModal, setShowAddFundModal] = useState(false);
-    
+
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
@@ -45,7 +46,6 @@ const Header = () => {
     const [getBrokerName, setBrokerName] = useState("");
     const [walletBalance, setWalletBalance] = useState('');
     const [showAddBrokerModal, setShowAddBrokerModal] = useState(false);
-    const [fundValue, setFundValue] = useState('');
     const [addBrokerName, setAddBrokerName] = useState('');
 
 
@@ -361,11 +361,45 @@ const Header = () => {
 
     };
 
-    const handleAddBroker = async () => {}
-        
-    const handleAddFund = async () => {}
+    const handleAddBroker = async () => {
+        const req = { BrokerName: addBrokerName }
 
+        if (addBrokerName == '') {
+            Swal.fire({
+                title: 'Warning!',
+                text: 'Please enter Broker Name.',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+            });
+            return;
+        }
+        await addBroker(req)
+            .then((response) => {
+                if (response.Status) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Broker Added successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        timer: 1000
+                    })
+                    setAddBrokerName('');
+                    setShowAddBrokerModal(false)
+                }
+                else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: response.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                    });
 
+                }
+            })
+            .catch((error) => {
+                console.error("Error in GetUserBalence request", error);
+            });
+    }
 
     return (
         <>
@@ -607,58 +641,17 @@ const Header = () => {
                         </nav>
                     ) : (
                         <nav className="navbar navbar-expand-lg navbar-light p-0">
-
-                            <button
-                                className="navbar-toggler"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                href="#navbarSupportedContent"
-                                aria-controls="navbarSupportedContent"
-                                aria-expanded="false"
-                                aria-label="Toggle navigation"
-                            >
-                                <i className="ri-menu-3-line" />
-                            </button>
-
-                            <button className='me-3 menusidebar' onClick={toggleSidebar}>
-                                <i className="ri-more-fill" />
-                            </button>
                             <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                                <div className="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline ms-5">
-                                    <div className="custom-switch-inner">
-
-                                        <input
-                                            type="checkbox"
-                                            className="custom-control-input"
-                                            id="customSwitch-11"
-                                            checked={getTradingStatus}
-                                            onChange={handleToggle}
-
-                                        />
-                                        <label
-                                            className="custom-control-label"
-                                            htmlFor="customSwitch-11"
-                                            data-on-label="Live trading on"
-                                            data-off-label="Paper trading on"
-                                        ></label>
-                                    </div>
-
+                                <div className="nav-item mx-5">
+                                    <button type="button" className="btn btn-primary "
+                                        onClick={(e) => setShowAddBrokerModal(true)}
+                                    >
+                                        Add Broker
+                                    </button>
                                 </div>
+
                                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
-                                    <li className="nav-item mx-2">
-                                        <button type="button" className="btn btn-primary mt-4 btn1"
-                                            onClick={(e) => setShowAddFundModal(true)}
-                                        >
-                                            Add Fund
-                                        </button>
-                                    </li>
-                                    <li className="nav-item mx-2">
-                                        <button type="button" className="btn btn-primary mt-4 btn1"
-                                            onClick={(e) => setShowAddBrokerModal(true)}
-                                        >
-                                            Add Broker
-                                        </button>
-                                    </li>
+
                                     <li className={`nav-item ${activeElement === 'profile' ? 'iq-show' : ''}`}>
 
                                         <a href="#"
@@ -775,46 +768,6 @@ const Header = () => {
                     </div>
                 </div>
             }
-
-            {
-                showAddFundModal && <div className="modal show" id="exampleModal" style={{ display: "block" }}>
-                    <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"></div>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">
-                                    Add Fund
-                                </h5>
-
-                                <button
-                                    type="button"
-                                    className="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                    onClick={() => setShowAddFundModal(false)}
-                                />
-                            </div>
-                            <div>
-                                <div className='mx-4'>
-                                    <label className='mt-4'>Amount</label>
-                                    <input type="text"
-                                        className='form-control mb-4'
-                                        placeholder='Enter Amount'
-                                        onChange={(e) => setFundValue(e.target.value)}
-                                        value={fundValue}
-                                    />
-                                </div>
-                                <div className='d-flex justify-content-end mb-4 mx-4'>
-                                    <button className='btn btn-primary' onClick={handleAddFund}>Save</button>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </div>
-            }
-
             {
                 showAddBrokerModal && <div className="modal show" id="exampleModal" style={{ display: "block" }}>
                     <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"></div>
@@ -830,7 +783,7 @@ const Header = () => {
                                     className="btn-close"
                                     data-bs-dismiss="modal"
                                     aria-label="Close"
-                                    onClick={() => setShowAddBrokerModal(false)}
+                                    onClick={() => { setAddBrokerName(''); setShowAddBrokerModal(false) }}
                                 />
                             </div>
                             <div>

@@ -280,24 +280,14 @@ const Sidebar = () => {
                                                 <span>Amount Details</span>
                                             </Link>
                                         </li>
-                                        <li className={activeItem === '/superadmin/admin-activity' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/admin-activity')}>
-                                            <Link to='/superadmin/admin-activity' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Admin Activity</span>
-                                            </Link>
-                                        </li>
+                                        
                                         <li className={activeItem === '/superadmin/client-thread-report' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/client-thread-report')}>
                                             <Link to='/superadmin/client-thread-report' className="iq-waves-effect">
                                                 <i className="ri-home-fill" />
                                                 <span>Client Thread Report</span>
                                             </Link>
                                         </li>
-                                        <li className={activeItem === '/superadmin/addbroker-name' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/addbroker-name')}>
-                                            <Link to='/superadmin/addbroker-name' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Add Broker Name</span>
-                                            </Link>
-                                        </li>
+                                        
                                         <li className={activeItem === '/superadmin/client-thread-response' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/client-thread-response')}>
                                             <Link to='/superadmin/client-thread-response' className="iq-waves-effect">
                                                 <i className="ri-home-fill" />

@@ -3,7 +3,7 @@ import { AgChartsReact } from "ag-charts-react";
 import "ag-charts-enterprise";
 import * as d3 from "d3";
 
-const ChartExample = ({ ChartData , timeFrame , type }) => {
+const ChartExample = ({ ChartData , timeFrame }) => {
   const [options, setOptions] = useState(null);
 
   useEffect(() => { 
@@ -19,24 +19,16 @@ const ChartExample = ({ ChartData , timeFrame , type }) => {
   
       const filterDataBetween9_15And15_30 = (data) => {
         const today = new Date();
-        const todayDateString = today?.toISOString()?.split('T')[0];
-      //   {
-      //     "_id": "2024-11-13 14:12",
-      //     "open": 23738.65,
-      //     "close": 23724.1,
-      //     "high": 23738.65,
-      //     "low": 23722,
-      //     "date": null
-      // }
+        const todayDateString = today.toISOString().split('T')[0]; 
+    
         return data.filter(item => {
-          console.log(item);
-            const [date, time] = item?.date2?.split(' ');
+            const [date, time] = item.date2.split(' ');
              
             if (date !== todayDateString) {
                 return false;
             }
              
-            const [hours, minutes] = time?.split(':')?.map(Number);
+            const [hours, minutes] = time.split(':').map(Number);
      
             if ((hours === 9 && minutes >= 15) || (hours > 9 && hours < 15) || (hours === 15 && minutes <= 30)) {
                 return true;

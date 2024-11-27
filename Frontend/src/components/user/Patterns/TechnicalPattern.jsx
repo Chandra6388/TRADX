@@ -268,9 +268,8 @@ const LastPattern = () => {
                                                 <AgChartsReact ChartData={getCandlestickTable && getCandlestickTable?.data1} timeFrame={selectedTimeFrame} type={"pattern"} />
                                             ) : (
                                                 <AgChartsReact ChartData={ChartPatternTableData?.CandleData} timeFrame={selectedTimeFrame} type = {"charting"} />
-                                            )
-                                            }
-                                            {/* <AgChartsReact ChartData={getCandlestickTable && getCandlestickTable.data1} type={'technicalPattern'} timeFrame={selectedTimeFrame}/> */}
+                                            )}
+                                           
                                         </div>
                                     )}
                                 </div>

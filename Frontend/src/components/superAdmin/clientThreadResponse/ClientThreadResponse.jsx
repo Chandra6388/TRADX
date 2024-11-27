@@ -7,10 +7,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
 import { columns3, columns2, columns1, columns, columns5, columns4 } from './TradeReponseColumn'
-import { getCompanyName, getClientName } from '../../CommonAPI/SuperAdmin'
+import { getCompanyName, getClientName , getClientScript , ClientTradeResponse } from '../../CommonAPI/SuperAdmin'
 const TradeResponse = () => {
     const [selectStrategyType, setStrategyType] = useState('')
-    const [tradeHistory, setTradeHistory] = useState({ loading: true, data: [] })
+    const [clientAllScript, setClientAllScript] = useState({ loading: true, data: [] })
     const [selectedRowData, setSelectedRowData] = useState('');
     const [ToDate, setToDate] = useState('');
     const [FromDate, setFromDate] = useState('');
@@ -78,6 +78,9 @@ const TradeResponse = () => {
     }
 
     const clientDetails = async (data) => {
+        if (comapnyName == '') {
+            return
+        }
         const req = { comapnyName: comapnyName }
         await getClientName(req)
             .then((response) => {
@@ -93,35 +96,27 @@ const TradeResponse = () => {
             })
     }
     
-// {
-//     "Companyname":"Pnp",
-//     "Username": "komal",
-//     "ETPattern": "",
-//     "Timeframe": "",
-//     "From_date": "2024.11.19 00:00:00",
-//     "To_date": "2024.11.20 00:00:00",
-//     "TradePattern": "",
-//     "PatternName":"",
-//     "Group":""
-//     }
+
 
     const GetTradeResposne = async () => {
-        const data = { Data: selectStrategyType, Username: clientName }
-        await get_User_Data(data)
+        if (selectStrategyType == '' || comapnyName == '' || clientName == '') {
+            return
+        }
+
+        const data = { Data: selectStrategyType, Username: clientName , Companyname : comapnyName }
+        await getClientScript(data)
             .then((response) => {
                 if (response.Status) {
-
-                    const filterLiveTrade = response.Data.filter((item) => {
-                        return item.TradeExecution == 'Live Trade'
-                    })
-
-                    setTradeHistory({
+                    // const filterLiveTrade = response.Data.filter((item) => {
+                    //     return item.TradeExecution == 'Live Trade'
+                    // })
+                    setClientAllScript({
                         loading: false,
-                        data: filterLiveTrade
+                        data: response.Data
                     })
                 }
                 else {
-                    setTradeHistory({
+                    setClientAllScript({
                         loading: false,
                         data: []
                     })
@@ -142,6 +137,8 @@ const TradeResponse = () => {
         setSelectedRowData(rowData);
     };
 
+
+   
     const handleSubmit = async () => {
         if (comapnyName == '') {
             Swal.fire({
@@ -161,26 +158,7 @@ const TradeResponse = () => {
             });
             return
         }
-        if (FromDate == '') {
-            Swal.fire({
-                title: "Please Select the From Date",
-                icon: "info",
-                timer: 1500,
-                timerProgressBar: true
-            });
-            return
-
-        }
-
-        if (ToDate == '') {
-            Swal.fire({
-                title: "Please Select the To Date",
-                icon: "info",
-                timer: 1500,
-                timerProgressBar: true
-            });
-            return
-        }
+       
         const data = {
             Companyname: comapnyName,
             MainStrategy: selectStrategyType,
@@ -196,7 +174,7 @@ const TradeResponse = () => {
             PatternName: ""
         }
 
-        await get_Trade_Response(data)
+        await ClientTradeResponse(data)
 
             .then((response) => {
                 if (response.Status) {
@@ -303,7 +281,7 @@ const TradeResponse = () => {
                                             selectStrategyType === "Option Strategy" ? columns1 :
                                                 selectStrategyType === "Pattern" ? columns2 : columns
                                         }
-                                        data={tradeHistory.data}
+                                        data={clientAllScript.data}
                                         onRowSelect={handleRowSelect}
                                         checkBox={true}
                                     />

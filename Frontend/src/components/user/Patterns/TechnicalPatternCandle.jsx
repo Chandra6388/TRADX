@@ -23,8 +23,14 @@ const ChartExample = ({ ChartData , timeFrame }) => {
     
         return data.filter(item => {
             const [date, time] = item.date2.split(' ');
+
+            console.log("date", date);
+            console.log("time", time);
+            console.log("todayDateString", todayDateString);
              
             if (date !== todayDateString) {
+
+              console.log("inside");
                 return false;
             }
              
@@ -39,7 +45,10 @@ const ChartExample = ({ ChartData , timeFrame }) => {
     };
     
   
+
     const newData = filterDataBetween9_15And15_30(formattedData);
+
+    console.log("newData", formattedData);
     const chartOptions = {
       data: newData,
       footnote: {

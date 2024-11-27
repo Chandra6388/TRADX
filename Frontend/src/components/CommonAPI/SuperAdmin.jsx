@@ -156,8 +156,6 @@ export const getClientName = async (data) => {
     }
 
 }
-
-
 export const addBroker = async (data) => {
     const token = localStorage.getItem('token')
     try {
@@ -221,6 +219,44 @@ export const deleteClient = async (data) => {
     const token = localStorage.getItem('token')
     try {
         const res = await axios.post(`${Config.base_url}ClientDeleteDetails`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}
+
+export const getClientScript = async (data) => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}ClientStretegy`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}
+
+export const ClientTradeResponse = async (data) => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}ClientTraderesponse`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',

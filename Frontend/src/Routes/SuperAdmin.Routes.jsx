@@ -9,6 +9,7 @@ import AmountDetails from '../components/superAdmin/amountdetails/AmmountDetails
 import AdminActivity from '../components/superAdmin/adminActivity/adminActivity';
 import ClientThreadReport from '../components/superAdmin/clientThreadReport/clientThreadReport';
 import ClientThreadResponse from '../components/superAdmin/clientThreadResponse/ClientThreadResponse';
+import UpdateClientDetails from '../components/superAdmin/updateClientDetails/UpdateClientDetails';
 
 
 const SuperAdminRoute = () => {
@@ -26,6 +27,7 @@ const SuperAdminRoute = () => {
             <Route path="/admin-activity" element={<AdminActivity />} />
             <Route path="/client-thread-report" element={<ClientThreadReport />} />
             <Route path="/client-thread-response" element={<ClientThreadResponse />} />
+            <Route path="/update-client-details" element={<UpdateClientDetails />} />
           </Routes>
         </div>
       </div>

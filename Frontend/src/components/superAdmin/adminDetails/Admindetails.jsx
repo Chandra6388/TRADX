@@ -6,10 +6,6 @@ import GridExample from '../../../ExtraComponent/CommanDataTable'
 
 const Strategygroup = () => {
     const [getAdminDetails, setAdminDetails] = useState([]);
-
-
-    console.log("getAdminDetails", getAdminDetails) 
-
     useEffect(() => {
         adminDetailsData();
     }, []);
@@ -29,21 +25,7 @@ const Strategygroup = () => {
             })
     };
    
-    // {
-    //     "username": "Admin",
-    //     "password": "Admin@123",
-    //     "SignEmail": "testing@gmail.com",
-    //     "SignMobileNo": "3445980532",
-    //     "Createdate": "24/07/2024 16:01:10",
-    //     "Companyname": "Testing",
-    //     "AmountDetails": 100000,
-    //     "IP Detail": "217.145.69.56",
-    //     "Image": "",
-    //     "Status": "On",
-    //     "frontpageimg": "",
-    //     "MongoUsername": "PyTool",
-    //     "MongoPass": "Sac)(*&^%!@#$hin"
-    // }
+  
     const columns = [
         {
             name: "S.No",
@@ -71,6 +53,10 @@ const Strategygroup = () => {
             options: {
                 filter: true,
                 sort: true,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    return "********";
+                }
+                
             }
         },
         {
@@ -134,25 +120,6 @@ const Strategygroup = () => {
                 width: '20%'
             }
         },
-        {
-            name: "MongoUsername",
-            label: "MongoDB Username",
-            options: {
-                filter: true,
-                sort: true,
-                width: '20%'
-            }
-        },
-        {
-            name: "MongoPass",
-            label: "MongoDB Password",
-            options: {
-                filter: true,
-                sort: true,
-                width: '20%'
-            }
-        },
-        
     ];
 
     return (

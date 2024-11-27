@@ -1,31 +1,67 @@
-import React, { useState, useEffect } from 'react'
-import { getCompanyName, clientThreadeReport, getClientName } from '../../CommonAPI/SuperAdmin'
-import FullDataTable from '../../../ExtraComponent/CommanDataTable'
-
-const ClientThreadResponse = () => {
-
-    const [getAllClientThreadeResponse, setAllClientThreadeResponse] = useState([])
-    const [comapnyName, setCompanyName] = useState('')
+import React, { useState, useEffect } from 'react';
+import { get_User_Data } from '../../CommonAPI/Admin'
+import { get_Trade_Response } from '../../CommonAPI/User'
+import Loader from '../../../ExtraComponent/Loader'
+import GridExample from '../../../ExtraComponent/CommanDataTable'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Swal from 'sweetalert2';
+import { columns3, columns2, columns1, columns, columns5, columns4 } from './TradeReponseColumn'
+import { getCompanyName, getClientName } from '../../CommonAPI/SuperAdmin'
+const TradeResponse = () => {
+    const [selectStrategyType, setStrategyType] = useState('')
+    const [tradeHistory, setTradeHistory] = useState({ loading: true, data: [] })
+    const [selectedRowData, setSelectedRowData] = useState('');
+    const [ToDate, setToDate] = useState('');
+    const [FromDate, setFromDate] = useState('');
+    const [showTable, setShowTable] = useState(false)
     const [getAllComapny, setAllComapny] = useState([])
-    const [scriptType, setScriptType] = useState('')
-    const [getAllClientName, setAllClientName] = useState([])
+    const [getAllTradeData, setAllTradeData] = useState({ loading: true, data: [] })
+    const [comapnyName, setCompanyName] = useState('')
+    const [allClientDetails, setAllClientDetails] = useState([])
     const [clientName, setClientName] = useState('')
 
 
-    console.log('clientName', clientName)
- 	
+    console.log("allClientDetails", allClientDetails)
+
+    const Username = localStorage.getItem('name')
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate());
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const formattedDate = `${year}.${month}.${day}`;
+
+
+    // from date
+    const DefultToDate = new Date();
+    DefultToDate.setDate(DefultToDate.getDate() + 1);
+    const year1 = DefultToDate.getFullYear();
+    const month1 = String(DefultToDate.getMonth() + 1).padStart(2, '0');
+    const day1 = String(DefultToDate.getDate()).padStart(2, '0');
+    const Defult_To_Date = `${year1}.${month1}.${day1}`;
+
+    // Date Formetor
+    const convertDateFormat = (date) => {
+        if (date == '') {
+            return ''
+        }
+        const dateObj = new Date(date);
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        return `${year}.${month}.${day}`;
+    };
+
     useEffect(() => {
         ComapnyDetails()
     }, [])
 
     useEffect(() => {
-        ClientName()
-
-        
-
+        clientDetails()
     }, [comapnyName])
 
-  
+
     const ComapnyDetails = async () => {
         await getCompanyName()
             .then((response) => {
@@ -41,168 +77,183 @@ const ClientThreadResponse = () => {
             })
     }
 
-    const ClientName = async () => {  
-        if (comapnyName == '') {
-            return
-        }  
+    const clientDetails = async (data) => {
         const req = { comapnyName: comapnyName }
         await getClientName(req)
             .then((response) => {
                 if (response.Status) {
-                    setAllClientName(response.Data)
+                    setAllClientDetails(response.Data)
                 }
                 else {
-                    setAllClientName([])
+                    setAllClientDetails([])
                 }
             })
             .catch((err) => {
                 console.log("Error in fainding the service", err)
             })
     }
+    
+// {
+//     "Companyname":"Pnp",
+//     "Username": "komal",
+//     "ETPattern": "",
+//     "Timeframe": "",
+//     "From_date": "2024.11.19 00:00:00",
+//     "To_date": "2024.11.20 00:00:00",
+//     "TradePattern": "",
+//     "PatternName":"",
+//     "Group":""
+//     }
 
-
-    // {
-    //     "Companyname":"Pnp",
-    //     "MainStrategy": "Scalping",
-    //     "Strategy": "Multi Directional",
-    //     "Symbol": "BANKNIFTY24NOVFUT",
-    //     "Username": "komal",
-    //     "ETPattern": "",
-    //     "Timeframe": "",
-    //     "From_date": "2024.11.19 00:00:00",
-    //     "To_date": "2024.11.20 00:00:00",
-    //     "TradePattern": "",
-    //     "PatternName":"",
-    //     "Group":""
-    //     }
-
-    const getClientThreadeReport = async () => {
-        if (comapnyName == '' || clientName == '' || scriptType == '') {
-            return
-        }
-        const req = { comapnyName: comapnyName }
-        await clientThreadeReport(req)
+    const GetTradeResposne = async () => {
+        const data = { Data: selectStrategyType, Username: clientName }
+        await get_User_Data(data)
             .then((response) => {
                 if (response.Status) {
-                    setAllClientThreadeResponse(response.Data)
+
+                    const filterLiveTrade = response.Data.filter((item) => {
+                        return item.TradeExecution == 'Live Trade'
+                    })
+
+                    setTradeHistory({
+                        loading: false,
+                        data: filterLiveTrade
+                    })
                 }
                 else {
-                    setAllClientThreadeResponse([])
+                    setTradeHistory({
+                        loading: false,
+                        data: []
+                    })
+
                 }
             })
             .catch((err) => {
-                console.log("Error in fainding the service", err)
+                console.log("Error in finding the user data", err)
+            })
+
+    }
+
+    useEffect(() => {
+        GetTradeResposne()
+    }, [selectStrategyType, FromDate, ToDate])
+
+    const handleRowSelect = (rowData) => {
+        setSelectedRowData(rowData);
+    };
+
+    const handleSubmit = async () => {
+        if (comapnyName == '') {
+            Swal.fire({
+                title: "Please Select the Company Name",
+                icon: "info",
+                timer: 1500,
+                timerProgressBar: true
+            });
+            return
+        }
+        if (selectStrategyType == '') {
+            Swal.fire({
+                title: "Please Select the Strategy Type",
+                icon: "info",
+                timer: 1500,
+                timerProgressBar: true
+            });
+            return
+        }
+        if (FromDate == '') {
+            Swal.fire({
+                title: "Please Select the From Date",
+                icon: "info",
+                timer: 1500,
+                timerProgressBar: true
+            });
+            return
+
+        }
+
+        if (ToDate == '') {
+            Swal.fire({
+                title: "Please Select the To Date",
+                icon: "info",
+                timer: 1500,
+                timerProgressBar: true
+            });
+            return
+        }
+        const data = {
+            Companyname: comapnyName,
+            MainStrategy: selectStrategyType,
+            Strategy: selectStrategyType == "Scalping" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : '',
+            Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : '',
+            Username: clientName,
+            ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
+            Timeframe: selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TimeFrame : '',
+            From_date: convertDateFormat(FromDate == '' ? formattedDate : FromDate),
+            To_date: convertDateFormat(ToDate == '' ? Defult_To_Date : ToDate),
+            Group: selectStrategyType == "Scalping" || selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.GroupN : "",
+            TradePattern: "",
+            PatternName: ""
+        }
+
+        await get_Trade_Response(data)
+
+            .then((response) => {
+                if (response.Status) {
+                    setAllTradeData({
+                        loading: false,
+                        data: response.Data,
+
+                    })
+                    setShowTable(true)
+                }
+                else {
+                    Swal.fire({
+                        title: "No Records found",
+                        icon: "info",
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                    setAllTradeData({
+                        loading: false,
+                        data: [],
+                    })
+                }
+            })
+            .catch((err) => {
+                console.log("Error in finding the All TradeData", err)
             })
     }
 
+    useEffect(() => {
+        setStrategyType('Scalping')
+    }, []);
 
-    const columns = [
-        {
-            name: "S.No",
-            label: "S.No",
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, tableMeta, updateValue) => {
-                    const rowIndex = tableMeta.rowIndex;
-                    return rowIndex + 1;
-                }
-            },
-        },
-        {
-            name: "Thread",
-            label: "Thread",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "Username",
-            label: "Username",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "ScalpType",
-            label: "Scalping Type",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "Targettype",
-            label: "Target Type",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "Symbol",
-            label: "Symbol",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "Threading Status",
-            label: "Threading Status",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "ThreadName",
-            label: "ThreadName",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "Time",
-            label: "Time",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "ProjectName",
-            label: "ProjectName",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
+    useEffect(() => {
+        setShowTable(false)
+    }, [selectStrategyType, FromDate, ToDate, selectedRowData])
 
-    ];
 
     return (
-        <>
+        <div>
             <div className="container-fluid">
                 <div className="row">
                     <div className="iq-card">
                         <div className="iq-card-header d-flex justify-content-between">
                             <div className="iq-header-title">
-                                <h4 className="card-title">Client Thread Response</h4>
+                                <h4 className="card-title">Trade Response</h4>
                             </div>
                         </div>
                         <div className="iq-card-body">
                             <div className="was-validated ">
-                                <div className='d-flex'>
-                                    <div className="form-group col-md-4 ms-2">
-                                        <label>Select Panel Name</label>
+                                <div className='row'>
+                                    <div className="form-group col-lg-2">
+                                        <label>Select Panel</label>
                                         <select className="form-select" required=""
                                             onChange={(e) => setCompanyName(e.target.value)}
                                             value={comapnyName}
                                         >
+                                            <option value={''}>Select Company</option>
                                             {getAllComapny && getAllComapny.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item}>{item}</option>
@@ -210,44 +261,75 @@ const ClientThreadResponse = () => {
                                             })}
                                         </select>
                                     </div>
-                                    <div className="form-group col-md-4 ms-2">
-                                        <label>Select Username</label>
+                                    <div className="form-group col-lg-2">
+                                        <label>Select Panel</label>
                                         <select className="form-select" required=""
                                             onChange={(e) => setClientName(e.target.value)}
                                             value={clientName}
                                         >
-                                            <option value="">Please Select Username</option>
-                                            {getAllClientName && getAllClientName.map((item, index) => {
+                                            <option value={''}>Select Client Name</option>
+                                            {allClientDetails && allClientDetails.map((item, index) => {
                                                 return (
                                                     <option key={index} value={item}>{item}</option>
                                                 )
                                             })}
                                         </select>
                                     </div>
-                                    <div className="form-group col-md-4 ms-2">
-                                        <label>Select Script Type</label>
+                                    <div className="form-group col-lg-2">
+                                        <label>Select Strategy Type</label>
                                         <select className="form-select" required=""
-                                            onChange={(e) => setScriptType(e.target.value)}
-                                            value={scriptType}
-                                        >
-                                            <option value={'scalping'}>Scalping</option>
-                                            <option value={'option'}>Option</option>
-                                            <option value={'pattern'}>Pattern</option>
+                                            onChange={(e) => setStrategyType(e.target.value)}
+                                            value={selectStrategyType}>
+                                            <option value={"Scalping"}>Scalping</option>
+                                            <option value={"Option Strategy"}>Option Strategy</option>
+                                            <option value={"Pattern"}>Pattern Script</option>
                                         </select>
+                                    </div>
+                                    <div className="form-group col-lg-3">
+                                        <label>Select form Date</label>
+                                        <DatePicker className="form-select" selected={FromDate == '' ? formattedDate : FromDate} onChange={(date) => setFromDate(date)} />
+                                    </div>
+                                    <div className="form-group col-lg-3">
+                                        <label>Select To Date</label>
+                                        <DatePicker className="form-select" selected={ToDate == '' ? Defult_To_Date : ToDate} onChange={(date) => setToDate(date)} />
+
                                     </div>
                                 </div>
                             </div>
-                            <FullDataTable
-                                columns={columns}
-                                data={getAllClientThreadeResponse}
-                                checkBox={false}
-                            />
+                            {
+                                <div className="modal-body">
+                                    <GridExample
+                                        columns={selectStrategyType === "Scalping" ? columns :
+                                            selectStrategyType === "Option Strategy" ? columns1 :
+                                                selectStrategyType === "Pattern" ? columns2 : columns
+                                        }
+                                        data={tradeHistory.data}
+                                        onRowSelect={handleRowSelect}
+                                        checkBox={true}
+                                    />
+                                </div>
+                            }
+                            <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>
+
+                            {
+                                showTable && <>
+                                    <div className='mt-3'>
+                                        <GridExample
+                                            columns={selectStrategyType === "Scalping" ? columns3 : selectStrategyType === "Option Strategy" ? columns4 : columns5}
+                                            data={getAllTradeData.data}
+                                            onRowSelect={handleRowSelect}
+                                            checkBox={false}
+                                        />
+                                    </div>
+
+                                </>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
-        </>
-    )
-}
+        </div>
+    );
+};
 
-export default ClientThreadResponse
+export default TradeResponse;

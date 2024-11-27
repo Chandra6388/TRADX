@@ -265,9 +265,9 @@ const LastPattern = () => {
                                         <div className='shadow p-3 bg-white rounded m-4'>
                                             {selectedPatternType === 'Candlestick Patterns' ? (
 
-                                                <AgChartsReact ChartData={getCandlestickTable && getCandlestickTable.data1} timeFrame={selectedTimeFrame} />
+                                                <AgChartsReact ChartData={getCandlestickTable && getCandlestickTable?.data1} timeFrame={selectedTimeFrame} type={"pattern"} />
                                             ) : (
-                                                <AgChartsReact ChartData={ChartPatternTableData?.CandleData} timeFrame={selectedTimeFrame} />
+                                                <AgChartsReact ChartData={ChartPatternTableData?.CandleData} timeFrame={selectedTimeFrame} type = {"charting"} />
                                             )
                                             }
                                             {/* <AgChartsReact ChartData={getCandlestickTable && getCandlestickTable.data1} type={'technicalPattern'} timeFrame={selectedTimeFrame}/> */}

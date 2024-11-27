@@ -3,7 +3,7 @@ import { AgChartsReact } from "ag-charts-react";
 import "ag-charts-enterprise";
 import * as d3 from "d3";
 
-const ChartExample = ({ ChartData , timeFrame }) => {
+const ChartExample = ({ ChartData , timeFrame , type }) => {
   const [options, setOptions] = useState(null);
 
   useEffect(() => { 

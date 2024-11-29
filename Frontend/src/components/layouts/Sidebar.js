@@ -324,6 +324,12 @@ const Sidebar = () => {
                                                 <span>Add Clients</span>
                                             </Link>
                                         </li>
+                                        <li className={activeItem === '/subadmin/allclient' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/allclient')}>
+                                            <Link to='/subadmin/allclient' className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>All Clients</span>
+                                            </Link>
+                                        </li>
                                      
 
                                     </>

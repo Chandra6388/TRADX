@@ -2,8 +2,10 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom';
 import Sidebar from '../components/layouts/Sidebar';
 import Header from '../components/layouts/Header';
-import Dashboard from '../components/subadmin/subadminDashboard/Dashboard';
-import AddClient from '../components/subadmin/Client/AddClient';
+import Dashboard from '../components/subAdmin/subadminDashboard/Dashboard';
+// import AddClient from '../components/subadmin/Client/AddClient';
+import AddClient from '../components/subAdmin/Client/AddClient';
+import AllClient from '../components/subAdmin/Client/Allclient';
 
 const SubAdminRoutes = () => {
   return (
@@ -14,6 +16,7 @@ const SubAdminRoutes = () => {
       <Routes>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/addclient" element={<AddClient />} />
+        <Route path="/allclient" element={<AllClient />} />
 
       </Routes>
 

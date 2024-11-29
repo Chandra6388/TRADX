@@ -6,6 +6,7 @@ import { useFormik } from "formik";
 import { useNavigate } from 'react-router-dom';
 
 const AddClient = () => {
+    const navigate = useNavigate();
 
 
     const formik = useFormik({

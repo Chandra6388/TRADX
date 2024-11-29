@@ -5,12 +5,15 @@ import UserRoute from './Routes/User.Routes'
 import Login from './components/auth/Login';
 import SuperAdminRoute from './Routes/SuperAdmin.Routes'
 import Register from './components/auth/Register'
+import SubAdminRoutes from './Routes/SubAdminRoutes'
 
 
 const App = () => {
   const navigate = useNavigate()
   const location = useLocation();
   const Role = localStorage.getItem('Role')
+  console.log(Role);
+  
 
   useEffect(() => {
     if (location.pathname.startsWith("/updatepassword")) {
@@ -24,6 +27,8 @@ const App = () => {
 
     // Check if user details exist
     if (!Role || Role === "null" || location.pathname === "/login") {
+      console.log("login");
+      
       navigate("/login");
       return;
     }
@@ -41,6 +46,15 @@ const App = () => {
           navigate("/user/dashboard");
         }
         break;
+        case "Subadmin":
+          console.log("subadmin");
+          
+        if (location.pathname === "/login" || location.pathname === "/" || !location.pathname.startsWith("/subadmin")) {
+          navigate("/subadmin/dashboard");
+          console.log("subadmin");
+          
+        }
+        break;
       default:
         break;
     }
@@ -56,6 +70,7 @@ const App = () => {
         <Route path="/admin/*" element={(Role === "Admin") ? <AdminRoute /> : <Login />} />
         <Route path="/user/*" element={(Role === "User") ? <UserRoute /> : <Login />} />
         <Route path="/superadmin/*" element={(Role === "Superadmin") ? <SuperAdminRoute /> : <Login />} />
+        <Route path="/subadmin/*" element={(Role === "Subadmin") ? <SubAdminRoutes /> : <Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 

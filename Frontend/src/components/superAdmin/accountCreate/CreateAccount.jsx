@@ -205,9 +205,7 @@ const Adduser = () => {
     return (
         <>
             <AddForm
-                fields={fields.filter(
-                    (field) => !field.showWhen || field.showWhen(formik.values)
-                )}
+                fields={fields}
                 page_title="Create Account"
                 btn_name="Add"
                 btn_name1="Cancel"

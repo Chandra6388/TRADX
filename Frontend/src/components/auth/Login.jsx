@@ -42,6 +42,9 @@ const Login = () => {
                         } else if (response.Role === 'Superadmin') {
                             navigate('/superadmin/dashboard');
                         }
+                        else if (response.Role === 'Subadmin') {
+                            navigate('/subadmin/dashboard');
+                        }
                     }, 1500)
                 }
                 else {

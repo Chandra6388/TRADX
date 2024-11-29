@@ -309,6 +309,25 @@ const Sidebar = () => {
 
                                     </>
                                 )
+                                : role === 'Subadmin' ?
+                                (
+                                    <>
+                                        <li className={activeItem === '/subadmin/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/dashboard')}>
+                                            <Link to="/subadmin/dashboard" className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>Dashboard</span>
+                                            </Link>
+                                        </li>
+                                        <li className={activeItem === '/subadmin/addclient' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/addclient')}>
+                                            <Link to='/subadmin/addclient' className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>Add Clients</span>
+                                            </Link>
+                                        </li>
+                                     
+
+                                    </>
+                                )
                                 : (
                                     <>
                                         <li className={activeItem === '/user/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/user/dashboard')}>

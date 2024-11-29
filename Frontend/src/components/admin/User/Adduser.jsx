@@ -102,6 +102,17 @@ const Adduser = () => {
             })
     };
 
+
+//     username: str
+// password: str
+// cpassword: str
+// email: str
+// mobile_no: str
+// bname: str
+// group: list
+// planname: str
+// ClientAmmount: float
+// SubAdmin: str = ""
     const formik = useFormik({
         initialValues: {
             username: "",
@@ -113,7 +124,7 @@ const Adduser = () => {
             ClientAmmount: 0,
             planname: "",
             bname: "",
-            groupName: "",
+            group: [],
         },
         validate: (values) => {
             let errors = {};

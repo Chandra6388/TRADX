@@ -11,3 +11,23 @@ export const subAdminDashboard = async (data) => {
     throw err; // Rethrow the error for error handling
   }
 };
+
+export const createClient = async (data) => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}addclient`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}

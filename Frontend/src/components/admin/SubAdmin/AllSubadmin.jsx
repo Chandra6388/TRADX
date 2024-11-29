@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GetAllSubadmin} from '../../CommonAPI/Admin';
+import { GetAllSubadmin } from '../../CommonAPI/Admin';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { SquarePen } from 'lucide-react';
@@ -15,12 +15,11 @@ const AllSubadmin = () => {
     const navigate = useNavigate();
 
     const [clientService, setClientService] = useState({ loading: true, data: [] });
- 
-   
+
     const [searchInput, setSearchInput] = useState('')
 
 
-   
+
     useEffect(() => {
         fetchAllSubadmin();
     }, [searchInput]);
@@ -40,7 +39,7 @@ const AllSubadmin = () => {
                         item.Username.toLowerCase().includes(searchInput.toLowerCase()) ||
                         item.Name.toLowerCase().includes(searchInput.toLowerCase()) ||
                         item.EmailId.toLowerCase().includes(searchInput.toLowerCase()) ||
-                        item.Mobile_No.toLowerCase().includes(searchInput.toLowerCase()) 
+                        item.Mobile_No.toLowerCase().includes(searchInput.toLowerCase())
                     return searchInputMatch
                 })
 
@@ -56,16 +55,16 @@ const AllSubadmin = () => {
         }
     };
 
-  
+
     const EditSubadmindetail = (value, tableMeta) => {
-        const rowData = clientService.data[tableMeta.rowIndex]; 
+        const rowData = clientService.data[tableMeta.rowIndex];
         navigate(`/admin/editSubadmin`, {
             state: { rowData },
         });
     };
-    
 
-   
+
+
 
 
     const columns = [
@@ -86,8 +85,8 @@ const AllSubadmin = () => {
                 sort: true,
                 customBodyRender: (value, tableMeta) => (
                     <SquarePen
-                    onClick={() => EditSubadmindetail(value, tableMeta)} />
-                    
+                        onClick={() => EditSubadmindetail(value, tableMeta)} />
+
                 ),
             },
         },
@@ -127,13 +126,10 @@ const AllSubadmin = () => {
                 customBodyRender: (value) => value || '-'
             }
         },
-        
-        
-    
+
+
+
     ];
-
-
-
 
 
 
@@ -159,7 +155,7 @@ const AllSubadmin = () => {
                     </div>
                 </div>
             </div>
-    
+
         </>
     );
 };

@@ -5,10 +5,10 @@ export const subAdminDashboard = async (data) => {
 
   try {
     const res = await axios.get(`${Config.base_url}Subadmindashboard/${data.userName}`);
-    return res?.data; // Handle the response here
+    return res?.data;  
   } catch (err) {
     console.error("API Error: ", err);
-    throw err; // Rethrow the error for error handling
+    throw err;  
   }
 };
 
@@ -30,4 +30,23 @@ export const createClient = async (data) => {
         return err
     }
 
+}
+
+export const GetSunAdminGroupNames = async (data) => {
+  const token = localStorage.getItem('token')
+  try {
+      const res = await axios.get(`${Config.base_url}SubAdminGrropselct/${data.userName}`,
+          {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              }
+          }
+      )
+      return res?.data
+
+  }
+  catch (err) {
+      return err
+  }
 }

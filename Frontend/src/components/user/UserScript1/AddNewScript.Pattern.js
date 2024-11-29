@@ -3,11 +3,13 @@ import AddForm from "../../../ExtraComponent/FormData";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
-import { AddAdminScript, GET_EXPIRY_DATE, Get_StrikePrice, Get_Symbol, Get_Pattern_Time_Frame, Get_Pattern_Charting, Get_Pattern_Name, GetExchange } from '../../CommonAPI/Admin'
+import { GET_EXPIRY_DATE, Get_StrikePrice, Get_Symbol, Get_Pattern_Time_Frame, Get_Pattern_Charting, Get_Pattern_Name, GetExchange, ExpriyEndDate } from '../../CommonAPI/Admin'
+import { AddScript } from '../../CommonAPI/User'
 
 const AddClient = () => {
 
     const location = useLocation()
+    const userName = localStorage.getItem('name')
     const navigate = useNavigate()
     const [getSymbolData, setSymbolData] = useState({ loading: true, data: [] })
     const [getAllExchange, setAllExchange] = useState([])
@@ -17,6 +19,8 @@ const AddClient = () => {
     const [getChartPattern, setChartPattern] = useState({ loading: true, data: [] })
     const [getPattern, setPattern] = useState({ loading: true, data: [] })
 
+
+ 
     const SweentAlertFun = (text) => {
         Swal.fire({
             title: "Error",
@@ -25,10 +29,24 @@ const AddClient = () => {
             timer: 1500,
             timerProgressBar: true
         });
-
     }
 
+    const getEndData = (stg) => {
+        const dataWithoutLastItem = location?.state.data.scriptType.data.slice(0, -1);
+        const foundItem = dataWithoutLastItem.find((item) => {
+          return item.Pattern.includes(stg);
+        });
+        console.log(foundItem)
+        return foundItem.EndDate;
+      };
+
+
+    useEffect(() => {
+        get_Exchange()
+    }, [])
+
     const formik = useFormik({
+        
         initialValues: {
             MainStrategy: location.state.data.selectStrategyType,
             Username: location.state.data.selectGroup,
@@ -49,12 +67,12 @@ const AddClient = () => {
             HoldExit: "",
             EntryPrice: 0.0,
             EntryRange: 0.0,
-            EntryTime: "",
-            ExitTime: "",
+            EntryTime: "09:15:00",
+            ExitTime: "15:25:00",
             ExitDay: "",
             FixedSM: "",
             TType: "",
-            serendate: "2023-10-25",
+            serendate: "",
             expirydata1: "",
             Expirytype: "",
             Striketype: "",
@@ -69,13 +87,14 @@ const AddClient = () => {
             CEDeepHigher: 0.0,
             PEDeepLower: 0.0,
             PEDeepHigher: 0.0,
+            Trade_Count: 1,
+            Trade_Execution: "Paper Trade",
         },
 
         validate: (values) => {
             let errors = {};
             const maxTime = "15:29:59";
             const minTime = "09:15:00";
-
             if (!values.Exchange) {
                 errors.Exchange = "Please Select Exchange Type.";
             }
@@ -84,6 +103,12 @@ const AddClient = () => {
             }
             if (!values.Symbol) {
                 errors.Symbol = "Please Enter Symbol Type.";
+            }
+            if (!values.Trade_Execution || values.Trade_Execution == 0) {
+                errors.Trade_Execution = "Please Select Trade Execution.";
+            }
+            if (!values.Trade_Count || values.Trade_Count == 0) {
+                errors.Trade_Count = "Please Enter Trade Count.";
             }
             if (!values.Optiontype && (values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK") && values.Exchange == "NFO") {
                 errors.Optiontype = "Enter Option Type.";
@@ -138,14 +163,14 @@ const AddClient = () => {
             else if (values.EntryTime > maxTime) {
                 errors.EntryTime = "Entry Time Must be Before 15:29:59.";
             }
+
             return errors;
         },
-
 
         onSubmit: async (values) => {
             const req = {
                 MainStrategy: location.state.data.selectStrategyType,
-                Username: location.state.data.selectGroup,
+                Username: userName,
                 Strategy: values.Strategy,
                 ETPattern: values.ETPattern,
                 Timeframe: values.Timeframe,
@@ -160,15 +185,18 @@ const AddClient = () => {
                 Quantity: values.Quantity,
                 LowerRange: 0.0,
                 HigherRange: 0.0,
-                HoldExit: "",
+                HoldExit: '',
                 EntryPrice: 0.0,
                 EntryRange: 0.0,
                 EntryTime: values.EntryTime,
                 ExitTime: values.ExitTime,
                 ExitDay: values.ExitDay,
+                TradeCount: Number(values.Trade_Count),
+                TradeExecution: values.Trade_Execution,
                 FixedSM: "",
                 TType: values.TType,
-                expirydata1: values.Exchange == "NSE" ? "-" : values.expirydata1,
+                serendate: getEndData(values.Strategy),
+                expirydata1: values.expirydata1,
                 Expirytype: "",
                 Striketype: "",
                 DepthofStrike: 0,
@@ -182,29 +210,30 @@ const AddClient = () => {
                 CEDeepHigher: 0.0,
                 PEDeepLower: 0.0,
                 PEDeepHigher: 0.0,
-            }
+                stretegytag: values.Strategy
+            } 
             if (values.EntryTime >= values.ExitTime) {
                 return SweentAlertFun("Exit Time should be greater than Entry Time")
             }
 
-            await AddAdminScript(req)
+            await AddScript(req)
                 .then((response) => {
                     if (response.Status) {
                         Swal.fire({
                             title: "Script Added !",
-                            text: response.massage,
+                            text: response.message,
                             icon: "success",
                             timer: 1500,
                             timerProgressBar: true
                         });
                         setTimeout(() => {
-                            navigate('/admin/allscript')
+                            navigate('/user/dashboard')
                         }, 1500)
                     }
                     else {
                         Swal.fire({
                             title: "Error !",
-                            text: "Error in added new Script..!",
+                            text: response.message,
                             icon: "error",
                             timer: 1500,
                             timerProgressBar: true
@@ -217,7 +246,6 @@ const AddClient = () => {
         },
     });
 
-
     useEffect(() => {
         formik.setFieldValue('Strategy', "CandlestickPattern")
         formik.setFieldValue('Exchange', "NFO")
@@ -229,6 +257,8 @@ const AddClient = () => {
         formik.setFieldValue('TStype', "Point")
         formik.setFieldValue('ExitDay', "Intraday")
         formik.setFieldValue('TType', "BUY")
+        formik.setFieldValue('Trade_Count', 1)
+
     }, [])
 
     const get_Exchange = async () => {
@@ -246,13 +276,8 @@ const AddClient = () => {
 
             })
     }
-    
-    useEffect(() => {
-        get_Exchange()
-    }, [])
 
-
-    const SymbolSelectionArr = [
+    const fields = [
         {
             name: "Exchange",
             label: "Exchange",
@@ -263,12 +288,9 @@ const AddClient = () => {
             })),
             hiding: false,
             label_size: 12,
-            headingtype: 1,
-
             col_size: formik.values.Exchange == "NFO" && (formik.values.Instrument == 'FUTIDX' || formik.values.Instrument == 'FUTSTK') ? 3 : formik.values.Exchange == "NFO" && (formik.values.Instrument == 'OPTIDX' || formik.values.Instrument == 'OPTSTK') ? 4 : 6,
             disable: false,
         },
-
         {
             name: "Instrument",
             label: "Instrument",
@@ -296,8 +318,6 @@ const AddClient = () => {
             showWhen: (values) => values.Exchange == "NFO" || values.Exchange == "CDS" || values.Exchange == "MCX",
             hiding: false,
             label_size: 12,
-            headingtype: 1,
-
             col_size: formik.values.Exchange == "NFO" && (formik.values.Instrument == 'FUTIDX' || formik.values.Instrument == 'FUTSTK') ? 3 : formik.values.Exchange == "NFO" && (formik.values.Instrument == 'OPTIDX' || formik.values.Instrument == 'OPTSTK') ? 4 : 6,
             disable: false,
         },
@@ -311,8 +331,6 @@ const AddClient = () => {
             })),
             showWhen: (values) => values.Exchange === "NFO" || values.Exchange === "NSE" || values.Exchange === "CDS" || values.Exchange === "MCX",
             label_size: 12,
-            headingtype: 1,
-
             hiding: false,
             col_size: formik.values.Exchange == "NFO" && (formik.values.Instrument == 'FUTIDX' || formik.values.Instrument == 'FUTSTK') ? 3 : formik.values.Exchange == "NFO" && (formik.values.Instrument == 'OPTIDX' || formik.values.Instrument == 'OPTSTK') ? 4 : 6,
             disable: false,
@@ -327,8 +345,6 @@ const AddClient = () => {
             ],
             showWhen: (values) => values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK",
             label_size: 12,
-            headingtype: 1,
-
             hiding: false,
             col_size: 4,
             disable: false,
@@ -343,8 +359,6 @@ const AddClient = () => {
             })),
             showWhen: (values) => values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK",
             label_size: 12,
-            headingtype: 1,
-
             col_size: 4,
             hiding: false,
             disable: false,
@@ -359,16 +373,10 @@ const AddClient = () => {
             })),
             showWhen: (values) => values.Exchange === "NFO" || values.Exchange === "CDS" || values.Exchange === "MCX",
             label_size: 12,
-            headingtype: 1,
-
             hiding: false,
             col_size: formik.values.Exchange == "NFO" && (formik.values.Instrument == 'FUTIDX' || formik.values.Instrument == 'FUTSTK') ? 3 : formik.values.Exchange == "NFO" && (formik.values.Instrument == 'OPTIDX' || formik.values.Instrument == 'OPTSTK') ? 4 : 4,
             disable: false,
         },
-
-    ]
-
-    const EntryRuleArr = [
         {
             name: "Timeframe",
             label: "Time Frame",
@@ -377,25 +385,23 @@ const AddClient = () => {
                 label: item,
                 value: item
             })),
+
             label_size: 12,
-            headingtype: 2,
             hiding: false,
-            col_size: 3,
+            col_size: 4,
             disable: false,
         },
         {
             name: "Strategy",
             label: "Pattern Type",
             type: "select",
-            options: [
-                { label: "Candlestick Pattern", value: "CandlestickPattern" },
-                { label: "Charting Pattern", value: "ChartingPattern" },
-            ],
-
+            options: location?.state?.data?.scriptType?.data[location?.state?.data?.scriptType?.len]?.CombinePattern.map((item) => ({
+                label: item,
+                value: item
+            })),
             label_size: 12,
             hiding: false,
-            headingtype: 2,
-            col_size: 3,
+            col_size: 4,
             disable: false,
         },
         {
@@ -410,10 +416,46 @@ const AddClient = () => {
                     label: item,
                     value: item
                 })),
+
+
             label_size: 12,
             hiding: false,
-            headingtype: 2,
-            col_size: 3,
+            col_size: 4,
+            disable: false,
+        },
+        {
+            name: "TStype",
+            label: "Measurement Type",
+            type: "select",
+            options: [
+                { label: "Point", value: "Point" },
+                { label: "Percantage", value: "Percantage" },
+            ],
+
+            label_size: 12,
+            hiding: false,
+            col_size: 4,
+            disable: false,
+        },
+        {
+            name: "Targetvalue",
+            label: "Target",
+            type: "text3",
+
+            label_size: 12,
+            hiding: false,
+            col_size: 4,
+            disable: false,
+        },
+        {
+            name: "Slvalue",
+            label: "Stoploss",
+            type: "text3",
+
+
+            label_size: 12,
+            hiding: false,
+            col_size: 4,
             disable: false,
         },
         {
@@ -426,57 +468,10 @@ const AddClient = () => {
 
             ],
             label_size: 12,
-            headingtype: 2,
-            hiding: false,
-            col_size: 3,
-            disable: false,
-        },
-
-    ]
-
-    const ExitRuleArr = [
-       
-        {
-            name: "Targetvalue",
-            label: "Target",
-            type: "text3",
-            label_size: 12,
-            hiding: false,
-            headingtype: 3,
-            col_size: 4,
-            disable: false,
-        },
-        {
-            name: "Slvalue",
-            label: "Stoploss",
-            type: "text3",
-            label_size: 12,
-            headingtype: 3,
             hiding: false,
             col_size: 4,
             disable: false,
         },
-
-    ]
-
-    const RiskManagementArr = [
-        {
-
-            name: "TStype",
-            label: "Measurement Type",
-            type: "select",
-            options: [
-                { label: "Point", value: "Point" },
-                { label: "Percantage", value: "Percantage" },
-            ],
-
-            label_size: 12,
-            hiding: false,
-            headingtype: 4,
-            col_size: 4,
-            disable: false,
-        },
-
         {
             name: "Quantity",
             label: formik.values.Exchange == "NFO" ? "Lot" : "Quantity",
@@ -485,14 +480,8 @@ const AddClient = () => {
             label_size: 12,
             hiding: false,
             col_size: 4,
-            headingtype: 4,
             disable: false,
         },
-
-
-    ]
-
-    const TimeArr = [
         {
             name: "ExitDay",
             label: "Exit Day",
@@ -504,8 +493,39 @@ const AddClient = () => {
             label_size: 12,
             hiding: false,
             col_size: 4,
-            headingtype: 5,
             disable: false,
+        },
+        {
+            name: "Trade_Execution",
+            label: "Trade Execution",
+            type: "select",
+            options: [
+                { label: "Paper Trade", value: "Paper Trade" },
+                { label: "Live Trade", value: "Live Trade" },
+            ],
+
+            label_size: 12,
+            col_size: 4,
+            disable: false,
+            hiding: false,
+        },
+        {
+            name: "Trade_Count",
+            label: "Trade Count",
+            type: "text5",
+            label_size: 12,
+            col_size: 4,
+            disable: false,
+            hiding: false,
+        },
+        {
+            name: "cp",
+            label: "cp",
+            type: "cp",
+            label_size: 12,
+            col_size: 4,
+            disable: false,
+            hiding: false,
         },
         {
             name: "EntryTime",
@@ -514,7 +534,6 @@ const AddClient = () => {
             hiding: false,
             label_size: 12,
             col_size: 4,
-            headingtype: 5,
             disable: false,
         },
         {
@@ -524,71 +543,9 @@ const AddClient = () => {
             hiding: false,
             label_size: 12,
             col_size: 4,
-            headingtype: 5,
-            disable: false,
-        },
-    ]
-
-    const fields = [
-        {
-            name: "Heading",
-            label: "Symbol_Selection",
-            type: "heading",
-            hiding: false,
-            label_size: 12,
-            headingtype: 1,
-            data : SymbolSelectionArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-            col_size: 12,
-            disable: false,
-        },
-        {
-            name: "Heading",
-            label: "Entry_Rule",
-            type: "heading",
-            hiding: false,
-            label_size: 12,
-            data : EntryRuleArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-            headingtype: 2,
-            col_size: 12,
-            disable: false,
-        },
-        {
-            name: "Heading",
-            label: "Risk_Management",
-            type: "heading",
-            hiding: false,
-            label_size: 12,
-            data: RiskManagementArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-            headingtype: 4,
-            col_size: 12,
-            disable: false,
-        },
-        {
-            name: "Heading",
-            label: "Exit_Rule",
-            type: "heading",
-            hiding: false,
-            label_size: 12,
-            data: ExitRuleArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-            headingtype: 3,
-            headingtype: 3,
-            col_size: 12,
-            disable: false,
-        },
-        
-        {
-            name: "Heading",
-            label: "Time_Duration",
-            type: "heading",
-            hiding: false,
-            label_size: 12,
-            data: TimeArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-            col_size: 12,
-            headingtype: 5,
             disable: false,
         },
     ];
-
 
     const getSymbol = async () => {
         if (formik.values.Exchange) {
@@ -649,12 +606,12 @@ const AddClient = () => {
 
 
     const getExpiry = async () => {
-        if (formik.values.Instrument && formik.values.Exchange && formik.values.Symbol && formik.values.Exchange != 'NSE') {
+        if (formik.values.Symbol) {
             const data = {
                 Exchange: formik.values.Exchange,
-                Instrument: formik.values.Instrument,
-                Symbol: formik.values.Symbol,
-                Strike: formik.values.Strike
+                Instrument: formik.values.Exchange == "NSE" ? "" : formik.values.Instrument,
+                Symbol: formik.values.Exchange == "NSE" ? "" : formik.values.Symbol,
+                Strike: formik.values.Exchange == "NSE" ? "" : formik.values.Strike
             }
 
             await GET_EXPIRY_DATE(data)
@@ -683,7 +640,6 @@ const AddClient = () => {
     useEffect(() => {
         getExpiry()
     }, [formik.values.Instrument, formik.values.Exchange, formik.values.Symbol, formik.values.Strike])
-
 
     const GetPatternTimeFrame = async () => {
 
@@ -746,7 +702,6 @@ const AddClient = () => {
         GetPatternCharting()
     }, [])
 
-
     useEffect(() => {
         formik.setFieldValue('expirydata1', "");
         formik.setFieldValue('Optiontype', "");
@@ -761,7 +716,6 @@ const AddClient = () => {
         formik.setFieldValue('Symbol', "");
     }, [formik.values.Instrument])
 
-
     useEffect(() => {
         if (formik.values.Instrument == "FUTIDX" || formik.values.Instrument == "FUTSTK") {
             formik.setFieldValue('Optiontype', "")
@@ -772,17 +726,15 @@ const AddClient = () => {
         }
     }, [formik.values.Instrument, formik.values.Exchange])
 
-
     return (
         <>
             <AddForm
                 fields={fields.filter((field) => !field.showWhen || field.showWhen(formik.values))}
-
-                page_title={`Add Script - Pattern Script  , Group Name : ${location.state.data.selectGroup}`}
+                page_title="Add Script pattern"
                 btn_name="Add"
                 btn_name1="Cancel"
                 formik={formik}
-                btn_name1_route={"/admin/allscript"}
+                btn_name1_route={"/user/dashboard"}
             />
         </>
     );

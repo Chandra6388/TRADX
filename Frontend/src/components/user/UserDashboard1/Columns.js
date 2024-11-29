@@ -126,7 +126,7 @@ export const getColumns = (handleAddScript1) => [
     },
     {
         name: "Quantity",
-        label: "Lot",
+        label: "Quantity",
         options: {
             filter: true,
             sort: true,

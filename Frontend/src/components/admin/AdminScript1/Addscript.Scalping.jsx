@@ -3,40 +3,41 @@ import AddForm from "../../../ExtraComponent/FormData";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
-import { Get_Symbol, Get_StrikePrice, GET_EXPIRY_DATE, GetExchange } from '../../CommonAPI/Admin'
-import { AddScript } from '../../CommonAPI/User'
+import { Get_Symbol, Get_StrikePrice, GET_EXPIRY_DATE, AddAdminScript, GetExchange } from '../../CommonAPI/Admin'
+
 
 const AddClient = () => {
-  const userName = localStorage.getItem('name')
+
   const navigate = useNavigate()
   const location = useLocation()
   const [getAllExchange, setAllExchange] = useState([])
-  const [getSymbolData, setSymbolData] = useState({ loading: true, data: [] })
-  const [getStricke, setStricke] = useState({ loading: true, data: [] })
-  const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: [] })
+  const [getSymbolData, setSymbolData] = useState({
+    loading: true,
+    data: []
+  })
+
+  const [getStricke, setStricke] = useState({
+    loading: true,
+    data: []
+  })
+  const [getExpiryDate, setExpiryDate] = useState({
+    loading: true,
+    data: []
+  })
 
   const SweentAlertFun = (text) => {
     Swal.fire({
-      title: "Warning !",
+      title: "Error",
       text: text,
-      icon: "warning",
+      icon: "error",
       timer: 1500,
       timerProgressBar: true
     });
+
   }
-
-  const getEndData = (stg) => {
-    const dataWithoutLastItem = location?.state.data.scriptType.data.slice(0, -1);
-    const foundItem = dataWithoutLastItem.find((item) => {
-      return item.Scalping.includes(stg);
-    });
-    return foundItem.EndDate;
-  };
-
-
   const formik = useFormik({
     initialValues: {
-      MainStrategy: "",
+      MainStrategy: location.state.data.selectStrategyType,
       Username: "",
       Strategy: "",
       ETPattern: "",
@@ -48,11 +49,11 @@ const AddClient = () => {
       Optiontype: "",
       Targetvalue: 1,
       Slvalue: 1,
-      TStype: "",
+      TStype: "Point",
       Quantity: 1,
       LowerRange: 0,
       HigherRange: 0,
-      HoldExit: "",
+      HoldExit: "Hold",
       EntryPrice: 0,
       EntryRange: 0,
       EntryTime: "09:15:00",
@@ -75,21 +76,16 @@ const AddClient = () => {
       CEDeepHigher: 0.0,
       PEDeepLower: 0.0,
       PEDeepHigher: 0.0,
-      Trade_Count: 1,
-      Trade_Execution: "Paper Trade",
+      set_Range: false,
+      Set_First_Trade_Range: false
     },
+
     validate: (values) => {
       let errors = {};
       const maxTime = "15:29:59";
       const minTime = "09:15:00";
       if (!values.Strategy) {
         errors.Strategy = "Please Select Strategy Type.";
-      }
-      if (!values.Trade_Execution || values.Trade_Execution == 0) {
-        errors.Trade_Execution = "Please Select Trade Execution.";
-      }
-      if (!values.Trade_Count || values.Trade_Count == 0) {
-        errors.Trade_Count = "Please Enter Trade Count.";
       }
       if (!values.Exchange) {
         errors.Exchange = "Please Select Exchange Type.";
@@ -115,6 +111,11 @@ const AddClient = () => {
       if (!values.Quantity) {
         errors.Quantity = formik.values.Exchange == "NFO" ? "Please Enter Lot Value." : "Please Enter Quantity Value.";
       }
+      if (!values.TStype && values.Strategy != 'Fixed Price') {
+        errors.TStype = "Please Select Measurement Type.";
+      }
+
+
       if (!values.ExitTime) {
         errors.ExitTime = "Please Select Exit Time.";
       } else if (values.ExitTime > maxTime) {
@@ -131,177 +132,141 @@ const AddClient = () => {
       else if (values.EntryTime > maxTime) {
         errors.EntryTime = "Entry Time Must be Before 15:29:59.";
       }
-      if (!values.TStype && values.Strategy != 'Fixed Price') {
-        errors.TStype = "Please Select Measurement Type.";
-      }
       if (!values.ExitDay) {
         errors.ExitDay = "Please Select Exit Day.";
       }
-      if (!values.EntryPrice && values.EntryPrice != 0) {
-        errors.EntryPrice = values.Strategy == "Fixed Price" ? "Please Enter The Lowest Price." : "Please Enter The First Trade Lower Range";
+      if ((!values.EntryPrice || values.EntryPrice == 0) && (values.Set_First_Trade_Range || values.Strategy == 'Fixed Price')) {
+        errors.EntryPrice = "Please Enter The Lowest Price.";
       }
-      if (!values.EntryRange && values.EntryRange != 0) {
-        errors.EntryRange = values.Strategy == "Fixed Price" ? "Please Enter The Highest Price." : "Please Enter The First Trade Higher Range";
+      if ((!values.EntryRange || values.EntryRange == 0) && (values.Set_First_Trade_Range || values.Strategy == 'Fixed Price')) {
+        errors.EntryRange = "Please Enter The Highest Price.";
       }
-
       if (!values.Targetvalue) {
         errors.Targetvalue = values.Strategy == "Fixed Price" ? "Please Enter A Target Price." : "Please Enter A Target Value.";
       }
-      if (!values.LowerRange && values.Strategy != 'Fixed Price' && values.LowerRange != 0) {
+      if (!values.LowerRange && (values.set_Range)) {
         errors.LowerRange = "Please Enter The Lower Range.";
       }
-      if (!values.HigherRange && values.Strategy != 'Fixed Price' && values.HigherRange != 0) {
+      if (!values.HigherRange && (values.set_Range)) {
         errors.HigherRange = "Please Enter The Higher Range.";
       }
       if (!values.Group && values.Strategy === "Fixed Price") {
         errors.Group = "Please Select A Unique ID.";
       }
-      if (!values.HoldExit && values.Strategy != "Fixed Price") {
+      if (!values.HoldExit && values.set_Range) {
         errors.HoldExit = "Please Select Whether To Hold Or Exit.";
       }
       if (!values.Slvalue) {
         errors.Slvalue = values.Strategy == "Fixed Price" ? "Please Enter Stop Loss Price." : "Please Select A Stop Loss Value.";
       }
+      console.log(errors)
+
       return errors;
     },
 
+
     onSubmit: async (values) => {
+      const req = {
 
-      try {
-        const req = {
-          MainStrategy: location.state.data.selectStrategyType,
-          Username: userName,
-          Strategy: values.Strategy,
-          Exchange: values.Exchange,
-          Instrument: values.Exchange == "NSE" ? "" : values.Instrument,
-          Symbol: values.Symbol,
-          Optiontype: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" ? values.Optiontype : "",
-          Strike: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" ? values.Strike : "",
-          expirydata1: values.Exchange == "NSE" ? getExpiryDate.data[0] : values.expirydata1,
-          TType: values.TType == 0 ? "" : values.TType,
-          TStype: values.Strategy != "Fixed Price" ? values.TStype : '',
-          Targetvalue: values.Targetvalue,
-          Slvalue: values.Slvalue,
-          HoldExit: (values.Strategy === "Multi Directional" || values.Strategy === "One Directional") ? values.HoldExit : "",
-          ExitDay: values.ExitDay,
-          EntryTime: values.EntryTime,
-          ExitTime: values.ExitTime,
-          EntryPrice: Number(values.EntryPrice),
-          EntryRange: Number(values.EntryRange),
-          LowerRange: values.Strategy === "Fixed Price" ? 0 : Number(values.LowerRange),
-          HigherRange: values.Strategy === "Fixed Price" ? 0 : Number(values.HigherRange),
-          ETPattern: "",
-          Timeframe: "",
-          Quantity: values.Quantity,
-          serendate: getEndData(values.Strategy),
-          FixedSM: "Single",
-          Expirytype: "",
-          Striketype: "",
-          DepthofStrike: 0,
-          DeepStrike: 0,
-          Group: values.Strategy == "Fixed Price" ? values.Group : '',
-          CEDepthLower: 0.0,
-          CEDepthHigher: 0.0,
-          PEDepthLower: 0.0,
-          PEDepthHigher: 0.0,
-          CEDeepLower: 0.0,
-          CEDeepHigher: 0.0,
-          PEDeepLower: 0.0,
-          PEDeepHigher: 0.0,
-          TradeCount: values.Trade_Count,
-          TradeExecution: values.Trade_Execution,
-          stretegytag: values.Strategy
-        }
-
-        if ((Number(values.EntryPrice) > 0 || Number(values.EntryRange) > 0) &&
-          (Number(values.EntryPrice) >= Number(values.EntryRange))) {
-          return SweentAlertFun(
-            values.Strategy === 'Fixed Price'
-              ? "Higher Price should be greater than Lower Price"
-              : "First Trade Higher Range should be greater than First Trade Lower Range"
-          );
-        }
-        if (
-          values.Strategy !== 'Fixed Price' &&
-          Number(values.LowerRange) >= Number(values.HigherRange) &&
-          (Number(values.LowerRange) > 0 || Number(values.HigherRange) > 0)
-        ) {
-          return SweentAlertFun("Higher Price should be greater than Lower Range");
-        }
-        if (
-          values.Strategy === 'Fixed Price' &&
-          values.TType === 'BUY' &&
-          (
-            Number(values.EntryPrice) >= Number(values.EntryRange) ||
-            Number(values.Targetvalue) <= Number(values.EntryRange) ||
-            Number(values.Slvalue) >= Number(values.EntryPrice)
-          )
-        ) {
-          const alertMessage =
-            Number(values.Targetvalue) <= Number(values.EntryRange)
-              ? "Target should be greater than Higher Price"
-              : Number(values.EntryRange) <= Number(values.EntryPrice)
-                ? "Higher Price should be greater than Lower Price"
-                : "Stoploss should be smaller than Lower Price";
-
-          return SweentAlertFun(alertMessage);
-        }
-        if (
-          values.Strategy === 'Fixed Price' &&
-          values.TType === 'SELL' &&
-          (
-            Number(values.Targetvalue) >= Number(values.EntryPrice) ||
-            Number(values.Slvalue) <= Number(values.EntryRange)
-          )
-        ) {
-          const alertMessage =
-            Number(values.Targetvalue) >= Number(values.EntryPrice)
-              ? "Target should be smaller than Lower Price"
-              : "Stoploss should be greater than Higher Price";
-
-          return SweentAlertFun(alertMessage);
-        }
-
-        if (values.EntryTime >= values.ExitTime) {
-          return SweentAlertFun("Exit Time should be greater than Entry Time")
-        }
-
-        await AddScript(req)
-          .then((response) => {
-            if (response.Status) {
-              Swal.fire({
-                title: "Script Added !",
-                text: response.message,
-                icon: "success",
-                timer: 1500,
-                timerProgressBar: true
-              });
-              setTimeout(() => {
-                navigate('/user/dashboard')
-              }, 1500)
-            }
-            else {
-              Swal.fire({
-                title: "Error !",
-                text: response.message,
-                icon: "error",
-                timer: 1500,
-                timerProgressBar: true
-              });
-            }
-          })
-          .catch((err) => {
-            console.log("Error in added new Script", err)
-          })
+        MainStrategy: location.state.data.selectStrategyType,
+        Username: location.state.data.selectGroup,
+        Strategy: values.Strategy,
+        Exchange: values.Exchange,
+        Instrument: values.Exchange === "NFO" ? values.Instrument : "",
+        Symbol: values.Symbol,
+        Optiontype: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" ? values.Optiontype : "",
+        Strike: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" ? values.Strike : "",
+        expirydata1: values.Exchange == "NSE" ? getExpiryDate.data[0] : values.expirydata1,
+        TType: values.TType,
+        EntryPrice: values.EntryPrice,
+        EntryRange: values.EntryRange,
+        TStype: values.Strategy === "Fixed Price" ? "" : values.TStype,
+        Targetvalue: values.Targetvalue,
+        Slvalue: values.Slvalue,
+        LowerRange: values.Strategy === "Fixed Price" ? 0 : values.LowerRange,
+        HigherRange: values.Strategy === "Fixed Price" ? 0 : values.HigherRange,
+        HoldExit: (values.Strategy === "Multi Directional" || values.Strategy === "One Directional") ? values.HoldExit : "",
+        ExitDay: values.ExitDay,
+        EntryTime: values.EntryTime,
+        ExitTime: values.ExitTime,
+        ETPattern: "",
+        Timeframe: "",
+        Quantity: values.Quantity,
+        FixedSM: "Single",
+        serendate: "",
+        Expirytype: "",
+        Striketype: "",
+        DepthofStrike: 0,
+        DeepStrike: 0,
+        Group: values.Strategy == "Fixed Price" ? values.Group : '',
+        CEDepthLower: 0.0,
+        CEDepthHigher: 0.0,
+        PEDepthLower: 0.0,
+        PEDepthHigher: 0.0,
+        CEDeepLower: 0.0,
+        CEDeepHigher: 0.0,
+        PEDeepLower: 0.0,
+        PEDeepHigher: 0.0,
       }
-      catch (err) {
-        console.log("Error in Add Script", err)
+
+
+
+      if (values.Set_First_Trade_Range == true && (Number(values.EntryPrice) >= Number(values.EntryRange) || Number(values.EntryRange) == 0 || Number(values.EntryPrice) == 0)) {
+        return SweentAlertFun("First Trade Higher Range should be greater than First Trade Lower Range")
       }
-    },
+
+      if (values.Strategy != 'Fixed Price' && values.set_Range == true && (Number(values.LowerRange) >= Number(values.HigherRange) || Number(values.LowerRange) == 0 || Number(values.HigherRange) == 0)) {
+        return SweentAlertFun("Higher Price should be greater than Lower Range")
+      }
+
+      if (values.Strategy == 'Fixed Price' && values.TType == 'BUY' && (Number(values.EntryPrice) >= Number(values.EntryRange) || Number(values.Targetvalue) <= Number(values.EntryRange) || Number(values.Slvalue) >= Number(values.EntryPrice))) {
+        return SweentAlertFun(Number(values.Targetvalue) <= Number(values.EntryRange) ? "Target should be Greater than Higher Price " : Number(values.EntryRange) <= Number(values.EntryPrice) ? "Higher Price should be Greater than Lower Price" : "Stoploss should be Smaller than Lower Price")
+      }
+
+
+      if (values.Strategy == 'Fixed Price' && values.TType == 'SELL' && (Number(values.Targetvalue) >= Number(values.EntryPrice) || values.Slvalue <= Number(values.EntryRange))) {
+        return SweentAlertFun(Number(values.Targetvalue) >= Number(values.EntryPrice) ? "Target should be Smaller than Lower Price" : "Stoploss should be Greater than Higher Price")
+      }
+
+      if (values.EntryTime >= values.ExitTime) {
+        return SweentAlertFun("Exit Time should be greater than Entry Time")
+      }
+
+
+
+      await AddAdminScript(req)
+        .then((response) => {
+          if (response.Status) {
+            Swal.fire({
+              title: "Script Added !",
+              text:  response.message,
+              icon: "success",
+              timer: 1500,
+              timerProgressBar: true
+            });
+            setTimeout(() => {
+              navigate('/admin/allscript')
+            }, 1500)
+          }
+          else {
+            Swal.fire({
+              title: "Error !",
+              text: response.message,
+              icon: "error",
+              timer: 1500,
+              timerProgressBar: true
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("Error in added new Script", err)
+        })
+    }
+
   });
 
   useEffect(() => {
-    formik.setFieldValue('Strategy', location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len]?.CombineScalping[0])
+    formik.setFieldValue('Strategy', "Multi Directional")
     formik.setFieldValue('Exchange', "NFO")
     formik.setFieldValue("TType", "BUY")
     formik.setFieldValue("ExitDay", "Intraday")
@@ -312,15 +277,35 @@ const AddClient = () => {
     formik.setFieldValue("TStype", "Point")
   }, [])
 
-  const SymbolSelectionArr = [
+
+
+
+  useEffect(() => {
+    formik.setFieldValue('Strategy', "Fixed Price")
+  }, [])
+  // Fixed Target
+
+  const fields = [
+    {
+      name: "Strategy",
+      label: "Scalping Type",
+      type: "radio2",
+      title: [{ title: "Fixed Price", value: "Fixed Price" }, { title: "One Directional", value: "One Directional" }, { title: "Multi Directional", value: "Multi Directional" }],
+      hiding: false,
+      label_size: 12,
+      col_size: 12,
+      disable: false,
+    },
     {
       name: "Exchange",
       label: "Exchange",
       type: "select",
-      options: getAllExchange && getAllExchange.map((item) => ({ label: item, value: item })),
+      options: getAllExchange && getAllExchange.map((item) => ({
+        label: item,
+        value: item,
+      })),
       hiding: false,
       label_size: 12,
-      headingtype: 1,
       col_size: formik.values.Exchange == 'NFO' && (formik.values.Instrument === "FUTSTK" || formik.values.Instrument === "FUTIDX") ? 3 : formik.values.Exchange == 'NFO' && (formik.values.Instrument === "OPTIDX" || formik.values.Instrument === "OPTSTK") ? 4 : formik.values.Exchange == 'NSE' && formik.values.Instrument == 'FUTIDX' ? 6 : 6,
       disable: false,
     },
@@ -351,7 +336,6 @@ const AddClient = () => {
       showWhen: (values) => values.Exchange == "NFO" || values.Exchange == "CDS" || values.Exchange == "MCX",
       hiding: false,
       label_size: 12,
-      headingtype: 1,
       col_size: formik.values.Instrument === "FUTSTK" || formik.values.Instrument === "FUTIDX" ? 3 : formik.values.Instrument === "OPTIDX" || formik.values.Instrument === "OPTSTK" ? 4 : 3,
       disable: false,
     },
@@ -365,7 +349,6 @@ const AddClient = () => {
       })),
       showWhen: (values) => values.Exchange === "NFO" || values.Exchange === "NSE" || values.Exchange === "CDS" || values.Exchange === "MCX",
       label_size: 12,
-      headingtype: 1,
       hiding: false,
       col_size: formik.values.Exchange == "NSE" ? 6 : formik.values.Instrument === "OPTIDX" || formik.values.Instrument === "OPTSTK" ? 4 : 3,
       disable: false,
@@ -382,7 +365,6 @@ const AddClient = () => {
       label_size: 12,
       hiding: false,
       col_size: 4,
-      headingtype: 1,
       disable: false,
     },
     {
@@ -395,7 +377,6 @@ const AddClient = () => {
       })),
       showWhen: (values) => values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK",
       label_size: 12,
-      headingtype: 1,
       col_size: 4,
       hiding: false,
       disable: false,
@@ -403,21 +384,90 @@ const AddClient = () => {
     {
       name: "expirydata1",
       label: "Expiry Date",
-      type: "select",
+      type: "select1",
       options: getExpiryDate && getExpiryDate.data.map((item) => ({
         label: item,
         value: item
       })),
       showWhen: (values) => values.Exchange === "NFO" || values.Exchange === "CDS" || values.Exchange === "MCX",
       label_size: 12,
-      headingtype: 1,
       hiding: false,
       col_size: formik.values.Instrument === "FUTSTK" || formik.values.Instrument === "FUTIDX" ? 3 : 4,
       disable: false,
     },
-  ]
+    {
+      name: "TType",
+      label: "Type",
+      type: "trt",
+      showWhen: (values) => (values.Strategy === 'Multi Directional' || values.Strategy === 'One Directional') && (values.Instrument === "FUTIDX" || values.Instrument === "FUTSTK") || values.Strategy != 'Fixed Price',
+      label_size: 12,
+      hiding: false,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "Set_First_Trade_Range",
+      label: "Set First Trade Range",
+      type: "checkbox",
 
-  const EntryRuleArr = [
+      showWhen: (values) => values.Strategy == "Multi Directional" || values.Strategy == "One Directional",
+      label_size: 12,
+      col_size: 12,
+      hiding: false,
+      disable: false,
+    },
+    {
+      name: "EntryPrice",
+      label: formik.values.Strategy == 'Fixed Price' ? "Lower Price" : "First Trade Lower Range",
+      type: "text5",
+      showWhen: (values) => formik.values.Set_First_Trade_Range || formik.values.Strategy == 'Fixed Price',
+      col_size: 6,
+      disable: false,
+      hiding: false,
+    },
+    {
+      name: "EntryRange",
+      label: formik.values.Strategy == 'Fixed Price' ? "Higher Price" : "First Trade Higher Range",
+      type: "text5",
+      showWhen: (values) => formik.values.Set_First_Trade_Range || formik.values.Strategy == 'Fixed Price',
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+      hiding: false,
+    },
+    {
+      name: "TStype",
+      label: "Measurement Type",
+      type: "select",
+      options: [
+        { label: "Percentage", value: "Percentage" },
+        { label: "Point", value: "Point" },
+      ],
+      showWhen: (values) => values.Strategy != "Fixed Price",
+      label_size: 12,
+      col_size: 4,
+      hiding: false,
+      disable: false,
+    },
+
+    {
+      name: "Targetvalue",
+      label: formik.values.Strategy == "Fixed Price" ? "Target Price" : formik.values.Strategy == "One Directional" ? "Fixed Target" : "Booking Point",
+      type: "text5",
+      label_size: 12,
+      col_size: formik.values.Strategy == "Fixed Price" ? 6 : 4,
+      disable: false,
+      hiding: false,
+    },
+    {
+      name: "Slvalue",
+      label: formik.values.Strategy == "Fixed Price" ? "Stoploss Price" : "Re-Entry Point",
+      type: "text5",
+      label_size: 12,
+      col_size: formik.values.Strategy == "Fixed Price" ? 6 : 4,
+      disable: false,
+      hiding: false,
+    },
     {
       name: "TType",
       label: "Transaction Type",
@@ -427,30 +477,67 @@ const AddClient = () => {
         { label: "SELL", value: "SELL" },
       ],
       label_size: 12,
-      headingtype: 2,
       hiding: false,
-      col_size: formik.values.Strategy == 'Fixed Price' ? 3 : 4,
+      col_size: 6,
       disable: false,
     },
     {
-      name: "EntryPrice",
-      label: formik.values.Strategy == 'Fixed Price' ? "Lower Price" : "First Trade Lower Range",
-      type: "text3",
-      col_size: formik.values.Strategy == 'Fixed Price' ? 3 : 4,
-      disable: false,
-      headingtype: 2,
-      hiding: false,
-    },
-    {
-      name: "EntryRange",
-      label: formik.values.Strategy == 'Fixed Price' ? "Higher Price" : "First Trade Higher Range",
-      type: "text3",
+      name: "Quantity",
+      label: formik.values.Exchange == "NFO" ? "Lot" : "Quantity",
+      type: "text5",
       label_size: 12,
-      headingtype: 2,
-      col_size: formik.values.Strategy == 'Fixed Price' ? 3 : 4,
+      col_size: 6,
+      hiding: false,
+      disable: false,
+    },
+
+    {
+      name: "set_Range",
+      label: "Trade Range",
+      type: "checkbox",
+
+      showWhen: (values) => values.Strategy == "Multi Directional" || values.Strategy == "One Directional",
+      label_size: 12,
+      col_size: 12,
+      hiding: false,
+      disable: false,
+    },
+    {
+      name: "LowerRange",
+      label: "Lower Range ",
+      type: "text5",
+      showWhen: (values) => values.set_Range == true,
+      label_size: 12,
+      col_size: formik.values.Strategy == "Fixed Price" ? 4 : 4,
       disable: false,
       hiding: false,
     },
+    {
+      name: "HigherRange",
+      label: "Higher Range",
+      type: "text5",
+      showWhen: (values) => values.set_Range == true,
+      label_size: 12,
+      col_size: formik.values.Strategy == "Fixed Price" ? 4 : 4,
+      disable: false,
+      hiding: false,
+    },
+
+    {
+      name: "HoldExit",
+      label: "Hold/Exit",
+      type: "select",
+      options: [
+        { label: "Hold", value: "Hold" },
+        { label: "Exit", value: "Exit" },
+      ],
+      showWhen: (values) => values.set_Range == true && (values.Strategy == "Multi Directional" || values.Strategy == "One Directional"),
+      label_size: 12,
+      col_size: formik.values.set_Range ? 4 : 3,
+      disable: false,
+      hiding: false,
+    },
+
     {
       name: "Group",
       label: "Unique ID",
@@ -469,134 +556,7 @@ const AddClient = () => {
       ],
       showWhen: (values) => values.Strategy == "Fixed Price",
       label_size: 12,
-      col_size: 3,
-      headingtype: 2,
-      disable: false,
-      hiding: false,
-    },
-  ]
-
-  const ExitRuleArr = [
-    {
-      name: "Targetvalue",
-      label: formik.values.Strategy == "Fixed Price" ? "Target Price" : formik.values.Strategy == "One Directional" ? "Fixed Target" : "Booking Point",
-      type: "text3",
-      label_size: 12,
-      col_size: 3,
-      headingtype: 3,
-      disable: false,
-      hiding: false,
-    },
-
-    {
-      name: "Slvalue",
-      label: formik.values.Strategy == "Fixed Price" ? "Stoploss Price" : "Re-Entry Point",
-      type: "text3",
-      label_size: 12,
-      col_size: 3,
-      headingtype: 3,
-      disable: false,
-      hiding: false,
-    },
-  ]
-
-  const RiskManagementArr = [
-    {
-      name: "LowerRange",
-      label: "Lower Range ",
-      type: "text3",
-      label_size: 12,
       col_size: 4,
-      headingtype: 4,
-      showWhen: (values) => values.Strategy != "Fixed Price",
-      disable: false,
-      hiding: false,
-    },
-    {
-      name: "HigherRange",
-      label: "Higher Range",
-      type: "text3",
-      label_size: 12,
-      col_size: 4,
-      headingtype: 4,
-      showWhen: (values) => values.Strategy != "Fixed Price",
-      disable: false,
-      hiding: false,
-    },
-    {
-      name: "HoldExit",
-      label: "Hold/Exit",
-      type: "select",
-      options: [
-        { label: "Hold", value: "Hold" },
-        { label: "Exit", value: "Exit" },
-      ],
-      showWhen: (values) => (values.Strategy == "Multi Directional" || values.Strategy == "One Directional"),
-      label_size: 12,
-      col_size: 4,
-      headingtype: 4,
-      disable: false,
-      hiding: false,
-    },
-
-    {
-      name: "TStype",
-      label: "Measurement Type",
-      type: "select",
-      options: [
-        { label: "Percentage", value: "Percentage" },
-        { label: "Point", value: "Point" },
-      ],
-      showWhen: (values) => values.Strategy != "Fixed Price",
-      label_size: 12,
-      headingtype: 4,
-      col_size: 4,
-      hiding: false,
-      disable: false,
-    },
-
-    {
-      name: "Quantity",
-      label: formik.values.Exchange == "NFO" ? "Lot" : "Quantity",
-      type: "text3",
-      label_size: 12,
-      col_size: formik.values.Strategy == "Fixed Price" ? 4 : 4,
-      headingtype: 4,
-      hiding: false,
-      disable: false,
-    },
-    {
-      name: "Trade_Count",
-      label: "Trade Count",
-      type: "text3",
-      label_size: 12,
-      col_size: 4,
-      headingtype: 4,
-      disable: false,
-      hiding: false,
-    },
-
-  ]
-
-  const TimeDurationArr = [
-
-    {
-      name: "EntryTime",
-      label: "Entry Time",
-      type: "timepiker",
-      label_size: 12,
-      col_size: 4,
-      headingtype: 5,
-      disable: false,
-      hiding: false,
-    },
-    {
-      name: "ExitTime",
-      label: "Exit Time",
-      type: "timepiker",
-      label_size: 12,
-      col_size: 4,
-      headingtype: 5,
       disable: false,
       hiding: false,
     },
@@ -610,106 +570,27 @@ const AddClient = () => {
       ],
       label_size: 12,
       col_size: 4,
-      headingtype: 5,
       disable: false,
       hiding: false,
-    }
-  ]
+    },
 
-  const OtherParameterArr = [
     {
-      name: "Trade_Execution",
-      label: "Trade Execution",
-      type: "select",
-      options: [
-        { label: "Paper Trade", value: "Paper Trade" },
-        { label: "Live Trade", value: "Live Trade" },
-      ],
-
+      name: "EntryTime",
+      label: "Entry Time",
+      type: "timepiker",
       label_size: 12,
       col_size: 4,
       disable: false,
       hiding: false,
     },
-
-  ]
-
-  const fields = [
     {
-      name: "Strategy",
-      label: "Scalping Type",
-      type: "radio2",
-      title:  location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len]?.CombineScalping.map((item) => ({ title: item, value: item })),
-      hiding: false,
+      name: "ExitTime",
+      label: "Exit Time",
+      type: "timepiker",
       label_size: 12,
-      col_size: 12,
+      col_size: 4,
       disable: false,
-    },
-    {
-      name: "Heading",
-      label: "Symbol_Selection",
-      type: "heading",
       hiding: false,
-      label_size: 12,
-      headingtype: 1,
-      col_size: 12,
-      data: SymbolSelectionArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-      disable: false,
-    },
-    {
-      name: "Heading",
-      label: "Entry_Rule",
-      type: "heading",
-      hiding: false,
-      label_size: 12,
-      headingtype: 2,
-      col_size: 12,
-      data: EntryRuleArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-      disable: false,
-    },
-    {
-      name: "Heading",
-      label: "Risk_Management",
-      type: "heading",
-      hiding: false,
-      label_size: 12,
-      headingtype: 4,
-      col_size: 12,
-      data: RiskManagementArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-      disable: false,
-    },
-    {
-      name: "Heading",
-      label: "Exit_Rule",
-      type: "heading",
-      hiding: false,
-      label_size: 12,
-      col_size: 12,
-      headingtype: 3,
-      data: ExitRuleArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-      disable: false,
-    },
-    {
-      name: "Heading",
-      label: "Time_Duration",
-      type: "heading",
-      hiding: false,
-      label_size: 12,
-      col_size: 12,
-      headingtype: 5,
-      data: TimeDurationArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-      disable: false,
-    },
-    {
-      name: "Heading",
-      label: "Other_Parameters",
-      type: "heading",
-      hiding: false,
-      label_size: 12,
-      col_size: 12,
-      headingtype: 6,
-      data: OtherParameterArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
-      disable: false,
     },
   ];
 
@@ -785,13 +666,12 @@ const AddClient = () => {
 
       })
   }
-
   useEffect(() => {
     get_Exchange()
   }, [])
 
   const getExpiry = async () => {
-    if (formik.values.Symbol) {
+    if (formik.values.Instrument && formik.values.Exchange && formik.values.Symbol) {
       const data = {
         Exchange: formik.values.Exchange,
         Instrument: formik.values.Exchange == "NSE" ? "" : formik.values.Instrument,
@@ -826,7 +706,16 @@ const AddClient = () => {
     getExpiry()
   }, [formik.values.Instrument, formik.values.Exchange, formik.values.Symbol, formik.values.Strike])
 
+ 
   useEffect(() => {
+    if (formik.values.set_Range == false) {
+      formik.setFieldValue('LowerRange', 0)
+      formik.setFieldValue('HigherRange', 0)
+    }
+    if (formik.values.Set_First_Trade_Range==false) {
+      formik.setFieldValue('EntryPrice', 0)
+      formik.setFieldValue('EntryRange', 0)
+    }
 
     if (formik.values.Instrument == "FUTIDX" || formik.values.Instrument == "FUTSTK") {
       formik.setFieldValue('Optiontype', "")
@@ -839,14 +728,18 @@ const AddClient = () => {
       formik.setFieldValue('Strike', "")
       formik.setFieldValue('Optiontype', "")
     }
-  }, [formik.values.Instrument, formik.values.Exchange])
+  }, [formik.values.set_Range, formik.values.Set_First_Trade_Range, formik.values.Instrument, formik.values.Exchange])
+
+
 
   useEffect(() => {
     formik.setFieldValue('Group', "")
+    formik.setFieldValue('HoldExit', "")
     formik.setFieldValue('HigherRange', 0)
     formik.setFieldValue('LowerRange', 0) 
+    formik.setFieldValue('TStype', "")
     formik.setFieldValue('EntryRange', 0)
-    formik.setFieldValue('EntryPrice', 0)
+    formik.setFieldValue('EntryPrice', 0) 
   }, [formik.values.Strategy])
 
   useEffect(() => {
@@ -859,11 +752,11 @@ const AddClient = () => {
         fields={fields.filter(
           (field) => !field.showWhen || field.showWhen(formik.values)
         )}
-        page_title="Add Script scalping"
+        page_title={`Add Script - Scalping  , Group Name : ${location.state.data.selectGroup}`}
         btn_name="Add"
         btn_name1="Cancel"
         formik={formik}
-        btn_name1_route={"/user/dashboard"}
+        btn_name1_route={"/admin/allscript"}
       />
     </>
   );

@@ -15,7 +15,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     const [showEditModal, setShowEditModal] = useState(false)
     const [EditDataScalping, setEditDataScalping] = useState({})
     const [EditDataOption, setEditDataOption] = useState({})
-    const [EditDataPattern, setEditDataPattern] = useState({})
+    const [EditDataPattern, setEditDataPattern] = useState({}) 
     const [allScripts, setAllScripts] = useState({ data: [], len: 0 })
     const [getAllService, setAllservice] = useState({
         loading: true,
@@ -26,7 +26,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         Marketwise: [],
         PremiumRotation: []
     });
-
+    
     useEffect(() => {
         GetUserAllScripts()
     }, [])
@@ -363,6 +363,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     }
 
     const AddScript = (data) => {
+        console.log(allScripts)
         if (data2.status == false) {
             Swal.fire({
                 title: "Error",
@@ -375,6 +376,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         else {
             if (data === "Option Strategy") {
                 if (allScripts?.data?.length >= 1) {
+                   
                     navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy', scriptType: allScripts } } });
                 }
                 else {
@@ -385,12 +387,12 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                         timer: 2000,
                         timerProgressBar: true
                     });
-
+                    
                 }
             }
             else if (data === "Pattern") {
                 if (allScripts?.data?.length >= 1) {
-                    navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts } } });
+                    navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts }}});
                 }
                 else {
                     Swal.fire({
@@ -404,7 +406,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
             }
             else {
-                if (allScripts?.data?.length >= 1) {
+                if (allScripts?.data?.length>= 1) {
                     navigate('/user/newscript/scalping', {
                         state: {
                             data: { selectStrategyType: 'Scalping', scriptType: allScripts }
@@ -1222,9 +1224,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                     <h4 className="card-title">{data}</h4>
                                                 </div>
                                                 <div className='d-flex justify-content-end'>
-                                                    <button className='btn btn-primary mt-1' style={{ fontSize: '18px', padding: '6px 14px' , height: "47px"}} onClick={() => AddScript(data)}>Add Script</button>
+                                                    <button className='btn btn-primary' onClick={() => AddScript(data)}>Add Script</button>
                                                 </div>
-
                                             </div>
                                             <div className="iq-card-body " style={{ padding: '3px' }}>
                                                 <div className="table-responsive">

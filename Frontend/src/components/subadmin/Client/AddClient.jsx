@@ -10,83 +10,87 @@ const AddClient = () => {
 
     const formik = useFormik({
         initialValues: {
-            SignuserName: "",
+            Username: "",
             mobile_no: "",
-            Signpassword: "",
+            Password: "",
             ConfirmPassword: "",
-            SignEmail: "",
-            AmmountDetails: 0,
-            Companyname: "",
-            serverip: "",
-            MongoUsername: "",
-            MongoPass: "",
+            Email: "",
+            BName: "",
+            Group: "",
+            PlanName: "",
+            ClientAmount: "0",
+            Subadmin: "",
         },
         validate: (values) => {
             let errors = {};
-            if (!values.SignuserName) {
-                errors.SignuserName = "Please enter the username";
+            if (!values.Username) {
+                errors.Username = "Please enter the username";
             }
             if (!values.mobile_no) {
                 errors.mobile_no = "Please enter the mobile number";
             }
-            if (!values.SignEmail) {
-                errors.SignEmail = "Please enter the email";
+            if (!values.Email) {
+                errors.Email = "Please enter the email";
             }
             else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.SignEmail)) {
                 errors.SignEmail = "Invalid email address";
             }
-            if (!values.Signpassword) {
-                errors.Signpassword = "Please enter the password";
+            if (!values.Password) {
+                errors.Password = "Please enter the password";
             }
             if (!values.ConfirmPassword) {
                 errors.ConfirmPassword = "Please enter the confirm password";
             }
-            if (values.Signpassword !== values.ConfirmPassword) {
+            if (values.Password !== values.ConfirmPassword) {
                 errors.ConfirmPassword = "Password and confirm password should be same";
             }
-            if (!values.AmmountDetails) {
-                errors.AmmountDetails = "Please enter the amount";
+            if (!values.BName) {
+                errors.BName = "Please enter the BName";
             }
-            if (!values.Companyname) {
-                errors.Companyname = "Please enter the company name";
+            if (!values.PlanName) {
+                errors.PlanName = "Please enter the plan name";
             }
-            if (!values.serverip) {
-                errors.serverip = "Please enter the server ip";
+            if (!values.ClientAmount) {
+                errors.ClientAmount = "Please enter the client amount";
             }
-            if (!values.MongoUsername) {
-                errors.MongoUsername = "Please enter the mongodb username";
+            if (!values.Group) {
+                errors.Group = "Please enter the group";
             }
-            if (!values.MongoPass) {
-                errors.MongoPass = "Please enter the mongodb password";
+            if (!values.ClientAmount) {
+                errors.ClientAmount = "Please enter the client amount";
             }
+            if (!values.Subadmin) {
+                errors.Subadmin = "Please enter the subadmin";
+            }
+           
             return errors;
         },
         onSubmit: async (values) => {
             const req = {
-                SignuserName: values.SignuserName,
+                Username: values.Username,
                 mobile_no: values.mobile_no,
-                Signpassword: values.Signpassword,
+                Password: values.Password,
                 ConfirmPassword: values.ConfirmPassword,
-                SignEmail: values.SignEmail,
-                AmmountDetails: values.AmmountDetails,
-                Companyname: values.Companyname,
-                serverip: values.serverip,
-                MongoUsername: values.MongoUsername,
-                MongoPass: values.MongoPass,
-                permission: ["Charting Platform"]
+                Email: values.Email,
+                BName: values.BName,
+                Group: values.Group,
+                PlanName: values.PlanName,
+                ClientAmount: values.ClientAmount,
+                Subadmin: values.Subadmin,
+                
             }
             await createAdmin(req)
                 .then((response) => {
                     if (response.Status) {
                         Swal.fire({
-                            title: "Admin Created!",
+                            title: "Client Created!",
                             text: response.message,
                             icon: "success",
                             timer: 1500,
                             timerProgressBar: true
                         });
                         setTimeout(() => {
-                            navigate('/admin/clientservice')
+                            navigate('/subadmin/addclient')
                         }, 1500)
                     }
                     else {
@@ -107,7 +111,7 @@ const AddClient = () => {
 
     const fields = [
         {
-            name: "SignuserName",
+            name: "Username",
             label: "Username",
             type: "text",
             label_size: 12,
@@ -125,7 +129,7 @@ const AddClient = () => {
             disable: false,
         },
         {
-            name: "SignEmail",
+            name: "Email",
             label: "Email ID",
             type: "text",
             label_size: 12,
@@ -134,7 +138,7 @@ const AddClient = () => {
             disable: false,
         },
         {
-            name: "Signpassword",
+            name: "Password",
             label: "Password",
             type: "password",
             label_size: 12,
@@ -152,7 +156,7 @@ const AddClient = () => {
             disable: false,
         },
         {
-            name: "AmmountDetails",
+            name: "BName",
             label: "B Name",
             type: "text",
             label_size: 12,
@@ -161,7 +165,7 @@ const AddClient = () => {
             disable: false,
         },
         {
-            name: "Companyname",
+            name: "Group",
             label: "Group",
             type: "text",
             label_size: 12,
@@ -170,7 +174,7 @@ const AddClient = () => {
             disable: false,
         },
         {
-            name: "serverip",
+            name: "PlanName",
             label: "Plan Name",
             type: "text",
             label_size: 12,
@@ -179,7 +183,7 @@ const AddClient = () => {
             disable: false,
         },
         {
-            name: "MongoUsername",
+            name: "ClientAmount",
             label: "Client Amount",
             type: "text3",
             label_size: 12,
@@ -188,7 +192,7 @@ const AddClient = () => {
             disable: false,
         },
         {
-            name: "MongoPass",
+            name: "Subadmin",
             label: "Subadmin",
             type: "text",
 

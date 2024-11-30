@@ -29,13 +29,31 @@ export const createClient = async (data) => {
     catch (err) {
         return err
     }
-
 }
 
-export const GetSunAdminGroupNames = async (data) => {
+export const GetAllSubadminClient = async (data) => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.get(`${Config.base_url}SubadminClientdetails/${data.userName}`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+}
+
+export const subadminGroups = async (data) => {
   const token = localStorage.getItem('token')
   try {
-      const res = await axios.get(`${Config.base_url}SubAdminGrropselct/${data.userName}`,
+      const res = await axios.get(`${Config.base_url}SubAdminGrropselct/${data.subadmin}`,
           {
               headers: {
                   'Content-Type': 'application/json',

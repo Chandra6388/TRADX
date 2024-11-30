@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GetAllSubadmin } from '../../CommonAPI/Admin';
+import { GetAllSubadminClient } from '../../CommonAPI/SubAdmin';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { Link, useNavigate } from 'react-router-dom';
 import { SquarePen } from 'lucide-react';
@@ -8,6 +8,7 @@ import { SquarePen } from 'lucide-react';
 
 
 const AllSubadmin = () => {
+   const userName = localStorage.getItem('name');
 
     const navigate = useNavigate();
 
@@ -24,17 +25,16 @@ const AllSubadmin = () => {
 
 
 
-
-
     const fetchAllSubadmin = async () => {
+        const req = {userName: userName}
         try {
-            const response = await GetAllSubadmin();
+            const response = await GetAllSubadminClient(req);
             if (response.Status) {
                 const filteredData = response.Data.filter(item => {
                     const searchInputMatch =
                         searchInput === '' ||
                         item.Username.toLowerCase().includes(searchInput.toLowerCase()) ||
-                        item.Name.toLowerCase().includes(searchInput.toLowerCase()) ||
+                        item.BrokerName.toLowerCase().includes(searchInput.toLowerCase()) ||
                         item.EmailId.toLowerCase().includes(searchInput.toLowerCase()) ||
                         item.Mobile_No.toLowerCase().includes(searchInput.toLowerCase())
                     return searchInputMatch
@@ -59,8 +59,6 @@ const AllSubadmin = () => {
             state: { rowData },
         });
     };
-
-
 
 
 
@@ -97,15 +95,6 @@ const AllSubadmin = () => {
             }
         },
         {
-            name: 'Name',
-            label: 'Name',
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value) => value || '-'
-            }
-        },
-        {
             name: 'EmailId',
             label: 'Email ID',
             options: {
@@ -123,6 +112,71 @@ const AllSubadmin = () => {
                 customBodyRender: (value) => value || '-'
             }
         },
+        {
+            name: 'BrokerName',
+            label: 'Broker Name',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value || '-'
+            }
+        },
+        {
+            name: 'Licanse',
+            label: 'Licanse',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value || '-'
+            }
+        },
+        {
+            name: 'CreateDate',
+            label: 'Create Date',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value || '-'
+            }
+        },
+        {
+            name: 'ServiceStartDate',
+            label: 'Service Start Date',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value || '-'
+            }
+        },
+        {
+            name: 'ServiceEndDate',
+            label: 'Service End Date',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value || '-'
+            }
+        },
+        {
+            name: 'Group',
+            label: 'Group',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.join(', ') || '-'
+            }
+        },
+        {
+            name: 'Planname',
+            label: 'Plan Name',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value?.join(', ') || '-'
+            }
+        },
+        
+
     ];
 
 
@@ -134,10 +188,10 @@ const AllSubadmin = () => {
                     <div className='iq-card'>
                         <div className='iq-card-header d-flex justify-content-between'>
                             <div className='iq-header-title'>
-                                <h4 className='card-title'>SubAdmin</h4>
+                                <h4 className='card-title'>All Client</h4>
                             </div>
-                            <Link to='/admin/addSubadmin' className='btn btn-primary rounded'>
-                                Add SubAdmin
+                            <Link to='/subadmin/addclient' className='btn btn-primary rounded'>
+                                Add Client
                             </Link>
                         </div>
                         <div className='iq-card-body'>

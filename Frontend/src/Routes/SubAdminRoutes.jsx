@@ -6,6 +6,7 @@ import Dashboard from '../components/subAdmin/subadminDashboard/Dashboard';
 // import AddClient from '../components/subadmin/Client/AddClient';
 import AddClient from '../components/subAdmin/Client/AddClient';
 import AllClient from '../components/subAdmin/Client/Allclient';
+import SubAdminGroups from '../components/subAdmin/Groups/StrategyGroup';
 
 const SubAdminRoutes = () => {
   return (
@@ -17,6 +18,7 @@ const SubAdminRoutes = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/addclient" element={<AddClient />} />
         <Route path="/allclient" element={<AllClient />} />
+        <Route path="/groups" element={<SubAdminGroups />} />
 
       </Routes>
 

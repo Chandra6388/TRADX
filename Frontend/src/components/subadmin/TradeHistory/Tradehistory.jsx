@@ -7,7 +7,7 @@ import { columns, columns1, columns2, columns3, columns4, columns5, columns6 } f
 import { AgChartsReact } from "ag-charts-react";
 import "ag-charts-enterprise";
 import ApexCharts from 'react-apexcharts';
-import { subadminClientName } from '../../CommonAPI/SubAdmin';
+import { GetAllSubadminClient } from '../../CommonAPI/SubAdmin';
 import Swal from 'sweetalert2';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -39,7 +39,6 @@ const Tradehistory = () => {
     const [getFiveProfitTrade, setFiveProfitTrade] = useState({ loading: true, data: [], data1: [] })
 
 
-    console.log('getGroupData', getGroupData)
     // set Defult Date 
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate());
@@ -82,7 +81,7 @@ const Tradehistory = () => {
     const fetchAllSubadmin = async () => {
         const req = {userName: userName}
         try {
-            const response = await subadminClientName(req);
+            const response = await GetAllSubadminClient(req);
             if (response.Status) {
                 setGroupData({
                     loading: false,
@@ -325,7 +324,7 @@ const Tradehistory = () => {
 
     useEffect(() => {
         if (getGroupData && getGroupData.data.length > 0) {
-            setSelectGroup(getGroupData.data[0])
+            setSelectGroup(getGroupData.data[0].Username)
         }
         setStrategyType('Scalping')
     }, [getGroupData]);
@@ -426,7 +425,7 @@ const Tradehistory = () => {
                                             <option value="">Select Username</option>
                                             {getGroupData.data && getGroupData.data.map((item) => {
                                                 return <>
-                                                    <option value={item}>{item}</option>
+                                                    <option value={item.Username}>{item.Username}</option>
                                                 </>
                                             })}
                                         </select>

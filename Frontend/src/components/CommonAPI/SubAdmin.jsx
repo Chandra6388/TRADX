@@ -71,3 +71,22 @@ export const GetAllClient = async (data) => {
     }
 
 }
+
+export const GetAllSubadmindDetails = async (data) => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.get(`${Config.base_url}Subadmindetails`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}

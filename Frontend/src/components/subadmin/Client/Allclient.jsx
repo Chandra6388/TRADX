@@ -15,26 +15,21 @@ const AllClients = () => {
     }, []);
 
     const fetchClients = async () => {
-        const req= {userName : Username}
-       
-            await GetAllClient(req)
-            .then((res) => {
-               if(res.Status){
-                console.log(res);
-                
+        const req = { userName: Username };
+        try {
+            const res = await GetAllClient(req);
+            if (res.Status) {
+                console.log('Fetched Clients:', res.Data);
                 setClients(res.Data);
-               }
-               else{
+            } else {
                 setClients([]);
-               }
-            }).catch((err) => {
-                console.log(err);
-                
-            });
-
-          
-            
+            }
+        } catch (err) {
+            console.log('Error fetching Client details:', err);
+            setError('Failed to fetch client data');
+        }
     };
+    
 
    
 console.log( clients);
@@ -46,16 +41,16 @@ const columns = [
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-') // Handle undefined or null
         }
     },
     {
-        label: 'FullName',
+        label: 'Full Name',
         name: 'Full_Name',
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
     {
@@ -64,7 +59,7 @@ const columns = [
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
     {
@@ -73,25 +68,25 @@ const columns = [
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
     {
         label: 'Broker Name',
-        label: 'BrokerName',
+        name: 'BrokerName',
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
     {
-        label: 'Licanse',
-        name: 'Licanse',
+        label: 'License', // Fixed typo 'Licanse' to 'License'
+        name: 'License', // Fixed typo 'Licanse' to 'License'
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
     {
@@ -100,16 +95,16 @@ const columns = [
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
     {
-        label: 'Licanse Start Date',
-        name: 'LicanseStartDate',
+        label: 'License Start Date', // Fixed typo 'Licanse' to 'License'
+        name: 'LicenseStartDate',
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
     {
@@ -118,7 +113,7 @@ const columns = [
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
     {
@@ -127,7 +122,7 @@ const columns = [
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
     {
@@ -136,22 +131,20 @@ const columns = [
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
     {
-        Label: 'AutoLogin',
+        label: 'AutoLogin',
         name: 'AutoLogin',
         options: {
             filter: true,
             sort: true,
-            customBodyRender: (value) => value || '-'
+            customBodyRender: (value) => (value ? value : '-')
         }
     },
-
-
-
 ];
+
    
 
     return (

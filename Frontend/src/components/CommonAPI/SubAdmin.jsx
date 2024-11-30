@@ -68,3 +68,22 @@ export const subadminGroups = async (data) => {
       return err
   }
 }
+
+export const subadminClientName = async () => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.get(`${Config.base_url}SubAdminname`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+}

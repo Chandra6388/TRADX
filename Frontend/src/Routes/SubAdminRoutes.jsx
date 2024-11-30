@@ -3,10 +3,10 @@ import { Route, Routes } from 'react-router-dom';
 import Sidebar from '../components/layouts/Sidebar';
 import Header from '../components/layouts/Header';
 import Dashboard from '../components/subAdmin/subadminDashboard/Dashboard';
-// import AddClient from '../components/subadmin/Client/AddClient';
 import AddClient from '../components/subAdmin/Client/AddClient';
 import AllClient from '../components/subAdmin/Client/Allclient';
 import SubAdminGroups from '../components/subAdmin/Groups/StrategyGroup';
+import TradeHistory from '../components/subAdmin/TradeHistory/Tradehistory';
 
 const SubAdminRoutes = () => {
   return (
@@ -19,6 +19,7 @@ const SubAdminRoutes = () => {
         <Route path="/addclient" element={<AddClient />} />
         <Route path="/allclient" element={<AllClient />} />
         <Route path="/groups" element={<SubAdminGroups />} />
+        <Route path="/trade-history" element={<TradeHistory />} />
 
       </Routes>
 

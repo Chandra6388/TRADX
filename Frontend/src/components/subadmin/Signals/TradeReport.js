@@ -6,6 +6,8 @@ import GridExample from '../../../ExtraComponent/CommanDataTable'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
+import { GetAllSubadminClient } from '../../CommonAPI/SubAdmin';
+
 import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6 } from './ReportColumn'
 
 const TradeReport = () => {
@@ -15,13 +17,16 @@ const TradeReport = () => {
     const [ToDate, setToDate] = useState('');
     const [FromDate, setFromDate] = useState('');
     const [showTable, setShowTable] = useState(false)
+    const [getClientName, setClientName] = useState({ loading: true, data: [] })
+    const [SelectClientName, setSelectClientName] = useState('')
+
+    console.log("getClientName", getClientName)
 
     const [getAllTradeData, setAllTradeData] = useState({
         loading: true,
         data1: [],
         data2: []
     })
-
 
     const Username = localStorage.getItem('name')
 
@@ -57,6 +62,27 @@ const TradeReport = () => {
         return `${year}.${month}.${day}`;
     };
 
+
+    useEffect(() => {
+        fetchAllSubadmin();
+    }, []);
+
+    const fetchAllSubadmin = async () => {
+        const req = { userName: Username }
+        try {
+            const response = await GetAllSubadminClient(req);
+            if (response.Status) {
+                setClientName({
+                    loading: false,
+                    data: response.Data,
+                });
+            } else {
+                setClientName({ loading: false, data: [] });
+            }
+        } catch (error) {
+            console.log('Error in fetching Subadmin', error);
+        }
+    };
 
 
     const GetTradeReport = async () => {
@@ -138,7 +164,10 @@ const TradeReport = () => {
     }
     useEffect(() => {
         setStrategyType('Scalping')
-    }, []);
+        if (getClientName.data.length > 0) {
+            setSelectClientName(getClientName.data[0].Username)
+        }
+    }, [getClientName]);
 
 
     useEffect(() => {
@@ -160,7 +189,20 @@ const TradeReport = () => {
                             <div className="was-validated ">
                                 <div className='row'>
 
-                                    <div className="form-group col-lg-4">
+                                    <div className="form-group col-lg-3">
+                                        <label>Select UserName</label>
+                                        <select className="form-select" required=""
+                                            onChange={(e) => setSelectClientName(e.target.value)}
+                                            value={SelectClientName}>
+                                            <option value="">Select Client</option>
+                                            {getClientName.data.map((item, index) => {
+                                                return (
+                                                    <option value={item.Username}>{item.Username}</option>
+                                                )
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div className="form-group col-lg-3">
                                         <label>Select Strategy Type</label>
                                         <select className="form-select" required=""
                                             onChange={(e) => setStrategyType(e.target.value)}
@@ -171,12 +213,14 @@ const TradeReport = () => {
 
                                         </select>
                                     </div>
-                                    <div className="form-group col-lg-4">
+
+
+                                    <div className="form-group col-lg-3">
                                         <label>Select form Date</label>
                                         <DatePicker className="form-select" selected={FromDate == '' ? formattedDate : FromDate} onChange={(date) => setFromDate(date)} />
 
                                     </div>
-                                    <div className="form-group col-lg-4">
+                                    <div className="form-group col-lg-3">
                                         <label>Select To Date</label>
                                         <DatePicker className="form-select" selected={ToDate == '' ? Defult_To_Date : ToDate} onChange={(date) => setToDate(date)} />
 

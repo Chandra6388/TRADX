@@ -34,7 +34,7 @@ const Tradehistory = () => {
     const [getPnLData, setPnlData] = useState({ loading: true, data: [], data2: [] })
     const [getEquityCurveDetails, setEquityCurveDetails] = useState({ loading: true, data: [] })
     const [getDropDownData, setDropDownData] = useState({ loading: true, data: [] })
-    const [getGroupData, setGroupData] = useState({ loading: true, data: [] })
+    const [getClientName, setClientName] = useState({ loading: true, data: [] })
     const [getFiveLossTrade, setFiveLossTrade] = useState({ loading: true, data: [], data1: [] })
     const [getFiveProfitTrade, setFiveProfitTrade] = useState({ loading: true, data: [], data1: [] })
 
@@ -83,12 +83,12 @@ const Tradehistory = () => {
         try {
             const response = await GetAllSubadminClient(req);
             if (response.Status) {
-                setGroupData({
+                setClientName({
                     loading: false,
                     data:  response.Data,
                 });
             } else {
-                setGroupData({ loading: false, data: [] });
+                setClientName({ loading: false, data: [] });
             }
         } catch (error) {
             console.log('Error in fetching Subadmin', error);
@@ -323,11 +323,11 @@ const Tradehistory = () => {
 
 
     useEffect(() => {
-        if (getGroupData && getGroupData.data.length > 0) {
-            setSelectGroup(getGroupData.data[0].Username)
+        if (getClientName && getClientName.data.length > 0) {
+            setSelectGroup(getClientName.data[0].Username)
         }
         setStrategyType('Scalping')
-    }, [getGroupData]);
+    }, [getClientName]);
 
 
 
@@ -423,7 +423,7 @@ const Tradehistory = () => {
                                             value={selectGroup}
                                         >
                                             <option value="">Select Username</option>
-                                            {getGroupData.data && getGroupData.data.map((item) => {
+                                            {getClientName.data && getClientName.data.map((item) => {
                                                 return <>
                                                     <option value={item.Username}>{item.Username}</option>
                                                 </>

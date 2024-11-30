@@ -7,6 +7,7 @@ import AddClient from '../components/subAdmin/Client/AddClient';
 import AllClient from '../components/subAdmin/Client/Allclient';
 import SubAdminGroups from '../components/subAdmin/Groups/StrategyGroup';
 import TradeHistory from '../components/subAdmin/TradeHistory/Tradehistory';
+import Signals from '../components/subAdmin/Signals/TradeReport';
 
 const SubAdminRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const SubAdminRoutes = () => {
         <Route path="/allclient" element={<AllClient />} />
         <Route path="/groups" element={<SubAdminGroups />} />
         <Route path="/trade-history" element={<TradeHistory />} />
+        <Route path="/signals" element={<Signals />} />
 
       </Routes>
 

@@ -3,9 +3,9 @@ import { Route, Routes } from 'react-router-dom';
 import Sidebar from '../components/layouts/Sidebar';
 import Header from '../components/layouts/Header';
 // import AddClient from '../components/subadmin/Client/AddClient';
-import AddClient from '../components/subAdmin/Client/AddClient';
-import AllClient from '../components/subAdmin/Client/Allclient';
-import Dashboard from '../components/subAdmin/subadminDashboard/Dashboard';
+import AddClient from '../components/subadmin/Client/AddClient';
+import AllClient from '../components/subadmin/Client/Allclient';
+import Dashboard from '../components/subadmin/subadminDashboard/Dashboard';
 
 const SubAdminRoutes = () => {
   return (

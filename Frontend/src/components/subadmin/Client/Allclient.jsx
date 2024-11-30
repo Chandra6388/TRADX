@@ -1,157 +1,186 @@
 import React, { useEffect, useState } from 'react';
-import { GetAllSubadmin } from '../../CommonAPI/Admin';
+import { GetAllClient } from '../../CommonAPI/SubAdmin';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
-import { Link, useNavigate } from 'react-router-dom';
-import { SquarePen } from 'lucide-react';
+import axios from 'axios';
 
-
-
-
-const AllSubadmin = () => {
-
-    const navigate = useNavigate();
-
-    const [clientService, setClientService] = useState({ loading: true, data: [] });
-
-    const [searchInput, setSearchInput] = useState('')
-
-
+const AllClients = () => {
+    const [clients, setClients] = useState([]); // Clients data
+    const [searchInput, setSearchInput] = useState(''); // Search input value
+    const [error, setError] = useState(null); // Error handling
+    const [loading, setLoading] = useState(true); // Loading state
+     const Username = localStorage.getItem('name');
 
     useEffect(() => {
-        fetchAllSubadmin();
-    }, [searchInput]);
+        fetchClients(); // Fetch clients on mount
+    }, []);
 
+    const fetchClients = async () => {
+        const req= {userName : Username}
+       
+            await GetAllClient(req)
+            .then((res) => {
+               if(res.Status){
+                console.log(res);
+                
+                setClients(res.Data);
+               }
+               else{
+                setClients([]);
+               }
+            }).catch((err) => {
+                console.log(err);
+                
+            });
 
+          
+            
+    };
 
+   
+console.log( clients);
 
-
-
-    const fetchAllSubadmin = async () => {
-        try {
-            const response = await GetAllSubadmin();
-            if (response.Status) {
-                const filteredData = response.Data.filter(item => {
-                    const searchInputMatch =
-                        searchInput === '' ||
-                        item.Username.toLowerCase().includes(searchInput.toLowerCase()) ||
-                        item.Name.toLowerCase().includes(searchInput.toLowerCase()) ||
-                        item.EmailId.toLowerCase().includes(searchInput.toLowerCase()) ||
-                        item.Mobile_No.toLowerCase().includes(searchInput.toLowerCase())
-                    return searchInputMatch
-                })
-
-                setClientService({
-                    loading: false,
-                    data: searchInput ? filteredData : response.Data,
-                });
-            } else {
-                setClientService({ loading: false, data: [] });
-            }
-        } catch (error) {
-            console.log('Error in fetching Subadmin', error);
+const columns = [
+    {
+        name: 'Username',
+        label: 'Username',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
         }
-    };
+    },
+    {
+        label: 'FullName',
+        name: 'Full_Name',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
+    {
+        name: 'EmailId',
+        label: 'Email ID',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
+    {
+        name: 'Mobile_No',
+        label: 'Mobile Number',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
+    {
+        label: 'Broker Name',
+        label: 'BrokerName',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
+    {
+        label: 'Licanse',
+        name: 'Licanse',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
+    {
+        label: 'Create Date',
+        name: 'CreateDate',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
+    {
+        label: 'Licanse Start Date',
+        name: 'LicanseStartDate',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
+    {
+        label: 'Service Start Date',
+        name: 'ServiceStartDate',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
+    {
+        label: 'Service End Date',
+        name: 'ServiceEndDate',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
+    {
+        label: 'Service Count',
+        name: 'ServiceCount',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
+    {
+        Label: 'AutoLogin',
+        name: 'AutoLogin',
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value) => value || '-'
+        }
+    },
 
 
-    const EditSubadmindetail = (value, tableMeta) => {
-        const rowData = clientService.data[tableMeta.rowIndex];
-        navigate(`/admin/editSubadmin`, {
-            state: { rowData },
-        });
-    };
 
-
-
-
-
-    const columns = [
-        {
-            name: 'S.No',
-            label: 'S.No',
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, tableMeta) => tableMeta.rowIndex + 1,
-            },
-        },
-        {
-            name: 'Edit',
-            label: 'Edit',
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value, tableMeta) => (
-                    <SquarePen
-                        onClick={() => EditSubadmindetail(value, tableMeta)} />
-
-                ),
-            },
-        },
-        {
-            name: 'Username',
-            label: 'Username',
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value) => value || '-'
-            }
-        },
-        {
-            name: 'Name',
-            label: 'Name',
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value) => value || '-'
-            }
-        },
-        {
-            name: 'EmailId',
-            label: 'Email ID',
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value) => value || '-'
-            }
-        },
-        {
-            name: 'Mobile_No',
-            label: 'Mobile Number',
-            options: {
-                filter: true,
-                sort: true,
-                customBodyRender: (value) => value || '-'
-            }
-        },
-    ];
-
-
+];
+   
 
     return (
-        <>
-            <div className='row'>
-                <div className='col-sm-12'>
-                    <div className='iq-card'>
-                        <div className='iq-card-header d-flex justify-content-between'>
-                            <div className='iq-header-title'>
-                                <h4 className='card-title'>SubAdmin</h4>
-                            </div>
-                            <Link to='/admin/addSubadmin' className='btn btn-primary rounded'>
-                                Add SubAdmin
-                            </Link>
-                        </div>
-                        <div className='iq-card-body'>
-                            <div className='mb-3 col-lg-3'>
-                                <input type="text" className=' form-control rounded p-1 px-2' placeholder="Search..." onChange={(e) => setSearchInput(e.target.value)} value={searchInput} />
-                            </div>
-                            <FullDataTable columns={columns} data={clientService.data} checkBox={false} />
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-        </>
+
+        <div className="container-fluid">
+  <div className="row">
+    <div className="iq-card">
+      <div className="iq-card-header d-flex justify-content-between">
+        <div className="iq-header-title">
+          <h4 className="card-title">Client List</h4>
+        </div>
+        <div className="iq-card-header-toolbar d-flex align-items-center">
+          <button type="button" className="btn btn-primary">
+            Add New Group
+          </button>
+        </div>
+      </div>
+      <div className="iq-card-body">
+        <div className="table-responsive customtable">
+        <FullDataTable columns={columns} data={clients} checkBox={false} />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+       
     );
 };
 
-export default AllSubadmin;
+export default AllClients;

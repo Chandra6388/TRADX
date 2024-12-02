@@ -66,7 +66,7 @@ const StrategyGroup = () => {
         
                 if (response.Status) {
                     Swal.fire({
-                        title: "User Created!",
+                        title: "admin strategies group Created Successfully!",
                         text: response.message,
                         icon: "success",
                         timer: 1500,

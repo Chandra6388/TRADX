@@ -3,14 +3,15 @@ import { GetAllGroupService, GetGroupNames, DeleteScript } from '../../CommonAPI
 import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import Loader from '../../../ExtraComponent/Loader'
-
 import Swal from 'sweetalert2';
 import Checkbox from '@mui/material/Checkbox';
 import { columns2, columns1, columns } from './ScriptColumns'
+import {subadminGroups} from '../../CommonAPI/SubAdmin'
 
 
 const Addscript = () => {
     const navigate = useNavigate()
+    const username = localStorage.getItem('name')
     const [refresh, setRefresh] = useState(false)
     const [selectGroup, setSelectGroup] = useState('')
     const [selectStrategyType, setStrategyType] = useState('')
@@ -88,14 +89,15 @@ const Addscript = () => {
 
     // 1
     const GetAllGroupDetails = async () => {
+        const req = {subadmin :username }
         try {
-            await GetGroupNames()
+            await subadminGroups(req)
                 .then((response) => {
 
                     if (response.Status) {
                         setGroupData({
                             loading: false,
-                            data: response.Data
+                            data: response.groupdf
                         })
                     }
                     else {
@@ -174,11 +176,12 @@ const Addscript = () => {
 
 
 
+    console.log("getGroupData", getGroupData.data)
     useEffect(() => {
 
         if (!getGroupData.loading && getGroupData.data.length > 0) {
 
-            setSelectGroup(getGroupData && getGroupData.data[0].GroupName)
+            setSelectGroup(getGroupData && getGroupData.data[0])
 
         }
 
@@ -218,7 +221,7 @@ const Addscript = () => {
                                             <option value=''>Select Group Name</option>
                                             {getGroupData.data && getGroupData.data.map((item) => {
                                                 return <>
-                                                    <option value={item.GroupName}>{item.GroupName}</option>
+                                                    <option value={item}>{item}</option>
                                                 </>
                                             })}
 

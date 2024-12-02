@@ -482,6 +482,76 @@ const Header = () => {
                             </div>
 
                         </nav>
+                    ) : role === 'Subadmin' ? (
+                        <nav className="navbar navbar-expand-lg navbar-light p-0">
+
+
+                            {/* <button className='btn btn-primary mx-4' onClick={() => setShowModal(true)}>Auto Login</button> */}
+                            <button
+                                className="navbar-toggler ms-3"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                href="#navbarSupportedContent"
+                                aria-controls="navbarSupportedContent"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation"
+                            >
+                                <i className="ri-menu-3-line" />
+                            </button>
+                            <button className='me-3 menusidebar' onClick={toggleSidebar}>
+                                <i className="ri-more-fill" />
+                            </button>
+                            <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul className="navbar-nav ms-auto navbar-list align-items-center">
+                                    {/* <li className="nav-item">
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary mt-3 mx-3 btn1"
+                                            onClick={(e) => setIsModalVisible(true)}
+                                        >
+                                            Set API Key
+                                        </button>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <button
+                                            type="button"
+                                            className="btn btn-primary mt-3 mx-3 btn1"
+                                            onClick={(e) => navigate('/admin/transectionrequest')}
+                                        >
+                                            Transaction Requests
+                                        </button>
+                                    </li> */}
+
+                                    <li className="nav-item iq-full-screen" onClick={toggleFullscreen}>
+                                        <a href="#" className="iq-waves-effect" id="btnFullscreen">
+                                            <i className={isFullscreen ? 'ri-fullscreen-exit-line' : 'ri-fullscreen-line'} />
+                                        </a>
+                                    </li>
+
+
+                                    <li className={`nav-item ${activeElement === 'profile' ? 'iq-show' : ''}`}>
+
+                                        <a href="#"
+
+                                            className={`search-toggle d-flex align-items-center iq-waves-effectt ${activeElement === 'profile' ? 'active' : ''}`}
+
+                                            onClick={(e) => handleClick(e, 'profile')}
+                                        >
+
+                                            <div className="caption">
+                                                <button className="btn btn-primary iq-sign-btn" onClick={logout} role="button">
+                                                    Log out
+                                                    <i className="ri-login-box-line ms-2" />
+                                                </button>
+                                            </div>
+                                        </a>
+
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </nav>
                     ) : role === 'User' ? (
                         <nav className="navbar navbar-expand-lg navbar-light p-0">
 
@@ -640,17 +710,59 @@ const Header = () => {
 
                         </nav>
                     ) : (
-                        <nav className="navbar navbar-expand-lg navbar-light p-0">
-                            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                                <div className="nav-item mx-5">
-                                    <button type="button" className="btn btn-primary "
-                                        onClick={(e) => setShowAddBrokerModal(true)}
-                                    >
-                                        Add Broker
-                                    </button>
-                                </div>
 
+                        <nav className="navbar navbar-expand-lg navbar-light p-0">
+
+
+                            <div className="nav-item mx-5">
+                                <button type="button" className="btn btn-primary "
+                                    onClick={(e) => setShowAddBrokerModal(true)}
+                                >
+                                    Add Broker
+                                </button>
+                            </div>
+                            <button
+                                className="navbar-toggler ms-3"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                href="#navbarSupportedContent"
+                                aria-controls="navbarSupportedContent"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation"
+                            >
+                                <i className="ri-menu-3-line" />
+                            </button>
+                            <button className='me-3 menusidebar' onClick={toggleSidebar}>
+                                <i className="ri-more-fill" />
+                            </button>
+                            <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
+                                    {/* <li className="nav-item">
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary mt-3 mx-3 btn1"
+                                        onClick={(e) => setIsModalVisible(true)}
+                                    >
+                                        Set API Key
+                                    </button>
+                                </li>
+
+                                <li className="nav-item">
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary mt-3 mx-3 btn1"
+                                        onClick={(e) => navigate('/admin/transectionrequest')}
+                                    >
+                                        Transaction Requests
+                                    </button>
+                                </li> */}
+
+                                    <li className="nav-item iq-full-screen" onClick={toggleFullscreen}>
+                                        <a href="#" className="iq-waves-effect" id="btnFullscreen">
+                                            <i className={isFullscreen ? 'ri-fullscreen-exit-line' : 'ri-fullscreen-line'} />
+                                        </a>
+                                    </li>
+
 
                                     <li className={`nav-item ${activeElement === 'profile' ? 'iq-show' : ''}`}>
 
@@ -660,59 +772,93 @@ const Header = () => {
 
                                             onClick={(e) => handleClick(e, 'profile')}
                                         >
-                                            <img
-                                                src="/assets/images/user/1.jpg"
-                                                className="img-fluid rounded-circle me-3"
-                                                alt="user"
-                                            />
+
                                             <div className="caption">
-                                                <h6 className="mb-0 line-height">{Username}</h6>
-                                                <span className="font-size-12">online</span>
+                                                <button className="btn btn-primary iq-sign-btn" onClick={logout} role="button">
+                                                    Log out
+                                                    <i className="ri-login-box-line ms-2" />
+                                                </button>
                                             </div>
                                         </a>
-                                        <div className="iq-sub-dropdown iq-user-dropdown">
-                                            <div className="iq-card shadow-none m-0">
-                                                <div className="iq-card-body p-0 ">
-                                                    <div className="bg-primary p-3">
-                                                        <h5 className="mb-0 text-white line-height">{Username}</h5>
-                                                        <span className="text-white font-size-12">online</span>
-                                                    </div>
-                                                    <Link to="/user/profile" className="iq-sub-card iq-bg-primary-hover">
-                                                        <div className="media align-items-center d-flex">
-                                                            <div className="rounded card-icon bg-soft-primary">
-                                                                <i className="ri-file-user-line" />
-                                                            </div>
-                                                            <div className="media-body ms-3">
-                                                                <h6 className="mb-0 ">My Profile</h6>
-                                                                <p className="mb-0 font-size-12">View personal profile details.</p>
-                                                            </div>
-                                                        </div>
-                                                    </Link>
-                                                    <Link to="/user/editprofile" className="iq-sub-card iq-bg-warning-hover">
-                                                        <div className="media align-items-center d-flex">
-                                                            <div className="rounded card-icon bg-soft-warning">
-                                                                <i className="ri-profile-line" />
-                                                            </div>
-                                                            <div className="media-body ms-3">
-                                                                <h6 className="mb-0 ">Change Password</h6>
-                                                            </div>
-                                                        </div>
-                                                    </Link>
 
-                                                    <div className="d-inline-block w-100 text-center p-3">
-                                                        <button className="btn btn-primary iq-sign-btn" onClick={logout} role="button">
-                                                            Log out
-                                                            <i className="ri-login-box-line ms-2" />
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </li>
                                 </ul>
                             </div>
 
                         </nav>
+                        // <nav className="navbar navbar-expand-lg navbar-light p-0">
+                        //     <div className="collapse navbar-collapse" id="navbarSupportedContent">
+                        //         <div className="nav-item mx-5">
+                        //             <button type="button" className="btn btn-primary "
+                        //                 onClick={(e) => setShowAddBrokerModal(true)}
+                        //             >
+                        //                 Add Broker
+                        //             </button>
+                        //         </div>
+
+                        //         <ul className="navbar-nav ms-auto navbar-list align-items-center">
+
+                        //             <li className={`nav-item ${activeElement === 'profile' ? 'iq-show' : ''}`}>
+
+                        //                 <a href="#"
+
+                        //                     className={`search-toggle d-flex align-items-center iq-waves-effectt ${activeElement === 'profile' ? 'active' : ''}`}
+
+                        //                     onClick={(e) => handleClick(e, 'profile')}
+                        //                 >
+                        //                     <img
+                        //                         src="/assets/images/user/1.jpg"
+                        //                         className="img-fluid rounded-circle me-3"
+                        //                         alt="user"
+                        //                     />
+                        //                     <div className="caption">
+                        //                         <h6 className="mb-0 line-height">{Username}</h6>
+                        //                         <span className="font-size-12">online</span>
+                        //                     </div>
+                        //                 </a>
+                        //                 <div className="iq-sub-dropdown iq-user-dropdown">
+                        //                     <div className="iq-card shadow-none m-0">
+                        //                         <div className="iq-card-body p-0 ">
+                        //                             <div className="bg-primary p-3">
+                        //                                 <h5 className="mb-0 text-white line-height">{Username}</h5>
+                        //                                 <span className="text-white font-size-12">online</span>
+                        //                             </div>
+                        //                             <Link to="/user/profile" className="iq-sub-card iq-bg-primary-hover">
+                        //                                 <div className="media align-items-center d-flex">
+                        //                                     <div className="rounded card-icon bg-soft-primary">
+                        //                                         <i className="ri-file-user-line" />
+                        //                                     </div>
+                        //                                     <div className="media-body ms-3">
+                        //                                         <h6 className="mb-0 ">My Profile</h6>
+                        //                                         <p className="mb-0 font-size-12">View personal profile details.</p>
+                        //                                     </div>
+                        //                                 </div>
+                        //                             </Link>
+                        //                             <Link to="/user/editprofile" className="iq-sub-card iq-bg-warning-hover">
+                        //                                 <div className="media align-items-center d-flex">
+                        //                                     <div className="rounded card-icon bg-soft-warning">
+                        //                                         <i className="ri-profile-line" />
+                        //                                     </div>
+                        //                                     <div className="media-body ms-3">
+                        //                                         <h6 className="mb-0 ">Change Password</h6>
+                        //                                     </div>
+                        //                                 </div>
+                        //                             </Link>
+
+                        //                             <div className="d-inline-block w-100 text-center p-3">
+                        //                                 <button className="btn btn-primary iq-sign-btn" onClick={logout} role="button">
+                        //                                     Log out
+                        //                                     <i className="ri-login-box-line ms-2" />
+                        //                                 </button>
+                        //                             </div>
+                        //                         </div>
+                        //                     </div>
+                        //                 </div>
+                        //             </li>
+                        //         </ul>
+                        //     </div>
+
+                        // </nav>
                     )}
 
                 </div>

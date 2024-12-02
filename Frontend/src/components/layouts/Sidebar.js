@@ -301,32 +301,38 @@ const Sidebar = () => {
                                     </>
                                 )
                                 : role === 'Subadmin' ?
-                                    (
-                                        <>
-                                            <li className={activeItem === '/subadmin/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/dashboard')}>
-                                                <Link to="/subadmin/dashboard" className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Dashboard</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === '/subadmin/groups' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/groups')}>
-                                                <Link to='/subadmin/groups' className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Sub Admin Groups</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === '/subadmin/allclient' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/allclient')}>
-                                                <Link to='/subadmin/allclient' className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>All Clients</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === '/subadmin/trade-history' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/trade-history')}>
-                                                <Link to='/subadmin/trade-history' className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Trade History</span>
-                                                </Link>
-                                            </li>
+                                (
+                                    <>
+                                        <li className={activeItem === '/subadmin/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/dashboard')}>
+                                            <Link to="/subadmin/dashboard" className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>Dashboard</span>
+                                            </Link>
+                                        </li>
+                                        <li className={activeItem === '/subadmin/addclient' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/addclient')}>
+                                            <Link to='/subadmin/addclient' className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>Add Clients</span>
+                                            </Link>
+                                        </li>
+                                        <li className={activeItem === '/subadmin/allclient' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/allclient')}>
+                                            <Link to='/subadmin/allclient' className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>All Clients</span>
+                                            </Link>
+                                        </li>
+                                        <li className={activeItem === '/subadmin/subadmindetails' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/subadmindetails')}>
+                                            <Link to='/subadmin/subadmindetails' className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>Subadmin Details</span>
+                                            </Link>
+                                        </li>
+                                        <li className={activeItem === '/subadmin/strategygroup' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/strategygroup')}>
+                                            <Link to='/subadmin/strategygroup' className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>Strategy Group</span>
+                                            </Link>
+                                        </li>
 
                                             <li className={activeItem === '/subadmin/signals' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/signals')}>
                                                 <Link to='/subadmin/signals' className="iq-waves-effect">

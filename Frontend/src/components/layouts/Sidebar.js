@@ -237,15 +237,6 @@ const Sidebar = () => {
                                             <span>Client Thread Report</span>
                                         </Link>
                                     </li>
-
-                                    {/* <li className={activeItem === 'transectionrequest' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'transectionrequest')}>
-                                        <Link to="/admin/transectionrequest" className="iq-waves-effect">
-                                            <i className="la la-file-alt" />
-                                            <span>Transaction Requests</span>
-                                        </Link>
-                                    </li> */}
-
-
                                     <li className={activeItem === 'smtp' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'smtp')}>
                                         <Link to="/admin/smtp" className="iq-waves-effect">
                                             <i className="la la-palette" />
@@ -286,14 +277,14 @@ const Sidebar = () => {
                                                 <span>Amount Details</span>
                                             </Link>
                                         </li>
-                                        
+
                                         <li className={activeItem === '/superadmin/client-thread-report' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/client-thread-report')}>
                                             <Link to='/superadmin/client-thread-report' className="iq-waves-effect">
                                                 <i className="ri-home-fill" />
                                                 <span>Client Thread Report</span>
                                             </Link>
                                         </li>
-                                        
+
                                         <li className={activeItem === '/superadmin/client-thread-response' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/client-thread-response')}>
                                             <Link to='/superadmin/client-thread-response' className="iq-waves-effect">
                                                 <i className="ri-home-fill" />
@@ -310,110 +301,112 @@ const Sidebar = () => {
                                     </>
                                 )
                                 : role === 'Subadmin' ?
-                                (
-                                    <>
-                                        <li className={activeItem === '/subadmin/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/dashboard')}>
-                                            <Link to="/subadmin/dashboard" className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Dashboard</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === '/subadmin/addclient' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/addclient')}>
-                                            <Link to='/subadmin/addclient' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Add Clients</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === '/subadmin/allclient' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/allclient')}>
-                                            <Link to='/subadmin/allclient' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>All Clients</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === '/subadmin/subadmindetails' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/subadmindetails')}>
-                                            <Link to='/subadmin/subadmindetails' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Subadmin Details</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === '/subadmin/strategygroup' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/strategygroup')}>
-                                            <Link to='/subadmin/strategygroup' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Strategy Group</span>
-                                            </Link>
-                                        </li>
+                                    (
+                                        <>
+                                            <li className={activeItem === '/subadmin/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/dashboard')}>
+                                                <Link to="/subadmin/dashboard" className="iq-waves-effect">
+                                                    <i className="ri-home-fill" />
+                                                    <span>Dashboard</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === '/subadmin/groups' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/groups')}>
+                                                <Link to='/subadmin/groups' className="iq-waves-effect">
+                                                    <i className="ri-home-fill" />
+                                                    <span>Sub Admin Groups</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === '/subadmin/allclient' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/allclient')}>
+                                                <Link to='/subadmin/allclient' className="iq-waves-effect">
+                                                    <i className="ri-home-fill" />
+                                                    <span>All Clients</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === '/subadmin/trade-history' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/trade-history')}>
+                                                <Link to='/subadmin/trade-history' className="iq-waves-effect">
+                                                    <i className="ri-home-fill" />
+                                                    <span>Trade History</span>
+                                                </Link>
+                                            </li>
 
-                                    </>
-                                )
-                                : (
-                                    <>
-                                        <li className={activeItem === '/user/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/user/dashboard')}>
-                                            <Link to="/user/dashboard" className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Dashboard</span>
-                                            </Link>
-                                        </li>
-                                        <li>
+                                            <li className={activeItem === '/subadmin/signals' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/signals')}>
+                                                <Link to='/subadmin/signals' className="iq-waves-effect">
+                                                    <i className="ri-home-fill" />
+                                                    <span>Signals</span>
+                                                </Link>
+                                            </li>
 
-                                        </li>
-                                        <li className={activeItem === 'technical/pattern' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'technical/pattern')}>
 
-                                            <Link to="technical/pattern" className="iq-waves-effect">
-                                                <i className="lab la-joget" />
-                                                <span>Technical Patterns</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === 'lastpattern' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'lastpattern')}>
-                                            <Link to="lastpattern" className="iq-waves-effect">
-                                                <i className="lab la-ioxhost" />
-                                                <span>Last Patterns</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === 'allpaln' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'allpaln')}>
-                                            <Link to="all/plan" className="iq-waves-effect">
-                                                <i className="lab la-ioxhost" />
-                                                <span>All Plans</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === 'tradereport' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'tradereport')}>
-                                            <Link to="tradereport" className="iq-waves-effect">
-                                                <i className="la la-sellsy" />
-                                                <span>Trade Report</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === 'tradehistory' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'tradehistory')}>
-                                            <Link to="tradehistory" className="iq-waves-effect">
-                                                <i className="la la-palette" />
-                                                <span>Trade History</span>
-                                            </Link>
+                                        </>
+                                    )
+                                    : (
+                                        <>
+                                            <li className={activeItem === '/user/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/user/dashboard')}>
+                                                <Link to="/user/dashboard" className="iq-waves-effect">
+                                                    <i className="ri-home-fill" />
+                                                    <span>Dashboard</span>
+                                                </Link>
+                                            </li>
+                                            <li>
 
-                                        </li>
-                                        <li className={activeItem === 'traderesponse' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'traderesponse')}>
-                                            <Link to="traderesponse" className="iq-waves-effect">
-                                                <i className="la la-sellsy" />
-                                                <span>Trade Response</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === 'profitandloss' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'profitandloss')}>
-                                            <Link to="profitandloss" className="iq-waves-effect">
-                                                <i className="las la-universal-access" />
-                                                <span>Net P&L</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === 'pannel' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'pannel')}>
-                                            <Link to="pannel" className="iq-waves-effect">
-                                                <i className="lab la-ello" />
-                                                <span>Panel Track</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === 'discription' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'discription')}>
-                                            <Link to="discription" className="iq-waves-effect">
-                                                <i className="lab la-get-pocket" />
-                                                <span>Description</span>
-                                            </Link>
-                                        </li>
-                                    </>
-                                )}
+                                            </li>
+                                            <li className={activeItem === 'technical/pattern' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'technical/pattern')}>
+
+                                                <Link to="technical/pattern" className="iq-waves-effect">
+                                                    <i className="lab la-joget" />
+                                                    <span>Technical Patterns</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === 'lastpattern' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'lastpattern')}>
+                                                <Link to="lastpattern" className="iq-waves-effect">
+                                                    <i className="lab la-ioxhost" />
+                                                    <span>Last Patterns</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === 'allpaln' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'allpaln')}>
+                                                <Link to="all/plan" className="iq-waves-effect">
+                                                    <i className="lab la-ioxhost" />
+                                                    <span>All Plans</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === 'tradereport' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'tradereport')}>
+                                                <Link to="tradereport" className="iq-waves-effect">
+                                                    <i className="la la-sellsy" />
+                                                    <span>Trade Report</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === 'tradehistory' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'tradehistory')}>
+                                                <Link to="tradehistory" className="iq-waves-effect">
+                                                    <i className="la la-palette" />
+                                                    <span>Trade History</span>
+                                                </Link>
+
+                                            </li>
+                                            <li className={activeItem === 'traderesponse' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'traderesponse')}>
+                                                <Link to="traderesponse" className="iq-waves-effect">
+                                                    <i className="la la-sellsy" />
+                                                    <span>Trade Response</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === 'profitandloss' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'profitandloss')}>
+                                                <Link to="profitandloss" className="iq-waves-effect">
+                                                    <i className="las la-universal-access" />
+                                                    <span>Net P&L</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === 'pannel' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'pannel')}>
+                                                <Link to="pannel" className="iq-waves-effect">
+                                                    <i className="lab la-ello" />
+                                                    <span>Panel Track</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === 'discription' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'discription')}>
+                                                <Link to="discription" className="iq-waves-effect">
+                                                    <i className="lab la-get-pocket" />
+                                                    <span>Description</span>
+                                                </Link>
+                                            </li>
+                                        </>
+                                    )}
                         </ul>
                     </nav>
                     <div className="p-3" />

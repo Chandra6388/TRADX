@@ -7,7 +7,9 @@ import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../../ExtraComponent/Loader';
 import { Get_All_Plans } from "../../CommonAPI/User";
-import { GetSunAdminGroupNames } from '../../CommonAPI/SubAdmin';
+import { subadminGroups } from '../../CommonAPI/SubAdmin';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
 
 const Adduser = () => {
@@ -18,8 +20,11 @@ const Adduser = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [optionsArray, setoptionsArray] = useState([]);
     const [GetAllPlans, setAllPlans] = useState({ LivePlanName: [], DemoPlanName: [], data: [] });
+    
+    const animatedComponents = makeAnimated();
 
 
+    console.log("selectedOptions", selectedOptions)
     const Name_regex = (name) => {
         const nameRegex = /^[a-zA-Z]+$/;
         return nameRegex.test(name);
@@ -56,21 +61,22 @@ const Adduser = () => {
     }
 
     const GetAllGroupDetails = async () => {
-      const req = {subadmin: username }
+        const req = { subadmin: username }
         try {
-            await GetSunAdminGroupNames(req)
+            await subadminGroups(req)
                 .then((response) => {
                     if (response.Status) {
-                        const arr = response.Data.map(item => ({
-                            label: item.GroupName,
-                            key: item.GroupName
+                        const arr = response.groupdf.map(item => ({
+                            label: item,
+                            value: item
                         }));
                         setoptionsArray(arr);
 
 
+                        console.log("response", response)
                         setGroupData({
                             loading: false,
-                            data: response.Data
+                            data: response.groupdf
                         })
                     }
                     else {
@@ -107,16 +113,6 @@ const Adduser = () => {
     };
 
 
-//     username: str
-// password: str
-// cpassword: str
-// email: str
-// mobile_no: str
-// bname: str
-// group: list
-// planname: str
-// ClientAmmount: float
-// SubAdmin: str = ""
     const formik = useFormik({
         initialValues: {
             username: "",
@@ -178,10 +174,12 @@ const Adduser = () => {
                 password: values.password,
                 cpassword: values.cpassword,
                 mobile_no: values.mobile_no,
-                bname: formik.values.Select_License==1 ? "Demo" : values.bname,
+                bname: formik.values.Select_License == 1 ? "Demo" : values.bname,
                 ClientAmmount: formik.values.Select_License == 1 ? 0 : Number(values.ClientAmmount),
                 planname: values.planname,
-                group: selectedOptions && selectedOptions
+                group: selectedOptions.map((item) => item.value),
+                SubAdmin: username
+
             }
 
             const FilterPlanAmount = GetAllPlans.data.filter((item) => item.PlanName === values.planname);
@@ -193,9 +191,9 @@ const Adduser = () => {
                     timer: 3000,
                     timerProgressBar: true
                 });
-                return 
-                
-            } 
+                return
+
+            }
             await CreateAccount(req)
                 .then((response) => {
                     if (response.Status) {
@@ -274,7 +272,7 @@ const Adduser = () => {
         },
         {
 
-           
+
             name: "Select_License",
             label: "License Type",
             type: "select1",
@@ -334,40 +332,44 @@ const Adduser = () => {
 
     ];
 
-    useEffect(() => { 
-            formik.setFieldValue('bname', "")
-            formik.setFieldValue('ClientAmmount', 0)
-            formik.setFieldValue('planname', "") 
-        
+    useEffect(() => {
+        formik.setFieldValue('bname', "")
+        formik.setFieldValue('ClientAmmount', 0)
+        formik.setFieldValue('planname', "")
+
     }, [formik.values.Select_License])
 
+
+    const handleChange = (selectedOptions) => {
+        setSelectedOptions(selectedOptions);
+    }
     return (
         <>
-            {getGroupData.loading ? <Loader /> :
-                (
-                    <AddForm
-                        fields={fields.filter(
-                            (field) => !field.showWhen || field.showWhen(formik.values)
-                        )}
-                        page_title="Create Account"
-                        btn_name="Add"
-                        btn_name1="Cancel"
-                        formik={formik}
-                        btn_name1_route={"/admin/clientservice"}
-                        additional_field={
-                            <div className='col-lg-6 mt-2 dropdownuser' >
-                                <h6>Select Group</h6>
-                                <DropdownMultiselect
-                                    options={optionsArray}
-                                    name="groupName"
-                                    handleOnChange={(selected) => {
-                                        setSelectedOptions(selected)
-                                    }}
-                                />
-                            </div>
-                        }
-                    />
+            <AddForm
+                fields={fields.filter(
+                    (field) => !field.showWhen || field.showWhen(formik.values)
                 )}
+                page_title="Create Account"
+                btn_name="Add"
+                btn_name1="Cancel"
+                formik={formik}
+                btn_name1_route={"/admin/clientservice"}
+                additional_field={
+                    <div className='col-lg-6 mt-2 dropdownuser' >
+                        <h6>Select Group</h6>
+                        <Select
+                            options={optionsArray}
+                            isMulti
+                            className="basic-multi-select"
+                            value={selectedOptions}
+                            onChange={handleChange}
+                            placeholder="Select options"
+                           
+                        />
+                    </div>
+                }
+            />
+            {/* )} */}
         </>
     );
 };

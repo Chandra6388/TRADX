@@ -45,14 +45,13 @@ const AdminRoute = () => {
             <Route path="/allscript" element={<Allscript />} />
             <Route path="/addscript/scalping" element={<AddscriptScalping />} />
             <Route path="/addscript/pattern" element={<PatternScript />} />
+            <Route path="/addscript/option" element={<AddScriptOption />} />
             <Route path="/clientactivity" element={<Clientactivity />} />
             <Route path="/clientreport" element={<Clientreport />} />
             <Route path="/smtp" element={<Smtp />} />
             <Route path="/userlogs" element={<UserLogs />} />
             <Route path="/strategygroup" element={<StrategyGroup />} />
             <Route path="/servicerepor" element={<ServiceReport />} />
-            <Route path="/addscript/option" element={<AddScriptOption />} />
-            <Route path="/addscript/option" element={<AddScriptOption />} />
             <Route path="/system" element={<System />} /> 
             <Route path="/allplan" element={<AllPlan />} />  
             <Route path="/cpp" element={<CPP />} />

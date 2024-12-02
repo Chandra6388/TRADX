@@ -9,21 +9,14 @@ import { SquarePen } from 'lucide-react';
 
 const AllSubadmin = () => {
    const userName = localStorage.getItem('name');
-
     const navigate = useNavigate();
-
     const [clientService, setClientService] = useState({ loading: true, data: [] });
-
     const [searchInput, setSearchInput] = useState('')
-
 
 
     useEffect(() => {
         fetchAllSubadmin();
     }, [searchInput]);
-
-
-
 
     const fetchAllSubadmin = async () => {
         const req = {userName: userName}

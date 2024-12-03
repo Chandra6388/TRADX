@@ -64,26 +64,9 @@ const AmountDetails = () => {
                 }
             },
         },
-
         {
-            name: "AdminName",
-            label: "Admin Name",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "AmmountDetails",
+            name: "AmountDetails",
             label: "Amount Details",
-            options: {
-                filter: true,
-                sort: true,
-            }
-        },
-        {
-            name: "Companyname",
-            label: "Company Name",
             options: {
                 filter: true,
                 sort: true,
@@ -98,8 +81,8 @@ const AmountDetails = () => {
             }
         },
         {
-            name: "Create Date",
-            label: "Create Date",
+            name: "Payment Date",
+            label: "Payment Date",
             options: {
                 filter: true,
                 sort: true,

@@ -24,40 +24,40 @@ const Adduser = () => {
         validate: (values) => {
             let errors = {};
             if (!values.SignuserName) {
-                errors.SignuserName = "Please enter the username";
+                errors.SignuserName = "Please enter username";
             }
             if (!values.mobile_no) {
-                errors.mobile_no = "Please enter the mobile number";
+                errors.mobile_no = "Please enter mobile number";
             }
             if (!values.SignEmail) {
-                errors.SignEmail = "Please enter the email";
+                errors.SignEmail = "Please enter email";
             }
             else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.SignEmail)) {
                 errors.SignEmail = "Invalid email address";
             }
             if (!values.Signpassword) {
-                errors.Signpassword = "Please enter the password";
+                errors.Signpassword = "Please enter password";
             }
             if (!values.ConfirmPassword) {
-                errors.ConfirmPassword = "Please enter the confirm password";
+                errors.ConfirmPassword = "Please enter confirm password";
             }
             if (values.Signpassword !== values.ConfirmPassword) {
                 errors.ConfirmPassword = "Password and confirm password should be same";
             }
             if (!values.AmmountDetails) {
-                errors.AmmountDetails = "Please enter the amount";
+                errors.AmmountDetails = "Please enter amount";
             }
             if (!values.Companyname) {
-                errors.Companyname = "Please enter the company name";
+                errors.Companyname = "Please enter company name";
             }
             if (!values.serverip) {
-                errors.serverip = "Please enter the server ip";
+                errors.serverip = "Please enter server ip";
             }
             if (!values.MongoUsername) {
-                errors.MongoUsername = "Please enter the mongodb username";
+                errors.MongoUsername = "Please enter MongoDB username";
             }
             if (!values.MongoPass) {
-                errors.MongoPass = "Please enter the mongodb password";
+                errors.MongoPass = "Please enter MongoDB password";
             }
             return errors;
         },
@@ -181,7 +181,7 @@ const Adduser = () => {
         },
         {
             name: "MongoUsername",
-            label: "Mongodb Username",
+            label: "MongoDB Username",
             type: "text",
             label_size: 12,
             hiding: false,
@@ -190,7 +190,7 @@ const Adduser = () => {
         },
         {
             name: "MongoPass",
-            label: "Mongodb Password",
+            label: "MongoDB Password",
             type: "text",
 
             label_size: 12,

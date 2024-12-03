@@ -56,6 +56,15 @@ const Strategygroup = () => {
             }
         },
         {
+            name: "Companyname",
+            label: "Company Name",
+            options: {
+                filter: true,
+                sort: false,
+                width: '20%'
+            }
+        },
+        {
             name: "username",
             label: "Username",
             options: {
@@ -77,7 +86,7 @@ const Strategygroup = () => {
         },
         {
             name: "SignEmail",
-            label: "Sign Email",
+            label: "Email",
             options: {
                 filter: true,
                 sort: false,
@@ -85,7 +94,7 @@ const Strategygroup = () => {
         },
         {
             name: "SignMobileNo",
-            label: "Sign Mobile No",
+            label: "Mobile No",
             options: {
                 filter: true,
                 sort: false,
@@ -93,25 +102,17 @@ const Strategygroup = () => {
         },
 
         {
-            name: "Createdate",
+            name: "Create Date",
             label: "Created Date",
             options: {
                 filter: true,
                 sort: false,
             }
         },
-        {
-            name: "Companyname",
-            label: "Company Name",
-            options: {
-                filter: true,
-                sort: false,
-                width: '20%'
-            }
-        },
+        
         {
             name: "AmountDetails",
-            label: "Ammount Details",
+            label: "Amount Details",
             options: {
                 filter: true,
                 sort: false,
@@ -120,7 +121,7 @@ const Strategygroup = () => {
         },
         {
             name: "IP Detail",
-            label: "Ip Address",
+            label: "IP Address",
             options: {
                 filter: true,
                 sort: false,

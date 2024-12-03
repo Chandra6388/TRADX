@@ -285,10 +285,10 @@ const Sidebar = () => {
                                             </Link>
                                         </li>
 
-                                        <li className={activeItem === '/superadmin/client-thread-response' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/client-thread-response')}>
-                                            <Link to='/superadmin/client-thread-response' className="iq-waves-effect">
+                                        <li className={activeItem === '/superadmin/client-trade-response' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/client-trade-response')}>
+                                            <Link to='/superadmin/client-trade-response' className="iq-waves-effect">
                                                 <i className="ri-home-fill" />
-                                                <span>Client Thread Response</span>
+                                                <span>Client Trade Response</span>
                                             </Link>
                                         </li>
                                         <li className={activeItem === '/superadmin/update-client-details' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/update-client-details')}>

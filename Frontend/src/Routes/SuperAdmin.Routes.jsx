@@ -26,7 +26,7 @@ const SuperAdminRoute = () => {
             <Route path="/amount-details" element={<AmountDetails />} />
             <Route path="/admin-activity" element={<AdminActivity />} />
             <Route path="/client-thread-report" element={<ClientThreadReport />} />
-            <Route path="/client-thread-response" element={<ClientThreadResponse />} />
+            <Route path="/client-trade-response" element={<ClientThreadResponse />} />
             <Route path="/update-client-details" element={<UpdateClientDetails />} />
           </Routes>
         </div>

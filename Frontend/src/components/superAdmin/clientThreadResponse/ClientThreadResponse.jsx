@@ -226,7 +226,7 @@ const TradeResponse = () => {
                             <div className="was-validated ">
                                 <div className='row'>
                                     <div className="form-group col-lg-2">
-                                        <label>Select Panel</label>
+                                        <label>Select Company</label>
                                         <select className="form-select" required=""
                                             onChange={(e) => setCompanyName(e.target.value)}
                                             value={comapnyName}
@@ -240,7 +240,7 @@ const TradeResponse = () => {
                                         </select>
                                     </div>
                                     <div className="form-group col-lg-2">
-                                        <label>Select Panel</label>
+                                        <label>Select Client Name</label>
                                         <select className="form-select" required=""
                                             onChange={(e) => setClientName(e.target.value)}
                                             value={clientName}
@@ -258,6 +258,7 @@ const TradeResponse = () => {
                                         <select className="form-select" required=""
                                             onChange={(e) => setStrategyType(e.target.value)}
                                             value={selectStrategyType}>
+                                                
                                             <option value={"Scalping"}>Scalping</option>
                                             <option value={"Option Strategy"}>Option Strategy</option>
                                             <option value={"Pattern"}>Pattern Script</option>

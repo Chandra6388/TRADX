@@ -137,11 +137,22 @@ const AddClient = () => {
       if (!values.ExitDay) {
         errors.ExitDay = "Please Select Exit Day.";
       }
-      if (!values.EntryPrice && values.EntryPrice != 0) {
-        errors.EntryPrice = values.Strategy == "Fixed Price" ? "Please Enter The Lowest Price." : "Please Enter The First Trade Lower Range";
+      if (!values.EntryPrice) {
+        if (values.Strategy == "Fixed Price" && values.EntryPrice == 0) {
+          errors.EntryPrice = "Please Enter The Lowest Price.";
+        }
+        else if (values.Strategy != "Fixed Price" && values.EntryPrice != 0) {
+          errors.EntryPrice = "Please Enter The First Trade Lower Range";
+        }
+
       }
-      if (!values.EntryRange && values.EntryRange != 0) {
-        errors.EntryRange = values.Strategy == "Fixed Price" ? "Please Enter The Highest Price." : "Please Enter The First Trade Higher Range";
+      if (!values.EntryRange) {
+        if (values.Strategy == "Fixed Price" && values.EntryRange == 0) {
+          errors.EntryRange = "Please Enter The Highest Price.";
+        }
+        else if (values.Strategy != "Fixed Price" && values.EntryRange != 0) {
+          errors.EntryRange = "Please Enter The First Trade Higher Range";
+        }
       }
 
       if (!values.Targetvalue) {
@@ -639,7 +650,7 @@ const AddClient = () => {
       name: "Strategy",
       label: "Scalping Type",
       type: "radio2",
-      title:  location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len]?.CombineScalping.map((item) => ({ title: item, value: item })),
+      title: location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len]?.CombineScalping.map((item) => ({ title: item, value: item })),
       hiding: false,
       label_size: 12,
       col_size: 12,
@@ -844,7 +855,7 @@ const AddClient = () => {
   useEffect(() => {
     formik.setFieldValue('Group', "")
     formik.setFieldValue('HigherRange', 0)
-    formik.setFieldValue('LowerRange', 0) 
+    formik.setFieldValue('LowerRange', 0)
     formik.setFieldValue('EntryRange', 0)
     formik.setFieldValue('EntryPrice', 0)
   }, [formik.values.Strategy])

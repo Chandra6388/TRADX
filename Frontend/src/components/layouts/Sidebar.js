@@ -5,15 +5,13 @@ import $ from 'jquery';
 const Sidebar = () => {
     const role = localStorage.getItem("Role");
     const [isActive, setIsActive] = useState(true);
-    const [activeItem, setActiveItem] = useState(''); // State to track active item
+    const [activeItem, setActiveItem] = useState(''); 
     const sidebarRef = useRef(null);
     const fevicon = localStorage.getItem("fevicon");
     const header_img1 = localStorage.getItem("header_img1");
     const header_img2 = localStorage.getItem("header_img2");
     const logo = localStorage.getItem("logo");
     const pannel_name = localStorage.getItem("pannel_name");
-
-
 
     const setImages = async () => {
         $(".header_img1").attr('src', header_img1);
@@ -26,7 +24,6 @@ const Sidebar = () => {
         favicon.attr('href', fevicon && fevicon);
         $('head').append(favicon);
     }
-
     useEffect(() => {
         setImages();
     }, []);
@@ -42,7 +39,7 @@ const Sidebar = () => {
     useEffect(() => {
         const sidebar = sidebarRef.current;
         const handleAnchorClick = (event) => {
-            closeSidebarOnSmallScreen(); // Remove classes on anchor click for small screens
+            closeSidebarOnSmallScreen(); 
         };
 
         const anchors = sidebar.querySelectorAll('a');
@@ -309,22 +306,16 @@ const Sidebar = () => {
                                                     <span>Dashboard</span>
                                                 </Link>
                                             </li>
-                                            <li className={activeItem === '/subadmin/groups' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/groups')}>
-                                                <Link to='/subadmin/groups' className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Sub Admin Groups</span>
-                                                </Link>
-                                            </li>
                                             <li className={activeItem === '/subadmin/allclient' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/allclient')}>
                                                 <Link to='/subadmin/allclient' className="iq-waves-effect">
                                                     <i className="ri-home-fill" />
                                                     <span>All Clients</span>
                                                 </Link>
                                             </li>
-                                            <li className={activeItem === '/subadmin/trade-history' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/trade-history')}>
-                                                <Link to='/subadmin/trade-history' className="iq-waves-effect">
+                                            <li className={activeItem === '/subadmin/groups' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/groups')}>
+                                                <Link to='/subadmin/groups' className="iq-waves-effect">
                                                     <i className="ri-home-fill" />
-                                                    <span>Trade History</span>
+                                                    <span>Sub Admin Groups</span>
                                                 </Link>
                                             </li>
                                             <li className={activeItem === '/subadmin/all-script' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/all-script')}>
@@ -333,13 +324,19 @@ const Sidebar = () => {
                                                     <span>Add Script</span>
                                                 </Link>
                                             </li>
-
                                             <li className={activeItem === '/subadmin/signals' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/signals')}>
                                                 <Link to='/subadmin/signals' className="iq-waves-effect">
                                                     <i className="ri-home-fill" />
                                                     <span>Signals</span>
                                                 </Link>
                                             </li>
+                                            <li className={activeItem === '/subadmin/trade-history' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/trade-history')}>
+                                                <Link to='/subadmin/trade-history' className="iq-waves-effect">
+                                                    <i className="ri-home-fill" />
+                                                    <span>Trade History</span>
+                                                </Link>
+                                            </li>
+
 
 
                                         </>

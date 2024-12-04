@@ -83,84 +83,94 @@ const AddClient = () => {
             const maxTime = "15:29:59";
             const minTime = "09:15:00";
             if (!values.Strategy) {
-              errors.Strategy = "Please Select Strategy Type.";
+                errors.Strategy = "Please Select Strategy Type.";
             }
             if (!values.Trade_Execution || values.Trade_Execution == 0) {
-              errors.Trade_Execution = "Please Select Trade Execution.";
+                errors.Trade_Execution = "Please Select Trade Execution.";
             }
             if (!values.Trade_Count || values.Trade_Count == 0) {
-              errors.Trade_Count = "Please Enter Trade Count.";
+                errors.Trade_Count = "Please Enter Trade Count.";
             }
             if (!values.Exchange) {
-              errors.Exchange = "Please Select Exchange Type.";
+                errors.Exchange = "Please Select Exchange Type.";
             }
             if (!values.Instrument && values.Exchange !== 'NSE') {
-              errors.Instrument = "Please Select Instrument Type.";
+                errors.Instrument = "Please Select Instrument Type.";
             }
             if (!values.Symbol) {
-              errors.Symbol = "Please Select Symbol Type.";
+                errors.Symbol = "Please Select Symbol Type.";
             }
             if (!values.Optiontype && (values.Instrument === "OPTSTK" || values.Instrument === "OPTIDX")) {
-              errors.Optiontype = "Please Select Option Type.";
+                errors.Optiontype = "Please Select Option Type.";
             }
             if (!values.Strike && (values.Instrument === "OPTSTK" || values.Instrument === "OPTIDX")) {
-              errors.Strike = "Please Select Strike Price.";
+                errors.Strike = "Please Select Strike Price.";
             }
             if (!values.expirydata1 && values.Exchange !== 'NSE') {
-              errors.expirydata1 = "Select Expiry Date.";
+                errors.expirydata1 = "Select Expiry Date.";
             }
             if (!values.TType) {
-              errors.TType = "Please Select Transaction Type.";
+                errors.TType = "Please Select Transaction Type.";
             }
             if (!values.Quantity) {
-              errors.Quantity = formik.values.Exchange == "NFO" ? "Please Enter Lot Value." : "Please Enter Quantity Value.";
+                errors.Quantity = formik.values.Exchange == "NFO" ? "Please Enter Lot Value." : "Please Enter Quantity Value.";
             }
             if (!values.ExitTime) {
-              errors.ExitTime = "Please Select Exit Time.";
+                errors.ExitTime = "Please Select Exit Time.";
             } else if (values.ExitTime > maxTime) {
-              errors.ExitTime = "Exit Time Must be Before 15:29:59.";
+                errors.ExitTime = "Exit Time Must be Before 15:29:59.";
             }
             else if (values.ExitTime < minTime) {
-              errors.ExitTime = "Exit Time Must be After 09:15:00.";
+                errors.ExitTime = "Exit Time Must be After 09:15:00.";
             }
             if (!values.EntryTime) {
-              errors.EntryTime = "Please Select Entry Time.";
+                errors.EntryTime = "Please Select Entry Time.";
             } else if (values.EntryTime < minTime) {
-              errors.EntryTime = "Entry Time Must be After 09:15:00.";
+                errors.EntryTime = "Entry Time Must be After 09:15:00.";
             }
             else if (values.EntryTime > maxTime) {
-              errors.EntryTime = "Entry Time Must be Before 15:29:59.";
+                errors.EntryTime = "Entry Time Must be Before 15:29:59.";
             }
             if (!values.TStype && values.Strategy != 'Fixed Price') {
-              errors.TStype = "Please Select Measurement Type.";
+                errors.TStype = "Please Select Measurement Type.";
             }
             if (!values.ExitDay) {
-              errors.ExitDay = "Please Select Exit Day.";
+                errors.ExitDay = "Please Select Exit Day.";
             }
-            if (!values.EntryPrice && values.EntryPrice != 0) {
-              errors.EntryPrice = values.Strategy == "Fixed Price" ? "Please Enter The Lowest Price." : "Please Enter The First Trade Lower Range";
+            if (!values.EntryPrice) {
+                if (values.Strategy == "Fixed Price" && values.EntryPrice == 0) {
+                    errors.EntryPrice = "Please Enter The Lowest Price.";
+                }
+                else if (values.Strategy != "Fixed Price" && values.EntryPrice != 0) {
+                    errors.EntryPrice = "Please Enter The First Trade Lower Range";
+                }
             }
-            if (!values.EntryRange && values.EntryRange != 0) {
-              errors.EntryRange = values.Strategy == "Fixed Price" ? "Please Enter The Highest Price." : "Please Enter The First Trade Higher Range";
+            if (!values.EntryRange) {
+                if (values.Strategy == "Fixed Price" && values.EntryRange == 0) {
+                    errors.EntryRange = "Please Enter The Highest Price.";
+                }
+                else if (values.Strategy != "Fixed Price" && values.EntryRange != 0) {
+                    errors.EntryRange = "Please Enter The First Trade Higher Range";
+                }
             }
-      
+
             if (!values.Targetvalue) {
-              errors.Targetvalue = values.Strategy == "Fixed Price" ? "Please Enter A Target Price." : "Please Enter A Target Value.";
+                errors.Targetvalue = values.Strategy == "Fixed Price" ? "Please Enter A Target Price." : "Please Enter A Target Value.";
             }
             if (!values.LowerRange && values.Strategy != 'Fixed Price' && values.LowerRange != 0) {
-              errors.LowerRange = "Please Enter The Lower Range.";
+                errors.LowerRange = "Please Enter The Lower Range.";
             }
             if (!values.HigherRange && values.Strategy != 'Fixed Price' && values.HigherRange != 0) {
-              errors.HigherRange = "Please Enter The Higher Range.";
+                errors.HigherRange = "Please Enter The Higher Range.";
             }
             if (!values.Group && values.Strategy === "Fixed Price") {
-              errors.Group = "Please Select A Unique ID.";
+                errors.Group = "Please Select A Unique ID.";
             }
             if (!values.HoldExit && values.Strategy != "Fixed Price") {
-              errors.HoldExit = "Please Select Whether To Hold Or Exit.";
+                errors.HoldExit = "Please Select Whether To Hold Or Exit.";
             }
             if (!values.Slvalue) {
-              errors.Slvalue = values.Strategy == "Fixed Price" ? "Please Enter Stop Loss Price." : "Please Select A Stop Loss Value.";
+                errors.Slvalue = values.Strategy == "Fixed Price" ? "Please Enter Stop Loss Price." : "Please Select A Stop Loss Value.";
             }
             return errors;
         },
@@ -210,53 +220,53 @@ const AddClient = () => {
                 stretegytag: values.Strategy
             }
             if ((Number(values.EntryPrice) > 0 || Number(values.EntryRange) > 0) &&
-            (Number(values.EntryPrice) >= Number(values.EntryRange))) {
-            return SweentAlertFun(
-              values.Strategy === 'Fixed Price'
-                ? "Higher Price should be greater than Lower Price"
-                : "First Trade Higher Range should be greater than First Trade Lower Range"
-            );
-          }
-          if (
-            values.Strategy !== 'Fixed Price' &&
-            Number(values.LowerRange) >= Number(values.HigherRange) &&
-            (Number(values.LowerRange) > 0 || Number(values.HigherRange) > 0)
-          ) {
-            return SweentAlertFun("Higher Price should be greater than Lower Range");
-          }
-          if (
-            values.Strategy === 'Fixed Price' &&
-            values.TType === 'BUY' &&
-            (
-              Number(values.EntryPrice) >= Number(values.EntryRange) ||
-              Number(values.Targetvalue) <= Number(values.EntryRange) ||
-              Number(values.Slvalue) >= Number(values.EntryPrice)
-            )
-          ) {
-            const alertMessage =
-              Number(values.Targetvalue) <= Number(values.EntryRange)
-                ? "Target should be greater than Higher Price"
-                : Number(values.EntryRange) <= Number(values.EntryPrice)
-                  ? "Higher Price should be greater than Lower Price"
-                  : "Stoploss should be smaller than Lower Price";
-  
-            return SweentAlertFun(alertMessage);
-          }
-          if (
-            values.Strategy === 'Fixed Price' &&
-            values.TType === 'SELL' &&
-            (
-              Number(values.Targetvalue) >= Number(values.EntryPrice) ||
-              Number(values.Slvalue) <= Number(values.EntryRange)
-            )
-          ) {
-            const alertMessage =
-              Number(values.Targetvalue) >= Number(values.EntryPrice)
-                ? "Target should be smaller than Lower Price"
-                : "Stoploss should be greater than Higher Price";
-  
-            return SweentAlertFun(alertMessage);
-          }
+                (Number(values.EntryPrice) >= Number(values.EntryRange))) {
+                return SweentAlertFun(
+                    values.Strategy === 'Fixed Price'
+                        ? "Higher Price should be greater than Lower Price"
+                        : "First Trade Higher Range should be greater than First Trade Lower Range"
+                );
+            }
+            if (
+                values.Strategy !== 'Fixed Price' &&
+                Number(values.LowerRange) >= Number(values.HigherRange) &&
+                (Number(values.LowerRange) > 0 || Number(values.HigherRange) > 0)
+            ) {
+                return SweentAlertFun("Higher Price should be greater than Lower Range");
+            }
+            if (
+                values.Strategy === 'Fixed Price' &&
+                values.TType === 'BUY' &&
+                (
+                    Number(values.EntryPrice) >= Number(values.EntryRange) ||
+                    Number(values.Targetvalue) <= Number(values.EntryRange) ||
+                    Number(values.Slvalue) >= Number(values.EntryPrice)
+                )
+            ) {
+                const alertMessage =
+                    Number(values.Targetvalue) <= Number(values.EntryRange)
+                        ? "Target should be greater than Higher Price"
+                        : Number(values.EntryRange) <= Number(values.EntryPrice)
+                            ? "Higher Price should be greater than Lower Price"
+                            : "Stoploss should be smaller than Lower Price";
+
+                return SweentAlertFun(alertMessage);
+            }
+            if (
+                values.Strategy === 'Fixed Price' &&
+                values.TType === 'SELL' &&
+                (
+                    Number(values.Targetvalue) >= Number(values.EntryPrice) ||
+                    Number(values.Slvalue) <= Number(values.EntryRange)
+                )
+            ) {
+                const alertMessage =
+                    Number(values.Targetvalue) >= Number(values.EntryPrice)
+                        ? "Target should be smaller than Lower Price"
+                        : "Stoploss should be greater than Higher Price";
+
+                return SweentAlertFun(alertMessage);
+            }
             if (values.EntryTime >= values.ExitTime) {
                 return SweentAlertFun("Exit Time should be greater than Entry Time")
             }

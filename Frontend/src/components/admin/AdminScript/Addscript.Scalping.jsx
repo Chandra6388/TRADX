@@ -122,12 +122,24 @@ const AddClient = () => {
         errors.ExitDay = "Please Select Exit Day.";
       }
 
-      if (!values.EntryPrice && values.EntryPrice != 0) {
-        errors.EntryPrice = values.Strategy == "Fixed Price" ? "Please Enter The Lowest Price." : "Please Enter The First Trade Lower Range";
+      if (!values.EntryPrice) {
+        if (values.Strategy == "Fixed Price" && values.EntryPrice == 0) {
+          errors.EntryPrice = "Please Enter The Lowest Price.";
+        }
+        else if (values.Strategy != "Fixed Price" && values.EntryPrice != 0) {
+          errors.EntryPrice = "Please Enter The First Trade Lower Range";
+        }
+
       }
-      if (!values.EntryRange && values.EntryRange != 0) {
-        errors.EntryRange = values.Strategy == "Fixed Price" ? "Please Enter The Highest Price." : "Please Enter The First Trade Higher Range";
+      if (!values.EntryRange) {
+        if (values.Strategy == "Fixed Price" && values.EntryRange == 0) {
+          errors.EntryRange = "Please Enter The Highest Price.";
+        }
+        else if (values.Strategy != "Fixed Price" && values.EntryRange != 0) {
+          errors.EntryRange = "Please Enter The First Trade Higher Range";
+        }
       }
+
       if (!values.Targetvalue) {
         errors.Targetvalue = values.Strategy == "Fixed Price" ? "Please Enter A Target Price." : "Please Enter A Target Value.";
       }
@@ -145,7 +157,7 @@ const AddClient = () => {
       }
       if (!values.Slvalue) {
         errors.Slvalue = values.Strategy == "Fixed Price" ? "Please Enter Stop Loss Price." : "Please Select A Stop Loss Value.";
-      } 
+      }
 
       return errors;
     },
@@ -533,7 +545,7 @@ const AddClient = () => {
       col_size: 4,
       hiding: false,
       disable: false,
-    }, 
+    },
     {
       name: "Quantity",
       label: formik.values.Exchange == "NFO" ? "Lot" : "Quantity",
@@ -548,7 +560,7 @@ const AddClient = () => {
   ]
 
   const TimeDurationArr = [
-   
+
     {
       name: "EntryTime",
       label: "Entry Time",
@@ -642,7 +654,7 @@ const AddClient = () => {
       data: ExitRuleArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
       disable: false,
     },
-    
+
     {
       name: "Heading",
       label: "Time_Duration",
@@ -786,7 +798,7 @@ const AddClient = () => {
 
 
   useEffect(() => {
-    formik.setFieldValue('Group', "") 
+    formik.setFieldValue('Group', "")
     formik.setFieldValue('HigherRange', 0)
     formik.setFieldValue('LowerRange', 0)
     formik.setFieldValue('EntryRange', 0)

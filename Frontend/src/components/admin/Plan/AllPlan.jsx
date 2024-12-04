@@ -63,13 +63,6 @@ const ServicesList = () => {
 
 
 
-  const imgArr = [
-    "https://cdn.pixabay.com/photo/2024/05/31/05/24/trading-8799817_640.png",
-    "https://cdn.pixabay.com/photo/2016/11/27/21/42/stock-1863880_640.jpg",
-    "https://cdn.pixabay.com/photo/2020/04/16/15/40/stock-5051155_640.jpg",
-    "https://cdn.pixabay.com/photo/2023/07/28/08/06/finance-8154775_640.jpg",
-  ];
-
 
   let servicegivenmonth = localStorage.getItem("servicegivenmonth");
 

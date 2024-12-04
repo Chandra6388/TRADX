@@ -246,7 +246,6 @@ const ServicesList = () => {
                             timerProgressBar: true,
                         });
                     }
-
                 }
                 else {
                     Swal.fire({
@@ -281,20 +280,18 @@ const ServicesList = () => {
 
 
 
-    const getUpdatedPlans = GetAllPlans.data?.filter((plan) => {
+    // console.log(GetAllPlans.data)Two Days Demo
 
+    const getUpdatedPlans = GetAllPlans.data?.filter((plan) => {
         if (plan.PlanName == "Three Days Live" || plan.PlanName == "Two Days Demo" || plan.PlanName == "One Week Demo") {
+           
             if (BuyedPlan.data && BuyedPlan.data.length > 0) {
                 const isBuyed = BuyedPlan.data.find((buyedPlan) => buyedPlan.Planname == plan.PlanName);
-        
                 return isBuyed != undefined && isBuyed
             }
-
         } else {
-
             return plan
         }
-
     });
 
     return (
@@ -310,7 +307,6 @@ const ServicesList = () => {
                         <div className='iq-card-body'>
                             <div style={styles.container} className="row">
                                 {getUpdatedPlans.map((plan, index) => (
-
                                     <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 ">
                                         <div className="d-flex flex-column justify-content-between h-100">
                                             <div>
@@ -340,11 +336,15 @@ const ServicesList = () => {
                                                     <Button primary style={styles.button} onClick={() => HandleBuyPlan(index, 1)}>
                                                         BUY NOW
                                                     </Button>
-                                                ) : (
-                                                    <Button style={styles.subscribedButton} onClick={() => HandleBuyPlan(index, 0)}>
-                                                        BUY NOW
+                                                ) : plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ?
+                                                    <Button style={styles.subscribedButton}>
+                                                        Subscribed
                                                     </Button>
-                                                )}
+                                                    :
+                                                    <Button style={styles.subscribedButton} onClick={() => HandleBuyPlan(index, 0)}>
+                                                        BUY AGAIN
+                                                    </Button>
+                                                }
                                             </div>
                                         </div>
                                     </Card>

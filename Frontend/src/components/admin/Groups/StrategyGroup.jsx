@@ -36,6 +36,15 @@ const Strategygroup = () => {
             }
         },
         {
+            name: "SubAdmin",
+            label: "Created by",
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value=='' ? "Admin" : value,
+            }
+        },
+        {
             name: "Fund_Requierment",
             label: "Fund Requirement",
             options: {

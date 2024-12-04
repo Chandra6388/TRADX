@@ -247,6 +247,15 @@ const Clientservice = () => {
             }
         },
         {
+            name: 'SubAdmin',
+            label: 'Created by',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value=='' ? "Admin" : value,
+            }
+        },
+        {
             name: 'Mobile_No',
             label: 'Mobile Number',
             options: {

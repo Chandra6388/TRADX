@@ -7,7 +7,7 @@ import { SquarePen } from 'lucide-react';
 
 
 
-const AllSubadmin = () => {
+const AllClient = () => {
    const userName = localStorage.getItem('name');
     const navigate = useNavigate();
     const [clientService, setClientService] = useState({ loading: true, data: [] });
@@ -201,4 +201,4 @@ const AllSubadmin = () => {
     );
 };
 
-export default AllSubadmin;
+export default AllClient;

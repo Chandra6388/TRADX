@@ -307,6 +307,7 @@ const ServicesList = () => {
                         <div className='iq-card-body'>
                             <div style={styles.container} className="row">
                                 {getUpdatedPlans.map((plan, index) => (
+                                    plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ? "" : 
                                     <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 ">
                                         <div className="d-flex flex-column justify-content-between h-100">
                                             <div>
@@ -336,10 +337,11 @@ const ServicesList = () => {
                                                     <Button primary style={styles.button} onClick={() => HandleBuyPlan(index, 1)}>
                                                         BUY NOW
                                                     </Button>
-                                                ) : plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ?
-                                                    <Button style={styles.subscribedButton}>
-                                                        Subscribed
-                                                    </Button>
+                                                )
+                                                //  : plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ?
+                                                //     <Button style={styles.subscribedButton}>
+                                                //         Subscribed
+                                                //     </Button>
                                                     :
                                                     <Button style={styles.subscribedButton} onClick={() => HandleBuyPlan(index, 0)}>
                                                         BUY AGAIN
@@ -347,7 +349,7 @@ const ServicesList = () => {
                                                 }
                                             </div>
                                         </div>
-                                    </Card>
+                                    </Card> 
                                 ))}
                             </div>
                         </div>

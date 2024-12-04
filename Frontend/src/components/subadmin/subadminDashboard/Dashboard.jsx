@@ -174,7 +174,7 @@ const Dashboard = () => {
                  <div className="iq-card">
                    <div className="iq-card-header d-flex justify-content-between">
                      <div className="iq-header-title">
-                       <h4 className="card-title"> Two Days Live Account</h4>
+                       <h4 className="card-title"> Three Days Live Account</h4>
                      </div>
                    </div>
                    <div className="iq-card-body">

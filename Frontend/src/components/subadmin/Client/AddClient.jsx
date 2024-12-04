@@ -205,7 +205,7 @@ const Adduser = () => {
                             timerProgressBar: true
                         });
                         setTimeout(() => {
-                            navigate('/admin/clientservice')
+                            navigate('/subadmin/allclient')
                         }, 1500)
                     }
                     else {
@@ -353,7 +353,7 @@ const Adduser = () => {
                 btn_name="Add"
                 btn_name1="Cancel"
                 formik={formik}
-                btn_name1_route={"/admin/clientservice"}
+                btn_name1_route={"/subadmin/allclient"}
                 additional_field={
                     <div className='col-lg-6 mt-2 dropdownuser' >
                         <h6>Select Group</h6>

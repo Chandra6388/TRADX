@@ -692,7 +692,7 @@ const AddClient = () => {
         },
 
     ]
-    
+
     const fields = [
         {
             name: "Measurment_Type",
@@ -761,6 +761,7 @@ const AddClient = () => {
             col_size: 12,
             headingtype: 2,
             data: EntryRuleArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
+            showWhen: () => formik.values.Strategy != "ShortStraddle" && formik.values.Strategy != "LongStraddle",
             disable: false,
         },
         {
@@ -883,7 +884,6 @@ const AddClient = () => {
         <>
             <AddForm
                 fields={fields.filter((field) => !field.showWhen || field.showWhen(formik.values))}
-
                 page_title={`Add Script - Option Strategy  , Group Name : ${location.state.data.selectGroup}`}
                 btn_name="Add"
                 btn_name1="Cancel"

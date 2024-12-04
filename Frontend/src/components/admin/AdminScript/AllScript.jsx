@@ -17,15 +17,9 @@ const Addscript = () => {
     const [GroupError, setGroupError] = useState('')
     const [stgError, setStgError] = useState('')
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [getAllService, setAllservice] = useState({
-        loading: true,
-        data: []
-    })
+    const [getAllService, setAllservice] = useState({ loading: true, data: [] })
 
-    const [getGroupData, setGroupData] = useState({
-        loading: true,
-        data: []
-    })
+    const [getGroupData, setGroupData] = useState({ loading: true, data: [] })
 
 
     const handleDelete = async (rowData) => {
@@ -173,21 +167,12 @@ const Addscript = () => {
     }, [selectGroup, selectStrategyType, formSubmitted])
 
 
-
     useEffect(() => {
-
         if (!getGroupData.loading && getGroupData.data.length > 0) {
-
             setSelectGroup(getGroupData && getGroupData.data[0].GroupName)
-
         }
-
     }, [getGroupData]);
 
-
-    useEffect(() => {
-        setStrategyType('Scalping')
-    }, []);
 
     useEffect(() => {
         getAllgroupService()
@@ -204,8 +189,6 @@ const Addscript = () => {
                             </div>
                         </div>
                         <div className="iq-card-body">
-
-
                             <form className="was-validated ">
                                 <div className='d-md-flex'>
                                     <div className="form-group ms-3 col-md-5">
@@ -244,7 +227,7 @@ const Addscript = () => {
                                     <div className='col-md-2 ms-3 mt-4 strategy'>
                                         <button style={{ fontSize: '18px', padding: '6px 14px', height: "47px" }} className='btn btn-primary mt-1' onClick={handleAddScript}>Add Script</button>
                                     </div>
-                                    
+
                                 </div>
                             </form>
 

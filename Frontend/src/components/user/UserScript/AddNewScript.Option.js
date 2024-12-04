@@ -818,6 +818,7 @@ const AddClient = () => {
             col_size: 12,
             headingtype: 2,
             data: EntryRuleArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
+            showWhen: () => formik.values.Strategy != "ShortStraddle" && formik.values.Strategy != "LongStraddle",
             disable: false,
         },
         {

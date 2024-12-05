@@ -24,6 +24,8 @@ const TradeResponse = () => {
 
     })
 
+
+    console.log("getAllTradeData", getAllTradeData)
     const Username = localStorage.getItem('name')
       const currentDate = new Date();
       currentDate.setDate(currentDate.getDate());
@@ -199,7 +201,6 @@ const TradeResponse = () => {
                                 </div>
                             }
                             <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>
-
                             {
                                 showTable && <>
                                     <div className='mt-3'>

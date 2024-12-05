@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
 import * as Config from "../../Utils/Config";
@@ -79,6 +80,7 @@ const loginWithApi = async (UserDetails) => {
 
         if (UserDetails.BrokerName.toUpperCase() === "MARKETHUB") {
 
+
             let config = {
                 method: 'get',
                 maxBodyLength: Infinity,
@@ -92,14 +94,33 @@ const loginWithApi = async (UserDetails) => {
             axios.request(config)
                 .then((response) => {
                     if (response.data.Status == true) {
-                        window.location.href = response.data.Api;
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.data.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            timer: 3000
+                        }).then(() => {
+                            setTimeout(() => {
+                                window.location.reload();
+                            });
+                        });
+
+                    }
+                    else {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.data.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK',
+                            timer: 3000
+                        })
                     }
                 })
                 .catch((error) => {
                     console.log("Error", error);
                 });
         }
-
 
         if (UserDetails.BrokerName.toUpperCase() === "ICICI") {
 
@@ -415,25 +436,60 @@ const loginWithApi = async (UserDetails) => {
             };
             axios.request(config)
                 .then((response) => {
-
                     let swalOptions = {
                         confirmButtonText: 'OK',
                         timer: 2000
                     };
-
                     if (response.data.Status) {
-                        swalOptions.title = 'Success!';
-                        swalOptions.text = 'Trading On successfully.';
-                        swalOptions.icon = 'success';
+                        let value = prompt("Enter OTP", "");
+                        const req= {
+                            Username: UserDetails.Username,
+                            session: value,
+                            AccToken: response.data.access_token,
+                            usrid: response.data.user_id,
+                            sid: response.data.sid,
+                            jwt_Token: response.data.jwt_Token
+                        }
+
+                        let config = {
+                            method: 'post',
+                            maxBodyLength: Infinity,
+                            url: Config.base_url + 'ConnectBroker',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            data: req
+                        };
+                        axios.request(config)
+                            .then((response) => {
+                                if (response.data.Status) {
+                                    swalOptions.title = 'Success!';
+                                    swalOptions.text = 'Trading On successfully.';
+                                    swalOptions.icon = 'success';
+                                } else {
+                                    swalOptions.title = 'Error!';
+                                    swalOptions.text = response.data.message;
+                                    swalOptions.icon = 'error';
+                                }
+                                Swal.fire(swalOptions).then(() => {
+                                    window.location.reload();
+                                });
+
+                            })
+                            .catch((error) => {
+                                console.log("Error", error);
+                            });  
+
                     } else {
                         swalOptions.title = 'Error!';
-                        swalOptions.text = 'Trading Off successfully.';
+                        swalOptions.text = response.data.message;
                         swalOptions.icon = 'error';
                     }
                     Swal.fire(swalOptions).then(() => {
-                        // window.location.reload();
+                        window.location.reload();
                     });
-                    
+
                 })
                 .catch((error) => {
                     console.log("Error", error);

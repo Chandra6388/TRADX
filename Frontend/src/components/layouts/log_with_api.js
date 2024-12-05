@@ -489,7 +489,6 @@ const loginWithApi = async (UserDetails) => {
                     Swal.fire(swalOptions).then(() => {
                         window.location.reload();
                     });
-
                 })
                 .catch((error) => {
                     console.log("Error", error);

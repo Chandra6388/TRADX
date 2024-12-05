@@ -98,7 +98,7 @@ const Header = () => {
                         timer: 1000
                     }).then(() => {
                         setTimeout(() => {
-                            // window.location.reload();
+                            window.location.reload();
                         }, 1000);
                     });
                 } else {
@@ -111,7 +111,7 @@ const Header = () => {
                         timer: 1000
                     }).then(() => {
                         setTimeout(() => {
-                            // window.location.reload();
+                            window.location.reload();
 
                         }, 1000);
                     });

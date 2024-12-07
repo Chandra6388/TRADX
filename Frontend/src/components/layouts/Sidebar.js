@@ -181,12 +181,12 @@ const Sidebar = () => {
                                             <span>Client Service</span>
                                         </Link>
                                     </li>
-                                    <li className={activeItem === 'allSubadmin' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'allSubadmin')}>
+                                    {/* <li className={activeItem === 'allSubadmin' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'allSubadmin')}>
                                         <Link to="/admin/allSubadmin" className="iq-waves-effect">
                                             <i className="ri-group-fill" />
                                             <span>SubAdmin</span>
                                         </Link>
-                                    </li>
+                                    </li> */}
 
                                     <li className={activeItem === 'allplan' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'allplan')}>
                                         <Link to="/admin/allplan" className="iq-waves-effect">
@@ -210,7 +210,7 @@ const Sidebar = () => {
                                         </Link>
                                     </li>
                                     <li className={activeItem === 'servicereport' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'servicereport')}>
-                                        <Link to="/admin/servicerepor" className="iq-waves-effect">
+                                        <Link to="/admin/servicreport" className="iq-waves-effect">
                                             <i className="la la-cog" />
                                             <span>Service Report</span>
                                         </Link>

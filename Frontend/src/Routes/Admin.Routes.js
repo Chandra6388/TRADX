@@ -51,7 +51,7 @@ const AdminRoute = () => {
             <Route path="/smtp" element={<Smtp />} />
             <Route path="/userlogs" element={<UserLogs />} />
             <Route path="/strategygroup" element={<StrategyGroup />} />
-            <Route path="/servicerepor" element={<ServiceReport />} />
+            <Route path="/servicreport" element={<ServiceReport />} />
             <Route path="/system" element={<System />} /> 
             <Route path="/allplan" element={<AllPlan />} />  
             <Route path="/cpp" element={<CPP />} />

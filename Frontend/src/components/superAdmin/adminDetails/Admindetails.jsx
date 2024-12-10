@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { adminDetails , addFund } from '../../CommonAPI/SuperAdmin';
+import { adminDetails, addFund } from '../../CommonAPI/SuperAdmin';
 import GridExample from '../../../ExtraComponent/CommanDataTable'
 
 
@@ -29,6 +29,43 @@ const Strategygroup = () => {
     };
 
 
+    const handleChangeStatus = (row, e, status) => {
+        e.preventDefault();
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You want to change the status?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#ff00aa",
+          cancelButtonColor: "#616161",
+          confirmButtonText: "Yes, change it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+            dispatch(updateStatus({ id: row.id, status: status ? "1" : "0" }))
+              .unwrap()
+              .then((response) => {
+                if (response.status) {
+                  getChargeBasisData();
+                  e.target.checked = status;
+                  Swal.fire({
+                    title: "Changed!",
+                    text: "Your status has been changed.",
+                    icon: "success",
+                    timer: 2000,
+                    timerProgressBar: true,
+                  });
+                }
+              })
+              .catch((error) => {
+                console.error("Error updating charge basis:", error);
+              });
+          } else {
+            e.target.checked = !status;
+            getChargeBasisData();
+          }
+        });
+      };
+
     const columns = [
         {
             name: "S.No",
@@ -42,7 +79,6 @@ const Strategygroup = () => {
                 }
             },
         },
-
         {
             name: "AddFund",
             label: "Add Fund",
@@ -50,7 +86,7 @@ const Strategygroup = () => {
                 filter: true,
                 sort: false,
                 customBodyRender: (value, tableMeta, updateValue) => {
-                    return <button className="btn btn-primary" onClick={()=>handleAddFound(tableMeta)}>AddFund</button>;
+                    return <button className="btn btn-primary" onClick={() => handleAddFound(tableMeta)}>AddFund</button>;
                 }
 
             }
@@ -100,7 +136,6 @@ const Strategygroup = () => {
                 sort: false,
             }
         },
-
         {
             name: "Create Date",
             label: "Created Date",
@@ -109,7 +144,6 @@ const Strategygroup = () => {
                 sort: false,
             }
         },
-        
         {
             name: "AmountDetails",
             label: "Amount Details",
@@ -130,11 +164,24 @@ const Strategygroup = () => {
         },
         {
             name: "Status",
-            label: "Status",
+            label: "Temporary Close Panel",
             options: {
                 filter: true,
                 sort: false,
-                width: '20%'
+                width: '20%',
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    return <div className="form-switch">
+                        <input
+                            className="form-check-input"
+                            style={{ cursor: "pointer" , width: "61px", height: "27px"}}
+                            type="checkbox"
+                            id="flexSwitchCheckDefault"
+                            defaultChecked={value == "On" ? true : false}
+                          onClick={(e) => handleChangeStatus(value, e, e.target.checked)}
+                        />
+                    </div>
+                }
+
             }
         },
     ];
@@ -159,7 +206,7 @@ const Strategygroup = () => {
             setShowModal(false);
         }
         const req = { Companyname: getAdminDetails?.[index]?.Companyname, AmmountDetails: amount }
-       
+
         await addFund(req)
             .then((response) => {
                 if (response.Status) {

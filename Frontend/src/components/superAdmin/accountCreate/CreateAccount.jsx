@@ -17,9 +17,8 @@ const Adduser = () => {
             SignEmail: "",
             AmmountDetails: 0,
             Companyname: "",
-            serverip: "",
-            MongoUsername: "",
-            MongoPass: "",
+            Url: "",
+            
         },
         validate: (values) => {
             let errors = {};
@@ -50,14 +49,8 @@ const Adduser = () => {
             if (!values.Companyname) {
                 errors.Companyname = "Please enter company name";
             }
-            if (!values.serverip) {
-                errors.serverip = "Please enter server ip";
-            }
-            if (!values.MongoUsername) {
-                errors.MongoUsername = "Please enter MongoDB username";
-            }
-            if (!values.MongoPass) {
-                errors.MongoPass = "Please enter MongoDB password";
+            if(!values.Url){
+                errors.Url = "Please enter Url"
             }
             return errors;
         },
@@ -70,9 +63,7 @@ const Adduser = () => {
                 SignEmail: values.SignEmail,
                 AmmountDetails: values.AmmountDetails,
                 Companyname: values.Companyname,
-                serverip: values.serverip,
-                MongoUsername: values.MongoUsername,
-                MongoPass: values.MongoPass,
+                Url: values.Url,
                 permission: ["Charting Platform"]
             }
             await createAdmin(req)
@@ -171,36 +162,16 @@ const Adduser = () => {
             disable: false,
         },
         {
-            name: "serverip",
-            label: "Server IP",
+            name: "Url",
+            label: "Url",
             type: "text",
             label_size: 12,
             hiding: false,
             col_size: 6,
             disable: false,
         },
-        {
-            name: "MongoUsername",
-            label: "MongoDB Username",
-            type: "text",
-            label_size: 12,
-            hiding: false,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "MongoPass",
-            label: "MongoDB Password",
-            type: "text",
-
-            label_size: 12,
-            hiding: false,
-            col_size: 6,
-            disable: false,
-        },
-    ];
-
-  
+       
+    ]
 
     return (
         <>

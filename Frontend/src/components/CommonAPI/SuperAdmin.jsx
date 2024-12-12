@@ -292,3 +292,41 @@ export const addFund = async (data) => {
 }
 
 
+export const closePanel = async (data) => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}ClosePanel`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}
+
+export const updateAdmin = async (data) => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}UpdateAdmin`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}
+

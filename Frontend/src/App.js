@@ -12,7 +12,7 @@ const App = () => {
   const navigate = useNavigate()
   const location = useLocation();
   const Role = localStorage.getItem('Role')
-  console.log(Role);
+
   
 
   useEffect(() => {

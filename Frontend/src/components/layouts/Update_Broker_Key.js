@@ -278,7 +278,7 @@ const Update_Broker_Key = ({ closeModal, isVisible, Role }) => {
     }, [userDetails]);
 
 
-    
+
     const fields = [
         {
             name: "username",
@@ -346,9 +346,9 @@ const Update_Broker_Key = ({ closeModal, isVisible, Role }) => {
                                 formik.values.BrokerName.toUpperCase() === "ZEBULL" ? "User Password" :
                                     formik.values.BrokerName.toUpperCase() === "INDIRA" ? "User Password" :
                                         formik.values.BrokerName.toUpperCase() === "KOTAK" ? "Demat Password" :
-                                        formik.values.BrokerName.toUpperCase() === "MARKETHUB" ? "Password" :
-                                            "Mobile No.",
-            showWhen: (values) => 
+                                            formik.values.BrokerName.toUpperCase() === "MARKETHUB" ? "Password" :
+                                                "Mobile No.",
+            showWhen: (values) =>
                 values.BrokerName.toUpperCase() === "UPSTOX" ||
                 values.BrokerName.toUpperCase() === "5PAISA" ||
                 values.BrokerName.toUpperCase() === "MASTERTRUST" ||
@@ -399,8 +399,8 @@ const Update_Broker_Key = ({ closeModal, isVisible, Role }) => {
                                     formik.values.BrokerName.toUpperCase() === "MANDOT" ? "Secret Key" :
                                         formik.values.BrokerName.toUpperCase() === "INDIRA" ? "Mobile No." :
                                             formik.values.BrokerName.toUpperCase() === "KOTAK" ? "Consumer Secret Key" :
-                                            formik.values.BrokerName.toUpperCase() === "MARKETHUB" ? "Verification Code" :
-                                                "Mobile No.",
+                                                formik.values.BrokerName.toUpperCase() === "MARKETHUB" ? "Verification Code" :
+                                                    "Mobile No.",
             showWhen: (values) => values.BrokerName.toUpperCase() === "ICICI" ||
                 values.BrokerName.toUpperCase() === "UPSTOX" ||
                 values.BrokerName.toUpperCase() === "5PAISA" ||
@@ -415,7 +415,7 @@ const Update_Broker_Key = ({ closeModal, isVisible, Role }) => {
             disable: false,
         },
     ];
- 
+
     useEffect(() => {
         if (upDateData.data && upDateData.data[0]) {
             formik2.setFieldValue('api_key', upDateData.data && upDateData.data[0].api_key || '')
@@ -432,7 +432,6 @@ const Update_Broker_Key = ({ closeModal, isVisible, Role }) => {
 
 
             {Role == "Admin" && isVisible ?
-
                 <div className="modal show" id="exampleModal" style={{ display: "block" }}>
                     <div className="modal-dialog">
                         <div className="modal-content">
@@ -462,10 +461,8 @@ const Update_Broker_Key = ({ closeModal, isVisible, Role }) => {
                         </div>
                     </div>
                 </div>
-
-                : ""}
-
-
+                :
+                ""}
             {Role == "User" && !userDetails.loading && isVisible && (
                 <div className="modal show" id="exampleModal" style={{ display: "block" }}>
                     <div className="modal-dialog">

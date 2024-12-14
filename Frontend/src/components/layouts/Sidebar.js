@@ -246,6 +246,12 @@ const Sidebar = () => {
                                             <span>System</span>
                                         </Link>
                                     </li>
+                                    <li className={activeItem === 'api-create-info' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'api-create-info')}>
+                                        <Link to="/admin/api-create-info" className="iq-waves-effect">
+                                            <i className="la la-cog" />
+                                            <span>ApiCreateInfo</span>
+                                        </Link>
+                                    </li>
                                 </>
                             ) : role === 'Superadmin' ?
                                 (
@@ -292,6 +298,12 @@ const Sidebar = () => {
                                             <Link to='/superadmin/update-client-details' className="iq-waves-effect">
                                                 <i className="ri-home-fill" />
                                                 <span>Update Client Details</span>
+                                            </Link>
+                                        </li>
+                                        <li className={activeItem === '/superadmin/api-create-info' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/api-create-info')}>
+                                            <Link to='/superadmin/api-create-info' className="iq-waves-effect">
+                                                <i className="ri-home-fill" />
+                                                <span>ApiCreateInfo</span>
                                             </Link>
                                         </li>
 

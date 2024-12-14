@@ -1028,3 +1028,25 @@ export const GetAllSubadmin = async () => {
     }
 
 }
+
+export const viewBrokerDetails = async (data) => {
+    const token = localStorage.getItem('token')
+
+    console.log('data sss', data)
+    try {
+        const res = await axios.get(`${Config.base_url}BrokerApiCreateGet/${data.BrokerName}`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}

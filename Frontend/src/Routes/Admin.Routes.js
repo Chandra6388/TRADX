@@ -24,6 +24,7 @@ import TransectionRequest from '../components/admin/Requests/TransectionRequests
 import AddSubadmin from '../components/admin/SubAdmin/AddSubadmin';
 import AllSubadmin from '../components/admin/SubAdmin/AllSubadmin';
 import EditSubadmin from '../components/admin/SubAdmin/EditSubadmin';
+import ApiCreateInfo from '../components/admin/apicreateInfo/ApiCreateInfo';
 
 
 
@@ -60,8 +61,7 @@ const AdminRoute = () => {
             <Route path="/addSubadmin" element={<AddSubadmin/>} />
             <Route path="/allSubadmin" element={<AllSubadmin/>} />
             <Route path="/editSubadmin" element={<EditSubadmin/>} />
-          
-             
+            <Route path="/api-create-info" element={<ApiCreateInfo/>} />
           </Routes>
         </div>
       </div>

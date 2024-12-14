@@ -330,3 +330,37 @@ export const updateAdmin = async (data) => {
 
 }
 
+
+export const apiCreateInfo = async (data) => {
+    const token = localStorage.getItem('token')
+ 
+    try {
+        const formData = new FormData();
+        formData.append('Brokername', data.Brokername);
+        formData.append('step1', data.step1);
+        formData.append('step1image', data.step1image);
+        formData.append('step2', data.step2);
+        formData.append('step2image', data.step2image);
+        formData.append('step3', data.step3);
+        formData.append('step3image', data.step3image);
+        formData.append('step4', data.step4);
+        formData.append('step4image', data.step4image);
+        formData.append('step5', data.step5);
+        formData.append('step5image', data.step5image);
+        
+        const res = await axios.post(`${Config.base_url}BrokerApiCreate`, formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',  
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}
+

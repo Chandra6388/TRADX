@@ -1177,40 +1177,36 @@ const DynamicForm = ({
                                     </>
                                   ) : field.type === "text2" ? (
                                     <>
-                                      <div className={` col-lg-${field.col_size}`}>
-                                        <div className="input-block mb-3 flex-column">
-                                          <label className={`col-lg-${field.label_size}`}>
-                                            {field.label}
-                                            <span className="text-danger">*</span>
-                                          </label>
+                                    <div className={` col-lg-${field.col_size}`}>
+                                      <div className="input-block mb-3 flex-column">
+                                        <label className={`col-lg-${field.label_size}`}>
+                                          {field.label}
+                                         
+                                        </label>
 
-                                          <input
-                                            type="text"
-                                            aria-describedby="basic-addon1"
-                                            className="form-control"
-                                            placeholder={`Enter ${field.label}`}
-                                            readOnly={field.disable}
-
-                                            id={field.name}
-                                            name={field.name}
-                                            value={inputValue}
-                                            onChange={(e) => {
-                                              const newValue = e.target.value.toUpperCase();
-
-                                              if (/^[a-zA-Z]{0,3}$/.test(newValue)) {
-                                                setInputValue(newValue);
-                                                formik.handleChange(e);
-                                              }
-                                            }}
-                                          />
-                                          {inputValue == "" ? (
-                                            <div style={{ color: "red" }}>
-                                              {formik.errors[field.name]}
-                                            </div>
-                                          ) : null}
-                                        </div>
+                                        <input
+                                          type="text"
+                                          aria-describedby="basic-addon1"
+                                          className="form-control"
+                                         
+                                          readOnly={field.disable}
+                                          id={field.name}
+                                          autoComplete="new-password"
+                                          name={field.name}
+                                          defaultValue={""}
+                                          value={formik.values[field.name] || ""}
+                                          onChange={formik.handleChange}
+                                          onBlur={formik.handleBlur}
+                                        />
+                                        {formik.touched[field.name] && formik.errors[field.name] ? (
+                                          <div style={{ color: "red" }}>
+                                            {formik.errors[field.name]}
+                                          </div>
+                                        ) : null}
                                       </div>
-                                    </>
+                                    </div>
+
+                                  </>
                                   ) : field.type === "file" ? (
                                     <>
                                       <div className={`col-lg-${field.col_size}`}>
@@ -1266,7 +1262,7 @@ const DynamicForm = ({
                                               htmlFor={field.name}
                                             >
                                               {field.label}
-                                              <span className="text-danger">*</span>
+                                             
                                             </label>
                                             <input
                                               type="file"

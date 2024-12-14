@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Get_Broker_Name , viewBrokerDetails } from '../../CommonAPI/Admin';
+import { Get_Broker_Name, viewBrokerDetails } from '../../CommonAPI/Admin';
 import { Eye, Trash2, BarChart2 } from 'lucide-react';
+import Modal from '../../../ExtraComponent/Modal1';
 
 const ApiCreateInfo = () => {
     const [brokers, setBrokers] = useState([]);
     const [show, setShow] = useState(false);
     const [brokerName, setBrokerName] = useState('');
-    const [brokerDetails, setBrokerDetails] = useState([]);
+    const [brokerDetails, setBrokerDetails] = useState({});
 
- 
+    const [showModal, setshowModal] = useState(false)
+
+    console.log("brokerDetails", brokerDetails.Brokername);
+
 
     useEffect(() => {
         fetchBrokerName();
-    },[]);
+    }, []);
 
     const fetchBrokerName = async () => {
         try {
@@ -32,28 +36,28 @@ const ApiCreateInfo = () => {
         getBrokerAlldetails()
     }, [brokerName]);
 
-    
+
     const getBrokerAlldetails = async () => {
+        if (brokerName === '') return;
         const req = { BrokerName: brokerName };
-        console.log('req', req);
         try {
-             await viewBrokerDetails(req)
-            .then((response) => {
-                if (response.Status) {
-                    setBrokerDetails(response.BrokerDetails);
-                } else {
-                    setBrokerDetails([]);
-                }
-            });
-          
+            await viewBrokerDetails(req)
+                .then((response) => {
+                    if (response.status) {
+                        setBrokerDetails(response.data);
+                    } else {
+                        setBrokerDetails({});
+                    }
+                });
+
         } catch (error) {
             console.log('Error in fetching brokers', error);
-    }
+        }
     };
-        
+
 
     const handleShow = () => {
-        setShow(true);
+        setshowModal(true);
     }
 
     return (
@@ -70,7 +74,7 @@ const ApiCreateInfo = () => {
                                 <div className="card-body text-center">
                                     <h5 className="card-title">{item.BrokerName}</h5>
                                     <div className="card-actions mt-3">
-                                        <Eye size={24} className="action-icon edit-icon" onClick={()=>{handleShow(); setBrokerName(item.BrokerName)}} />
+                                        <Eye size={24} className="action-icon edit-icon" onClick={() => { handleShow(); setBrokerName(item.BrokerName) }} />
                                         <Trash2 size={24} className="action-icon delete-icon" />
                                     </div>
                                 </div>
@@ -80,39 +84,62 @@ const ApiCreateInfo = () => {
                 </div>
             </div>
             {
-                show && <div className="modal show" id="exampleModal" style={{ display: "block" }}>
-                    <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"></div>
-                    <div className="modal-dialog modal-dialog-centered">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">
-                                    Add Broker
-                                </h5>
+                <Modal isOpen={showModal} size="lg" title={`${brokerDetails.Brokername}  API Create Information.`} hideBtn={true}
+                    handleClose={() => setshowModal(false)}
+                >
+                    <h4>API Process of {brokerDetails.Brokername}: -</h4>
+                    {brokerDetails.description ?
+                        <ul>
+                            {brokerDetails.description && brokerDetails.description.split("\n").map((line, index) => (
+                                <>
+                                    <li key={index}>{line}</li><br />
+                                </>
+                            ))}
+                        </ul>
+                        : ""
+                    }
 
-                                <button
-                                    type="button"
-                                    className="btn-close"
-                                    data-bs-dismiss="modal"
-                                    aria-label="Close"
-                                    onClick={() => { setShow(false) }}
-                                />
-                            </div>
-                            <div>
-                                <div className='mx-4'>
-                                    <label className='mt-4'>Broker Name</label>
-                                    <input type="text"
-                                        className='form-control mb-4'
-                                        placeholder='Enter Broker Name'
+                    {brokerDetails.Step1Text || brokerDetails.Step1Image ? <>
+                        <h4 className="text-decoration-underline">Step 1: </h4>
+                        <p>{brokerDetails.Step1Text}</p>
+                        <br />
+                        {brokerDetails.Step1Image ? <img src={brokerDetails.Step1Image} alt="" className="w-100 my-3 border border-dark" /> : ""}
 
-                                    />
-                                </div>
-                                <div className='d-flex justify-content-end mb-4 mx-4'>
-                                    <button className='btn btn-primary'>Save</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    </> : ""}
+
+                    {brokerDetails.Step2Text || brokerDetails.Step2Image ? <>
+                        <h4 className="text-decoration-underline">Step 2: </h4>
+                        <p>{brokerDetails.Step2Text}</p>
+                        <br />
+                        {brokerDetails.Step2Image ? <img src={brokerDetails.Step2Image} alt="" className="w-100 my-3 border border-dark" /> : ""}
+
+                    </> : ""}
+
+                    {brokerDetails.Step3Text || brokerDetails.Step3Image ? <>
+                        <h4 className="text-decoration-underline">Step 1: </h4>
+                        <p>{brokerDetails.Step3Text}</p>
+                        <br />
+                        {brokerDetails.Step3Image ? <img src={brokerDetails.Step3Image} alt="" className="w-100 my-3 border border-dark" /> : ""}
+
+                    </> : ""}
+
+                    {brokerDetails.Step4Text || brokerDetails.Step4Image ? <>
+                        <h4 className="text-decoration-underline">Step 1: </h4>
+                        <p>{brokerDetails.Step4Text}</p>
+                        <br />
+                        {brokerDetails.Step4Image ? <img src={brokerDetails.Step4Image} alt="" className="w-100 my-3 border border-dark" /> : ""}
+
+                    </> : ""}
+
+                    {brokerDetails.Step5Text || brokerDetails.Step5Image ? <>
+                        <h4 className="text-decoration-underline">Step 1: </h4>
+                        <p>{brokerDetails.Step5Text}</p>
+                        <br />
+                        {brokerDetails.Step5Image ? <img src={brokerDetails.Step5Image} alt="" className="w-100 my-3 border border-dark" /> : ""}
+
+                    </> : ""}
+
+                </Modal>
             }
 
         </>

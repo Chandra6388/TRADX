@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 import { IndianRupee, Eye } from 'lucide-react';
 import { LastPattern, DataStart, AutoLogin } from '../CommonAPI/Admin'
 import { addBroker } from '../CommonAPI/SuperAdmin'
-
+import { jwtDecode } from 'jwt-decode';
 import { GetUserBalence } from '../CommonAPI/User'
 
 
@@ -165,6 +165,20 @@ const Header = () => {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
+    }, []);
+
+    const clearSession = () => {
+        var decoded = jwtDecode(token);
+        if (decoded.exp * 1000 < new Date().getTime()) {
+            console.log("Token Expired");
+            localStorage.clear();
+            window.location.reload();
+        }
+    };
+
+
+    useEffect(() => {
+        clearSession();
     }, []);
 
     const toggleFullscreen = () => {

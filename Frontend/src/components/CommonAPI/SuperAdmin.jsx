@@ -364,3 +364,20 @@ export const apiCreateInfo = async (data) => {
 
 }
 
+export const pm2Reload = async (data) => {
+    const token = localStorage.getItem('token');
+    try {
+        const res = await axios.get(`${Config.base_url}Livedatafeed/${data.Companyname}`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    } catch (err) {
+        return err
+    }
+}
+

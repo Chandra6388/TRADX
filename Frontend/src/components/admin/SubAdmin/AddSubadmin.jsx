@@ -9,18 +9,13 @@ import Loader from '../../../ExtraComponent/Loader';
 import { Get_All_Plans } from "../../CommonAPI/User";
 
 const AddSubadmin = () => {
-
-
     const navigate = useNavigate()
-    
-    
-
     const Name_regex = (name) => {
         const nameRegex = /^[a-zA-Z]+$/;
         return nameRegex.test(name);
     };
 
-  
+
 
     const formik = useFormik({
         initialValues: {
@@ -30,6 +25,16 @@ const AddSubadmin = () => {
             mobile_no: "",
             Signpassword: "",
             ConfirmPassword: "",
+
+            AllPermission: false,
+            AddClient: false,
+            ViewClient: false,
+            EditClient: false,
+            TradeHistory: false,
+            TradeReport: false,
+            UpdateApiKey: false,
+
+
         },
         validate: (values) => {
             let errors = {};
@@ -63,7 +68,7 @@ const AddSubadmin = () => {
             if (!values.mobile_no) {
                 errors.mobile_no = "Please Enter Mobile Number"
             }
-        
+
             return errors;
         },
         onSubmit: async (values) => {
@@ -74,8 +79,18 @@ const AddSubadmin = () => {
                 mobile_no: values.mobile_no,
                 Signpassword: values.Signpassword,
                 ConfirmPassword: values.ConfirmPassword,
-              
+                permission: {
+                    AllPermission: values.AllPermission,
+                    AddClient: values.AddClient,
+                    ViewClient: values.ViewClient,
+                    EditClient: values.EditClient,
+                    TradeHistory: values.TradeHistory,
+                    TradeReport: values.TradeReport,
+                    UpdateApiKey: values.UpdateApiKey,
+
+                }
             }
+
             await AddSubadminbyAdmin(req)
                 .then((response) => {
                     if (response.Status) {
@@ -105,6 +120,10 @@ const AddSubadmin = () => {
                 })
         },
     });
+
+
+
+    // console.log("aaaaaaaaaaa", formik.values);
 
     const fields = [
         {
@@ -161,26 +180,88 @@ const AddSubadmin = () => {
             col_size: 6,
             disable: false,
         },
-        
+        {
+            name: "AllPermission",
+            label: "All Permission",
+            type: "checkbox",
+            label_size: 12,
+            hiding: false,
+            col_size: 3,
+            disable: false,
+        },
+        {
+            name: "AddClient",
+            label: "Add Client",
+            type: "checkbox",
+            label_size: 12,
+            hiding: false,
+            col_size: 3,
+            disable: false,
+        },
+        {
+            name: "ViewClient",
+            label: "View Client",
+            type: "checkbox",
+            label_size: 12,
+            hiding: false,
+            col_size: 3,
+            disable: false,
+        },
+        {
+            name: "EditClient",
+            label: "Edit Client",
+            type: "checkbox",
+            label_size: 12,
+            hiding: false,
+            col_size: 3,
+            disable: false,
+        },
+        {
+            name: "TradeHistory",
+            label: "Trade History",
+            type: "checkbox",
+            label_size: 12,
+            hiding: false,
+            col_size: 3,
+            disable: false,
+        },
+        {
+            name: "TradeReport",
+            label: "Trade Report",
+            type: "checkbox",
+            label_size: 12,
+            hiding: false,
+            col_size: 3,
+            disable: false,
+        },
+        {
+            name: "UpdateApiKey",
+            label: "Update Api Key",
+            type: "checkbox",
+            label_size: 12,
+            hiding: false,
+            col_size: 3,
+            disable: false,
+        },
+
 
     ];
 
 
     return (
         <>
-           
-                    <AddForm
-                        fields={fields.filter(
-                            (field) => !field.showWhen || field.showWhen(formik.values)
-                        )}
-                        page_title="Create Account"
-                        btn_name="Add"
-                        btn_name1="Cancel"
-                        formik={formik}
-                        btn_name1_route={"/admin/allSubadmin"}
-                        
-                    />
-            
+            <AddForm
+                fields={fields.filter(
+                    (field) => !field.showWhen || field.showWhen(formik.values)
+                )}
+                page_title="Create Account"
+                btn_name="Add"
+                btn_name1="Cancel"
+                formik={formik}
+                btn_name1_route={"/admin/allSubadmin"}
+
+            />
+
         </>
     );
 };

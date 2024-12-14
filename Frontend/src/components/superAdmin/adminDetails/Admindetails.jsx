@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { adminDetails, addFund, closePanel, updateAdmin } from '../../CommonAPI/SuperAdmin';
+import { adminDetails, addFund, closePanel, updateAdmin, pm2Reload } from '../../CommonAPI/SuperAdmin';
 import GridExample from '../../../ExtraComponent/CommanDataTable'
-import { SquarePen } from 'lucide-react';
+import { SquarePen, RotateCcw } from 'lucide-react';
 import { useFormik } from "formik";
 import AddForm from "../../../ExtraComponent/FormData";
+
 
 
 const Strategygroup = () => {
@@ -75,6 +76,44 @@ const Strategygroup = () => {
         });
     };
 
+    const handleChangePm2Reload = (row, e, status) => {
+        const index = row.rowIndex;
+        let Companyname = getAdminDetails[index].Companyname;
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You want to Reload server",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, change it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const req = { Companyname: Companyname }
+
+                await pm2Reload(req)
+                    .then((response) => {
+                        if (response.Status) {
+                            adminDetailsData();
+
+                            Swal.fire({
+                                title: "Changed!",
+                                text: "Your Server has been Reloaded.",
+                                icon: "success",
+                                timer: 2000,
+                                timerProgressBar: true,
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error updating charge basis", error);
+                    })
+            } else {
+
+                adminDetailsData();
+            }
+        })
+    }
+
 
     console.log("singleAdminData", singleAdminData)
 
@@ -82,10 +121,8 @@ const Strategygroup = () => {
         setShowUpdate(true);
         const index = tableMeta?.rowIndex;
         setSingleAdminData(getAdminDetails[index]);
-
-
-
     }
+
 
     const columns = [
         {
@@ -217,6 +254,19 @@ const Strategygroup = () => {
 
             }
         },
+        {
+            name: "Status",
+            label: "PM2 Reload",
+            options: {
+                filter: true,
+                sort: false,
+                width: '20%',
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    return <RotateCcw onClick={(e) => handleChangePm2Reload(tableMeta, e, e.target.checked)} />
+                }
+
+            }
+        },
     ];
 
     const handleAddFound = (index) => {
@@ -272,8 +322,8 @@ const Strategygroup = () => {
             Url: "",
         })
     }, [singleAdminData])
-   
-   
+
+
     const formik = useFormik({
         initialValues: {
             Companyname: '',
@@ -439,7 +489,7 @@ const Strategygroup = () => {
                                     className="btn-close"
                                     data-bs-dismiss="modal"
                                     aria-label="Close"
-                                    onClick={() => {setShowUpdate(false); formik.resetForm() }}
+                                    onClick={() => { setShowUpdate(false); formik.resetForm() }}
                                 />
                             </div>
                             <div>

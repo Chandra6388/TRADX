@@ -8,9 +8,7 @@ const ApiCreateInfo = () => {
     const [brokerName, setBrokerName] = useState('');
     const [brokerDetails, setBrokerDetails] = useState([]);
 
-
-    console.log('brokerName', brokerName);
-    console.log('brokerDetails', brokerDetails);
+ 
 
     useEffect(() => {
         fetchBrokerName();

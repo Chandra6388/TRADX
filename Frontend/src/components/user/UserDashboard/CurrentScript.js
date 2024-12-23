@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import Formikform from "../../../ExtraComponent/FormData";
 import { useFormik } from 'formik';
 
+
 const Coptyscript = ({ data, selectedType, data2 }) => {
     const userName = localStorage.getItem('name')
     const navigate = useNavigate();
@@ -388,7 +389,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
                 }
             }
-            else if (data === "Pattern") {
+            else if (data === "Pattern" || data === "Pattern Script") {
                 if (allScripts?.data?.length >= 1) {
                     navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts } } });
                 }

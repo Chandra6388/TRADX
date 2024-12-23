@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { get_User_Data } from '../../CommonAPI/Admin'
-import { get_Trade_Response } from '../../CommonAPI/User'
+import { get_Trade_Response, getStrategyType } from '../../CommonAPI/User'
 import Loader from '../../../ExtraComponent/Loader'
 import GridExample from '../../../ExtraComponent/CommanDataTable'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
-import {columns3 , columns2 ,columns1 , columns , columns5 , columns4} from './TradeReponseColumn'
+import { columns3, columns2, columns1, columns, columns5, columns4 } from './TradeReponseColumn'
 const TradeResponse = () => {
-    const [selectStrategyType, setStrategyType] = useState('')
+    const [selectStrategyType, setSelectStrategyType] = useState('')
+    const [strategyType, setStrategyType] = useState([]);
     const [tradeHistory, setTradeHistory] = useState({
-        loading : true,
-        data:[]
+        loading: true,
+        data: []
     })
     const [selectedRowData, setSelectedRowData] = useState('');
     const [ToDate, setToDate] = useState('');
@@ -25,24 +26,24 @@ const TradeResponse = () => {
     })
 
 
-    console.log("getAllTradeData", getAllTradeData)
+    console.log("Strategy type is  ", strategyType)
     const Username = localStorage.getItem('name')
-      const currentDate = new Date();
-      currentDate.setDate(currentDate.getDate());
-      const year = currentDate.getFullYear();
-      const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-      const day = String(currentDate.getDate()).padStart(2, '0');
-      const formattedDate = `${year}.${month}.${day}`;
-  
-  
-      // from date
-      const DefultToDate = new Date();
-  
-      DefultToDate.setDate(DefultToDate.getDate()+1);
-      const year1 = DefultToDate.getFullYear();
-      const month1 = String(DefultToDate.getMonth() + 1).padStart(2, '0');
-      const day1 = String(DefultToDate.getDate()).padStart(2, '0');
-      const Defult_To_Date = `${year1}.${month1}.${day1}`;
+    const currentDate = new Date();
+    currentDate.setDate(currentDate.getDate());
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const formattedDate = `${year}.${month}.${day}`;
+
+
+    // from date
+    const DefultToDate = new Date();
+
+    DefultToDate.setDate(DefultToDate.getDate() + 1);
+    const year1 = DefultToDate.getFullYear();
+    const month1 = String(DefultToDate.getMonth() + 1).padStart(2, '0');
+    const day1 = String(DefultToDate.getDate()).padStart(2, '0');
+    const Defult_To_Date = `${year1}.${month1}.${day1}`;
 
     // Date Formetor
     const convertDateFormat = (date) => {
@@ -56,7 +57,18 @@ const TradeResponse = () => {
         return `${year}.${month}.${day}`;
     };
 
-
+    const GetTradeStrategyType = async () => {
+        try {
+            const res = await getStrategyType()
+            console.log("res is ", res)
+            if (res) {
+                setStrategyType(res.Data)
+            }
+        } catch (error) {
+            setStrategyType([]);
+            console.log("Error in finding the Strategy Type", error)
+        }
+    }
 
     const GetTradeResposne = async () => {
         const data = { Data: selectStrategyType, Username: Username }
@@ -65,7 +77,7 @@ const TradeResponse = () => {
         await get_User_Data(data)
             .then((response) => {
                 if (response.Status) {
-                    
+
                     const filterLiveTrade = response.Data.filter((item) => {
                         return item.TradeExecution == 'Live Trade'
                     })
@@ -90,10 +102,10 @@ const TradeResponse = () => {
     }
     useEffect(() => {
         GetTradeResposne()
-    }, [selectStrategyType , FromDate , ToDate])
+    }, [selectStrategyType, FromDate, ToDate])
 
 
- 
+
 
     const handleRowSelect = (rowData) => {
         setSelectedRowData(rowData);
@@ -107,9 +119,9 @@ const TradeResponse = () => {
             Username: Username,
             ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
             Timeframe: selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TimeFrame : '',
-            From_date: convertDateFormat(FromDate=='' ? formattedDate : FromDate),
-            To_date: convertDateFormat(ToDate=='' ? Defult_To_Date : ToDate),
-            Group: selectStrategyType == "Scalping" || selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.GroupN  : "",
+            From_date: convertDateFormat(FromDate == '' ? formattedDate : FromDate),
+            To_date: convertDateFormat(ToDate == '' ? Defult_To_Date : ToDate),
+            Group: selectStrategyType == "Scalping" || selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.GroupN : "",
             TradePattern: "",
             PatternName: ""
         }
@@ -144,13 +156,14 @@ const TradeResponse = () => {
     }
 
     useEffect(() => {
-        setStrategyType('Scalping')
+        setSelectStrategyType('Scalping')
+        GetTradeStrategyType()
     }, []);
 
 
-    useEffect(()=>{
+    useEffect(() => {
         setShowTable(false)
-    },[selectStrategyType , FromDate , ToDate , selectedRowData])
+    }, [selectStrategyType, FromDate, ToDate, selectedRowData])
 
 
     return (
@@ -168,21 +181,27 @@ const TradeResponse = () => {
                                 <div className='row'>
                                     <div className="form-group col-lg-4">
                                         <label>Select Strategy Type</label>
-                                        <select className="form-select" required=""
-                                            onChange={(e) => setStrategyType(e.target.value)}
-                                            value={selectStrategyType}>
-                                            <option value={"Scalping"}>Scalping</option>
-                                            <option value={"Option Strategy"}>Option Strategy</option>
-                                            <option value={"Pattern"}>Pattern Script</option>
+                                        <select
+                                            className="form-select"
+                                            required
+                                            onChange={(e) => setSelectStrategyType(e.target.value)}
+                                            value={selectStrategyType} 
+                                        >
+                                            {strategyType.map((item, index) => (
+                                                <option key={index} value={item}>
+                                                    {item}
+                                                </option>
+                                            ))}
                                         </select>
+
                                     </div>
                                     <div className="form-group col-lg-4">
                                         <label>Select form Date</label>
-                                        <DatePicker className="form-select" selected={FromDate=='' ? formattedDate : FromDate} onChange={(date) => setFromDate(date)} />
+                                        <DatePicker className="form-select" selected={FromDate == '' ? formattedDate : FromDate} onChange={(date) => setFromDate(date)} />
                                     </div>
                                     <div className="form-group col-lg-4">
                                         <label>Select To Date</label>
-                                        <DatePicker className="form-select" selected={ToDate=='' ? Defult_To_Date : ToDate } onChange={(date) => setToDate(date)} />
+                                        <DatePicker className="form-select" selected={ToDate == '' ? Defult_To_Date : ToDate} onChange={(date) => setToDate(date)} />
 
                                     </div>
                                 </div>

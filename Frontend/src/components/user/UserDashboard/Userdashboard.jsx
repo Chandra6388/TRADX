@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Coptyscript from './Copyscript'
 import GroupScript from './Groupscript'
 import CurrentScript from './CurrentScript'
-import { GetAllUserGroup, OpenPosition  } from '../../CommonAPI/User'
-import { ExpriyEndDate } from '../../CommonAPI/Admin'
+import { GetAllUserGroup, OpenPosition, getStrategyType } from '../../CommonAPI/User'
+import { ExpriyEndDate, } from '../../CommonAPI/Admin'
 import FullDataTable from '../../../ExtraComponent/CommanDataTable'
 const Userdashboard = () => {
     const userName = localStorage.getItem('name')
@@ -12,6 +12,15 @@ const Userdashboard = () => {
     const [subTab, setSubTab] = useState('Scalping')
     const [refresh, setRefresh] = useState(false)
     const [getGroup, setGroup] = useState('')
+    const [strategyType, setStrategyType] = useState([]);
+    const [status, setStatus] = useState(false);
+
+
+    // const toggleStatus = () => {
+    //     setStatus((prevStatus) => !prevStatus);
+    // };
+    const cards = [{ name: "Cash", type: "cash", status: false, fund: "", tradeCount: "" }, { name: "Future", type: "future", status: true, lot: "", tradeCount: "" }, { name: "Option", type: "option", status: false, fund: "", tradeCount: "" }];
+
     const [serviceStatus, setServiceStatus] = useState({
         status: false,
         msg: ''
@@ -28,16 +37,27 @@ const Userdashboard = () => {
     })
 
     useEffect(() => {
-        GetExpriyEndDate() 
+        GetExpriyEndDate()
         GetOpenPosition()
+        fetchStrategyType()
     }, [])
- 
+
     useEffect(() => {
         getUserAllGroup()
     }, [activeTab])
- 
 
 
+    const fetchStrategyType = async () => {
+        try {
+            const res = await getStrategyType();
+            if (res.Data) {
+                setStrategyType(res.Data)
+                // console.log("Strategy Type", res.Data)
+            }
+        } catch (error) {
+            console.log("Error in finding the strategy type", error)
+        }
+    }
     const getUserAllGroup = async () => {
         const data = { User: userName }
         await GetAllUserGroup(data)
@@ -60,7 +80,7 @@ const Userdashboard = () => {
                 console.log("Error in finding the group name", err)
             })
     }
-    
+
     const GetExpriyEndDate = async () => {
         const data = { Username: userName }
         await ExpriyEndDate(data)
@@ -439,7 +459,7 @@ const Userdashboard = () => {
         },
     ];
 
-
+    console.log("getPositionData", strategyType)
     return (
         <div className="container-fluid">
             <div className="row p-0">
@@ -486,7 +506,7 @@ const Userdashboard = () => {
                                                 <select className="form-select" required=""
                                                     onChange={(e) => { setActiveTab(e.target.value) }}
                                                     value={activeTab}>
-                                                    <option value="currentScript">Current Script</option> 
+                                                    <option value="currentScript">Current Script</option>
                                                     <option value="group">Group Script</option>
                                                 </select>
                                             </div>
@@ -510,7 +530,7 @@ const Userdashboard = () => {
                                             </div>
                                         )}
                                         <div className={`form-group ${activeTab == "currentScript" || activeTab == "copyScript" ? 'col-sm-6' : 'col-md-4'}`}>
-                                            <div className='px-3'>
+                                            {/* <div className='px-3'>
                                                 <label>Strategy Type</label>
                                                 <select className="form-select" required=""
                                                     onChange={(e) => { setSubTab(e.target.value) }}
@@ -519,14 +539,34 @@ const Userdashboard = () => {
                                                     <option value="Option Strategy">Option Strategy</option>
                                                     <option value="Pattern">Pattern Script</option>
                                                 </select>
+                                            </div> */}
+
+                                            <div className="px-3">
+                                                <label>Strategy Type</label>
+                                                <select
+                                                    className="form-select"
+                                                    required=""
+                                                    onChange={(e) => {
+                                                        setSubTab(e.target.value);
+                                                    }}
+                                                    value={subTab}
+                                                >
+                                                    {strategyType.map((type, index) => (
+                                                        <option key={index} value={type}>
+                                                            {type}
+                                                        </option>
+                                                    ))}
+                                                </select>
                                             </div>
+
+
                                         </div>
                                     </div>
                                 )}
                             </div>
                             <div className="">
                                 {activeTab1 === 'CurrentPosition' && (
-                                    <> 
+                                    <>
                                         {activeTab === 'group' && (
                                             <div className="tab-pane fade show active" id="home-justify" role="tabpanel">
                                                 <div className="mt-3">
@@ -542,10 +582,68 @@ const Userdashboard = () => {
                                         {activeTab === 'currentScript' && (
                                             <div className="tab-pane fade show active" id="home-justify" role="tabpanel">
                                                 <div className="tab-content mt-3">
-                                                    {subTab && <CurrentScript data={subTab} selectedType={activeTab} data2={serviceStatus && serviceStatus} />}
+                                                    {subTab && subTab !== "ChartingPlatform" && (
+                                                        <CurrentScript
+                                                            data={subTab}
+                                                            selectedType={activeTab}
+                                                            data2={serviceStatus && serviceStatus}
+                                                        />
+                                                    )}
+
+                                                    {subTab === "ChartingPlatform" && (
+                                                        <div className="row">
+                                                            {/* Card 1 */}
+                                                            {cards.map((item, index) => {
+                                                                return (
+                                                                    <div className="col-md-4 mb-3" key={index}>
+                                                                        <div className="card">
+                                                                            <div className="card-header text-center">
+                                                                                <h5>{item.name}</h5>
+                                                                            </div>
+                                                                            <div className="card-body">
+                                                                                {/* Status Button */}
+                                                                                <span className="me-3">Status:</span>
+                                                                                <button
+                                                                                    className={`btn btn-lg ${status ? "btn-success" : "btn-danger"}`}
+                                                                                    // onClick={toggleStatus}
+                                                                                >
+                                                                                    <i
+                                                                                        className={`bi ${item.status ? "bi-check-circle" : "bi-x-circle"
+                                                                                            } me-2`}
+                                                                                    ></i>
+                                                                                    { item.status === true ? "On" : "Off"}
+                                                                                </button>
+                                                                                {/* Funds Input */}
+                                                                                <div className="mb-3">
+                                                                                    <label>{item.type === "cash" ? "Fund" : "Lot"}</label>
+                                                                                    <input
+                                                                                        type="number"
+                                                                                        className="form-control"
+                                                                                        placeholder="Enter funds"
+                                                                                    />
+                                                                                </div>
+
+                                                                                {/* Trade Count Input */}
+                                                                                <div className="mb-3">
+                                                                                    <label>Trade Count</label>
+                                                                                    <input
+                                                                                        type="number"
+                                                                                        className="form-control"
+                                                                                        placeholder="Enter trade count"
+                                                                                    />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    )}
+
                                                 </div>
                                             </div>
                                         )}
+
                                     </>
                                 )}
                             </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { get_User_Data, get_Trade_History, get_PnL_Data, get_EQuityCurveData, get_DrapDownData, get_FiveMostProfitTrade, get_FiveMostLossTrade } from '../../CommonAPI/Admin'
+import { get_User_Data, get_Trade_History, get_PnL_Data, get_EQuityCurveData, get_DrapDownData, get_FiveMostProfitTrade, get_FiveMostLossTrade, getStrategyType } from '../../CommonAPI/Admin'
 import Loader from '../../../ExtraComponent/Loader'
 import GridExample from '../../../ExtraComponent/CommanDataTable'
 import { get_Trade_Data } from '../../CommonAPI/User'
@@ -14,6 +14,7 @@ import { columns8, columns7, columns6, columns5, columns4, columns3, columns2, c
 const Tradehistory = () => {
 
     const [selectStrategyType, setStrategyType] = useState('')
+    const [strategyNames , setStrategyNames] = useState([])
     const [tradeHistory, setTradeHistory] = useState('')
     const [selectedRowData, setSelectedRowData] = useState('');
     const [ToDate, setToDate] = useState('');
@@ -123,7 +124,24 @@ const Tradehistory = () => {
 
 
     }
+
+
+    const strategyType = async () => {
+        try {
+            const res = await getStrategyType();
+            if (res.Data) {
+                setStrategyNames(res.Data)
+            }
+            else {
+                console.log("Error in getting the StrategyType")
+            }
+        } catch (error) {
+            console.log("Error in getting the StrategyType", error)
+            
+        }
+    }
     useEffect(() => {
+        strategyType()
         GetTradeHistory()
     }, [selectStrategyType])
 
@@ -453,9 +471,14 @@ const Tradehistory = () => {
                                         <select className="form-select" required=""
                                             onChange={(e) => setStrategyType(e.target.value)}
                                             value={selectStrategyType}>
-                                            <option value={"Scalping"}>Scalping</option>
+                                                {
+                                                    strategyNames.map((item, index) => {    
+                                                        return <option key={index} value={item}>{item}</option>
+                                                    })
+                                                }
+                                            {/* <option value={"Scalping"}>Scalping</option>
                                             <option value={"Option Strategy"}>Option Strategy</option>
-                                            <option value={"Pattern"}>Pattern Script</option>
+                                            <option value={"Pattern"}>Pattern Script</option> */}
 
                                         </select>
                                     </div>

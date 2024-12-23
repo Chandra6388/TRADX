@@ -5,6 +5,10 @@ import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import { GET_EXPIRY_DATE, ExpriyEndDate } from '../../CommonAPI/Admin'
 import { AddScript, CheckPnL } from '../../CommonAPI/User'
+// import { base_url } from "../../../Utils/Config";
+import axios from "axios";
+import * as Config from "../../../Utils/Config";
+
 
 
 const AddClient = () => {
@@ -17,6 +21,12 @@ const AddClient = () => {
     })
     const [serviceEndDate, setServiceEndDate] = useState('')
     const [showPnl, setShowPnl] = useState(false)
+    const [symbolOptions, setSymbolOptions] = useState([]);
+    const [exchangeOptions, setExchangeOptions] = useState([])
+
+    console.log('Symbol Options:', symbolOptions);
+    console.log('Exchange Options:', exchangeOptions);
+
     const [PnlData, setPnlData] = useState({
         MaximumProfit: "",
         MaximumLoss: "",
@@ -345,9 +355,56 @@ const AddClient = () => {
         },
     });
 
+
+
+    useEffect(() => {
+        axios.get(`${Config.base_url}OptionExchange`)
+            .then(response => {
+                if (response.data && response.data.Exchange) {
+                    const formattedExchangeOptions = response.data.Exchange.map(exchange => ({
+                        label: exchange,
+                        value: exchange
+                    }));
+
+                    // Update the state with the formatted options
+                    setExchangeOptions(formattedExchangeOptions);
+                    formik.setFieldValue('Exchange', formattedExchangeOptions[0]?.value || '');
+                } else {
+                    console.error('Unexpected API response:', response.data);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching symbols:', error);
+            });
+    }, []);
+
+
+    useEffect(() => {
+        axios.get(`${Config.base_url}OptionSymbol`)
+            .then(response => {
+                if (response.data && response.data.Symbol) {
+                    const formattedSymbols = response.data.Symbol.map(symbol => ({
+                        label: symbol,
+                        value: symbol,
+                    }));
+                    setSymbolOptions(formattedSymbols);
+                    console.log('Symbols are here :', formattedSymbols);
+                    formik.setFieldValue('Symbol', formattedSymbols[0]?.value || '');
+                } else {
+                    console.error('Unexpected API response:', response.data);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching symbols:', error);
+            });
+    }, []);
+
+
     useEffect(() => {
         formik.setFieldValue('Measurment_Type', location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len].CombineOption?.[0])
-        formik.setFieldValue('Symbol', "BANKNIFTY")
+
+        // formik.setFieldValue('Exchange', "NSE");
+        formik.setFieldValue('Symbol', symbolOptions[0]?.value || '');
         formik.setFieldValue('Expirytype', "Weekly")
         formik.setFieldValue('ETPattern', "Future")
         formik.setFieldValue('TStype', "Percentage")
@@ -370,14 +427,29 @@ const AddClient = () => {
 
 
     const SymbolSelectionArr = [
+
+        {
+            name: "Exchange", // New field name for Exchange
+            label: "Exchange", // Label for the new field
+            type: "select",
+            options: exchangeOptions.map(symbol => ({
+                label: symbol.label,
+                value: symbol.value
+            })),
+            hiding: false,
+            label_size: 12,
+            col_size: 3,
+            headingtype: 1,
+            disable: false,
+        },
         {
             name: "Symbol",
             label: "Symbol",
             type: "select",
-            options: [
-                { label: "BANKNIFTY", value: "BANKNIFTY" },
-                { label: "NIFTY", value: "NIFTY" },
-            ],
+            options: symbolOptions.map(symbol => ({
+                label: symbol.label,
+                value: symbol.value
+            })),
             hiding: false,
             label_size: 12,
             col_size: 3,
@@ -476,7 +548,7 @@ const AddClient = () => {
             headingtype: 2,
             disable: false,
         },
-       
+
 
         {
             name: "CEDepthLower",

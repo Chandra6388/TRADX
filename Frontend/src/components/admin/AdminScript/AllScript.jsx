@@ -13,11 +13,12 @@ const Addscript = () => {
     const navigate = useNavigate()
     const [refresh, setRefresh] = useState(false)
     const [selectGroup, setSelectGroup] = useState('')
-    const [selectStrategyType, setStrategyType] = useState('')
+    const [selectStrategyType, setStrategyType] = useState([])
     const [GroupError, setGroupError] = useState('')
     const [stgError, setStgError] = useState('')
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [getAllService, setAllservice] = useState({ loading: true, data: [] })
+    
 
     const [getGroupData, setGroupData] = useState({ loading: true, data: [] })
 
@@ -147,7 +148,22 @@ const Addscript = () => {
         }
     }
 
+    // const fetchStrategyData = async () => {
+    //     try {
+    //       const response = await axios.get("http://217.145.69.50:8000/MainStrategy"); // Replace with your API endpoint
+    //       if (response.data.Status) {
+    //         setStrategyType(response.data.Data); // Update state with the "Data" array
+    //       } else {
+    //         console.error("Error:", response.data.message);
+    //       }
+    //     } catch (error) {
+    //       console.error("Error fetching strategy data:", error);
+    //     }
+    //   };
+  
+
     useEffect(() => {
+        
         setStrategyType('Scalping')
     }, []);
 

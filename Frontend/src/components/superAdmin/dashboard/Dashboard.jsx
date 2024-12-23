@@ -6,6 +6,7 @@ import Loader from '../../../ExtraComponent/Loader';
 const Dashboards = () => {
     const [dashData, setData] = useState([]);
 
+
     useEffect(() => {
         SuperAdminDashboardData();
     }, []);
@@ -102,7 +103,7 @@ const Dashboards = () => {
                                                                     <h4>Total: </h4>
                                                                 </td>
                                                                 <td>
-                                                                    <span className="text-muted">{dashData?.[0]?.['Total Off account']}</span>
+                                                                    <span className="text-muted">{dashData?.[0]?.['Total account']}</span>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -262,7 +263,7 @@ const Dashboards = () => {
                                                                     <h4>Expired: </h4>
                                                                 </td>
                                                                 <td>
-                                                                    <span className="text-muted">{dashData?.[0]?.['Total account']}</span>
+                                                                    <span className="text-muted">{dashData?.[0]?.['Total Off account']}</span>
                                                                 </td>
                                                             </tr>
                                                         </tbody>

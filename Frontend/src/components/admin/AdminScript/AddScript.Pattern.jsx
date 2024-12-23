@@ -246,7 +246,7 @@ const AddClient = () => {
 
             })
     }
-    
+
     useEffect(() => {
         get_Exchange()
     }, [])
@@ -435,7 +435,7 @@ const AddClient = () => {
     ]
 
     const ExitRuleArr = [
-       
+
         {
             name: "Targetvalue",
             label: "Target",
@@ -537,7 +537,7 @@ const AddClient = () => {
             hiding: false,
             label_size: 12,
             headingtype: 1,
-            data : SymbolSelectionArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
+            data: SymbolSelectionArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
             col_size: 12,
             disable: false,
         },
@@ -547,7 +547,7 @@ const AddClient = () => {
             type: "heading",
             hiding: false,
             label_size: 12,
-            data : EntryRuleArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
+            data: EntryRuleArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
             headingtype: 2,
             col_size: 12,
             disable: false,
@@ -575,7 +575,7 @@ const AddClient = () => {
             col_size: 12,
             disable: false,
         },
-        
+
         {
             name: "Heading",
             label: "Time_Duration",

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { adminDetails, addFund, closePanel, updateAdmin, pm2Reload } from '../../CommonAPI/SuperAdmin';
+import { adminDetails, addFund, closePanel, updateAdmin, pm2Reload, allClientListDetails, superToAdminPermission, superToAdminBrokerPermission, superToAdminGetNewPermission, seeAllSubAdminList, deleteSubAdminData } from '../../CommonAPI/SuperAdmin';
 import GridExample from '../../../ExtraComponent/CommanDataTable'
-import { SquarePen, RotateCcw } from 'lucide-react';
+import { SquarePen, RotateCcw, Eye, UserPlus, Earth, UserSearch, Trash2 } from 'lucide-react';
 import { useFormik } from "formik";
 import AddForm from "../../../ExtraComponent/FormData";
+
 
 
 
@@ -15,6 +16,58 @@ const Strategygroup = () => {
     const [amount, setAmount] = useState('');
     const [showUpdate, setShowUpdate] = useState(false);
     const [singleAdminData, setSingleAdminData] = useState([]);
+
+    const [showBroker, setShowAddBroker] = useState([])
+    const [showBroker1, setShowAddBroker1] = useState(false)
+
+    const [showPermission, setShowAddPermission] = useState([])
+    const [showPermission1, setShowAddPermission1] = useState(false)
+
+
+    const [allClientList, setAllClientList] = useState([])
+    const [companyName, setCompanyName] = useState(""); // State to store company name
+    const [showAllClientList, setShowAllClientList] = useState(false)
+
+    const [allSubAdminList, setAllSubAdminList] = useState([])
+    const [subAdminCompanyName, setSubAdminCompanyName] = useState("")
+    const [showAllSubAdminList, setShowAllSubAdminList] = useState(false)
+
+
+    const [optionsArrayBroker, setOptionsArrayBroker] = useState([
+        { "value": "ICICI", "label": "ICICI" },
+        { "value": "UPSTOX", "label": "UPSTOX" },
+        { "value": "5PAISA", "label": "5 PAISA" },
+        { "value": "ANGEL", "label": "ANGEL" },
+        { "value": "MASTERTRUST", "label": "MASTERTRUST" },
+        { "value": "FYERS", "label": "FYERS" },
+        { "value": "ALICEBLUE", "label": "ALICEBLUE" },
+        { "value": "ZEBULL", "label": "ZEBULL" },
+        { "value": "MANDOT", "label": "MANDOT" },
+        { "value": "INDIRA", "label": "INDIRA" },
+        { "value": "DHAN", "label": "DHAN" },
+        { "value": "MARKETHUB", "label": "MARKETHUB" },
+        { "value": "FINVASIA", "label": "FINVASIA" },
+        { "value": "KOTAK", "label": "KOTAK" },
+    ]);
+
+
+    // for update permission
+
+    const [permissionArray, setPermissionArray] = useState([
+        {
+            "value": "MT4Trade", "label": "MT4Trade"
+        },
+        { "value": "SignalGenerating", "label": "Signal Generating" },
+        { "value": "MakeStrategy", "label": "Make Strategy" },
+
+    ]);
+
+    const [selectedOptions, setSelectedOptions] = useState([]);
+    const [selectedIndex, setSelectedIndex] = useState(0);
+
+
+
+
     useEffect(() => {
         adminDetailsData();
     }, []);
@@ -115,13 +168,152 @@ const Strategygroup = () => {
     }
 
 
-    console.log("singleAdminData", singleAdminData)
 
     const handleUpdate = (tableMeta) => {
         setShowUpdate(true);
         const index = tableMeta?.rowIndex;
         setSingleAdminData(getAdminDetails[index]);
+        setCompanyName(getAdminDetails[index].Companyname)
     }
+
+
+    //get new permission
+    useEffect(() => {
+        const fetchPermissions = async () => {
+            try {
+                const response = await superToAdminGetNewPermission();
+                if (response?.Status) {
+                    const formattedPermissions = Array.from(
+                        new Set(response.Data.map(item => item.NewUpdate)) // Get unique NewUpdate values
+                    ).map(uniqueValue => ({
+                        value: uniqueValue,
+                        label: uniqueValue,
+                    }));
+
+                    setPermissionArray(formattedPermissions);
+
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: response.message,
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                }
+
+            } catch (error) {
+                console.error("Error fetching new permissions", error)
+            }
+        }
+        fetchPermissions()
+    }, [])
+
+    // Update Permission function
+    const handleAddPermission = (tableMeta) => {
+        setShowAddPermission1(true);
+        const index = tableMeta?.rowIndex;
+        setSingleAdminData(getAdminDetails[index]);
+
+
+        // Populate formik1 initial values
+        formik2.setFieldValue("Permission", getAdminDetails[index].Permission || []);
+
+    }
+
+
+    // Update broker function
+    const handleAddBroker = (tableMeta) => {
+        setShowAddBroker1(true);
+        const index = tableMeta?.rowIndex;
+        setSingleAdminData(getAdminDetails[index]);
+        setShowAddBroker(getAdminDetails[index].BrokerPermission)
+
+        //aaaaaa
+        // Populate formik1 initial values
+        formik1.setFieldValue("BrokerPermission", getAdminDetails[index].BrokerPermission || []);
+    }
+
+
+    //See All client list api
+    const handleClientList = async (tableMeta) => {
+        setShowAllClientList(true)
+        const index = tableMeta.rowIndex; // Get the row index
+        const Companyname = getAdminDetails[index].Companyname; // Get the Companyname for the selected row
+        setCompanyName(Companyname); // Save company name for modal title
+        try {
+            const response = await allClientListDetails(Companyname); // Fetch client list
+            console.log("Client List Data:", response);
+            setAllClientList(response.Data); // Update the state with fetched data
+        } catch (error) {
+            setAllClientList([])
+            console.log("Error To Fetch data", error);
+        }
+    };
+
+    //See All Sub Admin list api
+    const handleSubAdminList = async (tableMeta) => {
+        setShowAllSubAdminList(true)
+        const index = tableMeta.rowIndex; // Get the row index
+        const Companyname = getAdminDetails[index].Companyname; // Get the Companyname for the selected row
+
+        console.log("---", Companyname)
+        setCompanyName(Companyname); // Save company name for modal title
+        // setSubAdminCompanyName(Companyname)
+        try {
+            const response = await seeAllSubAdminList(Companyname); // Fetch sub admin list
+            setAllSubAdminList(response.Data || []); // Update the state with fetched data
+            // console.log("Subadmin List Data:", response.Data);
+        } catch (error) {
+            setAllSubAdminList([])
+            console.log("Error To Fetch data", error);
+        }
+    };
+
+    //delete sub admin api
+    const handleSubAdminDelete = async (Username, tableMeta) => {
+
+        // const index = tableMeta.rowIndex; // Get the row index
+        // const Companyname = getAdminDetails[index].Companyname; // Get the Companyname for the selected row
+        console.log(Username);
+        console.log(companyName);
+
+        // return
+
+        let dataRequest = { Companyname: companyName, Username: Username }
+        try {
+            const response = await deleteSubAdminData(dataRequest);
+            if (response.Status) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: response.message,
+                    icon: "success",
+                    timer: 1500,
+                    timerProgressBar: true
+                });
+                setShowAllSubAdminList(false)
+
+            }
+            else {
+                Swal.fire({
+                    title: "Error!",
+                    text: response.message,
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                });
+            }
+
+        }
+        catch (error) {
+            console.error("Error deleting sub-admin:", error);
+        }
+    }
+
+
+
+
+
 
 
     const columns = [
@@ -136,6 +328,15 @@ const Strategygroup = () => {
                     return rowIndex + 1;
                 }
             },
+        },
+        {
+            name: "Companyname",
+            label: "Company Name",
+            options: {
+                filter: true,
+                sort: false,
+                width: '20%'
+            }
         },
         {
             name: "AddFund",
@@ -162,34 +363,85 @@ const Strategygroup = () => {
             }
         },
         {
-            name: "Companyname",
-            label: "Company Name",
-            options: {
-                filter: true,
-                sort: false,
-                width: '20%'
-            }
-        },
-        {
-            name: "username",
-            label: "Username",
-            options: {
-                filter: true,
-                sort: false,
-            }
-        },
-        {
-            name: "password",
-            label: "Password",
+            name: "Add_Permission",
+            label: "Add Permission",
             options: {
                 filter: true,
                 sort: false,
                 customBodyRender: (value, tableMeta, updateValue) => {
-                    return "********";
+                    ;
+                    return <Earth size={20} style={{ cursor: "pointer" }} onClick={() => handleAddPermission(tableMeta)} />;
                 }
-
             }
         },
+        {
+            name: "Add_Broker",
+            label: "Add Broker",
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    // return <SquarePen size={20} style={{ cursor: "pointer" }} />;
+                    return <UserPlus size={20} style={{ cursor: "pointer" }} onClick={() => handleAddBroker(tableMeta)} />;
+
+                }
+            }
+        },
+        {
+            name: "All Clients",
+            label: "All Clients",
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    return (
+                        <Eye
+                            size={20}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleClientList(tableMeta)} // Pass tableMeta
+                        />
+                    );
+                },
+            },
+        },
+        {
+            name: "All SubAdmin",
+            label: "All SubAdmin",
+            options: {
+                filter: true,
+                sort: false,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    return (
+                        <UserSearch
+                            size={20}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleSubAdminList(tableMeta)} // Pass tableMeta
+                        />
+                    );
+                },
+            },
+        },
+
+        // {
+        //     name: "username",
+        //     label: "Username",
+        //     options: {
+        //         filter: true,
+        //         sort: false,
+        //     }
+        // },
+        // {
+        //     name: "password",
+        //     label: "Password",
+        //     options: {
+        //         filter: true,
+        //         sort: false,
+        //         customBodyRender: (value, tableMeta, updateValue) => {
+        //             return "********";
+        //         }
+
+        //     }
+        // },
         {
             name: "SignEmail",
             label: "Email",
@@ -214,24 +466,24 @@ const Strategygroup = () => {
                 sort: false,
             }
         },
-        {
-            name: "AmountDetails",
-            label: "Amount Details",
-            options: {
-                filter: true,
-                sort: false,
-                width: '20%'
-            }
-        },
-        {
-            name: "IP Detail",
-            label: "IP Address",
-            options: {
-                filter: true,
-                sort: false,
-                width: '20%'
-            }
-        },
+        // {
+        //     name: "AmountDetails",
+        //     label: "Amount Details",
+        //     options: {
+        //         filter: true,
+        //         sort: false,
+        //         width: '20%'
+        //     }
+        // },
+        // {
+        //     name: "IP Detail",
+        //     label: "IP Address",
+        //     options: {
+        //         filter: true,
+        //         sort: false,
+        //         width: '20%'
+        //     }
+        // },
         {
             name: "Status",
             label: "Temporary Close Panel",
@@ -256,7 +508,7 @@ const Strategygroup = () => {
         },
         {
             name: "Status",
-            label: "PM2 Reload",
+            label: "Live Data",
             options: {
                 filter: true,
                 sort: false,
@@ -412,6 +664,142 @@ const Strategygroup = () => {
     ]
 
 
+
+
+    //broker permission start
+
+    const formik1 = useFormik({
+        initialValues: {
+            BrokerPermission: [],
+        },
+
+        onSubmit: async (values) => {
+
+            // console.log("aaaa", values);
+
+            const req = {
+                // BrokerPermission: showBroker.BrokerPermission,
+                Companyname: singleAdminData?.Companyname,
+                // Companyname: "Pnp",
+                Brokername: values.BrokerPermission,
+
+            }
+
+            await superToAdminBrokerPermission(req)
+                .then((response) => {
+                    if (response.Status) {
+                        Swal.fire({
+                            title: "Broker Updated!",
+                            text: response.message,
+                            icon: "success",
+                            timer: 2000,
+                            timerProgressBar: true,
+                        });
+                        adminDetailsData();
+                        setShowAddBroker1(false);
+                        formik1.resetForm();
+                    }
+                    else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: response.message,
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                        });
+                    }
+                })
+                .catch((err) => {
+                    console.log("Error in fatching the Broker Details", err);
+
+                })
+        }
+    });
+
+
+
+    const fields1 = [
+        {
+            name: "BrokerPermission",
+            label: "Broker Permission",
+            type: "select2", // Custom dropdown for brokers
+            label_size: 12,
+            col_size: 6,
+            disable: false,
+            options: optionsArrayBroker,
+            //this is added
+            value: formik1.values.BrokerPermission, // Bind to formik value
+            onChange: (selectedValues) => {
+                formik1.setFieldValue("BrokerPermission", selectedValues);
+            },
+        },
+    ]
+
+    //broker permission end
+
+    //code for update permission
+    const formik2 = useFormik({
+        initialValues: {
+            Permission: [],
+        },
+
+
+        onSubmit: async (values) => {
+            const req = {
+                Companyname: singleAdminData?.Companyname,
+                Permission: values.Permission,
+            }
+            console.log(req);
+
+
+            await superToAdminPermission(req)
+                .then((response) => {
+                    if (response.Status) {
+                        Swal.fire({
+                            title: "Permission Updated!",
+                            text: response.message,
+                            icon: "success",
+                            timer: 2000,
+                            timerProgressBar: true,
+                        });
+                        adminDetailsData();
+                        setShowAddPermission1(false)
+                        formik2.resetForm();
+                    }
+                    else {
+                        Swal.fire({
+                            title: "Error!",
+                            text: response.message,
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                        });
+                    }
+                })
+        }
+    })
+    // console.log("pppppp", formik2.values.Permission);
+
+    const fields2 = [
+        {
+            name: "Permission",
+            label: "Permission",
+            type: "select2", // Custom dropdown for brokers
+            label_size: 12,
+            col_size: 6,
+            disable: false,
+            options: permissionArray,
+            //added data
+            value: formik2.values.Permission,
+            onChange: (selectedValues) => {
+                formik2.setFieldValue("Permission", selectedValues)
+            }
+        },
+    ]
+
+
+    console.log(allSubAdminList);
+
     return (
         <div>
             <div className="container-fluid">
@@ -419,7 +807,7 @@ const Strategygroup = () => {
                     <div className="iq-card">
                         <div className="iq-card-header d-flex justify-content-between">
                             <div className="iq-header-title">
-                                <h4 className="card-title">Admin Detail</h4>
+                                <h4 className="card-title">Admin Details</h4>
                             </div>
 
                         </div>
@@ -503,6 +891,212 @@ const Strategygroup = () => {
                     </div>
                 </div>
             }
+
+            {
+                showPermission1 && <div className="modal show" id="exampleModal" style={{ display: "block" }}>
+                    <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"></div>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">
+                                    Update Permission : {singleAdminData?.Companyname}
+                                </h5>
+
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    // onClick={() => { setShowAddBroker1(false); formik1.resetForm() }}
+                                    onClick={() => { setShowAddPermission1(false); formik2.resetForm() }}
+
+                                />
+                            </div>
+                            <div>
+                                <AddForm
+                                    fields={fields2}
+                                    btn_name="Update"
+                                    formik={formik2}
+
+
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            {
+                showBroker1 && <div className="modal show" id="exampleModal" style={{ display: "block" }}>
+                    <div className="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"></div>
+                    <div className="modal-dialog modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">
+                                    Update Broker : {singleAdminData?.Companyname}
+                                    {console.log(singleAdminData?.Companyname)}
+                                </h5>
+
+                                <button
+                                    type="button"
+                                    className="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close"
+                                    onClick={() => { setShowAddBroker1(false); formik1.resetForm() }}
+                                />
+                            </div>
+                            <div>
+                                <AddForm
+                                    fields={fields1}
+                                    btn_name="Update"
+                                    formik={formik1}
+
+
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+            {
+                showAllClientList && (
+                    <div
+                        className="modal show"
+                        id="exampleModal"
+                        style={{ display: "block" }}
+                        tabIndex="-1"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
+                    >
+                        <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">
+                                        Client List: {companyName}
+                                    </h5>
+                                    <button
+                                        type="button"
+                                        className="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                        onClick={() => setShowAllClientList(false)} // Close modal on button click
+                                    />
+                                </div>
+                                <div className="modal-body">
+                                    <table className="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {allClientList?.length > 0 ? (
+                                                allClientList.map((client, index) => (
+                                                    <tr key={index}>
+                                                        <td>{client.Username}</td>
+                                                        <td>{client.EmailId}</td>
+                                                        <td>{client.Mobile_No}</td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="3" style={{ textAlign: "center" }}>
+                                                        No clients found for {singleAdminData?.Companyname}.
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className="modal-footer">
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary"
+                                        data-bs-dismiss="modal"
+                                        onClick={() => setShowAllClientList(false)} // Close modal on button click
+                                    >
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+
+            {
+                showAllSubAdminList && (
+                    <div
+                        className="modal show"
+                        id="exampleModal"
+                        style={{ display: "block" }}
+                        tabIndex="-1"
+                        aria-labelledby="exampleModalLabel"
+                        aria-hidden="true"
+                    >
+                        <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h5 className="modal-title" id="exampleModalLabel">
+                                        Sub Admin List: {companyName}
+                                    </h5>
+                                    <button
+                                        type="button"
+                                        className="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                        onClick={() => setShowAllSubAdminList(false)} // Close modal on button click
+                                    />
+                                </div>
+                                <div className="modal-body">
+                                    <table className="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {allSubAdminList?.length > 0 ? (
+                                                allSubAdminList.map((subAdmin, index) => (
+                                                    <tr key={index}>
+                                                        <td>{subAdmin.Username}</td>
+                                                        <td>{subAdmin.EmailId}</td>
+                                                        <td>{subAdmin.Mobile_No}</td>
+                                                        <button onClick={(e) => handleSubAdminDelete(subAdmin.Username, index)}><Trash2 /></button>
+
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td colSpan="3" style={{ textAlign: "center" }}>
+                                                        No Sub Admin List found for {singleAdminData?.Companyname}.
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className="modal-footer">
+                                    <button
+                                        type="button"
+                                        className="btn btn-secondary"
+                                        data-bs-dismiss="modal"
+                                        onClick={() => setShowAllSubAdminList(false)} // Close modal on button click
+                                    >
+                                        Close
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
 
 

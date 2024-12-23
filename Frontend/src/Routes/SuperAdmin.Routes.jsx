@@ -11,6 +11,8 @@ import ClientThreadReport from '../components/superAdmin/clientThreadReport/clie
 import ClientThreadResponse from '../components/superAdmin/clientThreadResponse/ClientThreadResponse';
 import UpdateClientDetails from '../components/superAdmin/updateClientDetails/UpdateClientDetails';
 import ApiCreateInfo from '../components/superAdmin/apiCreateInfo/ApiCreateInfo';
+import NewUpdate from '../components/superAdmin/newUpdate/NewUpdate';
+
 
 
 const SuperAdminRoute = () => {
@@ -24,12 +26,14 @@ const SuperAdminRoute = () => {
             <Route path="/dashboard" element={<Dashboards />} />
             <Route path="/admin-details" element={<AdminDetails />} />
             <Route path="/create-admin" element={<CreateAdmin />} />
+
             <Route path="/amount-details" element={<AmountDetails />} />
             <Route path="/admin-activity" element={<AdminActivity />} />
             <Route path="/client-thread-report" element={<ClientThreadReport />} />
             <Route path="/client-trade-response" element={<ClientThreadResponse />} />
             <Route path="/update-client-details" element={<UpdateClientDetails />} />
             <Route path="/api-create-info" element={<ApiCreateInfo />} />
+            <Route path='/new-update' element={<NewUpdate />} />
           </Routes>
         </div>
       </div>

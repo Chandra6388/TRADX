@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 import DropdownMultiselect from 'react-multiselect-dropdown-bootstrap';
 import AddForm from '../../../ExtraComponent/FormData';
 import Swal from 'sweetalert2';
-import { Get_All_Plans , GetUserBalence } from "../../CommonAPI/User";
+import { Get_All_Plans, GetUserBalence } from "../../CommonAPI/User";
 
 
 const Clientservice = () => {
@@ -25,8 +25,8 @@ const Clientservice = () => {
     const [GetAllPlans, setAllPlans] = useState({ LivePlanName: [], DemoPlanName: [], data: [] });
     const [walletBalance, setWalletBalance] = useState('');
 
-   
-  
+
+
     useEffect(() => {
         fetchBrokerName();
         fetchGroupDetails();
@@ -40,21 +40,21 @@ const Clientservice = () => {
 
 
     const GetBalence = async (Username) => {
-        const req = {userName: Username}
+        const req = { userName: Username }
         await GetUserBalence(req)
-          .then((response) => {
-              if (response.Status) {
-                  setWalletBalance(response.Balance)
-              }
-              else {
-                  setWalletBalance('')
-              }
-          })
-          .catch((error) => {
-              console.error("Error in GetUserBalence request", error);
-          });   
-      }
-  
+            .then((response) => {
+                if (response.Status) {
+                    setWalletBalance(response.Balance)
+                }
+                else {
+                    setWalletBalance('')
+                }
+            })
+            .catch((error) => {
+                console.error("Error in GetUserBalence request", error);
+            });
+    }
+
 
     const fetchBrokerName = async () => {
         try {
@@ -150,7 +150,7 @@ const Clientservice = () => {
             }
 
             console.log('errors', errors);
-           
+
             return errors;
         },
 
@@ -160,7 +160,7 @@ const Clientservice = () => {
                 User: values.User,
                 GroupName: selectedOptions,
                 Broker: values.Broker,
-            }   
+            }
             try {
                 const response = await EditClientPanle(req);
                 if (response.Status) {
@@ -223,17 +223,17 @@ const Clientservice = () => {
                 sort: true,
                 customBodyRender: (value, tableMeta) => (
                     <SquarePen
-                    onClick={() => {
-                        setShowModal(true);
-                        const rowDataWithKeys = {};
-                        columns.forEach((column, index) => {
-                            rowDataWithKeys[column.name] = tableMeta.rowData[index];
-                        });
-                        setSelectedIndex(rowDataWithKeys);
-                        GetBalence(rowDataWithKeys.Username)
-                    }}
+                        onClick={() => {
+                            setShowModal(true);
+                            const rowDataWithKeys = {};
+                            columns.forEach((column, index) => {
+                                rowDataWithKeys[column.name] = tableMeta.rowData[index];
+                            });
+                            setSelectedIndex(rowDataWithKeys);
+                            GetBalence(rowDataWithKeys.Username)
+                        }}
                     />
-                    
+
                 ),
             },
         },
@@ -252,7 +252,7 @@ const Clientservice = () => {
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (value) => value=='' ? "Admin" : value,
+                customBodyRender: (value) => value == '' ? "Admin" : value,
             }
         },
         {
@@ -282,8 +282,8 @@ const Clientservice = () => {
                 customBodyRender: (value, tableMeta) => (
                     <span>{Array.isArray(value) ? value.join(' , ') : value ? "-" : value || '-'}</span>
                 ),
-             
-                
+
+
             }
         },
         {
@@ -349,7 +349,7 @@ const Clientservice = () => {
 
     useEffect(() => {
         if (showModal) {
-            formik.setFieldValue('Broker', selectedIndex.BrokerName=='Demo' ? "" : selectedIndex.BrokerName); 
+            formik.setFieldValue('Broker', selectedIndex.BrokerName == 'Demo' ? "" : selectedIndex.BrokerName);
             formik.setFieldValue('User', selectedIndex.Username);
             setSelectedOptions(showModal && selectedIndex.Group)
         }

@@ -2,16 +2,36 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom';
 import Sidebar from '../components/layouts/Sidebar';
 import Header from '../components/layouts/Header';
-import Dashboard from '../components/subAdmin/subadminDashboard/Dashboard';
-import AddClient from '../components/subAdmin/Client/AddClient';
-import AllClient from '../components/subAdmin/Client/Allclient';
-import SubAdminGroups from '../components/subAdmin/Groups/StrategyGroup';
-import TradeHistory from '../components/subAdmin/TradeHistory/Tradehistory';
-import Signals from '../components/subAdmin/Signals/TradeReport';
-import AddscriptScalping from '../components/subAdmin/SubAdminScript/Addscript.Scalping';
-import PatternScript from '../components/subAdmin/SubAdminScript/AddScript.Pattern';
-import AddScriptOption from '../components/subAdmin/SubAdminScript/AddScript.Option';
-import AllScript from '../components/subAdmin/SubAdminScript/AllScript';
+// import Dashboard from '../components/subAdmin/subadminDashboard/Dashboard';
+import Dashboard from '../components/subadmin/subadminDashboard/Dashboard';
+
+// import AddClient from '../components/subAdmin/Client/AddClient';
+import AddClient from '../components/subadmin/Client/AddClient';
+
+// import AllClient from '../components/subAdmin/Client/Allclient';
+import AllClient from '../components/subadmin/Client/Allclient';
+
+// import SubAdminGroups from '../components/subAdmin/Groups/StrategyGroup';
+import SubAdminGroups from '../components/subadmin/Groups/StrategyGroup';
+
+// import TradeHistory from '../components/subAdmin/TradeHistory/Tradehistory';
+import TradeHistory from '../components/subadmin/TradeHistory/Tradehistory';
+
+// import Signals from '../components/subAdmin/Signals/TradeReport';
+import Signals from '../components/subadmin/Signals/TradeReport';
+
+// import AddscriptScalping from '../components/subAdmin/SubAdminScript/Addscript.Scalping';
+import AddscriptScalping from '../components/subadmin/SubAdminScript/Addscript.Scalping';
+
+// import PatternScript from '../components/subAdmin/SubAdminScript/AddScript.Pattern';
+import PatternScript from '../components/subadmin/SubAdminScript/AddScript.Pattern';
+
+// import AddScriptOption from '../components/subAdmin/SubAdminScript/AddScript.Option';
+import AddScriptOption from '../components/subadmin/SubAdminScript/AddScript.Option';
+
+// import AllScript from '../components/subAdmin/SubAdminScript/AllScript';
+import AllScript from '../components/subadmin/SubAdminScript/AllScript';
+
 
 
 const SubAdminRoutes = () => {

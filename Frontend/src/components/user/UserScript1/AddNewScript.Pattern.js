@@ -20,7 +20,7 @@ const AddClient = () => {
     const [getPattern, setPattern] = useState({ loading: true, data: [] })
 
 
- 
+
     const SweentAlertFun = (text) => {
         Swal.fire({
             title: "Error",
@@ -34,11 +34,11 @@ const AddClient = () => {
     const getEndData = (stg) => {
         const dataWithoutLastItem = location?.state.data.scriptType.data.slice(0, -1);
         const foundItem = dataWithoutLastItem.find((item) => {
-          return item.Pattern.includes(stg);
+            return item.Pattern.includes(stg);
         });
         console.log(foundItem)
         return foundItem.EndDate;
-      };
+    };
 
 
     useEffect(() => {
@@ -46,7 +46,7 @@ const AddClient = () => {
     }, [])
 
     const formik = useFormik({
-        
+
         initialValues: {
             MainStrategy: location.state.data.selectStrategyType,
             Username: location.state.data.selectGroup,
@@ -211,7 +211,7 @@ const AddClient = () => {
                 PEDeepLower: 0.0,
                 PEDeepHigher: 0.0,
                 stretegytag: values.Strategy
-            } 
+            }
             if (values.EntryTime >= values.ExitTime) {
                 return SweentAlertFun("Exit Time should be greater than Entry Time")
             }

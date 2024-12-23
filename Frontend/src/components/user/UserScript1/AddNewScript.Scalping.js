@@ -639,7 +639,7 @@ const AddClient = () => {
       name: "Strategy",
       label: "Scalping Type",
       type: "radio2",
-      title:  location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len]?.CombineScalping.map((item) => ({ title: item, value: item })),
+      title: location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len]?.CombineScalping.map((item) => ({ title: item, value: item })),
       hiding: false,
       label_size: 12,
       col_size: 12,
@@ -844,7 +844,7 @@ const AddClient = () => {
   useEffect(() => {
     formik.setFieldValue('Group', "")
     formik.setFieldValue('HigherRange', 0)
-    formik.setFieldValue('LowerRange', 0) 
+    formik.setFieldValue('LowerRange', 0)
     formik.setFieldValue('EntryRange', 0)
     formik.setFieldValue('EntryPrice', 0)
   }, [formik.values.Strategy])

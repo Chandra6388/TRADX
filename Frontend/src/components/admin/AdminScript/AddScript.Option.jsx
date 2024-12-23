@@ -397,7 +397,7 @@ const AddClient = () => {
             col_size: 4,
             headingtype: 2,
             disable: false,
-        }, 
+        },
         {
             name: "DeepStrike",
             label: "Deep Strike",
@@ -431,7 +431,7 @@ const AddClient = () => {
             headingtype: 2,
             disable: false,
         },
-        
+
         {
             name: "Shifting_Point",
             label: "Shifting Point",
@@ -443,7 +443,7 @@ const AddClient = () => {
             headingtype: 2,
             disable: false,
         },
-       
+
         {
             name: "CEDepthLower",
             label: "CE Main Lower",
@@ -654,7 +654,7 @@ const AddClient = () => {
     ]
 
     const TimeDurationArr = [
-        
+
         {
             name: "EntryTime",
             label: "Entry Time",

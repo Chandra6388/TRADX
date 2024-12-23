@@ -15,6 +15,15 @@ const AddSubadmin = () => {
         return nameRegex.test(name);
     };
 
+    const [optionsArray, setOptionsArray] = useState([
+        { "value": "AddClient", "label": "AddClient" },
+        { "value": "ViewClient", "label": "ViewClient" },
+        { "value": "EditClient", "label": "EditClient" },
+        { "value": "TradeHistory", "label": "TradeHistory" },
+        { "value": "TradeReport", "label": "TradeReport" },
+        { "value": "UpdateApiKey", "label": "UpdateApiKey" },
+    ])
+
 
 
     const formik = useFormik({
@@ -25,52 +34,69 @@ const AddSubadmin = () => {
             mobile_no: "",
             Signpassword: "",
             ConfirmPassword: "",
-
-            AllPermission: false,
-            AddClient: false,
-            ViewClient: false,
-            EditClient: false,
-            TradeHistory: false,
-            TradeReport: false,
-            UpdateApiKey: false,
-
+            permission: [],
 
         },
         validate: (values) => {
             let errors = {};
+
+            // Username validation
             if (!values.Username) {
-                errors.Username = "Please Enter Username"
+                errors.Username = "Please Enter Username";
+            } else if (!Name_regex(values.Username)) {
+                errors.Username = "Please Enter Valid Username";  // Fixed error key to match the field name
             }
-            else if (!Name_regex(values.username)) {
-                errors.username = "Please Enter Valid Username"
-            }
+
+            // Name validation (Allow spaces)
+            const nameRegex = /^[a-zA-Z ]+$/; // Updated regex to allow letters and spaces
             if (!values.Name) {
-                errors.Name = "Please Enter Name"
+                errors.Name = "Please Enter Name";
+            } else if (!nameRegex.test(values.Name)) {
+                errors.Name = "Please Enter Valid Name (Only letters and spaces allowed)";
             }
-            else if (!Name_regex(values.Name)) {
-                errors.Name = "Please Enter Valid Name"
-            }
+
+            // Email validation
             if (!values.SignEmail) {
                 errors.SignEmail = "Please Enter Email ID";
-            }
-            else {
+            } else {
                 const emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo|ymail|rediffmail|hotmail|outlook|aol|icloud|protonmail|example).(com|co.in|in|net|org|edu|gov|uk|us|info|biz|io|...)[a-zA-Z]{0,}$/;
                 if (!emailRegex.test(values.SignEmail)) {
                     errors.SignEmail = "Please Enter valid Email ID";
                 }
             }
+
+            // Password validation
             if (!values.Signpassword) {
-                errors.Signpassword = "Please Enter Password"
+                errors.Signpassword = "Please Enter Password";
+            } else if (values.Signpassword.length < 8 || values.Signpassword.length > 15) {
+                errors.Signpassword = "Password must be between 8 and 15 characters";
+            } else if (!/(?=.*[a-z])/.test(values.Signpassword)) {
+                errors.Signpassword = "Password must contain at least one lowercase letter";
+            } else if (!/(?=.*[A-Z])/.test(values.Signpassword)) {
+                errors.Signpassword = "Password must contain at least one uppercase letter";
+            } else if (!/(?=.*[0-9])/.test(values.Signpassword)) {
+                errors.Signpassword = "Password must contain at least one number";
+            } else if (!/(?=.*[!@#$%^&*(),.?":{}|<>])/.test(values.Signpassword)) {
+                errors.Signpassword = "Password must contain at least one special character";
             }
+
+            // Confirm Password validation
             if (!values.ConfirmPassword) {
-                errors.ConfirmPassword = "Please Enter Confirm Password"
+                errors.ConfirmPassword = "Please Enter Confirm Password";
+            } else if (values.ConfirmPassword !== values.Signpassword) {
+                errors.ConfirmPassword = "Passwords do not match";
             }
+
+            // Mobile number validation
             if (!values.mobile_no) {
-                errors.mobile_no = "Please Enter Mobile Number"
+                errors.mobile_no = "Please Enter Mobile Number";
+            } else if (values.mobile_no.length !== 10) { // Check for length not equal to 10
+                errors.mobile_no = "Mobile number length must be 10 characters";
             }
 
             return errors;
         },
+
         onSubmit: async (values) => {
             const req = {
                 Username: values.Username,
@@ -79,16 +105,7 @@ const AddSubadmin = () => {
                 mobile_no: values.mobile_no,
                 Signpassword: values.Signpassword,
                 ConfirmPassword: values.ConfirmPassword,
-                permission: {
-                    AllPermission: values.AllPermission,
-                    AddClient: values.AddClient,
-                    ViewClient: values.ViewClient,
-                    EditClient: values.EditClient,
-                    TradeHistory: values.TradeHistory,
-                    TradeReport: values.TradeReport,
-                    UpdateApiKey: values.UpdateApiKey,
-
-                }
+                permission: values.permission,
             }
 
             await AddSubadminbyAdmin(req)
@@ -181,68 +198,15 @@ const AddSubadmin = () => {
             disable: false,
         },
         {
-            name: "AllPermission",
-            label: "All Permission",
-            type: "checkbox",
+            name: "permission",
+            label: "Permission",
+            type: "select2", // Custom dropdown for brokers
             label_size: 12,
-            hiding: false,
-            col_size: 3,
+            col_size: 6,
             disable: false,
+            options: optionsArray
         },
-        {
-            name: "AddClient",
-            label: "Add Client",
-            type: "checkbox",
-            label_size: 12,
-            hiding: false,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "ViewClient",
-            label: "View Client",
-            type: "checkbox",
-            label_size: 12,
-            hiding: false,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "EditClient",
-            label: "Edit Client",
-            type: "checkbox",
-            label_size: 12,
-            hiding: false,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "TradeHistory",
-            label: "Trade History",
-            type: "checkbox",
-            label_size: 12,
-            hiding: false,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "TradeReport",
-            label: "Trade Report",
-            type: "checkbox",
-            label_size: 12,
-            hiding: false,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "UpdateApiKey",
-            label: "Update Api Key",
-            type: "checkbox",
-            label_size: 12,
-            hiding: false,
-            col_size: 3,
-            disable: false,
-        },
+
 
 
     ];
@@ -251,10 +215,8 @@ const AddSubadmin = () => {
     return (
         <>
             <AddForm
-                fields={fields.filter(
-                    (field) => !field.showWhen || field.showWhen(formik.values)
-                )}
-                page_title="Create Account"
+                fields={fields}
+                page_title="Create Sub_Admin Account"
                 btn_name="Add"
                 btn_name1="Cancel"
                 formik={formik}

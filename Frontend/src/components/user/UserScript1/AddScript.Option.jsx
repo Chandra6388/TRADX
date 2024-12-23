@@ -10,7 +10,7 @@ const AddClient = () => {
     const location = useLocation()
     const userName = localStorage.getItem('name')
     const navigate = useNavigate()
-    const [getExpiry, setExpiry] = useState({ loading: true,data: [] })
+    const [getExpiry, setExpiry] = useState({ loading: true, data: [] })
 
     const SweentAlertFun = (text) => {
         Swal.fire({
@@ -21,15 +21,15 @@ const AddClient = () => {
             timerProgressBar: true
         });
     }
-    
+
     const getEndData = (stg) => {
         const dataWithoutLastItem = location?.state?.scriptType?.data.slice(0, -1);
         const foundItem = dataWithoutLastItem.find((item) => {
             return item['Option Strategy'].includes(stg);
-        }); 
+        });
         return foundItem.EndDate;
     };
- 
+
     const formik = useFormik({
         initialValues: {
             MainStrategy: location.state.data.selectStrategyType,
@@ -100,7 +100,7 @@ const AddClient = () => {
             }
             if (!values.Symbol) {
                 errors.Symbol = "Please Select a Symbol Type.";
-            } 
+            }
             if ((!values.Targetvalue || values.Targetvalue == 0) && (formik.values.Measurment_Type != 'Shifting_FourLeg')) {
                 errors.Targetvalue = values.Targetvalue == 0 ? "Target Can Not be Zero" : "Please Enter a Target Value.";
             }

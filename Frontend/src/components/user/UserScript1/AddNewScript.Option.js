@@ -41,14 +41,14 @@ const AddClient = () => {
 
     }
 
-    
-  const getEndData = (stg) => {
-    const dataWithoutLastItem =location?.state?.data?.scriptType?.data.slice(0, -1);
-    const foundItem = dataWithoutLastItem.find((item) => {
-      return item['Option Strategy'].includes(stg);
-    });
-    return foundItem.EndDate;
-  };
+
+    const getEndData = (stg) => {
+        const dataWithoutLastItem = location?.state?.data?.scriptType?.data.slice(0, -1);
+        const foundItem = dataWithoutLastItem.find((item) => {
+            return item['Option Strategy'].includes(stg);
+        });
+        return foundItem.EndDate;
+    };
 
 
     const formik = useFormik({
@@ -273,7 +273,7 @@ const AddClient = () => {
                 PEDeepHigher: Number(values.PEDeepHigher),
                 TradeCount: values.Trade_Count,
                 TradeExecution: values.Trade_Execution,
-                 stretegytag: values.Measurment_Type,
+                stretegytag: values.Measurment_Type,
             }
 
             if (values.Striketype == "Depth_of_Strike" && (Number(values.DepthofStrike) < 0 || Number(values.DepthofStrike) > 10)) {
@@ -348,7 +348,7 @@ const AddClient = () => {
     });
 
 
-    console.log("Formik Values", location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.['Option Strategy'][0]) 
+    console.log("Formik Values", location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.['Option Strategy'][0])
 
     useEffect(() => {
         formik.setFieldValue('Measurment_Type', location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len - 1]?.['Option Strategy'][0])
@@ -374,7 +374,7 @@ const AddClient = () => {
     }, [])
 
 
-    
+
     const fields = [
         {
             name: "Measurment_Type",
@@ -923,7 +923,7 @@ const AddClient = () => {
             PEDeepLower: Number(formik.values.PEDeepLower),
             PEDeepHigher: Number(formik.values.PEDeepHigher),
             TradeCount: Number(formik.values.Trade_Count),
-        } 
+        }
         await CheckPnL(req)
             .then((response) => {
                 if (response.Status) {

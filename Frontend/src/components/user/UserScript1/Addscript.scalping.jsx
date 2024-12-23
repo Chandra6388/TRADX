@@ -14,7 +14,7 @@ const AddClient = () => {
     const [getSymbolData, setSymbolData] = useState({ loading: true, data: [] })
     const [initialvalue, setinitialvalue] = useState(false)
     const [getStricke, setStricke] = useState({ loading: true, data: [] })
-    const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: []})
+    const [getExpiryDate, setExpiryDate] = useState({ loading: true, data: [] })
 
     const SweentAlertFun = (text) => {
         Swal.fire({
@@ -646,7 +646,7 @@ const AddClient = () => {
 
     useEffect(() => {
         if (initialvalue) {
-            if (formik.values.Symbol !== location.state.data.MainSymbol) { 
+            if (formik.values.Symbol !== location.state.data.MainSymbol) {
                 formik.setFieldValue('expirydata1', "");
                 formik.setFieldValue('Strike', "")
             }

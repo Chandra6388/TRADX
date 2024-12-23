@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
+import { ListCollapse, Users, BadgeDollarSign, Pyramid, MessageCircleReply, BookUser, Webhook, BadgePlus } from 'lucide-react';
 
 const Sidebar = () => {
     const role = localStorage.getItem("Role");
     const [isActive, setIsActive] = useState(true);
-    const [activeItem, setActiveItem] = useState(''); 
+    const [activeItem, setActiveItem] = useState('');
     const sidebarRef = useRef(null);
     const fevicon = localStorage.getItem("fevicon");
     const header_img1 = localStorage.getItem("header_img1");
@@ -39,7 +40,7 @@ const Sidebar = () => {
     useEffect(() => {
         const sidebar = sidebarRef.current;
         const handleAnchorClick = (event) => {
-            closeSidebarOnSmallScreen(); 
+            closeSidebarOnSmallScreen();
         };
 
         const anchors = sidebar.querySelectorAll('a');
@@ -262,48 +263,55 @@ const Sidebar = () => {
                                                 <span>Dashboard</span>
                                             </Link>
                                         </li>
-                                        <li className={activeItem === '/superadmin/admin-details' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/admin-details')}>
-                                            <Link to='/superadmin/admin-details' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Admin Details</span>
-                                            </Link>
-                                        </li>
                                         <li className={activeItem === '/superadmin/create-admin' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/create-admin')}>
                                             <Link to='/superadmin/create-admin' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Create Admin</span>
+                                                <Users />
+                                                <span style={{ marginLeft: '8px' }}>Create Admin</span>
                                             </Link>
                                         </li>
+                                        <li className={activeItem === '/superadmin/admin-details' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/admin-details')}>
+                                            <Link to='/superadmin/admin-details' className="iq-waves-effect">
+                                                <ListCollapse />
+                                                <span style={{ marginLeft: '8px' }}>Admin Details</span>
+                                            </Link>
+                                        </li>
+
                                         <li className={activeItem === '/superadmin/amount-details' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/amount-details')}>
                                             <Link to='/superadmin/amount-details' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Amount Details</span>
+                                                <BadgeDollarSign Volleyball />
+                                                <span style={{ marginLeft: '8px' }}>Amount Details</span>
                                             </Link>
                                         </li>
 
                                         <li className={activeItem === '/superadmin/client-thread-report' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/client-thread-report')}>
                                             <Link to='/superadmin/client-thread-report' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Client Thread Report</span>
+                                                <Pyramid />
+                                                <span style={{ marginLeft: '8px' }}>Client Thread Report</span>
                                             </Link>
                                         </li>
 
                                         <li className={activeItem === '/superadmin/client-trade-response' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/client-trade-response')}>
                                             <Link to='/superadmin/client-trade-response' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Client Trade Response</span>
+                                                <MessageCircleReply />
+                                                <span style={{ marginLeft: '8px' }}>Client Trade Response</span>
                                             </Link>
                                         </li>
                                         <li className={activeItem === '/superadmin/update-client-details' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/update-client-details')}>
                                             <Link to='/superadmin/update-client-details' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Update Client Details</span>
+                                                <BookUser />
+                                                <span style={{ marginLeft: '8px' }}>Update Client Details</span>
                                             </Link>
                                         </li>
                                         <li className={activeItem === '/superadmin/api-create-info' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/api-create-info')}>
                                             <Link to='/superadmin/api-create-info' className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>ApiCreateInfo</span>
+                                                <Webhook />
+                                                <span style={{ marginLeft: '8px' }}>ApiCreateInfo</span>
+                                            </Link>
+                                        </li>
+                                        <li className={activeItem === '/superadmin/New-Update' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/New-Update')}>
+                                            <Link to='/superadmin/New-Update' className="iq-waves-effect">
+                                                <BadgePlus />
+                                                <span style={{ marginLeft: '8px' }}>New-Update</span>
                                             </Link>
                                         </li>
 
@@ -418,6 +426,12 @@ const Sidebar = () => {
                                                 <Link to="discription" className="iq-waves-effect">
                                                     <i className="lab la-get-pocket" />
                                                     <span>Description</span>
+                                                </Link>
+                                            </li>
+                                            <li className={activeItem === 'newStrategy' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'newStrategy')}>
+                                                <Link to="newStrategy" className="iq-waves-effect">
+                                                    <i className="lab la-get-pocket" />
+                                                    <span>New Strategy</span>
                                                 </Link>
                                             </li>
                                         </>

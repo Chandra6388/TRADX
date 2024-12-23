@@ -17,6 +17,8 @@ const Header = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [showFunds, setShowFunds] = useState(false);
 
+
+
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
@@ -48,10 +50,12 @@ const Header = () => {
     const [showAddBrokerModal, setShowAddBrokerModal] = useState(false);
     const [addBrokerName, setAddBrokerName] = useState('');
 
+    const [userName, setUserName] = useState('');
 
-    useEffect(() => {
-        GetBalence()
-    }, [])
+
+    // useEffect(() => {
+    //     GetBalence()
+    // }, [])
 
     const handleToggle = async (event) => {
         const newStatus = event.target.checked;
@@ -149,6 +153,22 @@ const Header = () => {
         localStorage.removeItem("Role");
         navigate("/");
     }
+
+
+    //if client subscription is expire then it will redirected only plan page
+    useEffect(() => {
+        const name = localStorage.getItem("name");
+        const expireClient = localStorage.getItem("expire_client");
+
+        if (role === 'User' && expireClient === 'true') {
+            navigate('/user/all/plan'); // Redirect if expire_client is true
+        }
+
+        if (name) {
+            setUserName(name);
+        }
+    }, [navigate]);
+
 
 
     useEffect(() => {
@@ -447,6 +467,13 @@ const Header = () => {
                             </button>
                             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
+
+                                    <li className="nav-item">
+                                        <button className="btn btn-primary mt-3 mx-3 btn1" style={{ pointerEvents: 'none' }}>Hello, {userName}</button>
+                                    </li>
+
+
+
                                     <li className="nav-item">
                                         <button
                                             type="button"
@@ -517,6 +544,11 @@ const Header = () => {
                             </button>
                             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
+
+                                    <li className="nav-item">
+                                        <button className="btn btn-primary mt-3 mx-3 btn1" style={{ pointerEvents: 'none' }}>Hello, {userName}</button>
+
+                                    </li>
                                     {/* <li className="nav-item">
                                         <button
                                             type="button"
@@ -606,6 +638,10 @@ const Header = () => {
 
                                 </div>
                                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
+                                    <li className="nav-item">
+                                        <button className="btn btn-primary mt-3 mx-3 btn1" style={{ pointerEvents: 'none' }}>Hello, {userName}</button>
+
+                                    </li>
                                     {
                                         getBrokerName && getBrokerName == "Demo" ?
                                             <li className="nav-item">
@@ -751,7 +787,11 @@ const Header = () => {
                             </button>
                             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
-                                   
+
+                                    <li className="nav-item">
+                                        <button className="btn btn-primary mt-3 mx-3 btn1" style={{ pointerEvents: 'none' }}>Hello, {userName}</button>
+                                    </li>
+
 
                                     <li className="nav-item iq-full-screen" onClick={toggleFullscreen}>
                                         <a href="#" className="iq-waves-effect" id="btnFullscreen">

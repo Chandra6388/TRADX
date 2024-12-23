@@ -163,7 +163,7 @@ const Adduser = () => {
                 password: values.password,
                 cpassword: values.cpassword,
                 mobile_no: values.mobile_no,
-                bname: formik.values.Select_License==1 ? "Demo" : values.bname,
+                bname: formik.values.Select_License == 1 ? "Demo" : values.bname,
                 ClientAmmount: formik.values.Select_License == 1 ? 0 : Number(values.ClientAmmount),
                 planname: values.planname,
                 group: selectedOptions && selectedOptions
@@ -178,9 +178,9 @@ const Adduser = () => {
                     timer: 3000,
                     timerProgressBar: true
                 });
-                return 
-                
-            } 
+                return
+
+            }
             await CreateAccount(req)
                 .then((response) => {
                     if (response.Status) {
@@ -259,7 +259,7 @@ const Adduser = () => {
         },
         {
 
-           
+
             name: "Select_License",
             label: "License Type",
             type: "select1",
@@ -319,11 +319,11 @@ const Adduser = () => {
 
     ];
 
-    useEffect(() => { 
-            formik.setFieldValue('bname', "")
-            formik.setFieldValue('ClientAmmount', 0)
-            formik.setFieldValue('planname', "") 
-        
+    useEffect(() => {
+        formik.setFieldValue('bname', "")
+        formik.setFieldValue('ClientAmmount', 0)
+        formik.setFieldValue('planname', "")
+
     }, [formik.values.Select_License])
 
     return (

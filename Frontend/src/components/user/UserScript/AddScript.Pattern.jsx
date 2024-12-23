@@ -328,7 +328,7 @@ const AddClient = () => {
             headingtype: 1,
             disable: true,
             col_size: formik.values.Exchange == "NFO" && (formik.values.Instrument == 'FUTIDX' || formik.values.Instrument == 'FUTSTK') ? 3 : formik.values.Exchange == "NFO" && (formik.values.Instrument == 'OPTIDX' || formik.values.Instrument == 'OPTSTK') ? 4 : 6,
-           
+
         },
         {
             name: "Instrument",
@@ -360,7 +360,7 @@ const AddClient = () => {
             headingtype: 1,
             disable: true,
             col_size: formik.values.Exchange == "NFO" && (formik.values.Instrument == 'FUTIDX' || formik.values.Instrument == 'FUTSTK') ? 3 : formik.values.Exchange == "NFO" && (formik.values.Instrument == 'OPTIDX' || formik.values.Instrument == 'OPTSTK') ? 4 : 6,
-           
+
         },
         {
             name: "Symbol",
@@ -489,10 +489,10 @@ const AddClient = () => {
         },
 
     ]
-   
-    
+
+
     const ExitRuleArr = [
-       
+
         {
             name: "Targetvalue",
             label: "Target",
@@ -680,7 +680,7 @@ const AddClient = () => {
             data: OtherParameterArr.filter((item) => !item.showWhen || item.showWhen(formik.values)),
             disable: false,
         },
-         
+
     ];
 
 

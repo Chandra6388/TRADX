@@ -4,7 +4,7 @@ import * as Config from "../../Utils/Config";
 export const superAdminDashboard = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.get(`${Config.base_url}Superadmindashboard`, data,
+        const res = await axios.get(`${Config.superAdmin_base_url}Superadmindashboard`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ export const superAdminDashboard = async (data) => {
 export const adminDetails = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.get(`${Config.base_url}AdminDetails`, data,
+        const res = await axios.get(`${Config.superAdmin_base_url}AdminDetails`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export const adminDetails = async (data) => {
 export const createAdmin = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}CreateAdmin`, data,
+        const res = await axios.post(`${Config.superAdmin_base_url}CreateAdmin`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export const createAdmin = async (data) => {
 export const getCompanyName = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.get(`${Config.base_url}Companynames`, data,
+        const res = await axios.get(`${Config.superAdmin_base_url}Companynames`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ export const getCompanyName = async (data) => {
 export const companyDetails = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.get(`${Config.base_url}AmmountDetails/${data.comapnyName}`, data,
+        const res = await axios.get(`${Config.superAdmin_base_url}AmmountDetails/${data.comapnyName}`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ export const companyDetails = async (data) => {
 export const adminActivity = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}AddAmount`, data,
+        const res = await axios.post(`${Config.superAdmin_base_url}AddAmount`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ export const adminActivity = async (data) => {
 export const clientThreadeReport = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.get(`${Config.base_url}ClientThreadReport/${data.comapnyName}`, data,
+        const res = await axios.get(`${Config.superAdmin_base_url}ClientThreadReport/${data.comapnyName}`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ export const clientThreadeReport = async (data) => {
 export const getClientName = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.get(`${Config.base_url}Clientname/${data.comapnyName}`, data,
+        const res = await axios.get(`${Config.superAdmin_base_url}Clientname/${data.comapnyName}`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ export const getClientName = async (data) => {
 export const addBroker = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}AddBroker`, data,
+        const res = await axios.post(`${Config.superAdmin_base_url}AddBroker`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ export const addBroker = async (data) => {
 export const allClientdetails = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.get(`${Config.base_url}ClientDetails/${data.comapnyName}`, data,
+        const res = await axios.get(`${Config.superAdmin_base_url}ClientDetails/${data.comapnyName}`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -199,7 +199,7 @@ export const allClientdetails = async (data) => {
 export const updateClientDetails = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}ClientUpdateDetails`, data,
+        const res = await axios.post(`${Config.superAdmin_base_url}ClientUpdateDetails`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ export const updateClientDetails = async (data) => {
 export const deleteClient = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}ClientDeleteDetails`, data,
+        const res = await axios.post(`${Config.superAdmin_base_url}ClientDeleteDetails`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -237,7 +237,7 @@ export const deleteClient = async (data) => {
 export const getClientScript = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}ClientStretegy`, data,
+        const res = await axios.post(`${Config.superAdmin_base_url}ClientStretegy`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -256,7 +256,7 @@ export const getClientScript = async (data) => {
 export const ClientTradeResponse = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}ClientTraderesponse`, data,
+        const res = await axios.post(`${Config.superAdmin_base_url}ClientTraderesponse`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -275,7 +275,7 @@ export const ClientTradeResponse = async (data) => {
 export const addFund = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}AddAmount`, data,
+        const res = await axios.post(`${Config.superAdmin_base_url}AddAmount`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -295,7 +295,7 @@ export const addFund = async (data) => {
 export const closePanel = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}ClosePanel`, data,
+        const res = await axios.post(`${Config.superAdmin_base_url}ClosePanel`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -314,7 +314,7 @@ export const closePanel = async (data) => {
 export const updateAdmin = async (data) => {
     const token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}UpdateAdmin`, data,
+        const res = await axios.post(`${Config.superAdmin_base_url}UpdateAdmin`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -333,7 +333,7 @@ export const updateAdmin = async (data) => {
 
 export const apiCreateInfo = async (data) => {
     const token = localStorage.getItem('token')
- 
+
     try {
         const formData = new FormData();
         formData.append('Brokername', data.Brokername);
@@ -347,11 +347,11 @@ export const apiCreateInfo = async (data) => {
         formData.append('step4image', data.step4image);
         formData.append('step5', data.step5);
         formData.append('step5image', data.step5image);
-        
-        const res = await axios.post(`${Config.base_url}BrokerApiCreate`, formData,
+
+        const res = await axios.post(`${Config.superAdmin_base_url}BrokerApiCreate`, formData,
             {
                 headers: {
-                    'Content-Type': 'multipart/form-data',  
+                    'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`
                 }
             }
@@ -367,7 +367,7 @@ export const apiCreateInfo = async (data) => {
 export const pm2Reload = async (data) => {
     const token = localStorage.getItem('token');
     try {
-        const res = await axios.get(`${Config.base_url}Livedatafeed/${data.Companyname}`, data,
+        const res = await axios.get(`${Config.superAdmin_base_url}Livedatafeed/${data.Companyname}`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -381,3 +381,165 @@ export const pm2Reload = async (data) => {
     }
 }
 
+
+export const allClientListDetails = async (data) => {
+    const token = localStorage.getItem('token');
+    try {
+        console.log(data);
+
+        const res = await axios.get(`${Config.superAdmin_base_url}ClientDetails/${data}`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    } catch (error) {
+        return error
+    }
+}
+
+
+//create api for Superadmin to admin Broker permission
+
+export const superToAdminBrokerPermission = async (data) => {
+    const token = localStorage.getItem('token');
+    try {
+        const res = await axios.post(`${Config.superAdmin_base_url}BrokerPermission`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    } catch (error) {
+        return error
+    }
+}
+
+
+//create api for Superadmin to admin permission
+
+export const superToAdminPermission = async (data) => {
+    const token = localStorage.getItem('token');
+    try {
+        const res = await axios.post(`${Config.superAdmin_base_url}PermissionUpdate`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    } catch (error) {
+        return error
+    }
+}
+
+
+
+//create api for New update for data in superadmin  (for New update page)
+
+export const superToAdminAddNewPermission = async (data) => {
+    const token = localStorage.getItem('token');
+    try {
+        const res = await axios.post(`${Config.superAdmin_base_url}NewUpdate`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    } catch (error) {
+        return error
+    }
+}
+
+
+//create api for get updated data (For create-admin page)
+
+export const superToAdminGetNewPermission = async (data) => {
+    const token = localStorage.getItem('token');
+    try {
+        const res = await axios.get(`${Config.superAdmin_base_url}NewUpdateData`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    } catch (error) {
+        return error
+    }
+}
+
+//Delete sub admin details
+export const deleteSubAdminButton = async (data) => {
+    const token = localStorage.getItem('token');
+    try {
+        const res = await axios.post(`${Config.superAdmin_base_url}SubadminDeleteDetails`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    } catch (error) {
+        return error
+    }
+}
+
+
+//subadmin list api
+export const seeAllSubAdminList = async (data) => {
+    const token = localStorage.getItem('token');
+    try {
+        // const res = await axios.get(`${Config.superAdmin_base_url}SubadminDetails/${Companyname}`, data,
+        const res = await axios.get(`${Config.superAdmin_base_url}SubadminDetails/${data}`, data,
+
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+
+    } catch (error) {
+        return error
+    }
+}
+
+
+//delete subadmin
+export const deleteSubAdminData = async (data) => {
+    console.log(data);
+
+
+    const token = localStorage.getItem('token');
+    try {
+        const res = await axios.post(`${Config.superAdmin_base_url}SubadminDeleteDetails`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    } catch (error) {
+        return error
+    }
+}

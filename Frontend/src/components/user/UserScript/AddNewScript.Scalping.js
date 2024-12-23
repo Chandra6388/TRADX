@@ -487,7 +487,24 @@ const AddClient = () => {
     },
   ]
 
+
   const ExitRuleArr = [
+    {
+      name: "TStype",
+      label: formik.values.Strategy == "Fixed Price" ? "Target Price" : formik.values.Strategy == "One Directional" ? "Measurement Type" : "Booking Point",
+      type: "select",
+      options: [
+        { label: "Percentage", value: "Percentage" },
+        { label: "Point", value: "Point" },
+      ],
+      showWhen: (values) => formik.values.Strategy == "One Directional",
+
+      label_size: 12,
+      col_size: 3,
+      headingtype: 3,
+      disable: false,
+      hiding: false,
+    },
     {
       name: "Targetvalue",
       label: formik.values.Strategy == "Fixed Price" ? "Target Price" : formik.values.Strategy == "One Directional" ? "Fixed Target" : "Booking Point",
@@ -550,21 +567,21 @@ const AddClient = () => {
       hiding: false,
     },
 
-    {
-      name: "TStype",
-      label: "Measurement Type",
-      type: "select",
-      options: [
-        { label: "Percentage", value: "Percentage" },
-        { label: "Point", value: "Point" },
-      ],
-      showWhen: (values) => values.Strategy != "Fixed Price",
-      label_size: 12,
-      headingtype: 4,
-      col_size: 4,
-      hiding: false,
-      disable: false,
-    },
+    // {
+    //   name: "TStype",
+    //   label: "Measurement Type",
+    //   type: "select",
+    //   options: [
+    //     { label: "Percentage", value: "Percentage" },
+    //     { label: "Point", value: "Point" },
+    //   ],
+    //   showWhen: (values) => values.Strategy != "Fixed Price",
+    //   label_size: 12,
+    //   headingtype: 4,
+    //   col_size: 4,
+    //   hiding: false,
+    //   disable: false,
+    // },
 
     {
       name: "Quantity",

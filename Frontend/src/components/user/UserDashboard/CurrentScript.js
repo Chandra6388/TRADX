@@ -441,7 +441,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                         PatternOption: response.PatternOption,
                         Marketwise: response.Marketwise,
                         PremiumRotation: response.PremiumRotation
-
                     });
                 } else {
                     setAllservice({

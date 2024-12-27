@@ -548,7 +548,6 @@ const AddClient = () => {
       disable: false,
       hiding: false,
     },
-
     {
       name: "Slvalue",
       label: formik.values.Strategy == "Fixed Price" ? "Stoploss Price" : "Re-Entry Point",

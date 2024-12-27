@@ -664,7 +664,6 @@ const AddClient = () => {
       type: "text3",
       label_size: 12,
       showWhen: (values) => values.position_type == "Single" && values.Strategy == "Multi_Conditional",
-
       col_size: 4,
       headingtype: 4,
       disable: false,

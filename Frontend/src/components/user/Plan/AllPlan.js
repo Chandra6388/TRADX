@@ -154,6 +154,7 @@ const ServicesList = () => {
                             Scalping: planDetails.Scalping,
                             Option: planDetails['Option Strategy'],
                             PatternS: planDetails.Pattern,
+                            ChartingSignal: planDetails.ChartingSignal,
                             NumberofScript: planDetails.NumberofScript,
                             Duration: planDetails['Plan Validity'],
                             Planname: planDetails.PlanName,
@@ -278,10 +279,6 @@ const ServicesList = () => {
         }
     };
 
-
-
-    // console.log(GetAllPlans.data)Two Days Demo
-
     const getUpdatedPlans = GetAllPlans.data?.filter((plan) => {
         if (plan.PlanName == "Three Days Live" || plan.PlanName == "Two Days Demo" || plan.PlanName == "One Week Demo") {
            
@@ -293,6 +290,8 @@ const ServicesList = () => {
             return plan
         }
     });
+
+
 
     return (
         <>
@@ -321,13 +320,13 @@ const ServicesList = () => {
 
                                                     <div style={styles.prices}>
                                                         <p style={styles.priceItem}>
-                                                            <strong>Scalping Strategy:</strong> {plan?.Scalping?.length == 0 ? "ALL Strategy" : plan?.Scalping.join(", ")}
+                                                            <strong>Scalping Strategy:</strong> {plan?.Scalping?.length == 0 ? "ALL Strategy" : plan?.Scalping?.map(item => item.label)?.join(", ")}
                                                         </p>
                                                         <p style={styles.priceItem}>
-                                                            <strong>Option Strategy:</strong> {plan['Option Strategy']?.length == 0 ? "ALL Strategy" : plan['Option Strategy'].join(", ")}
+                                                            <strong>Option Strategy:</strong> {plan['Option Strategy']?.length == 0 ? "ALL Strategy" : plan?.['Option Strategy']?.map(item => item.label)?.join(", ")}
                                                         </p>
                                                         <p style={styles.priceItem}>
-                                                            <strong>Pattern Strategy:</strong> {plan?.Pattern.length == 0 ? "ALL Strategy" : plan?.Pattern?.join(", ")}
+                                                            <strong>Pattern Strategy:</strong> {plan?.Pattern.length == 0 ? "ALL Strategy" : plan?.Pattern?.map(item => item.label)?.join(", ")}
                                                         </p>
                                                     </div>
                                                 </div>

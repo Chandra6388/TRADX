@@ -28,6 +28,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         PremiumRotation: []
     });
 
+    console.log("data", allScripts)
     useEffect(() => {
         GetUserAllScripts()
     }, [])
@@ -405,6 +406,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
             }
             else {
+                console.log("allScripts", allScripts?.data?.length)
                 if (allScripts?.data?.length >= 1) {
                     navigate('/user/newscript/scalping', {
                         state: {

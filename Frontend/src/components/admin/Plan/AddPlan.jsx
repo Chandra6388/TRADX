@@ -359,13 +359,13 @@ const AddPlanPage = () => {
         {
             name: "NumberofScript",
             label: "Number of Script",
-            type: "text",
+            type: "text3",
             col_size: 6,
         },
         {
             name: "payment",
             label: "Payment",
-            type: "text",
+            type: "text3",
             col_size: 6,
         },
         {

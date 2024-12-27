@@ -406,7 +406,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
             }
             else {
-                console.log("allScripts", allScripts?.data?.length)
                 if (allScripts?.data?.length >= 1) {
                     navigate('/user/newscript/scalping', {
                         state: {

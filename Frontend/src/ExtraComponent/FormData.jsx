@@ -742,7 +742,7 @@ const DynamicForm = ({
                                             <div className="row d-flex">
                                               <div className="col-lg-12">
                                                 <div className="form-group input-block mt-3">
-                                                  <h5 style={{ fontWeight: 600 }}>{item.label}</h5>
+                                                
                                                 </div>
                                               </div>
                                             </div>

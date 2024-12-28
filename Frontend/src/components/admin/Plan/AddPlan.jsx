@@ -222,11 +222,11 @@ const CustomMultiSelect = ({ label, options, selected, onChange, disabled }) => 
     const customStyles = {
         option: (provided) => ({
             ...provided,
-            color: 'black',  // Set font color to black
+            color: 'black',  
         }),
         menu: (provided) => ({
             ...provided,
-            zIndex: 9999,  // Ensure menu is on top
+            zIndex: 9999,  
         }),
     };
 
@@ -239,8 +239,9 @@ const CustomMultiSelect = ({ label, options, selected, onChange, disabled }) => 
                 value={selected}
                 onChange={onChange}
                 isDisabled={disabled}
-                styles={customStyles} // Apply custom styles for font color
+                styles={customStyles} 
             />
+            <div></div>
         </div>
     );
 };
@@ -304,12 +305,19 @@ const AddPlanPage = () => {
         },
         onSubmit: async (values) => {
             setLoading(true);
+            if(selectedCharting.length === 0 && selecteScalping.length === 0 && selecteOptions.length === 0 && selectePattern.length === 0 && selectedCharting.length === 0){ 
+                showError("Error!", "Please select at least one strategy Either Charting or Scalping , Option , Pattern.");
+                return;
+            }
             const req = {
                 ...values,
-                Scalping: selecteScalping,
-                Option: selecteOptions,
-                PatternS: selectePattern,
+                Scalping: selecteScalping.map((strategy) => strategy.value),
+                Option: selecteOptions.map((strategy) => strategy.value),
+                PatternS: selectePattern.map((strategy) => strategy.value),
+                Charting: selectedCharting.map((chart) => chart.value),
             };
+
+              
             try {
                 const response = await AddPlan(req);
                 if (response.Status) {
@@ -402,7 +410,7 @@ const AddPlanPage = () => {
                         label="Charting"
                         options={[{ value: "Cash", label: "Cash" }, { value: "Future", label: "Future" }, { value: "Option", label: "Option" }]}
                         selected={selectedCharting}
-                        onChange={handleChartingChange} // Handle charting selection
+                        onChange={handleChartingChange} 
                     />
 
                     {scalpingStratgy.length > 0 && (
@@ -413,6 +421,7 @@ const AddPlanPage = () => {
                             onChange={(selected) => handleSelectChange("scalping", selected)}
                         />
                     )}
+
 
                     {OptionStratgy.length > 0 && (
                         <CustomMultiSelect

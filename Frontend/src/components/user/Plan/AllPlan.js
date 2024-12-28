@@ -281,7 +281,7 @@ const ServicesList = () => {
 
     const getUpdatedPlans = GetAllPlans.data?.filter((plan) => {
         if (plan.PlanName == "Three Days Live" || plan.PlanName == "Two Days Demo" || plan.PlanName == "One Week Demo") {
-           
+
             if (BuyedPlan.data && BuyedPlan.data.length > 0) {
                 const isBuyed = BuyedPlan.data.find((buyedPlan) => buyedPlan.Planname == plan.PlanName);
                 return isBuyed != undefined && isBuyed
@@ -306,49 +306,49 @@ const ServicesList = () => {
                         <div className='iq-card-body'>
                             <div style={styles.container} className="row">
                                 {getUpdatedPlans.map((plan, index) => (
-                                    plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ? "" : 
-                                    <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 ">
-                                        <div className="d-flex flex-column justify-content-between h-100">
-                                            <div>
-                                                <div style={styles.content}>
-                                                    <h2 style={styles.title}>
-                                                        {plan.PlanName} {SetPlan(plan.PlanName)}
-                                                    </h2>
-                                                    <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
-                                                    <h4 style={styles.subtitle}>Duration: {plan?.['Plan Validity']}</h4>
-                                                    <h4 style={styles.subtitle}>No of Scripts: {plan?.NumberofScript}</h4>
+                                    plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ? "" :
+                                        <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 ">
+                                            <div className="d-flex flex-column justify-content-between h-100">
+                                                <div>
+                                                    <div style={styles.content}>
+                                                        <h2 style={styles.title}>
+                                                            {plan.PlanName} {SetPlan(plan.PlanName)}
+                                                        </h2>
+                                                        <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
+                                                        <h4 style={styles.subtitle}>Duration: {plan?.['Plan Validity']}</h4>
+                                                        <h4 style={styles.subtitle}>No of Scripts: {plan?.NumberofScript}</h4>
 
-                                                    <div style={styles.prices}>
-                                                        <p style={styles.priceItem}>
-                                                            <strong>Scalping Strategy:</strong> {plan?.Scalping?.length == 0 ? "ALL Strategy" : plan?.Scalping?.map(item => item.label)?.join(", ")}
-                                                        </p>
-                                                        <p style={styles.priceItem}>
-                                                            <strong>Option Strategy:</strong> {plan['Option Strategy']?.length == 0 ? "ALL Strategy" : plan?.['Option Strategy']?.map(item => item.label)?.join(", ")}
-                                                        </p>
-                                                        <p style={styles.priceItem}>
-                                                            <strong>Pattern Strategy:</strong> {plan?.Pattern.length == 0 ? "ALL Strategy" : plan?.Pattern?.map(item => item.label)?.join(", ")}
-                                                        </p>
+                                                        <div style={styles.prices}>
+                                                            <p style={styles.priceItem}>
+                                                                <strong>Scalping Strategy:</strong> {plan?.Scalping?.join(", ")}
+                                                            </p>
+                                                            <p style={styles.priceItem}>
+                                                                <strong>Option Strategy:</strong> {plan?.['Option Strategy']?.join(", ")}
+                                                            </p>
+                                                            <p style={styles.priceItem}>
+                                                                <strong>Pattern Strategy:</strong> {plan?.Pattern?.join(", ")}
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <div style={styles.buttonContainer}>
+                                                    {SetPlan(plan.PlanName) == null ? (
+                                                        <Button primary style={styles.button} onClick={() => HandleBuyPlan(index, 1)}>
+                                                            BUY NOW
+                                                        </Button>
+                                                    )
+                                                        //  : plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ?
+                                                        //     <Button style={styles.subscribedButton}>
+                                                        //         Subscribed
+                                                        //     </Button>
+                                                        :
+                                                        <Button style={styles.subscribedButton} onClick={() => HandleBuyPlan(index, 0)}>
+                                                            BUY AGAIN
+                                                        </Button>
+                                                    }
+                                                </div>
                                             </div>
-                                            <div style={styles.buttonContainer}>
-                                                {SetPlan(plan.PlanName) == null ? (
-                                                    <Button primary style={styles.button} onClick={() => HandleBuyPlan(index, 1)}>
-                                                        BUY NOW
-                                                    </Button>
-                                                )
-                                                //  : plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ?
-                                                //     <Button style={styles.subscribedButton}>
-                                                //         Subscribed
-                                                //     </Button>
-                                                    :
-                                                    <Button style={styles.subscribedButton} onClick={() => HandleBuyPlan(index, 0)}>
-                                                        BUY AGAIN
-                                                    </Button>
-                                                }
-                                            </div>
-                                        </div>
-                                    </Card> 
+                                        </Card>
                                 ))}
                             </div>
                         </div>

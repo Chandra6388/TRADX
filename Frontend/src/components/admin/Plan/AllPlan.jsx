@@ -125,20 +125,16 @@ const ServicesList = () => {
                       {console.log("SS", plan?.Pattern)}
                       <div style={styles.prices}>
                         <p style={styles.priceItem}>
-                          <strong>Scalping Strategy:</strong> {plan?.Scalping?.map(item => item.label)?.join(", ")}
+                          <strong>Scalping Strategy:</strong> {plan?.Scalping?.join(", ")}
                         </p>
                         <p style={styles.priceItem}>
-                          <strong>Option Strategy:</strong> {plan?.['Option Strategy']?.map(item => item.label)?.join(", ")}
+                          <strong>Option Strategy:</strong> {plan?.['Option Strategy']?.join(", ")}
                         </p>
                         <p style={styles.priceItem}>
-                          <strong>Pattern Strategy:</strong> {plan?.Pattern?.map(item => item.label)?.join(", ")}
+                          <strong>Pattern Strategy:</strong> {plan?.Pattern?.join(", ")}
                         </p>
                       </div>
-                      {/* <div style={styles.buttonContainer}>
-                        <Button primary onClick={() => handleViewClick(plan)} style={styles.button}>
-                          <FaRupeeSign className="m-1" />{plan.payment}
-                        </Button>
-                      </div> */}
+                     
                     </div>
                   </Card>
                 ))}

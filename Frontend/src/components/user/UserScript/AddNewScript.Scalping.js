@@ -59,7 +59,7 @@ const AddClient = () => {
       tgp3: 0,
       quantity2: 0,
       quantity3: 0,
-      stepup: 0,
+      stepup: 1,
       quantityvalue: "",
       Targetselection: "",
       EntryTime: "09:15:00",
@@ -85,9 +85,9 @@ const AddClient = () => {
       PEDeepHigher: 0.0,
       Trade_Count: 1,
       Trade_Execution: "Paper Trade",
-      quantityselection: "",
-      quantityvalue:0,
-      Targetselection: "",
+      quantityselection: "Addition",
+      quantityvalue: 0,
+      Targetselection: "fixedTarget",
     },
     validate: (values) => {
       let errors = {};
@@ -201,7 +201,7 @@ const AddClient = () => {
           Strike: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" ? values.Strike : "",
           expirydata1: values.Exchange == "NSE" ? getExpiryDate.data[0] : values.expirydata1,
           TType: values.TType == 0 ? "" : values.TType,
-          TStype: values.Strategy != "Fixed Price" ? values.TStype : '',
+          TStype: values.Strategy != "Fixed Price" && values.position_type=="Single" ? values.TStype : '',
           Targetvalue: values.Targetvalue,
           Slvalue: values.Slvalue,
           HoldExit: (values.Strategy === "Multi Directional" || values.Strategy === "One Directional") ? values.HoldExit : "",
@@ -210,8 +210,8 @@ const AddClient = () => {
           ExitTime: values.ExitTime,
           EntryPrice: Number(values.EntryPrice),
           EntryRange: Number(values.EntryRange),
-          LowerRange: values.Strategy === "Fixed Price" ? 0 : Number(values.LowerRange),
-          HigherRange: values.Strategy === "Fixed Price" ? 0 : Number(values.HigherRange),
+          LowerRange: values.Strategy === "Fixed Price" && values.position_type == "Single" ? 0 : Number(values.LowerRange),
+          HigherRange: values.Strategy === "Fixed Price" && values.position_type == "Single" ? 0 : Number(values.HigherRange),
           ETPattern: "",
           Timeframe: "",
           Quantity: values.Quantity,
@@ -239,10 +239,10 @@ const AddClient = () => {
           tgp3: values.position_type == "Single" && values.Strategy == "Multi_Conditional" ? Number(values.tgp3) : 0,
           stepup: values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" ? Number(values.stepup) : 0,
           quantityselection: values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" ? values.quantityselection : "",
-          quantityvalue: values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" ? Number(values.quantityvalue): 0,
+          quantityvalue: values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" ? Number(values.quantityvalue) : 0,
           Targetselection: values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" ? values.Targetselection : "",
         }
-      
+
 
         if ((Number(values.EntryPrice) > 0 || Number(values.EntryRange) > 0) &&
           (Number(values.EntryPrice) >= Number(values.EntryRange))) {
@@ -295,7 +295,8 @@ const AddClient = () => {
 
         if (values.EntryTime >= values.ExitTime) {
           return SweentAlertFun("Exit Time should be greater than Entry Time")
-        } 
+        }
+
         await AddScript(req)
           .then((response) => {
             if (response.Status) {
@@ -480,7 +481,7 @@ const AddClient = () => {
 
     {
       name: "EntryPrice",
-      label: formik.values.Strategy == 'Fixed Price' ? "Lower Price" : "First Trade Lower Range",
+      label: formik.values.Strategy == 'Fixed Price' || formik.values.position_type=="Single" ? "Lower Price" : "First Trade Lower Range",
       type: "text3",
       col_size: formik.values.Strategy == 'Fixed Price' || formik.values.Strategy == 'Multi_Conditional' ? 3 : 4,
       disable: false,
@@ -489,7 +490,7 @@ const AddClient = () => {
     },
     {
       name: "EntryRange",
-      label: formik.values.Strategy == 'Fixed Price' ? "Higher Price" : "First Trade Higher Range",
+      label: formik.values.Strategy == 'Fixed Price' || formik.values.position_type=="Single" ? "Higher Price" : "First Trade Higher Range",
       type: "text3",
       label_size: 12,
       headingtype: 2,
@@ -524,85 +525,51 @@ const AddClient = () => {
 
   const ExitRuleArr = [
     {
+      name: "TStype",
+      label: "Measurement Type",
+      type: "select",
+      options: [
+        { label: "Percentage", value: "Percentage" },
+        { label: "Point", value: "Point" },
+      ],
+      showWhen: (values) => values.Strategy != "Fixed Price" && values.position_type != "Single",
+      label_size: 12,
+      headingtype: 4,
+      col_size: formik.values.position_type=="Multiple" ? 3 : 4,
+      hiding: false,
+      disable: false,
+    },
+    {
       name: "Targetselection",
       label: "Target Type",
       type: "select",
       options: [
         { label: "Fixed Target", value: "fixedTarget" },
         { label: "Entry Wise Target", value: "EntryWiseTarget" },
-        { label: "Avg Target", value: "AvgTarget" },
+        { label: "Average Target", value: "AverageTarget" },
 
       ],
       showWhen: (values) => values.position_type == "Multiple" && values.Strategy == "Multi_Conditional",
       label_size: 12,
-      col_size: formik.values.position_type == "Single" ? 3 : 4,
+      col_size: formik.values.position_type == "Single" || formik.values.position_type=="Multiple" ? 3 : 4,
       headingtype: 4,
       disable: false,
       hiding: false,
     },
-    {
-      name: "TStype",
-      label: formik.values.Strategy == "Fixed Price" ? "Target Price" : formik.values.Strategy == "One Directional" ? "Measurement Type" : "Booking Point",
-      type: "select",
-      options: [
-        { label: "Percentage", value: "Percentage" },
-        { label: "Point", value: "Point" },
-      ],
-      showWhen: (values) => formik.values.Strategy == "One Directional",
 
-      label_size: 12,
-      col_size: 4,
-      headingtype: 3,
-      disable: false,
-      hiding: false,
-    },
-
-    {
-      name: "Slvalue",
-      label: formik.values.Strategy == "Fixed Price" ? "Stoploss Price" : "Re-Entry Point",
-      type: "text3",
-      label_size: 12,
-      col_size: 4,
-      headingtype: 3,
-      disable: false,
-      hiding: false,
-    },
-    {
-      name: "Target1",
-      label: "Target1",
-      type: "heading",
-      label_size: 12,
-      col_size: 4,
-      showWhen: (values) => values.position_type == "Single" && values.Strategy == "Multi_Conditional",
-      headingtype: 3,
-      disable: false,
-      hiding: false,
-    },
-    {
-      name: "Target1",
-      label: "Target1",
-      type: "heading",
-      label_size: 12,
-      showWhen: (values) => values.position_type == "Single" && values.Strategy == "Multi_Conditional",
-
-      col_size: 4,
-      headingtype: 3,
-      disable: false,
-      hiding: false,
-    },
     {
       name: "Targetvalue",
-      label: formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional" ? "Target 1" : formik.values.Strategy == "Fixed Price" ? "Target Price" : formik.values.Strategy == "One Directional" ? "Fixed Target" : "Booking Point",
+      label: formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional" ? "Target Price 1" : formik.values.Strategy == "Fixed Price" ? "Target Price" : formik.values.Strategy == "One Directional" ? "Fixed Target" : formik.values.Strategy=="Multi_Conditional" && formik.values.position_type=="Multiple" && formik.values.Targetselection=="fixedTarget" ? "Fixed Target" : "Booking Point",
       type: "text3",
       label_size: 12,
-      col_size: 4,
+      col_size: formik.values.position_type=="Multiple" ? 3 : 4,
       headingtype: 3,
       disable: false,
       hiding: false,
     },
     {
       name: "tgp2",
-      label: "Target 2",
+      label: "Target Price 2",
       type: "text3",
       label_size: 12,
       col_size: 4,
@@ -613,7 +580,7 @@ const AddClient = () => {
     },
     {
       name: "tgp3",
-      label: "Target 3",
+      label: "Target Price 3",
       type: "text3",
       label_size: 12,
       col_size: 4,
@@ -622,11 +589,54 @@ const AddClient = () => {
       disable: false,
       hiding: false,
     },
-
-
+    {
+      name: "Slvalue",
+      label: formik.values.Strategy == "Fixed Price" || (formik.values.position_type=="Single" && formik.values.Strategy=="Multi_Conditional") ? "Stoploss Price" : "Re-Entry Point",
+      type: "text3",
+      label_size: 12,
+      col_size: formik.values.position_type=="Multiple" ? 3 : 4,
+      headingtype: 3,
+      disable: false,
+      hiding: false,
+    },
+   
+   
+    
   ]
 
   const RiskManagementArr = [
+    {
+      name: "Quantity",
+      label: (formik.values.Exchange == "NFO" && formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional") ? "Lot 1" : (formik.values.Exchange == "NSE" && formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional") ? "Quantity 1" : formik.values.Exchange == "NFO" ? "Lot"  :  "Quantity",
+      type: "text3",
+      label_size: 12,
+      col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+      headingtype: 4,
+      hiding: false,
+      disable: false,
+    },
+    {
+      name: "quantity2",
+      label: formik.values.Exchange == "NFO" && formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional" ? "Lot 2" : "Quantity 2",
+      type: "text3",
+      label_size: 12,
+      showWhen: (values) => values.position_type == "Single" && values.Strategy == "Multi_Conditional",
+      col_size: 4,
+      headingtype: 4,
+      disable: false,
+      hiding: false,
+    },
+    {
+      name: "quantity3",
+      label: formik.values.Exchange == "NFO" && formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional" ? "Lot 3" : "Quantity 3",
+      type: "text3",
+      label_size: 12,
+      showWhen: (values) => values.position_type == "Single" && values.Strategy == "Multi_Conditional",
+      col_size: 4,
+      headingtype: 4,
+      disable: false,
+      hiding: false,
+    },
     {
       name: "LowerRange",
       label: "Lower Range ",
@@ -634,7 +644,7 @@ const AddClient = () => {
       label_size: 12,
       col_size: formik.values.position_type == "Multiple" ? 3 : 4,
       headingtype: 4,
-      showWhen: (values) => values.Strategy != "Fixed Price",
+      showWhen: (values) => values.Strategy != "Fixed Price" && values.position_type != "Single",
       disable: false,
       hiding: false,
     },
@@ -645,7 +655,7 @@ const AddClient = () => {
       label_size: 12,
       col_size: formik.values.position_type == "Multiple" ? 3 : 4,
       headingtype: 4,
-      showWhen: (values) => values.Strategy != "Fixed Price",
+      showWhen: (values) => values.Strategy != "Fixed Price" && values.position_type != "Single",
       disable: false,
       hiding: false,
     },
@@ -657,7 +667,7 @@ const AddClient = () => {
         { label: "Hold", value: "Hold" },
         { label: "Exit", value: "Exit" },
       ],
-      showWhen: (values) => (values.Strategy == "Multi Directional" || values.Strategy == "One Directional"),
+      showWhen: (values) => (values.Strategy == "Multi Directional" || values.Strategy == "One Directional" || (values.Strategy == "Multi_Conditional" && values.position_type == "Multiple")),
       label_size: 12,
       col_size: formik.values.position_type == "Multiple" ? 3 : 4,
       headingtype: 4,
@@ -674,45 +684,14 @@ const AddClient = () => {
       disable: false,
       hiding: false,
     },
-    {
-      name: "Quantity",
-      label: (formik.values.Exchange == "NFO" && formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional") ? "Quantity 1" : formik.values.Exchange == "NFO" ? "Lot" : "Quantity",
-      type: "text3",
-      label_size: 12,
-      col_size: formik.values.position_type == "Multiple" ? 3 : 4,
-      headingtype: 4,
-      hiding: false,
-      disable: false,
-    },
-    {
-      name: "quantity2",
-      label: "Quantity 2",
-      type: "text3",
-      label_size: 12,
-      showWhen: (values) => values.position_type == "Single" && values.Strategy == "Multi_Conditional",
-      col_size: 4,
-      headingtype: 4,
-      disable: false,
-      hiding: false,
-    },
-    {
-      name: "quantity3",
-      label: "Quantity 3",
-      type: "text3",
-      label_size: 12,
-      showWhen: (values) => values.position_type == "Single" && values.Strategy == "Multi_Conditional",
-      col_size: 4,
-      headingtype: 4,
-      disable: false,
-      hiding: false,
-    },
+   
     {
       name: "stepup",
       label: "Step Up",
       type: "text3",
       label_size: 12,
       showWhen: (values) => values.position_type == "Multiple" && values.Strategy == "Multi_Conditional",
-      col_size: 4,
+      col_size: 3,
       headingtype: 4,
       disable: false,
       hiding: false,
@@ -727,7 +706,7 @@ const AddClient = () => {
       ],
       showWhen: (values) => values.position_type == "Multiple" && values.Strategy == "Multi_Conditional",
       label_size: 12,
-      col_size: formik.values.position_type == "Single" ? 3 : 4,
+      col_size: formik.values.position_type == "Single" ? 3 : 3,
       headingtype: 4,
       disable: false,
       hiding: false,
@@ -738,7 +717,7 @@ const AddClient = () => {
       type: "text3",
       label_size: 12,
       showWhen: (values) => values.position_type == "Multiple" && values.Strategy == "Multi_Conditional",
-      col_size: 4,
+      col_size: 3,
       headingtype: 4,
       disable: false,
       hiding: false,

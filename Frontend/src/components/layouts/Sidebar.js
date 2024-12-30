@@ -428,12 +428,7 @@ const Sidebar = () => {
                                                     <span>Description</span>
                                                 </Link>
                                             </li>
-                                            <li className={activeItem === 'newStrategy' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'newStrategy')}>
-                                                <Link to="newStrategy" className="iq-waves-effect">
-                                                    <i className="lab la-get-pocket" />
-                                                    <span>New Strategy</span>
-                                                </Link>
-                                            </li>
+
                                         </>
                                     )}
                         </ul>

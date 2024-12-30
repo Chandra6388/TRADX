@@ -39,6 +39,15 @@ const Strategygroup = () => {
             }
         },
         {
+            name: 'SubAdmin',
+            label: 'Created by',
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value) => value == '' ? "Admin" : value,
+            }
+        },
+        {
             name: "Fund_Requierment",
             label: "Fund Requirement",
             options: {
@@ -87,16 +96,10 @@ const Strategygroup = () => {
             await GetGroupNames()
                 .then((response) => {
                     if (response.Status) {
-                        const filteredData = response.Data.filter((item) => {
-                            return item.SubAdmin === username;
-                        }
-                        );
-                         
-
-
+                       
                         setGroupData({
                             loading: false,
-                            data: filteredData
+                            data: response.Data
                         });
                     } else {
                         setGroupData({
@@ -211,6 +214,7 @@ const Strategygroup = () => {
             label_size: 12,
             col_size: 6,
         },
+       
         {
             name: 'FundReuirement',
             label: 'Fund Requirement',

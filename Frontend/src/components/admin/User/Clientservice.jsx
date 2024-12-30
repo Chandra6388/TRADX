@@ -11,9 +11,6 @@ import { Get_All_Plans, GetUserBalence } from "../../CommonAPI/User";
 
 
 const Clientservice = () => {
-
-
-
     const [clientService, setClientService] = useState({ loading: true, data: [] });
     const [showModal, setShowModal] = useState(false);
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -24,8 +21,6 @@ const Clientservice = () => {
     const [searchInput, setSearchInput] = useState('')
     const [GetAllPlans, setAllPlans] = useState({ LivePlanName: [], DemoPlanName: [], data: [] });
     const [walletBalance, setWalletBalance] = useState('');
-
-
 
     useEffect(() => {
         fetchBrokerName();

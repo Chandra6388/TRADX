@@ -1069,3 +1069,14 @@ export const getStrategyType = async () => {
         return err
     }
 }
+
+
+export const SubAdminPermission = async (data) => { 
+    try {
+        const res = await axios.get(`${Config.base_url}SubAdminPermission/${data.username}`)
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+}

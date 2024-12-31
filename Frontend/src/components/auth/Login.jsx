@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom'
 import { LoginPage, ForgotPassword } from '../CommonAPI/Common'
-import { GetHeaderImg2, GetLogo, GetPanleName, GetHeaderImg1, Getfaviconimage } from '../CommonAPI/Admin'
+import { GetHeaderImg2, GetLogo, GetPanleName, GetHeaderImg1, Getfaviconimage, SubAdminPermission } from '../CommonAPI/Admin'
 
 const Login = () => {
     const [Username, setUserName] = useState('');
@@ -43,6 +43,7 @@ const Login = () => {
                             navigate('/superadmin/dashboard');
                         }
                         else if (response.Role === 'Subadmin') {
+                            getSubAdminPermission()
                             navigate('/subadmin/dashboard');
                         }
                     }, 1500)
@@ -62,6 +63,20 @@ const Login = () => {
                 console.log("Error in user login", err)
             })
     };
+
+
+    const getSubAdminPermission = async () => {
+        const req = { username: Username }
+        await SubAdminPermission(req)
+            .then((response) => {
+                if (response.Status) {
+                    localStorage.setItem("Permission", JSON.stringify(response.Data))
+                }
+            })
+            .catch((err) => {
+                console.log("Error in fetching the permission", err)
+            })
+    }
 
     const toggle = (e) => {
         e.preventDefault();

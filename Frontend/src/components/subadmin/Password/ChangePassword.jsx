@@ -17,8 +17,14 @@ const Editprofile = () => {
     const [showPass3, setShowPass3] = useState(false)
 
     const handleSubmit = async () => {
-        if (getVeryfyError == '' && getNewError == '' && getCurrentPassError == ''){
-            const data = { User: userName, new_password: newPass, old_password: currPass, confirm_password: verifyPass }
+        if (getVeryfyError == '' && getNewError == '' && getCurrentPassError == '') {
+            const data = {
+                User: userName,
+                new_password: newPass,
+                old_password: currPass,
+                confirm_password: verifyPass,
+                role: "Subadmin"
+            }
             await PasswordChange(data)
                 .then((response) => {
                     if (response.Status) {

@@ -14,7 +14,7 @@ const Sidebar = () => {
     const logo = localStorage.getItem("logo");
     const pannel_name = localStorage.getItem("pannel_name");
     const permission = localStorage.getItem('Permission');
- 
+
     const setImages = async () => {
         $(".header_img1").attr('src', header_img1);
         $(".header_img2").attr('src', header_img2);
@@ -130,6 +130,264 @@ const Sidebar = () => {
             });
         };
     }, []);
+
+
+    const subadminSideBaar = [
+        {
+            path: '/subadmin/dashboard',
+            icon: 'ri-dashboard-fill', // Dashboard icon
+            label: 'Dashboard',
+            permission: [] // No restriction
+        },
+        {
+            path: '/subadmin/allclient',
+            icon: 'ri-group-fill', // Group or users icon for All Clients
+            label: 'All Clients',
+            permission: [] // No restriction
+        },
+        {
+            path: '/subadmin/groups',
+            icon: 'ri-group-fill', // Teams icon for Sub Admin Groups
+            label: 'Sub Admin Groups',
+            permission: [] // No restriction
+        },
+        {
+            path: '/subadmin/all-script',
+            icon: 'ri-file-edit-fill', // Script icon for Add Script
+            label: 'Add Script',
+            permission: [] // No restriction
+        },
+        {
+            path: '/subadmin/signals',
+            icon: 'ri-bar-chart-fill', // Chart or report icon for Trade Report
+            label: 'Trade Report',
+            permission: ['TradeReport']
+        },
+        {
+            path: '/subadmin/trade-history',
+            icon: 'ri-bar-chart-fill', // History icon for Trade History
+            label: 'Trade History',
+            permission: ['TradeHistory']
+        },
+        {
+            path: '/subadmin/change-password',
+            icon: 'ri-lock-password-fill', // Lock or password icon for Change Password
+            label: 'Change Password',
+            permission: [] // No restriction
+        }
+    ];
+
+
+    const adminSideBaar = [
+        {
+            path: '/admin/dashboard',
+            icon: 'ri-home-fill', // Dashboard icon
+            label: 'Dashboard',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/strategygroup',
+            icon: 'la la-sellsy', // Icon for Strategy Group
+            label: 'Strategy Group',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/clientservice',
+            icon: 'ri-group-fill', // Client Service icon
+            label: 'Client Service',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/allSubadmin',
+            icon: 'ri-group-fill', // SubAdmin icon
+            label: 'SubAdmin',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/allplan',
+            icon: 'la la-sellsy', // Plan icon
+            label: 'Plan',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/allscript',
+            icon: 'ri-home-8-fill', // Add Script icon
+            label: 'Add Script',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/userlogs',
+            icon: 'la la-envelope-open', // User Panel Log icon
+            label: 'User Panel Log',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/servicreport',
+            icon: 'la la-cog', // Service Report icon
+            label: 'Service Report',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/tradehistory',
+            icon: 'las la-history', // Trade History icon
+            label: 'Trade History',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/clientactivity',
+            icon: 'las la-radiation-alt', // Client Activity icon
+            label: 'Client Activity',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/clientreport',
+            icon: 'la la-map-marker', // Client Thread Report icon
+            label: 'Client Thread Report',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/smtp',
+            icon: 'la la-palette', // SMTP Details icon
+            label: 'SMTP Details',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/system',
+            icon: 'la la-cog', // System icon
+            label: 'System',
+            permission: [] // No restriction
+        },
+        {
+            path: '/admin/api-create-info',
+            icon: 'la la-cog', // API Create Info icon
+            label: 'ApiCreateInfo',
+            permission: [] // No restriction
+        }
+    ];
+
+
+    const superAdmin = [
+        {
+            path: '/superadmin/dashboard',
+            icon: <i className="ri-home-fill" />, // Default icon
+            label: 'Dashboard',
+            permission: [] // No restriction
+        },
+        {
+            path: '/superadmin/create-admin',
+            icon: <Users />, // Custom icon
+            label: 'Create Admin',
+            permission: [] // No restriction
+        },
+        {
+            path: '/superadmin/admin-details',
+            icon: <ListCollapse />, // Custom icon
+            label: 'Admin Details',
+            permission: [] // No restriction
+        },
+        {
+            path: '/superadmin/amount-details',
+            icon: <BadgeDollarSign />, // Custom icon
+            label: 'Amount Details',
+            permission: [] // No restriction
+        },
+        {
+            path: '/superadmin/client-thread-report',
+            icon: <Pyramid />, // Custom icon
+            label: 'Client Thread Report',
+            permission: [] // No restriction
+        },
+        {
+            path: '/superadmin/client-trade-response',
+            icon: <MessageCircleReply />, // Custom icon
+            label: 'Client Trade Response',
+            permission: [] // No restriction
+        },
+        {
+            path: '/superadmin/update-client-details',
+            icon: <BookUser />, // Custom icon
+            label: 'Update Client Details',
+            permission: [] // No restriction
+        },
+        {
+            path: '/superadmin/api-create-info',
+            icon: <Webhook />, // Custom icon
+            label: 'ApiCreateInfo',
+            permission: [] // No restriction
+        },
+        {
+            path: '/superadmin/New-Update',
+            icon: <BadgePlus />, // Custom icon
+            label: 'New-Update',
+            permission: [] // No restriction
+        }
+    ];
+
+
+    const userSidebarItems = [
+        {
+            path: '/user/dashboard',
+            icon: <i className="ri-home-fill" />,
+            label: 'Dashboard',
+            permission: [] // No restriction
+        },
+        {
+            path: 'technical/pattern',
+            icon: <i className="lab la-joget" />,
+            label: 'Technical Patterns',
+            permission: [] // No restriction
+        },
+        {
+            path: 'lastpattern',
+            icon: <i className="lab la-ioxhost" />,
+            label: 'Last Patterns',
+            permission: [] // No restriction
+        },
+        {
+            path: 'all/plan',
+            icon: <i className="lab la-ioxhost" />,
+            label: 'All Plans',
+            permission: [] // No restriction
+        },
+        {
+            path: 'tradereport',
+            icon: <i className="la la-sellsy" />,
+            label: 'Trade Report',
+            permission: [] // No restriction
+        },
+        {
+            path: 'tradehistory',
+            icon: <i className="la la-palette" />,
+            label: 'Trade History',
+            permission: [] // No restriction
+        },
+        {
+            path: 'traderesponse',
+            icon: <i className="la la-sellsy" />,
+            label: 'Trade Response',
+            permission: [] // No restriction
+        },
+        {
+            path: 'profitandloss',
+            icon: <i className="las la-universal-access" />,
+            label: 'Net P&L',
+            permission: [] // No restriction
+        },
+        {
+            path: 'pannel',
+            icon: <i className="lab la-ello" />,
+            label: 'Panel Track',
+            permission: [] // No restriction
+        },
+        {
+            path: 'discription',
+            icon: <i className="lab la-get-pocket" />,
+            label: 'Description',
+            permission: [] // No restriction
+        }
+    ];
+
+
     return (
         <div className="iq-sidebar">
             <div className="iq-sidebar-logo d-flex justify-content-between">
@@ -161,285 +419,79 @@ const Sidebar = () => {
                         <ul className="iq-menu">
                             {role === 'Admin' ? (
                                 <>
-                                    <li className={activeItem === 'dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'dashboard')}>
-                                        <Link to="/admin/dashboard" className="iq-waves-effect">
-                                            <i className="ri-home-fill" />
-                                            <span>Dashboard</span>
-                                        </Link>
-                                    </li>
-
-                                    <li className={activeItem === 'strategygroup' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'strategygroup')}>
-                                        <Link to="/admin/strategygroup" className="iq-waves-effect">
-                                            <i className="la la-sellsy" />
-                                            <span>Strategy Group</span>
-                                        </Link>
-                                    </li>
-
-
-                                    <li className={activeItem === 'clientservice' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'clientservice')}>
-                                        <Link to="/admin/clientservice" className="iq-waves-effect">
-                                            <i className="ri-group-fill" />
-                                            <span>Client Service</span>
-                                        </Link>
-                                    </li>
-                                    <li className={activeItem === 'allSubadmin' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'allSubadmin')}>
-                                        <Link to="/admin/allSubadmin" className="iq-waves-effect">
-                                            <i className="ri-group-fill" />
-                                            <span>SubAdmin</span>
-                                        </Link>
-                                    </li>
-
-                                    <li className={activeItem === 'allplan' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'allplan')}>
-                                        <Link to="/admin/allplan" className="iq-waves-effect">
-                                            <i className={activeItem === 'allplan' ? 'la la-sellsy active-icon' : 'la la-sellsy'} />
-                                            <span>Plan</span>
-                                        </Link>
-                                    </li>
-
-                                    <li className={activeItem === 'allscript' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'allscript')}>
-                                        <Link to="/admin/allscript" className="iq-waves-effect">
-                                            <i className="ri-home-8-fill" />
-                                            <span>Add Script</span>
-                                        </Link>
-                                    </li>
-
-
-                                    <li className={activeItem === 'userlogs' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'userlogs')}>
-                                        <Link to="/admin/userlogs" className="iq-waves-effect">
-                                            <i className="la la-envelope-open" />
-                                            <span>User Panel Log</span>
-                                        </Link>
-                                    </li>
-                                    <li className={activeItem === 'servicereport' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'servicereport')}>
-                                        <Link to="/admin/servicreport" className="iq-waves-effect">
-                                            <i className="la la-cog" />
-                                            <span>Service Report</span>
-                                        </Link>
-                                    </li>
-
-                                    <li className={activeItem === 'tradehistory' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'tradehistory')}>
-                                        <Link to="/admin/tradehistory" className="iq-waves-effect">
-                                            <i className="las la-history"></i>
-                                            <span>Trade History</span>
-                                        </Link>
-                                    </li>
-                                    <li className={activeItem === 'clientactivity' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'clientactivity')}>
-                                        <Link to="/admin/clientactivity" className="iq-waves-effect">
-                                            <i className="las la-radiation-alt" />
-                                            <span>Client Activity</span>
-                                        </Link>
-                                    </li>
-                                    <li className={activeItem === 'clientreport' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'clientreport')}>
-                                        <Link to="/admin/clientreport" className="iq-waves-effect">
-                                            <i className="la la-map-marker" />
-                                            <span>Client Thread Report</span>
-                                        </Link>
-                                    </li>
-                                    <li className={activeItem === 'smtp' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'smtp')}>
-                                        <Link to="/admin/smtp" className="iq-waves-effect">
-                                            <i className="la la-palette" />
-                                            <span>SMTP Details</span>
-                                        </Link>
-                                    </li>
-                                    <li className={activeItem === 'system' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'system')}>
-                                        <Link to="/admin/system" className="iq-waves-effect">
-                                            <i className="la la-cog" />
-                                            <span>System</span>
-                                        </Link>
-                                    </li>
-                                    <li className={activeItem === 'api-create-info' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'api-create-info')}>
-                                        <Link to="/admin/api-create-info" className="iq-waves-effect">
-                                            <i className="la la-cog" />
-                                            <span>ApiCreateInfo</span>
-                                        </Link>
-                                    </li>
+                                    {adminSideBaar
+                                        .filter(item =>
+                                            item.permission.length === 0 || item.permission.some(p => permission?.includes(p))
+                                        )
+                                        .map(item => (
+                                            <li
+                                                key={item.path}
+                                                className={activeItem === item.path ? 'active' : ''}
+                                                onClick={(e) => handleSidebarClick(e, item.path)}
+                                            >
+                                                <Link to={item.path} className="iq-waves-effect">
+                                                    <i className={item.icon} />
+                                                    <span>{item.label}</span>
+                                                </Link>
+                                            </li>
+                                        ))}
                                 </>
                             ) : role === 'Superadmin' ?
                                 (
                                     <>
-                                        <li className={activeItem === '/superadmin/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/dashboard')}>
-                                            <Link to="/superadmin/dashboard" className="iq-waves-effect">
-                                                <i className="ri-home-fill" />
-                                                <span>Dashboard</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === '/superadmin/create-admin' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/create-admin')}>
-                                            <Link to='/superadmin/create-admin' className="iq-waves-effect">
-                                                <Users />
-                                                <span style={{ marginLeft: '8px' }}>Create Admin</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === '/superadmin/admin-details' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/admin-details')}>
-                                            <Link to='/superadmin/admin-details' className="iq-waves-effect">
-                                                <ListCollapse />
-                                                <span style={{ marginLeft: '8px' }}>Admin Details</span>
-                                            </Link>
-                                        </li>
-
-                                        <li className={activeItem === '/superadmin/amount-details' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/amount-details')}>
-                                            <Link to='/superadmin/amount-details' className="iq-waves-effect">
-                                                <BadgeDollarSign Volleyball />
-                                                <span style={{ marginLeft: '8px' }}>Amount Details</span>
-                                            </Link>
-                                        </li>
-
-                                        <li className={activeItem === '/superadmin/client-thread-report' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/client-thread-report')}>
-                                            <Link to='/superadmin/client-thread-report' className="iq-waves-effect">
-                                                <Pyramid />
-                                                <span style={{ marginLeft: '8px' }}>Client Thread Report</span>
-                                            </Link>
-                                        </li>
-
-                                        <li className={activeItem === '/superadmin/client-trade-response' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/client-trade-response')}>
-                                            <Link to='/superadmin/client-trade-response' className="iq-waves-effect">
-                                                <MessageCircleReply />
-                                                <span style={{ marginLeft: '8px' }}>Client Trade Response</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === '/superadmin/update-client-details' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/update-client-details')}>
-                                            <Link to='/superadmin/update-client-details' className="iq-waves-effect">
-                                                <BookUser />
-                                                <span style={{ marginLeft: '8px' }}>Update Client Details</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === '/superadmin/api-create-info' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/api-create-info')}>
-                                            <Link to='/superadmin/api-create-info' className="iq-waves-effect">
-                                                <Webhook />
-                                                <span style={{ marginLeft: '8px' }}>ApiCreateInfo</span>
-                                            </Link>
-                                        </li>
-                                        <li className={activeItem === '/superadmin/New-Update' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/superadmin/New-Update')}>
-                                            <Link to='/superadmin/New-Update' className="iq-waves-effect">
-                                                <BadgePlus />
-                                                <span style={{ marginLeft: '8px' }}>New-Update</span>
-                                            </Link>
-                                        </li>
-
+                                        {superAdmin
+                                            .filter(item =>
+                                                item.permission.length === 0 || item.permission.some(p => permission?.includes(p))
+                                            )
+                                            .map(item => (
+                                                <li
+                                                    key={item.path}
+                                                    className={activeItem === item.path ? 'active' : ''}
+                                                    onClick={(e) => handleSidebarClick(e, item.path)}
+                                                >
+                                                    <Link to={item.path} className="iq-waves-effect">
+                                                        {item.icon}
+                                                        <span style={{ marginLeft: '8px' }}>{item.label}</span>
+                                                    </Link>
+                                                </li>
+                                            ))}
                                     </>
                                 )
                                 : role === 'Subadmin' ?
                                     (
                                         <>
-                                            <li className={activeItem === '/subadmin/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/dashboard')}>
-                                                <Link to="/subadmin/dashboard" className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Dashboard</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === '/subadmin/allclient' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/allclient')}>
-                                                <Link to='/subadmin/allclient' className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>All Clients</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === '/subadmin/groups' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/groups')}>
-                                                <Link to='/subadmin/groups' className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Sub Admin Groups</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === '/subadmin/all-script' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/all-script')}>
-                                                <Link to='/subadmin/all-script' className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Add Script</span>
-                                                </Link>
-                                            </li>
-                                            {permission?.includes('TradeReport') && (
-                                                <li className={activeItem === '/subadmin/signals' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/signals')}>
-                                                    <Link to='/subadmin/signals' className="iq-waves-effect">
-                                                        <i className="ri-home-fill" />
-                                                        <span>Trade Report</span>
-                                                    </Link>
-                                                </li>)
-                                            }
-                                            {
-                                               permission?.includes('TradeHistory') && (
-                                                    <li className={activeItem === '/subadmin/trade-history' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/trade-history')}>
-                                                        <Link to='/subadmin/trade-history' className="iq-waves-effect">
-                                                            <i className="ri-home-fill" />
-                                                            <span>Trade History</span>
+                                            {subadminSideBaar
+                                                .filter(item =>
+                                                    item.permission.length === 0 || item.permission.some(p => permission?.includes(p))
+                                                )
+                                                .map(item => (
+                                                    <li
+                                                        key={item.path}
+                                                        className={activeItem === item.path ? 'active' : ''}
+                                                        onClick={(e) => handleSidebarClick(e, item.path)}
+                                                    >
+                                                        <Link to={item.path} className="iq-waves-effect">
+                                                            <i className={item.icon} />
+                                                            <span>{item.label}</span>
                                                         </Link>
                                                     </li>
-                                                )
-                                            }
-
-                                            <li className={activeItem === '/subadmin/change-password' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/change-password')}>
-                                                <Link to='/subadmin/change-password' className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Change Password</span>
-                                                </Link>
-                                            </li>
-
-
-
-
+                                                ))}
                                         </>
                                     )
                                     : (
                                         <>
-                                            <li className={activeItem === '/user/dashboard' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/user/dashboard')}>
-                                                <Link to="/user/dashboard" className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Dashboard</span>
-                                                </Link>
-                                            </li>
-                                            <li>
-
-                                            </li>
-                                            <li className={activeItem === 'technical/pattern' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'technical/pattern')}>
-                                                <Link to="technical/pattern" className="iq-waves-effect">
-                                                    <i className="lab la-joget" />
-                                                    <span>Technical Patterns</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === 'lastpattern' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'lastpattern')}>
-                                                <Link to="lastpattern" className="iq-waves-effect">
-                                                    <i className="lab la-ioxhost" />
-                                                    <span>Last Patterns</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === 'allpaln' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'allpaln')}>
-                                                <Link to="all/plan" className="iq-waves-effect">
-                                                    <i className="lab la-ioxhost" />
-                                                    <span>All Plans</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === 'tradereport' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'tradereport')}>
-                                                <Link to="tradereport" className="iq-waves-effect">
-                                                    <i className="la la-sellsy" />
-                                                    <span>Trade Report</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === 'tradehistory' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'tradehistory')}>
-                                                <Link to="tradehistory" className="iq-waves-effect">
-                                                    <i className="la la-palette" />
-                                                    <span>Trade History</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === 'traderesponse' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'traderesponse')}>
-                                                <Link to="traderesponse" className="iq-waves-effect">
-                                                    <i className="la la-sellsy" />
-                                                    <span>Trade Response</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === 'profitandloss' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'profitandloss')}>
-                                                <Link to="profitandloss" className="iq-waves-effect">
-                                                    <i className="las la-universal-access" />
-                                                    <span>Net P&L</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === 'pannel' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'pannel')}>
-                                                <Link to="pannel" className="iq-waves-effect">
-                                                    <i className="lab la-ello" />
-                                                    <span>Panel Track</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === 'discription' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'discription')}>
-                                                <Link to="discription" className="iq-waves-effect">
-                                                    <i className="lab la-get-pocket" />
-                                                    <span>Description</span>
-                                                </Link>
-                                            </li>
+                                            {userSidebarItems.map(item => (
+                                                <li
+                                                    key={item.path}
+                                                    className={activeItem === item.path ? 'active' : ''}
+                                                    onClick={(e) => handleSidebarClick(e, item.path)}
+                                                >
+                                                    <Link to={item.path} className="iq-waves-effect">
+                                                        {item.icon}
+                                                        <span style={{ marginLeft: '8px' }}>{item.label}</span>
+                                                    </Link>
+                                                </li>
+                                            ))}
                                         </>
                                     )}
                         </ul>

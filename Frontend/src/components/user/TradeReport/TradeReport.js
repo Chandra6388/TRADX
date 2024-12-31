@@ -89,7 +89,6 @@ const TradeReport = () => {
         try {
             const res = await getStrategyType()
             if ( res.Data && Array.isArray(res.Data )) {
-                console.log("res with strategy ", res.Data)
                 setStrategyNames(res.Data)
             }
             else {

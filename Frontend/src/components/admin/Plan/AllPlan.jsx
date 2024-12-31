@@ -122,7 +122,7 @@ const ServicesList = () => {
                       <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
                       <h5 style={styles.prices}>No of Scripts: {plan.NumberofScript}</h5>
                       <h5 style={styles.prices}>Duration: {plan?.['Plan Validity']}</h5>
-                      {console.log("SS", plan?.Pattern)}
+                    
                       <div style={styles.prices}>
                         <p style={styles.priceItem}>
                           <strong>Scalping Strategy:</strong> {plan?.Scalping?.join(", ")}

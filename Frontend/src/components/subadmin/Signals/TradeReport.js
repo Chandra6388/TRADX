@@ -20,7 +20,7 @@ const TradeReport = () => {
     const [getClientName, setClientName] = useState({ loading: true, data: [] })
     const [SelectClientName, setSelectClientName] = useState('')
 
-    console.log("getClientName", getClientName)
+ 
 
     const [getAllTradeData, setAllTradeData] = useState({
         loading: true,

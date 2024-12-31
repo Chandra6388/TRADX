@@ -23,8 +23,6 @@ const Adduser = () => {
     
     const animatedComponents = makeAnimated();
 
-
-    console.log("selectedOptions", selectedOptions)
     const Name_regex = (name) => {
         const nameRegex = /^[a-zA-Z]+$/;
         return nameRegex.test(name);
@@ -71,9 +69,6 @@ const Adduser = () => {
                             value: item
                         }));
                         setoptionsArray(arr);
-
-
-                        console.log("response", response)
                         setGroupData({
                             loading: false,
                             data: response.groupdf

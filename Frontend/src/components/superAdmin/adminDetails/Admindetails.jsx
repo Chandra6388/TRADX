@@ -243,7 +243,7 @@ const Strategygroup = () => {
         setCompanyName(Companyname); // Save company name for modal title
         try {
             const response = await allClientListDetails(Companyname); // Fetch client list
-            console.log("Client List Data:", response);
+           
             setAllClientList(response.Data); // Update the state with fetched data
         } catch (error) {
             setAllClientList([])
@@ -257,13 +257,11 @@ const Strategygroup = () => {
         const index = tableMeta.rowIndex; // Get the row index
         const Companyname = getAdminDetails[index].Companyname; // Get the Companyname for the selected row
 
-        console.log("---", Companyname)
-        setCompanyName(Companyname); // Save company name for modal title
-        // setSubAdminCompanyName(Companyname)
+       
+        setCompanyName(Companyname); 
         try {
-            const response = await seeAllSubAdminList(Companyname); // Fetch sub admin list
-            setAllSubAdminList(response.Data || []); // Update the state with fetched data
-            // console.log("Subadmin List Data:", response.Data);
+            const response = await seeAllSubAdminList(Companyname); 
+            setAllSubAdminList(response.Data || []); 
         } catch (error) {
             setAllSubAdminList([])
             console.log("Error To Fetch data", error);
@@ -272,13 +270,6 @@ const Strategygroup = () => {
 
     //delete sub admin api
     const handleSubAdminDelete = async (Username, tableMeta) => {
-
-        // const index = tableMeta.rowIndex; // Get the row index
-        // const Companyname = getAdminDetails[index].Companyname; // Get the Companyname for the selected row
-        console.log(Username);
-        console.log(companyName);
-
-        // return
 
         let dataRequest = { Companyname: companyName, Username: Username }
         try {
@@ -522,7 +513,6 @@ const Strategygroup = () => {
     ];
 
     const handleAddFound = (index) => {
-        console.log("index", getAdminDetails[index.rowIndex].Companyname)
         setIndex(index.rowIndex);
         setShowModal(true);
     }
@@ -536,7 +526,6 @@ const Strategygroup = () => {
             })
         }
         else {
-            console.log(amount)
             setAmount('');
             setShowModal(false);
         }
@@ -659,14 +648,7 @@ const Strategygroup = () => {
             col_size: 12,
             disable: false,
         },
-
-
     ]
-
-
-
-
-    //broker permission start
 
     const formik1 = useFormik({
         initialValues: {
@@ -674,8 +656,6 @@ const Strategygroup = () => {
         },
 
         onSubmit: async (values) => {
-
-            // console.log("aaaa", values);
 
             const req = {
                 // BrokerPermission: showBroker.BrokerPermission,
@@ -749,9 +729,6 @@ const Strategygroup = () => {
                 Companyname: singleAdminData?.Companyname,
                 Permission: values.Permission,
             }
-            console.log(req);
-
-
             await superToAdminPermission(req)
                 .then((response) => {
                     if (response.Status) {
@@ -778,13 +755,12 @@ const Strategygroup = () => {
                 })
         }
     })
-    // console.log("pppppp", formik2.values.Permission);
 
     const fields2 = [
         {
             name: "Permission",
             label: "Permission",
-            type: "select2", // Custom dropdown for brokers
+            type: "select2",
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -798,7 +774,6 @@ const Strategygroup = () => {
     ]
 
 
-    console.log(allSubAdminList);
 
     return (
         <div>
@@ -934,7 +909,7 @@ const Strategygroup = () => {
                             <div className="modal-header">
                                 <h5 className="modal-title" id="exampleModalLabel">
                                     Update Broker : {singleAdminData?.Companyname}
-                                    {console.log(singleAdminData?.Companyname)}
+                                
                                 </h5>
 
                                 <button

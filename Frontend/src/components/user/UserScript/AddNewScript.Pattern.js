@@ -33,7 +33,6 @@ const AddClient = () => {
         const foundItem = dataWithoutLastItem.find((item) => {
             return item.Pattern.includes(stg);
         });
-        console.log(foundItem)
         return foundItem.EndDate;
     };
 

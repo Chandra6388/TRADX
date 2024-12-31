@@ -50,7 +50,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     const handleAddScript1 = (data1) => {
         
         if (data2.status == false) {
-            console.log(data2)
             Swal.fire({
                 title: "Error",
                 text: data2.msg,

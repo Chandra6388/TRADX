@@ -26,7 +26,6 @@ const TradeResponse = () => {
     })
 
 
-    console.log("Strategy type is  ", strategyType)
     const Username = localStorage.getItem('name')
     const currentDate = new Date();
     currentDate.setDate(currentDate.getDate());
@@ -60,7 +59,6 @@ const TradeResponse = () => {
     const GetTradeStrategyType = async () => {
         try {
             const res = await getStrategyType()
-            console.log("res is ", res)
             if (res) {
                 setStrategyType(res.Data)
             }

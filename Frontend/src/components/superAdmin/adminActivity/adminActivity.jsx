@@ -37,10 +37,7 @@ const AdminActivity = () => {
         },
         validate: values => {
             const errors = {};
-           
-
-            console.log('errors', errors);
-           
+          
             return errors;
         },
 

@@ -28,9 +28,7 @@ const NewUpdate = () => {
 
             const req = { NewUpdate: values.NewUpdate, }
 
-            console.log(req)
-            // return
-
+           
             try {
                 const response = await superToAdminAddNewPermission(req);
                 if (response.Status) {

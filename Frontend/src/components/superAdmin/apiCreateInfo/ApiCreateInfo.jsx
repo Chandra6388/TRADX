@@ -42,8 +42,6 @@ const Adduser = () => {
                 step5: values.step5,
                 step5image: values.step5image,
             }
-            console.log("req", req)
-           
             await apiCreateInfo(req)
                 .then((response) => {
                     if (response.Status) {

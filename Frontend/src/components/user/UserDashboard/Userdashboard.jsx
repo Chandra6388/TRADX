@@ -52,7 +52,6 @@ const Userdashboard = () => {
             const res = await getStrategyType();
             if (res.Data) {
                 setStrategyType(res.Data)
-                // console.log("Strategy Type", res.Data)
             }
         } catch (error) {
             console.log("Error in finding the strategy type", error)
@@ -459,7 +458,6 @@ const Userdashboard = () => {
         },
     ];
 
-    console.log("getPositionData", strategyType)
     return (
         <div className="container-fluid">
             <div className="row p-0">

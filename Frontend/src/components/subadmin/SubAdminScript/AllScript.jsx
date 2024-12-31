@@ -176,7 +176,6 @@ const Addscript = () => {
 
 
 
-    console.log("getGroupData", getGroupData.data)
     useEffect(() => {
 
         if (!getGroupData.loading && getGroupData.data.length > 0) {

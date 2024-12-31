@@ -28,9 +28,6 @@ const Dashboard = () => {
   }, []);
 
 
-  useEffect(() => {
-    console.log("Updated Dashboard Data: ", data.data);
-  }, [data]);
 
   if (data.loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;

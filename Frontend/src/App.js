@@ -27,7 +27,7 @@ const App = () => {
 
     // Check if user details exist
     if (!Role || Role === "null" || location.pathname === "/login") {
-      console.log("login");
+   
       
       navigate("/login");
       return;
@@ -47,11 +47,11 @@ const App = () => {
         }
         break;
         case "Subadmin":
-          console.log("subadmin");
+         
           
         if (location.pathname === "/login" || location.pathname === "/" || !location.pathname.startsWith("/subadmin")) {
           navigate("/subadmin/dashboard");
-          console.log("subadmin");
+         
           
         }
         break;

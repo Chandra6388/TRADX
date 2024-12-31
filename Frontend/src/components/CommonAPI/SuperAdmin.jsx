@@ -385,7 +385,7 @@ export const pm2Reload = async (data) => {
 export const allClientListDetails = async (data) => {
     const token = localStorage.getItem('token');
     try {
-        console.log(data);
+     
 
         const res = await axios.get(`${Config.superAdmin_base_url}ClientDetails/${data}`, data,
             {
@@ -525,7 +525,7 @@ export const seeAllSubAdminList = async (data) => {
 
 //delete subadmin
 export const deleteSubAdminData = async (data) => {
-    console.log(data);
+  
 
 
     const token = localStorage.getItem('token');

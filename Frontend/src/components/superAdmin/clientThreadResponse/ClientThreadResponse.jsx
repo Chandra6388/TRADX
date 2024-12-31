@@ -22,7 +22,6 @@ const TradeResponse = () => {
     const [clientName, setClientName] = useState('')
 
 
-    console.log("allClientDetails", allClientDetails)
 
     const Username = localStorage.getItem('name')
     const currentDate = new Date();

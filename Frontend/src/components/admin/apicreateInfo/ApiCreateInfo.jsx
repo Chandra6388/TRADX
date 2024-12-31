@@ -11,7 +11,6 @@ const ApiCreateInfo = () => {
 
     const [showModal, setshowModal] = useState(false)
 
-    console.log("brokerDetails", brokerDetails.Brokername);
 
 
     useEffect(() => {

@@ -23,7 +23,6 @@ const Login = () => {
         await LoginPage(data)
             .then((response) => {
 
-                console.log("response", response)
                 if (response.Status) {
                     localStorage.setItem("Role", response.Role)
                     localStorage.setItem("name", Username)

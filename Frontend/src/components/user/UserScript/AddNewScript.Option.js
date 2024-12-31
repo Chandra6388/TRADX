@@ -24,8 +24,6 @@ const AddClient = () => {
     const [symbolOptions, setSymbolOptions] = useState([]);
     const [exchangeOptions, setExchangeOptions] = useState([])
 
-    console.log('Symbol Options:', symbolOptions);
-    console.log('Exchange Options:', exchangeOptions);
 
     const [PnlData, setPnlData] = useState({
         MaximumProfit: "",
@@ -388,7 +386,6 @@ const AddClient = () => {
                         value: symbol,
                     }));
                     setSymbolOptions(formattedSymbols);
-                    console.log('Symbols are here :', formattedSymbols);
                     formik.setFieldValue('Symbol', formattedSymbols[0]?.value || '');
                 } else {
                     console.error('Unexpected API response:', response.data);

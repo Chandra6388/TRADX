@@ -532,7 +532,7 @@ const AddClient = () => {
         { label: "Percentage", value: "Percentage" },
         { label: "Point", value: "Point" },
       ],
-      showWhen: (values) => values.Strategy != "Fixed Price" && values.position_type != "Single",
+      showWhen: (values) => values.Strategy == "One Directional" || values.Strategy == "Multi Directional" || (values.Strategy == "Multi_Conditional" && values.position_type != "Single"),
       label_size: 12,
       headingtype: 4,
       col_size: formik.values.position_type=="Multiple" ? 3 : 4,

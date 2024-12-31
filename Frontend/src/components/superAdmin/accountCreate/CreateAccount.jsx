@@ -132,8 +132,7 @@ const Adduser = () => {
                 Chartingamount: values.Chartingamount,
                 BrokerPermission: values.BrokerPermission, // Added to request object
             };
-            // console.log(req);
-            // return
+            
 
             await createAdmin(req)
                 .then((response) => {
@@ -276,8 +275,6 @@ const Adduser = () => {
 
     ]
 
-
-    // console.log("BrokerPermission", formik.values.BrokerPermission)
 
     return (
         <>

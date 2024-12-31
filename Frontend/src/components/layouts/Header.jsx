@@ -149,8 +149,7 @@ const Header = () => {
     };
 
     const logout = async () => {
-
-        localStorage.removeItem("Role");
+        localStorage.clear();
         navigate("/");
     }
 

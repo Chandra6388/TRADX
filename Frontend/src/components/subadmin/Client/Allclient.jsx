@@ -21,7 +21,7 @@ const AllClient = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [brokers, setBrokers] = useState([]);
     const [optionsArray, setOptionsArray] = useState([]);
-
+    const permission = localStorage.getItem('Permission');
 
     useEffect(() => {
         fetchAllSubadmin();
@@ -98,6 +98,9 @@ const AllClient = () => {
         setSelectedIndex(clientService.data[tableMeta.rowIndex]);
     };
 
+    const viewClient = permission.includes('ViewClient')
+    const editClient = permission.includes('EditClient')
+
 
 
     const columns = [
@@ -117,9 +120,8 @@ const AllClient = () => {
                 filter: true,
                 sort: false,
                 customBodyRender: (value, tableMeta) => (
-                    <SquarePen
-                        onClick={() => EditSubadmindetail(value, tableMeta)} />
-
+                    editClient ? <SquarePen
+                        onClick={() => EditSubadmindetail(value, tableMeta)} /> : "*****"
                 ),
             },
         },
@@ -129,7 +131,7 @@ const AllClient = () => {
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender: (value) => value || '-'
+                customBodyRender: (value) => viewClient ? value || '-' : '*****'
             }
         },
         {
@@ -138,7 +140,7 @@ const AllClient = () => {
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender: (value) => value || '-'
+                customBodyRender: (value) => viewClient ? value || '-' : '*****'
             }
         },
         {
@@ -147,7 +149,7 @@ const AllClient = () => {
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender: (value) => value || '-'
+                customBodyRender: (value) => viewClient ? value || '-' : '*****'
             }
         },
         {
@@ -156,7 +158,7 @@ const AllClient = () => {
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender: (value) => value || '-'
+                customBodyRender: (value) => viewClient ? value || '-' : '*****'
             }
         },
         {
@@ -165,7 +167,7 @@ const AllClient = () => {
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender: (value) => value || '-'
+                customBodyRender: (value) => viewClient ? value || '-' : '*****'
             }
         },
         {
@@ -174,7 +176,7 @@ const AllClient = () => {
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender: (value) => value || '-'
+                customBodyRender: (value) => viewClient ? value || '-' : '*****'
             }
         },
         {
@@ -183,7 +185,7 @@ const AllClient = () => {
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender: (value) => value || '-'
+                customBodyRender: (value) => viewClient ? value || '-' : '*****'
             }
         },
         {
@@ -192,7 +194,7 @@ const AllClient = () => {
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender: (value) => value || '-'
+                customBodyRender: (value) => viewClient ? value || '-' : '*****'
             }
         },
         {
@@ -201,7 +203,7 @@ const AllClient = () => {
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender: (value) => value?.join(', ') || '-'
+                customBodyRender: (value) => viewClient ? value?.join(', ') || '-' : '*****'
             }
         },
         {
@@ -210,7 +212,7 @@ const AllClient = () => {
             options: {
                 filter: true,
                 sort: false,
-                customBodyRender: (value) => value?.join(', ') || '-'
+                customBodyRender: (value) => viewClient ? value?.join(', ') || '-' : '*****'
             }
         },
 
@@ -285,7 +287,6 @@ const AllClient = () => {
 
     ];
 
-
     useEffect(() => {
         if (showModal) {
             formik.setFieldValue('Broker', selectedIndex?.BrokerName == 'Demo' ? "" : selectedIndex?.BrokerName);
@@ -304,9 +305,11 @@ const AllClient = () => {
                             <div className='iq-header-title'>
                                 <h4 className='card-title'>All Client</h4>
                             </div>
-                            <Link to='/subadmin/addclient' className='btn btn-primary rounded'>
-                                Add Client
-                            </Link>
+                            {permission.includes('AddClient') && (
+                                <Link to='/subadmin/addclient' className='btn btn-primary rounded'>
+                                    Add Client
+                                </Link>
+                            )}
                         </div>
                         <div className='iq-card-body'>
                             <div className='mb-3 col-lg-3'>

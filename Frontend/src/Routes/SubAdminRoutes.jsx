@@ -37,8 +37,10 @@ import ChangePassword from '../components/subAdmin/Password/ChangePassword';
 
 
 const SubAdminRoutes = () => {
+  const permission = localStorage.getItem('Permission');
+  console.log("---",permission)
   return (
-    <div className='wrapper'>
+   <div className='wrapper'>
       <Sidebar />
       <div id="content-page" className="content-page">
         <Header />
@@ -58,6 +60,7 @@ const SubAdminRoutes = () => {
         </Routes>
 
       </div>
+
     </div>
   )
 }

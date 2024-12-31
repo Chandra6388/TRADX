@@ -24,6 +24,10 @@ const Login = () => {
             .then((response) => {
 
                 if (response.Status) {
+                    if (response.Role === 'Subadmin') {
+                        getSubAdminPermission()
+                       
+                    }
                     localStorage.setItem("Role", response.Role)
                     localStorage.setItem("name", Username)
                     localStorage.setItem("token", response.access_token)
@@ -43,7 +47,7 @@ const Login = () => {
                             navigate('/superadmin/dashboard');
                         }
                         else if (response.Role === 'Subadmin') {
-                            getSubAdminPermission()
+                           
                             navigate('/subadmin/dashboard');
                         }
                     }, 1500)

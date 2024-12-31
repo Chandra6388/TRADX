@@ -20,7 +20,7 @@ const Adduser = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [optionsArray, setoptionsArray] = useState([]);
     const [GetAllPlans, setAllPlans] = useState({ LivePlanName: [], DemoPlanName: [], data: [] });
-    
+    const permission = localStorage.getItem('Permission');
     const animatedComponents = makeAnimated();
 
     const Name_regex = (name) => {
@@ -156,7 +156,6 @@ const Adduser = () => {
             if (!values.planname) {
                 errors.planname = "Please Select Plan"
             }
-
             if (!values.bname && formik.values.Select_License == '2') {
                 errors.bname = "Please Select Broker"
             }
@@ -174,9 +173,7 @@ const Adduser = () => {
                 planname: values.planname,
                 group: selectedOptions.map((item) => item.value),
                 SubAdmin: username
-
             }
-
             const FilterPlanAmount = GetAllPlans.data.filter((item) => item.PlanName === values.planname);
             if (FilterPlanAmount[0].payment > values.ClientAmmount && FilterPlanAmount[0].payment !== '') {
                 Swal.fire({

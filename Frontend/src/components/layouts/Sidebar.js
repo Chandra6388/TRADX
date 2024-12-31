@@ -13,7 +13,8 @@ const Sidebar = () => {
     const header_img2 = localStorage.getItem("header_img2");
     const logo = localStorage.getItem("logo");
     const pannel_name = localStorage.getItem("pannel_name");
-
+    const permission = localStorage.getItem('Permission');
+ 
     const setImages = async () => {
         $(".header_img1").attr('src', header_img1);
         $(".header_img2").attr('src', header_img2);
@@ -129,7 +130,6 @@ const Sidebar = () => {
             });
         };
     }, []);
-
     return (
         <div className="iq-sidebar">
             <div className="iq-sidebar-logo d-flex justify-content-between">
@@ -344,18 +344,25 @@ const Sidebar = () => {
                                                     <span>Add Script</span>
                                                 </Link>
                                             </li>
-                                            <li className={activeItem === '/subadmin/signals' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/signals')}>
-                                                <Link to='/subadmin/signals' className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Trade Report</span>
-                                                </Link>
-                                            </li>
-                                            <li className={activeItem === '/subadmin/trade-history' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/trade-history')}>
-                                                <Link to='/subadmin/trade-history' className="iq-waves-effect">
-                                                    <i className="ri-home-fill" />
-                                                    <span>Trade History</span>
-                                                </Link>
-                                            </li>
+                                            {permission?.includes('TradeReport') && (
+                                                <li className={activeItem === '/subadmin/signals' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/signals')}>
+                                                    <Link to='/subadmin/signals' className="iq-waves-effect">
+                                                        <i className="ri-home-fill" />
+                                                        <span>Trade Report</span>
+                                                    </Link>
+                                                </li>)
+                                            }
+                                            {
+                                               permission?.includes('TradeHistory') && (
+                                                    <li className={activeItem === '/subadmin/trade-history' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/trade-history')}>
+                                                        <Link to='/subadmin/trade-history' className="iq-waves-effect">
+                                                            <i className="ri-home-fill" />
+                                                            <span>Trade History</span>
+                                                        </Link>
+                                                    </li>
+                                                )
+                                            }
+
                                             <li className={activeItem === '/subadmin/change-password' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/change-password')}>
                                                 <Link to='/subadmin/change-password' className="iq-waves-effect">
                                                     <i className="ri-home-fill" />

@@ -356,6 +356,13 @@ const Sidebar = () => {
                                                     <span>Trade History</span>
                                                 </Link>
                                             </li>
+                                            <li className={activeItem === '/subadmin/change-password' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, '/subadmin/change-password')}>
+                                                <Link to='/subadmin/change-password' className="iq-waves-effect">
+                                                    <i className="ri-home-fill" />
+                                                    <span>Change Password</span>
+                                                </Link>
+                                            </li>
+
 
 
 
@@ -373,7 +380,6 @@ const Sidebar = () => {
 
                                             </li>
                                             <li className={activeItem === 'technical/pattern' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'technical/pattern')}>
-
                                                 <Link to="technical/pattern" className="iq-waves-effect">
                                                     <i className="lab la-joget" />
                                                     <span>Technical Patterns</span>
@@ -402,7 +408,6 @@ const Sidebar = () => {
                                                     <i className="la la-palette" />
                                                     <span>Trade History</span>
                                                 </Link>
-
                                             </li>
                                             <li className={activeItem === 'traderesponse' ? 'active' : ''} onClick={(e) => handleSidebarClick(e, 'traderesponse')}>
                                                 <Link to="traderesponse" className="iq-waves-effect">
@@ -428,7 +433,6 @@ const Sidebar = () => {
                                                     <span>Description</span>
                                                 </Link>
                                             </li>
-
                                         </>
                                     )}
                         </ul>

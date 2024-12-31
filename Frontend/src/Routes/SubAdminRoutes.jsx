@@ -32,6 +32,8 @@ import AddScriptOption from '../components/subAdmin/SubAdminScript/AddScript.Opt
 import AllScript from '../components/subAdmin/SubAdminScript/AllScript';
 // import AllScript from '../components/subadmin/SubAdminScript/AllScript';
 
+import ChangePassword from '../components/subAdmin/Password/ChangePassword';
+
 
 
 const SubAdminRoutes = () => {
@@ -51,6 +53,7 @@ const SubAdminRoutes = () => {
           <Route path="/addscript/pattern" element={<PatternScript />} />
           <Route path="/addscript/option" element={<AddScriptOption />} />
           <Route path="/all-script" element={<AllScript />} />
+          <Route path="/change-password" element={<ChangePassword />} />
 
         </Routes>
 

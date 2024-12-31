@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2'
-import { AddSubadminbyAdmin, Get_Broker_Name, GetGroupNames } from '../../CommonAPI/Admin'
+import { AddSubadminbyAdmin  } from '../../CommonAPI/Admin'
 import AddForm from "../../../ExtraComponent/FormData";
 import { useFormik } from "formik";
-import DropdownMultiselect from "react-multiselect-dropdown-bootstrap";
 import { useNavigate } from 'react-router-dom';
-import Loader from '../../../ExtraComponent/Loader';
-import { Get_All_Plans } from "../../CommonAPI/User";
 
 const AddSubadmin = () => {
     const navigate = useNavigate()
@@ -21,7 +18,7 @@ const AddSubadmin = () => {
         { "value": "EditClient", "label": "EditClient" },
         { "value": "TradeHistory", "label": "TradeHistory" },
         { "value": "TradeReport", "label": "TradeReport" },
-        { "value": "UpdateApiKey", "label": "UpdateApiKey" },
+        // { "value": "UpdateApiKey", "label": "UpdateApiKey" },
     ])
 
 
@@ -40,22 +37,18 @@ const AddSubadmin = () => {
         validate: (values) => {
             let errors = {};
 
-            // Username validation
             if (!values.Username) {
                 errors.Username = "Please Enter Username";
             } else if (!Name_regex(values.Username)) {
-                errors.Username = "Please Enter Valid Username";  // Fixed error key to match the field name
+                errors.Username = "Please Enter Valid Username";  
             }
 
-            // Name validation (Allow spaces)
-            const nameRegex = /^[a-zA-Z ]+$/; // Updated regex to allow letters and spaces
+            const nameRegex = /^[a-zA-Z ]+$/; 
             if (!values.Name) {
                 errors.Name = "Please Enter Name";
             } else if (!nameRegex.test(values.Name)) {
                 errors.Name = "Please Enter Valid Name (Only letters and spaces allowed)";
             }
-
-            // Email validation
             if (!values.SignEmail) {
                 errors.SignEmail = "Please Enter Email ID";
             } else {
@@ -65,7 +58,6 @@ const AddSubadmin = () => {
                 }
             }
 
-            // Password validation
             if (!values.Signpassword) {
                 errors.Signpassword = "Please Enter Password";
             } else if (values.Signpassword.length < 8 || values.Signpassword.length > 15) {
@@ -79,21 +71,16 @@ const AddSubadmin = () => {
             } else if (!/(?=.*[!@#$%^&*(),.?":{}|<>])/.test(values.Signpassword)) {
                 errors.Signpassword = "Password must contain at least one special character";
             }
-
-            // Confirm Password validation
             if (!values.ConfirmPassword) {
                 errors.ConfirmPassword = "Please Enter Confirm Password";
             } else if (values.ConfirmPassword !== values.Signpassword) {
                 errors.ConfirmPassword = "Passwords do not match";
             }
-
-            // Mobile number validation
             if (!values.mobile_no) {
                 errors.mobile_no = "Please Enter Mobile Number";
-            } else if (values.mobile_no.length !== 10) { // Check for length not equal to 10
+            } else if (values.mobile_no.length !== 10) { 
                 errors.mobile_no = "Mobile number length must be 10 characters";
             }
-
             return errors;
         },
 
@@ -107,7 +94,6 @@ const AddSubadmin = () => {
                 ConfirmPassword: values.ConfirmPassword,
                 permission: values.permission,
             }
-
             await AddSubadminbyAdmin(req)
                 .then((response) => {
                     if (response.Status) {
@@ -198,7 +184,7 @@ const AddSubadmin = () => {
         {
             name: "permission",
             label: "Permission",
-            type: "select2", // Custom dropdown for brokers
+            type: "select2", 
             label_size: 12,
             col_size: 6,
             disable: false,

@@ -190,12 +190,10 @@ const Header = () => {
     const clearSession = () => {
         var decoded = jwtDecode(token);
         if (decoded.exp * 1000 < new Date().getTime()) {
- 
             localStorage.clear();
             window.location.reload();
         }
     };
-
 
     useEffect(() => {
         clearSession();
@@ -206,7 +204,6 @@ const Header = () => {
             !document.mozFullScreenElement &&
             !document.webkitFullscreenElement &&
             !document.msFullscreenElement) {
-
             if (document.documentElement.requestFullscreen) {
                 document.documentElement.requestFullscreen();
             } else if (document.documentElement.mozRequestFullScreen) {

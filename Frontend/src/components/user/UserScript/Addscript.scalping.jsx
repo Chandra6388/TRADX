@@ -66,7 +66,7 @@ const AddClient = () => {
             ExitTime: "15:25:00",
             ExitDay: "",
             FixedSM: "Single",
-            position_type: "Single",
+            position_type: "",
             TType: "",
             serendate: "",
             expirydata1: "",
@@ -338,6 +338,7 @@ const AddClient = () => {
 
     const result = extractDetails(location.state.data.Symbol);
 
+    console.log("location.state.data", location.state.data)
 
     useEffect(() => {
         formik.setFieldValue('Strategy', location.state.data.ScalpType)

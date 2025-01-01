@@ -96,10 +96,10 @@ const Strategygroup = () => {
             await GetGroupNames()
                 .then((response) => {
                     if (response.Status) {
-                       
+                        const filter = response.Data.filter((data) => data.SubAdmin === username || data.SubAdmin === '' || data.SubAdmin === "Admin");
                         setGroupData({
                             loading: false,
-                            data: response.Data
+                            data: filter
                         });
                     } else {
                         setGroupData({

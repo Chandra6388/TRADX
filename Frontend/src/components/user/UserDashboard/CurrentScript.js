@@ -28,6 +28,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         PremiumRotation: []
     });
 
+    console.log("data")
+
     useEffect(() => {
         GetUserAllScripts()
     }, [])
@@ -375,7 +377,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         }
         else {
             if (data === "Option Strategy") {
-                if (allScripts?.data?.length >= 1) {
+                if (allScripts?.data?.[allScripts.len]?.CombineOption?.length >= 1) {
                     navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy', scriptType: allScripts } } });
                 }
                 else {
@@ -390,7 +392,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 }
             }
             else if (data === "Pattern" || data === "Pattern Script") {
-                if (allScripts?.data?.length >= 1) {
+                if (allScripts?.data?.[allScripts.len]?.CombinePattern?.length >= 1) {
                     navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts } } });
                 }
                 else {
@@ -405,7 +407,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
             }
             else {
-                if (allScripts?.data?.length >= 1) {
+                if (allScripts?.data?.[allScripts.len]?.CombineScalping?.length >= 1) {
                     navigate('/user/newscript/scalping', {
                         state: {
                             data: { selectStrategyType: 'Scalping', scriptType: allScripts }
@@ -1222,7 +1224,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                     <h4 className="card-title">{data}</h4>
                                                 </div>
                                                 <div className='d-flex justify-content-end'>
-                                                    <button className='btn btn-primary mt-1' style={{ fontSize: '18px', padding: '6px 14px' , height: "47px"}} onClick={() => AddScript(data)}>Add Script</button>
+                                                    <button className='btn btn-primary mt-1' style={{ fontSize: '18px', padding: '6px 14px', height: "47px" }} onClick={() => AddScript(data)}>Add Script</button>
                                                 </div>
 
                                             </div>

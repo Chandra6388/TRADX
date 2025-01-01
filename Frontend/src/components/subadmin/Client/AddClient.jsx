@@ -28,6 +28,9 @@ const Adduser = () => {
         return nameRegex.test(name);
     };
 
+
+
+    console.log("getGroupData", getGroupData)
     useEffect(() => {
         getBrokerName()
         GetAllGroupDetails()
@@ -58,37 +61,72 @@ const Adduser = () => {
             })
     }
 
+
+
     const GetAllGroupDetails = async () => {
-        const req = { subadmin: username }
         try {
-            await subadminGroups(req)
+            await GetGroupNames()
                 .then((response) => {
                     if (response.Status) {
-                        const arr = response.groupdf.map(item => ({
-                            label: item,
-                            value: item
+                        const filter = response.Data.filter((data) => data.SubAdmin === username || data.SubAdmin === '' || data.SubAdmin === "Admin");
+                        const arr = filter.map(item => ({
+                            label: item.GroupName,
+                            value: item.GroupName
                         }));
                         setoptionsArray(arr);
                         setGroupData({
                             loading: false,
-                            data: response.groupdf
-                        })
-                    }
-                    else {
+                            data: filter
+                        });
+                    } else {
                         setGroupData({
                             loading: false,
                             data: []
-                        })
+                        });
                     }
                 })
                 .catch((err) => {
-                    console.log("Error in data fetch", err)
-                })
+                    console.log("Error Group data fetch error", err);
+                });
+        } catch {
+            console.log("Error Group data fetch error");
         }
-        catch {
-            console.log("Error group data fetch")
-        }
-    }
+    };
+
+
+
+
+    // const GetAllGroupDetails = async () => {
+    //     const req = { subadmin: username }
+    //     try {
+    //         await subadminGroups(req)
+    //             .then((response) => {
+    //                 if (response.Status) {
+    //                     const arr = response.groupdf.map(item => ({
+    //                         label: item,
+    //                         value: item
+    //                     }));
+    //                     setoptionsArray(arr);
+    //                     setGroupData({
+    //                         loading: false,
+    //                         data: response.groupdf
+    //                     })
+    //                 }
+    //                 else {
+    //                     setGroupData({
+    //                         loading: false,
+    //                         data: []
+    //                     })
+    //                 }
+    //             })
+    //             .catch((err) => {
+    //                 console.log("Error in data fetch", err)
+    //             })
+    //     }
+    //     catch {
+    //         console.log("Error group data fetch")
+    //     }
+    // }
 
     const GetAllPlansData = async () => {
         await Get_All_Plans()
@@ -356,7 +394,7 @@ const Adduser = () => {
                             value={selectedOptions}
                             onChange={handleChange}
                             placeholder="Select options"
-                           
+
                         />
                     </div>
                 }

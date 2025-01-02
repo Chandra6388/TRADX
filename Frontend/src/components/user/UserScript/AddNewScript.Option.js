@@ -102,7 +102,15 @@ const AddClient = () => {
             Trade_Count: 1,
             Unique_ID: "",
             Shifting_Point: 1,
-            Shifting_Value: 1
+            Shifting_Value: 1,
+            quantity2: 0.0,
+            quantity3: 0.0,
+            tgp2: 0.0,
+            tgp3: 0.0,
+            stepup: 0.0,
+            quantityselection: "",
+            quantityvalue: 0.0,
+            targetselection: "",
 
         },
         validate: (values) => {
@@ -280,6 +288,14 @@ const AddClient = () => {
                 TradeCount: values.Trade_Count,
                 TradeExecution: values.Trade_Execution,
                 stretegytag: values.Measurment_Type,
+                quantity2: 0.0,
+                quantity3: 0.0,
+                tgp2: 0.0,
+                tgp3: 0.0,
+                stepup: 0.0,
+                quantityselection: "",
+                quantityvalue: 0.0,
+                targetselection: "",
             }
 
             if (values.Striketype == "Depth_of_Strike" && (Number(values.DepthofStrike) < 0 || Number(values.DepthofStrike) > 10)) {
@@ -1048,7 +1064,6 @@ const AddClient = () => {
         if (weekend == 6 || weekend == 0 || currentTime >= "15:30:00" || currentTime <= "09:15:00") {
             return SweentAlertFun("Market is off Today")
         }
-
         const req = {
             MainStrategy: location.state.data.selectStrategyType,
             Strategy: formik.values.Strategy,
@@ -1091,6 +1106,15 @@ const AddClient = () => {
             PEDeepLower: Number(formik.values.PEDeepLower),
             PEDeepHigher: Number(formik.values.PEDeepHigher),
             TradeCount: Number(formik.values.Trade_Count),
+            quantity2: 0.0,
+            quantity3: 0.0,
+            tgp2: 0.0,
+            tgp3: 0.0,
+            stepup: 0.0,
+            quantityselection: "",
+            quantityvalue: 0.0,
+            targetselection: "",
+
         }
         await CheckPnL(req)
             .then((response) => {

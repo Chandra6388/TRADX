@@ -84,6 +84,14 @@ const AddClient = () => {
             PEDeepHigher: 0.0,
             Trade_Count: 1,
             Trade_Execution: "Paper Trade",
+            quantity2: 0.0,
+            quantity3: 0.0,
+            tgp2: 0.0,
+            tgp3: 0.0,
+            stepup: 0.0,
+            quantityselection: "",
+            quantityvalue: 0.0,
+            targetselection: "",
         },
 
         validate: (values) => {
@@ -205,7 +213,15 @@ const AddClient = () => {
                 CEDeepHigher: 0.0,
                 PEDeepLower: 0.0,
                 PEDeepHigher: 0.0,
-                stretegytag: values.Strategy
+                stretegytag: values.Strategy,
+                quantity2: 0.0,
+                quantity3: 0.0,
+                tgp2: 0.0,
+                tgp3: 0.0,
+                stepup: 0.0,
+                quantityselection: "",
+                quantityvalue: 0.0,
+                targetselection: "",
             }
             if (values.EntryTime >= values.ExitTime) {
                 return SweentAlertFun("Exit Time should be greater than Entry Time")

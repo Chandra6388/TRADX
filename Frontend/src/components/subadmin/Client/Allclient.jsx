@@ -242,6 +242,7 @@ const AllClient = () => {
                 User: values.User,
                 GroupName: selectedOptions.map(item => item.value),
                 Broker: values.Broker,
+                SubAdmin : userName
             }
             try {
                 const response = await EditClientPanle(req);

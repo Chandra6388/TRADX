@@ -5,6 +5,8 @@ import { BadgeCheck } from "lucide-react";
 import { Link } from 'react-router-dom'
 import { Get_All_Plans, Get_All_Buyed_Plans, BuyPlan, AddBalance } from "../../CommonAPI/User";
 import Swal from "sweetalert2";
+import NewsTicker from "./Expair";
+
 
 import { useEffect } from "react";
 
@@ -60,6 +62,7 @@ const Button = styled.button`
 `;
 const ServicesList = () => {
     const username = localStorage.getItem("name")
+    const expire = localStorage.getItem('expire');
     const [GetAllPlans, setAllPlans] = useState({ loading: true, data: [] });
     const [BuyedPlan, setBuyedPlan] = useState({ loading: true, data: [] });
 
@@ -238,6 +241,9 @@ const ServicesList = () => {
                             timer: 1500,
                             timerProgressBar: true,
                         });
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
                     } else {
                         Swal.fire({
                             title: "Error!",
@@ -291,17 +297,21 @@ const ServicesList = () => {
         }
     });
 
-
-
     return (
         <>
             <div className='row'>
                 <div className='col-sm-12'>
                     <div className='iq-card'>
-                        <div className='iq-card-header d-flex justify-content-between'>
-                            <div className='iq-header-title'>
+                        <div className='iq-card-header row'>
+                            <div className='iq-header-title col-lg-3'>
                                 <h4 className='card-title'>All Plans</h4>
                             </div>
+                            {
+                                expire?.includes(1)  ? <div className="col-lg-9">
+                                    <NewsTicker />
+                                </div>  : ""
+
+                            }
                         </div>
                         <div className='iq-card-body'>
                             <div style={styles.container} className="row">

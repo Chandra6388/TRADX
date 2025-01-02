@@ -14,6 +14,7 @@ const Sidebar = () => {
     const logo = localStorage.getItem("logo");
     const pannel_name = localStorage.getItem("pannel_name");
     const permission = localStorage.getItem('Permission');
+    const expire = localStorage.getItem('expire');
 
     const setImages = async () => {
         $(".header_img1").attr('src', header_img1);
@@ -56,6 +57,8 @@ const Sidebar = () => {
         };
 
     }, [isActive]);
+
+
     useEffect(() => {
         document.body.classList.toggle('sidebar-main', isActive);
     }, [isActive]);
@@ -63,7 +66,6 @@ const Sidebar = () => {
     const handleClick = () => setIsActive(prevState => !prevState);
 
     const handleSidebarClick = (event, item) => {
-
         setActiveItem(item);
     };
 
@@ -89,7 +91,6 @@ const Sidebar = () => {
 
     useEffect(() => {
         const sidebar = sidebarRef.current;
-
         const handleSidebarItemClick = (event) => {
             const li = event.currentTarget;
             const submenu = li.querySelector('.iq-submenu');
@@ -486,7 +487,7 @@ const Sidebar = () => {
                                                     className={activeItem === item.path ? 'active' : ''}
                                                     onClick={(e) => handleSidebarClick(e, item.path)}
                                                 >
-                                                    <Link to={item.path} className="iq-waves-effect">
+                                                    <Link to={expire?.includes(1) ? "/user/all/plan" : item.path} className="iq-waves-effect">
                                                         {item.icon}
                                                         <span style={{ marginLeft: '8px' }}>{item.label}</span>
                                                     </Link>

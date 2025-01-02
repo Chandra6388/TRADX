@@ -25,9 +25,6 @@ const Login = () => {
                     if (response.Role === 'Subadmin') {
                         getSubAdminPermission()
                     }
-                    if (response.message == "ServiceExpired") {
-                        localStorage.setItem("expair", "ServiceExpired")
-                    }
                     localStorage.setItem("Role", response.Role)
                     localStorage.setItem("name", Username)
                     localStorage.setItem("token", response.access_token)
@@ -38,6 +35,7 @@ const Login = () => {
                         timer: 1500,
                         timerProgressBar: true
                     });
+
                     setTimeout(() => {
                         if (response.Role === 'Admin') {
                             navigate('/admin/dashboard');

@@ -427,17 +427,17 @@ const Header = () => {
         }
         await Get_Profile_Data(data).then((response) => {
             if (response.Status) {
-                localStorage.setItem("expire", false)
+                localStorage.setItem("expire", 0)
             }
             else {
                 if (response.message === "Client Expired") {
-                    localStorage.setItem("expire", true)
+                    localStorage.setItem("expire", 1)
+                    navigate('/user/all/plan')
                 }
 
             }
         })
     }
-
 
     useEffect(() => {
         getprofiledata()

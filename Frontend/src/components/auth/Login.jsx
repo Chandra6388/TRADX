@@ -16,8 +16,6 @@ const Login = () => {
     const [userNameError, setUserNameError] = useState('')
     const [emailError, setEmailError] = useState('');
     const navigate = useNavigate();
-
-
     const handleLogin = async (e) => {
         const data = { Username: Username, password: password }
         await LoginPage(data)
@@ -26,7 +24,9 @@ const Login = () => {
                 if (response.Status) {
                     if (response.Role === 'Subadmin') {
                         getSubAdminPermission()
-                       
+                    }
+                    if (response.message == "ServiceExpired") {
+                        localStorage.setItem("expair", "ServiceExpired")
                     }
                     localStorage.setItem("Role", response.Role)
                     localStorage.setItem("name", Username)
@@ -47,7 +47,6 @@ const Login = () => {
                             navigate('/superadmin/dashboard');
                         }
                         else if (response.Role === 'Subadmin') {
-                           
                             navigate('/subadmin/dashboard');
                         }
                     }, 1500)

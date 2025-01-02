@@ -11,16 +11,19 @@ const Profile = () => {
     const getprofiledata = async () => {
         const data = {
             username: username,
-
         }
         await Get_Profile_Data(data).then((response) => {
-            if (response.Data) {
+            if (response.Status) {
+                localStorage.setItem("expire", false)
                 setData({
                     loading: true,
-                    data: response.Data[0]
+                    data: response?.Data[0]
                 })
             }
             else {
+                if(response.message === "Client Expired"){
+                    localStorage.setItem("expire", true)
+                }
                 setData({
                     loading: true,
                     data: []
@@ -56,14 +59,12 @@ const Profile = () => {
                                     </div>
                                     <div className="text-center mt-3 ps-3 pe-3">
                                         <h4>
-                                            <b>{data.Username}</b>
+                                            <b>{data?.Username}</b>
                                         </h4>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                     <div className="col-lg-8">
                         <div className="iq-card">
@@ -76,18 +77,18 @@ const Profile = () => {
                                 <div className="about-info m-0 p-0">
                                     <div className="row">
                                         <div className="col-4">Username:</div>
-                                        <div className="col-8">{data && data.data.Username} </div>
+                                        <div className="col-8">{data && data?.data?.Username || "-"} </div>
                                         <div className="col-4">Mobile No :</div>
-                                        <div className="col-8">{data && data.data.Mobile_No} </div>
+                                        <div className="col-8">{data && data?.data?.Mobile_No || "-"} </div>
                                         <div className="col-4">Email Id:</div>
-                                        <div className="col-8">{data && data.data.EmailId}</div>
+                                        <div className="col-8">{data && data?.data?.EmailId || "-"}</div>
                                         <div className="col-4">BrokerName :</div>
-                                        <div className="col-8">{data && data.data.BrokerName}</div>
+                                        <div className="col-8">{data && data?.data?.BrokerName || "-"}</div>
                                         <div className="col-4">Number of Script :</div>
-                                        <div className="col-8">{data && data.data.NumberofScript}</div>
+                                        <div className="col-8">{data && data?.data?.NumberofScript || "-"}</div>
                                         <div className="col-4">Group :</div>
                                         {
-                                            data.loading && data && data.data.Group.length > 0 ? <div className="col-8">{data && data.data.Group.join(' , ')}</div> :
+                                            data?.loading && data && data?.data?.Group?.length > 0 ? <div className="col-8">{data && data?.data?.Group.join(' , ')}</div> :
                                                 <div className="col-8">No Group Available</div>
                                         }
                                         <div className="col-4">Plan Name :</div>

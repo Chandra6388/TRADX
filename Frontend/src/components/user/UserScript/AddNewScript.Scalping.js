@@ -216,12 +216,12 @@ const AddClient = () => {
           Timeframe: "",
           Quantity: values.Quantity,
           serendate: getEndData(values.Strategy),
-          FixedSM: formik.values.Strategy == "Multi_Conditional" && formik.values.position_type == "Single" ? formik.values.
-          Expirytype: " ",
+          Expirytype: "",
+          FixedSM: formik.values.Strategy == "Multi_Conditional" && formik.values.position_type == "Single" ? formik.values.Expirytype : " ",
           Striketype: "",
           DepthofStrike: 0,
           DeepStrike: 0,
-          Group: values.Strategy == "Fixed Price" ? values.Group : '',
+          Group: values.Strategy == "Fixed Price" || (formik.values.Strategy == "Multi_Conditional" && values.position_type == "Single") ? values.Group : '',
           CEDepthLower: 0.0,
           CEDepthHigher: 0.0,
           PEDepthLower: 0.0,
@@ -239,7 +239,7 @@ const AddClient = () => {
           stepup: values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" ? Number(values.stepup) : 0,
           quantityselection: values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" ? values.quantityselection : "",
           quantityvalue: values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" ? Number(values.quantityvalue) : 0,
-          Targetselection: values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" ? values.Targetselection : "",
+          targetselection: values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" ? values.Targetselection : "",
         }
 
 
@@ -513,7 +513,7 @@ const AddClient = () => {
         { label: "I", value: "I" },
         { label: "J", value: "J" },
       ],
-      showWhen: (values) => values.Strategy == "Fixed Price",
+      showWhen: (values) => values.Strategy == "Fixed Price" || (formik.values.Strategy == "Multi_Conditional" && values.position_type == "Single"),
       label_size: 12,
       col_size: 3,
       headingtype: 2,

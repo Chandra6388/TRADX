@@ -4,9 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import Loader from '../../../ExtraComponent/Loader'
 import Swal from 'sweetalert2';
-import Checkbox from '@mui/material/Checkbox';
 import { columns2, columns1, columns } from './ScriptColumns'
-import {subadminGroups} from '../../CommonAPI/SubAdmin'
 
 
 const Addscript = () => {
@@ -88,33 +86,31 @@ const Addscript = () => {
     }
 
     // 1
-    const GetAllGroupDetails = async () => {
-        const req = {subadmin :username }
-        try {
-            await subadminGroups(req)
-                .then((response) => {
-
-                    if (response.Status) {
-                        setGroupData({
-                            loading: false,
-                            data: response.groupdf
-                        })
-                    }
-                    else {
-                        setGroupData({
-                            loading: false,
-                            data: []
-                        })
-                    }
-                })
-                .catch((err) => {
-                    console.log("Error Group data fetch", err)
-                })
-        }
-        catch {
-            console.log("Error Group data fetch")
-        }
-    }
+     const GetAllGroupDetails = async () => {
+            try {
+                await GetGroupNames()
+                    .then((response) => {
+                        if (response.Status) {
+                            const filter = response.Data.filter((data) => data.SubAdmin === username);
+                            
+                            setGroupData({
+                                loading: false,
+                                data: filter.map((data) => data.GroupName)
+                            });
+                        } else {
+                            setGroupData({
+                                loading: false,
+                                data: []
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        console.log("Error Group data fetch error", err);
+                    });
+            } catch {
+                console.log("Error Group data fetch error");
+            }
+        };
 
     useEffect(() => {
         GetAllGroupDetails()

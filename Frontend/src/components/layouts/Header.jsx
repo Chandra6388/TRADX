@@ -10,21 +10,16 @@ import { IndianRupee, Eye } from 'lucide-react';
 import { LastPattern, DataStart, AutoLogin } from '../CommonAPI/Admin'
 import { addBroker } from '../CommonAPI/SuperAdmin'
 import { jwtDecode } from 'jwt-decode';
-import { GetUserBalence } from '../CommonAPI/User'
+import { GetUserBalence, Get_Profile_Data } from '../CommonAPI/User'
 
 
 const Header = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [showFunds, setShowFunds] = useState(false);
-
-
-
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
-
     useEffect(() => {
-        // Remove sidebar-main class on initial load
         document.body.classList.remove('sidebar-main');
 
         if (isSidebarOpen) {
@@ -49,13 +44,9 @@ const Header = () => {
     const [walletBalance, setWalletBalance] = useState('');
     const [showAddBrokerModal, setShowAddBrokerModal] = useState(false);
     const [addBrokerName, setAddBrokerName] = useState('');
-
     const [userName, setUserName] = useState('');
 
 
-    // useEffect(() => {
-    //     GetBalence()
-    // }, [])
 
     const handleToggle = async (event) => {
         const newStatus = event.target.checked;
@@ -153,8 +144,6 @@ const Header = () => {
         navigate("/");
     }
 
-
-    //if client subscription is expire then it will redirected only plan page
     useEffect(() => {
         const name = localStorage.getItem("name");
         const expireClient = localStorage.getItem("expire_client");
@@ -167,8 +156,6 @@ const Header = () => {
             setUserName(name);
         }
     }, [navigate]);
-
-
 
     useEffect(() => {
         const handleScroll = () => {
@@ -431,6 +418,32 @@ const Header = () => {
             });
     }
 
+    const getprofiledata = async () => {
+        if (role != 'User') {
+            return
+        }
+        const data = {
+            username: Username,
+        }
+        await Get_Profile_Data(data).then((response) => {
+            if (response.Status) {
+                localStorage.setItem("expire", false)
+            }
+            else {
+                if (response.message === "Client Expired") {
+                    localStorage.setItem("expire", true)
+                }
+
+            }
+        })
+    }
+
+
+    useEffect(() => {
+        getprofiledata()
+    }, []);
+
+
     return (
         <>
             <div className={`iq-top-navbar ${isFixed ? 'fixed-header' : ''}`}>
@@ -465,9 +478,9 @@ const Header = () => {
                                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
 
                                     <li className="nav-item">
-                                        <button className="btn btn-primary mt-3 mx-3 btn1" style={{ pointerEvents: 'none' }}>Hello, {userName}</button>
+                                        <button className="btn btn-primary mt-3 mx-3 btn1" style={{ pointerEvents: 'none' }}>Hello, Admin</button>
                                     </li>
-                                    
+
                                     <li className="nav-item">
                                         <button
                                             type="button"
@@ -540,7 +553,7 @@ const Header = () => {
                                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
 
                                     <li className="nav-item">
-                                        <button className="btn btn-primary mt-3 mx-3 btn1" style={{ pointerEvents: 'none' }}>Hello, {userName}</button>
+                                        <button className="btn btn-primary mt-3 mx-3 btn1" style={{ pointerEvents: 'none' }}>Hello, SubAdmin</button>
 
                                     </li>
                                     {/* <li className="nav-item">
@@ -633,7 +646,7 @@ const Header = () => {
                                 </div>
                                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
                                     <li className="nav-item">
-                                        <button className="btn btn-primary mt-3 mx-3 btn1" style={{ pointerEvents: 'none' }}>Hello, {userName}</button>
+                                        <button className="btn btn-primary mt-3 mx-3 btn1" style={{ pointerEvents: 'none' }}>Hello, User</button>
 
                                     </li>
                                     {

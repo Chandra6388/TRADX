@@ -133,8 +133,10 @@ const ServicesList = () => {
                         <p style={styles.priceItem}>
                           <strong>Pattern Strategy:</strong> {plan?.Pattern?.join(", ")}
                         </p>
+                        <p style={styles.priceItem}>
+                          <strong>Pattern Strategy:</strong> {plan?.ChartingSignal?.join(", ")}
+                        </p>
                       </div>
-                     
                     </div>
                   </Card>
                 ))}

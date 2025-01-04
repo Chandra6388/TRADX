@@ -1348,9 +1348,6 @@ const DynamicForm = ({
                                               id={field.name}
                                               {...formik.getFieldProps(field.name)}
                                             >
-                                              <option value="">{`Select ${field.label}`}</option>
-
-                                              {/* Show filtered options (with the class 'green') first */}
                                               {field.options
                                                 .filter(option => field?.options1?.includes(option?.label))
                                                 .map((option, index) => (
@@ -1434,8 +1431,7 @@ const DynamicForm = ({
                                         </div>
                                       </div>
                                     </>
-                                  ) :
-                                    field.type === "select2" ? (
+                                  ) : field.type === "select2" ? (
                                       <>
                                         <div className={` col-lg-12`}>
 
@@ -1512,12 +1508,6 @@ const DynamicForm = ({
                                                 ))
                                               }
                                             </div>
-
-
-
-
-
-
                                           </div>
                                         </div>
                                       </>

@@ -109,7 +109,6 @@ const ServicesList = () => {
 
     }
 
-
     const SetPlan = (name) => {
         if (BuyedPlan?.data.length === 0) {
             return null;
@@ -122,8 +121,6 @@ const ServicesList = () => {
         return null;
 
     };
-
-
 
     const HandleBuyPlan = async (index, type) => {
         try {
@@ -307,9 +304,9 @@ const ServicesList = () => {
                                 <h4 className='card-title'>All Plans</h4>
                             </div>
                             {
-                                expire?.includes(1)  ? <div className="col-lg-9">
+                                expire?.includes(1) ? <div className="col-lg-9">
                                     <NewsTicker />
-                                </div>  : ""
+                                </div> : ""
 
                             }
                         </div>
@@ -337,6 +334,9 @@ const ServicesList = () => {
                                                             </p>
                                                             <p style={styles.priceItem}>
                                                                 <strong>Pattern Strategy:</strong> {plan?.Pattern?.join(", ")}
+                                                            </p>
+                                                            <p style={styles.priceItem}>
+                                                                <strong>Pattern Strategy:</strong> {plan?.ChartingSignal?.join(", ")}
                                                             </p>
                                                         </div>
                                                     </div>

@@ -37,9 +37,8 @@ import ChangePassword from '../components/subadmin/Password/ChangePassword';
 
 
 
-// import ChangePassword from '../components/subAdmin/Password/ChangePassword';
 
-import ChangePassword from "../components/subadmin/Password/ChangePassword";
+// import ChangePassword from "../components/subadmin/Password/ChangePassword";
 
 const SubAdminRoutes = () => {
   const permission = localStorage.getItem("Permission");

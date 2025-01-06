@@ -243,7 +243,7 @@ const Sidebar = () => {
         {
             path: '/admin/clientreport',
             icon: 'la la-map-marker', // Client Thread Report icon
-            label: 'Client Thread Report',
+            label: 'Client Trade Report',
             permission: [] // No restriction
         },
         {
@@ -295,7 +295,7 @@ const Sidebar = () => {
         {
             path: '/superadmin/client-thread-report',
             icon: <Pyramid />, // Custom icon
-            label: 'Client Thread Report',
+            label: 'Client Trade Report',
             permission: [] // No restriction
         },
         {

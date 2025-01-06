@@ -69,6 +69,12 @@ const Register = () => {
 
     useEffect(() => { GetLogoimage() }, [])
 
+    const handleChange = (e) => {
+        const value = e.target.value;
+        if (/^\d{0,10}$/.test(value)) {
+            setNumber(value);
+        }
+    };
 
     return (
         <div>
@@ -117,46 +123,13 @@ const Register = () => {
                                                 </div>
                                             </div>
                                             <div className="owl-item cloned" style={{ width: 358 }}>
-                                                {/* <div className="item">
-                                                    <img
-                                                      src="assets/images/tradstreet.jpeg"
-                                                        className="img-fluid mb-4"
-                                                        alt="logo"
-                                                    />
-                                                    <h4 className="mb-1 text-white">Manage your orders</h4>
-                                                    <p>
-                                                        It is a long established fact that a reader will be
-                                                        distracted by the readable content.
-                                                    </p>
-                                                </div> */}
+                                                
                                             </div>
                                             <div className="owl-item" style={{ width: 358 }}>
-                                                {/* <div className="item">
-                                                    <img
-                                                        src="assets/images/tradstreet.jpeg"
-                                                        className="img-fluid mb-4"
-                                                        alt="logo"
-                                                    />
-                                                    <h4 className="mb-1 text-white">Manage your orders</h4>
-                                                    <p>
-                                                        It is a long established fact that a reader will be
-                                                        distracted by the readable content.
-                                                    </p>
-                                                </div> */}
+                                                
                                             </div>
                                             <div className="owl-item" style={{ width: 358 }}>
-                                                {/* <div className="item">
-                                                    <img
-                                                       src="assets/images/tradstreet.jpeg"
-                                                        className="img-fluid mb-4"
-                                                        alt="logo"
-                                                    />
-                                                    <h4 className="mb-1 text-white">Manage your orders</h4>
-                                                    <p>
-                                                        It is a long established fact that a reader will be
-                                                        distracted by the readable content.
-                                                    </p>
-                                                </div> */}
+                                                
                                             </div>
                                             <div className="owl-item active" style={{ width: 358 }}>
                                                 <div className="item">
@@ -166,26 +139,11 @@ const Register = () => {
                                                         alt="logo"
                                                         style={{ borderRadius: "20px",}}
                                                     />
-                                                    {/* <h4 className="mb-1 text-white">Manage your orders</h4>
-                                                    <p>
-                                                        It is a long established fact that a reader will be
-                                                        distracted by the readable content.
-                                                    </p> */}
+                                                   
                                                 </div>
                                             </div>
                                             <div className="owl-item cloned" style={{ width: 358 }}>
-                                                {/* <div className="item">
-                                                    <img
-                                                        src="assets/images/tradstreet.jpeg"
-                                                        className="img-fluid mb-4"
-                                                        alt="logo"
-                                                    />
-                                                    <h4 className="mb-1 text-white">Manage your orders</h4>
-                                                    <p>
-                                                        It is a long established fact that a reader will be
-                                                        distracted by the readable content.
-                                                    </p>
-                                                </div> */}
+                                                
                                             </div>
                                             <div className="owl-item cloned" style={{ width: 358 }}>
                                                 <div className="item">
@@ -212,15 +170,7 @@ const Register = () => {
                                         </button>
                                     </div>
                                     <div className="owl-dots">
-                                        {/* <button role="button" className="owl-dot">
-                                            <span />
-                                        </button>
-                                        <button role="button" className="owl-dot">
-                                            <span />
-                                        </button>
-                                        <button role="button" className="owl-dot active">
-                                            <span />
-                                        </button> */}
+                                      
                                     </div>
                                 </div>
                             </div>
@@ -252,7 +202,7 @@ const Register = () => {
                                             id="phone"
                                             placeholder="Enter Your Phone Number"
                                             value={number}
-                                            onChange={(e) => setNumber(e.target.value)}
+                                            onChange={handleChange}
                                         />
                                     </div>
                                     <div className="form-group col-lg-12">

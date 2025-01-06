@@ -34,7 +34,6 @@ const AddClient = () => {
   };
 
 
-  console.log("sss", location.state.data)
 
   const formik = useFormik({
     initialValues: {

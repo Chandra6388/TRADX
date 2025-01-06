@@ -153,13 +153,13 @@ const ServicesList = () => {
                             Username: username,
                             Scalping: planDetails.Scalping,
                             Option: planDetails['Option Strategy'],
-                            PatternS: planDetails.Pattern,
-                            ChartingSignal: planDetails.ChartingSignal,
+                            PatternS: planDetails.Pattern, 
                             NumberofScript: planDetails.NumberofScript,
                             Duration: planDetails['Plan Validity'],
                             Planname: planDetails.PlanName,
                             payment: planDetails.payment,
-                            Extendtype: "ExtendServiceEndDate"
+                            Extendtype: "ExtendServiceEndDate",
+                            Charting : planDetails.ChartingSignal
                         };
                         const buyPlanResponse = await BuyPlan(req);
                         if (buyPlanResponse.Status) {
@@ -192,7 +192,8 @@ const ServicesList = () => {
                             Duration: planDetails['Plan Validity'],
                             Planname: planDetails.PlanName,
                             payment: planDetails.payment,
-                            Extendtype: "ExtendServiceCount"
+                            Extendtype: "ExtendServiceCount",
+                            Charting : planDetails.ChartingSignal
                         };
                         const buyPlanResponse = await BuyPlan(req);
                         if (buyPlanResponse.Status) {
@@ -226,7 +227,8 @@ const ServicesList = () => {
                         Duration: planDetails['Plan Validity'],
                         Planname: planDetails.PlanName,
                         payment: planDetails.payment,
-                        Extendtype: ""
+                        Extendtype: "",
+                        Charting : planDetails.ChartingSignal
                     };
                     const buyPlanResponse = await BuyPlan(req);
                     if (buyPlanResponse.Status) {
@@ -238,9 +240,9 @@ const ServicesList = () => {
                             timer: 1500,
                             timerProgressBar: true,
                         });
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 1500);
+                        // setTimeout(() => {
+                        //     window.location.reload();
+                        // }, 1500);
                     } else {
                         Swal.fire({
                             title: "Error!",

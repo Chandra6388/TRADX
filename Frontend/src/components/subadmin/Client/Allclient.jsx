@@ -161,15 +161,7 @@ const AllClient = () => {
                 customBodyRender: (value) => viewClient ? value || '-' : '*****'
             }
         },
-        {
-            name: 'Licanse',
-            label: 'Licanse',
-            options: {
-                filter: true,
-                sort: false,
-                customBodyRender: (value) => viewClient ? value || '-' : '*****'
-            }
-        },
+     
         {
             name: 'CreateDate',
             label: 'Create Date',

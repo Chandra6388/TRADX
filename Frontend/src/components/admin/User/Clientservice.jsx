@@ -144,7 +144,6 @@ const Clientservice = () => {
                 errors.Broker = 'Please Select the Broker';
             }
 
-            console.log('errors', errors);
 
             return errors;
         },

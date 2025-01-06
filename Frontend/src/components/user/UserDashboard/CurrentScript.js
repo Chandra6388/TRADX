@@ -28,7 +28,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         PremiumRotation: []
     });
 
-    console.log("data")
 
     useEffect(() => {
         GetUserAllScripts()

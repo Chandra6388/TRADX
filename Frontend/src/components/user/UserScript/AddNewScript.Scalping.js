@@ -190,7 +190,7 @@ const AddClient = () => {
     onSubmit: async (values) => {
       try {
         const req = {
-          MainStrategy: location.state.data.selectStrategyType,
+          MainStrategy: formik.values.Strategy == "Multi_Conditional" ? "NewScalping" : location.state.data.selectStrategyType,
           Username: userName,
           Strategy: values.Strategy,
           Exchange: values.Exchange,
@@ -328,6 +328,8 @@ const AddClient = () => {
       }
     },
   });
+
+  console.log("values.Strategy", formik.values.Strategy)
 
   useEffect(() => {
     formik.setFieldValue('Strategy', location?.state?.data?.scriptType?.data?.[location?.state?.data?.scriptType?.len]?.CombineScalping[0])

@@ -769,8 +769,6 @@ const Header = () => {
                     ) : (
 
                         <nav className="navbar navbar-expand-lg navbar-light p-0">
-
-
                             <div className="nav-item mx-5">
                                 <button type="button" className="btn btn-primary "
                                     onClick={(e) => setShowAddBrokerModal(true)}
@@ -829,6 +827,7 @@ const Header = () => {
                             </div>
 
                         </nav>
+                        
                         // <nav className="navbar navbar-expand-lg navbar-light p-0">
                         //     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         //         <div className="nav-item mx-5">

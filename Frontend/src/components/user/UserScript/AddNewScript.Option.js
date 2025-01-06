@@ -473,10 +473,14 @@ const AddClient = () => {
             name: "Expirytype",
             label: "Expiry Type",
             type: "select",
-            options: [
-                { label: "Weekly", value: "Weekly" },
-                { label: "Monthly", value: "Monthly" },
-            ],
+            options: formik.values.Symbol == "BANKNIFTY" ?
+                [
+                    { label: "Monthly", value: "Monthly" },
+                ] :
+                [
+                    { label: "Weekly", value: "Weekly" },
+                    { label: "Monthly", value: "Monthly" },
+                ],
             hiding: false,
             label_size: 12,
             col_size: 3,

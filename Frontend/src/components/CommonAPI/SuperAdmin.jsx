@@ -334,6 +334,19 @@ export const updateAdmin = async (data) => {
 export const apiCreateInfo = async (data) => {
     const token = localStorage.getItem('token')
 
+    
+// Brokername: str = Form(...),
+// Companyname: str = Form(...),
+// step1: str = Form(None),
+// step1image: UploadFile = File(None),
+// step2: str = Form(None),
+// step2image: UploadFile = File(None),
+// step3: str = Form(None),
+// step3image: UploadFile = File(None),
+// step4: str = Form(None),
+// step4image: UploadFile = File(None),
+// step5: str = Form(None),
+// step5image: UploadFile = File(None)
     try {
         const formData = new FormData();
         formData.append('Brokername', data.Brokername);
@@ -347,6 +360,8 @@ export const apiCreateInfo = async (data) => {
         formData.append('step4image', data.step4image);
         formData.append('step5', data.step5);
         formData.append('step5image', data.step5image);
+
+        console.log("formData", formData)
 
         const res = await axios.post(`${Config.superAdmin_base_url}BrokerApiCreate`, formData,
             {

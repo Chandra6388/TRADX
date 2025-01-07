@@ -1057,6 +1057,7 @@ const AddClient = () => {
     }, [formik.values.Strategy, formik.values.Striketype, formik.values.Measurment_Type])
 
 
+    console.log("formik", getExpiry.data)    
 
     const handleCheckPnl = async () => {
 
@@ -1095,7 +1096,9 @@ const AddClient = () => {
             FixedSM: "",
             TType: "",
             serendate: getEndData(formik.values.Measurment_Type),
-            expirydata1: formik.values.Expirytype == "Weekly" ? getExpiry && getExpiry.data[0] : formik.values.Expirytype == "Next Week" ? getExpiry && getExpiry.data[1] : getExpiry && getExpiry.data[2],
+            // expirydata1: formik.values.Expirytype == "Weekly" ? getExpiry && getExpiry.data[0] : formik.values.Expirytype == "Next Week" ? getExpiry && getExpiry.data[1] : getExpiry && getExpiry.data[2],
+            expirydata1:  getExpiry && getExpiry.data[0],
+
             Expirytype: formik.values.Expirytype,
             Striketype: formik.values.Strategy != "ShortStraddle" && formik.values.Strategy != "LongStraddle" && formik.values.Measurment_Type != "Shifting_FourLeg" && formik.values.Strategy != 'ShortStraddle' && formik.values.Strategy != 'LongStraddle' ? formik.values.Striketype : '',
             DepthofStrike: (formik.values.Striketype != "Premium_Range" && formik.values.Measurment_Type != "Shifting_FourLeg" && formik.values.Strategy != 'LongStraddle' && formik.values.Strategy != 'ShortStraddle') ? Number(formik.values.DepthofStrike) : 0,

@@ -31,7 +31,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         GetUserAllScripts()
     }, [])
 
-    console.log("allScripts", allScripts)
 
     const GetUserAllScripts = async () => {
         const data = { Username: userName }
@@ -65,10 +64,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         });
     }
 
-    const handleDelete = async (rowData) => {
+    const handleDelete = async (rowData , type) => {
         const index = rowData.rowIndex
         const req =
-            data == 'Scalping' ?
+            data == 'Scalping' && type==1 ?
                 {
                     Username: userName,
                     MainStrategy: data,
@@ -110,10 +109,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                             TradePattern: "",
                             PatternName: ""
 
-                        } : data == 'NewScalping' ?
+                        } : data == 'Scalping' && type==2?
                             {
                                 Username: userName,
-                                MainStrategy: data,
+                                MainStrategy: "NewScalping",
                                 Strategy: getAllService.NewScalping[index].Targetselection,
                                 Symbol: getAllService.NewScalping[index].Symbol,
                                 ETPattern: "",
@@ -124,7 +123,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                 TSymbol: "",
                                 PatternName: ""
                             } : ''
-                            
+
 
         Swal.fire({
             title: "Are you sure?",
@@ -150,7 +149,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                 }
                             });
                             setTimeout(() => {
-                                window.location.reload()
+                                // window.location.reload()
                             }, 1500)
                         } else {
                             Swal.fire({
@@ -188,12 +187,17 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         }
     }
 
-    const HandleContinueDiscontinue = async (rowData) => {
+    const HandleContinueDiscontinue = async (rowData, type) => {
+
         const index = rowData.rowIndex
         let trading;
 
-        if (data == 'Scalping') {
+
+        if (data == 'Scalping' && type==1) {
             trading = getAllService.ScalpingData[index].Trading
+        }
+        else if (data == 'Scalping' && type==2) {
+            trading = getAllService.NewScalping[index].Trading
         }
         else if (data == 'Pattern') {
             trading = getAllService.PatternData[index].Trading
@@ -201,12 +205,15 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         else if (data == 'Option Strategy') {
             trading = getAllService.OptionData[index].Trading
         }
-        else if (data == "NewScalping") {
-            trading = getAllService.NewScalping[index].Trading
-        }
+
         else {
+            console.log("Error in finding the trading status")
             return
         }
+
+        console.log("trading", trading) 
+
+
 
         if (trading) {
             Swal.fire({
@@ -220,11 +227,11 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     const req =
-                        data == 'Scalping' ?
+                        data == 'Scalping' && type == 1 ?
                             {
                                 Username: userName,
                                 MainStrategy: data,
-                                Strategy: getAllService.ScalpingData[index].ScalpType,
+                                Strategy: getAllService.ScalpingData[index].ScalpType == "Multi_Conditional" ? getAllService.NewScalping[index].Targetselection : getAllService.ScalpingData[index].ScalpType,
                                 Symbol: getAllService.ScalpingData[index].Symbol,
                                 ETPattern: "",
                                 Timeframe: "",
@@ -262,10 +269,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                         TradePattern: "",
                                         PatternName: ""
 
-                                    } : data == 'NewScalping' ?
+                                    } : data == 'Scalping' && type == 2 ?
                                         {
                                             Username: userName,
-                                            MainStrategy: data,
+                                            MainStrategy: "NewScalping",
                                             Strategy: getAllService.NewScalping[index].Targetselection,
                                             Symbol: getAllService.NewScalping[index].Symbol,
                                             ETPattern: "",
@@ -281,6 +288,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
                     await Discontinue(req)
                         .then((response) => {
+                            console.log("response", response)
                             if (response.Status) {
                                 Swal.fire({
                                     title: "Success",
@@ -288,8 +296,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                     icon: "success",
                                     timer: 2000,
                                     timerProgressBar: true
+                                }).then(() => {
+                                    setRefresh(!refresh)
                                 });
-                                setRefresh(!refresh)
+                               
                             }
                             else {
                                 Swal.fire({
@@ -309,7 +319,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         }
         else {
             {
-
                 Swal.fire({
                     title: "Do you want to Continue",
                     text: "You won't be able to revert this!",
@@ -321,7 +330,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 }).then(async (result) => {
                     if (result.isConfirmed) {
                         const req =
-                            data == 'Scalping' ?
+                            data == 'Scalping' && type==1 ?
                                 {
                                     Username: userName,
                                     MainStrategy: data,
@@ -363,11 +372,11 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                             TradePattern: "",
                                             PatternName: ""
 
-                                        } : data == 'NewScalping' ?
+                                        } : data == 'Scalping'  && type==2?
 
                                             {
                                                 Username: userName,
-                                                MainStrategy: data,
+                                                MainStrategy: "NewScalping",
                                                 Strategy: getAllService.NewScalping[index].Targetselection,
                                                 Symbol: getAllService.NewScalping[index].Symbol,
                                                 ETPattern: "",
@@ -384,13 +393,14 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                         await Continue(req)
                             .then((response) => {
                                 if (response.Status) {
-                                    setRefresh(!refresh)
                                     Swal.fire({
                                         title: "Success",
                                         text: response.message,
                                         icon: "success",
                                         timer: 1500,
                                         timerProgressBar: true
+                                    }).then(() => {
+                                        setRefresh(!refresh)
                                     });
                                 }
                                 else {
@@ -1255,8 +1265,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         }
     }, [showEditModal, data])
 
-
-    console.log("data", data)
     return (
         <div className="container-fluid">
             <div className="row">
@@ -1287,6 +1295,23 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                             checkBox={false}
                                                         />
                                                     }
+                                                    {data === "Scalping" && (
+                                                        <div>
+                                                            <div className="iq-header-title mt-4">
+                                                                <h4 className="card-title">Multi Conditional</h4>
+                                                            </div>
+                                                            {getAllService.loading ? (
+                                                                <Loader />
+                                                            ) : (
+                                                                <FullDataTable
+                                                                    columns={getColumns6(handleDelete, handleEdit, HandleContinueDiscontinue)}
+                                                                    data={getAllService.NewScalping}
+                                                                    checkBox={false}
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    )}
+
                                                 </div>
                                             </div>
                                         </>

@@ -6,12 +6,15 @@ import GridExample from '../../../ExtraComponent/CommanDataTable'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
-import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6 , getColumns9 } from './ReportColumn'
+import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6, getColumns9 } from './ReportColumn'
 
 const TradeReport = () => {
     const [selectStrategyType, setStrategyType] = useState('Scalping');
     const [strategyNames, setStrategyNames] = useState([])
-    const [tradeReport, setTradeReport] = useState('')
+    const [tradeReport, setTradeReport] = useState({
+        data: [],
+        data1: [],
+    })
     const [selectedRowData, setSelectedRowData] = useState('');
     const [ToDate, setToDate] = useState('');
     const [FromDate, setFromDate] = useState('');
@@ -62,14 +65,14 @@ const TradeReport = () => {
             .then((response) => {
                 if (response.Status) {
                     setTradeReport({
-                        loading: false,
-                        data: response.Data
+                        data: response.Data,
+                        data1: selectStrategyType == "Scalping" ? response.NewScalping : []
                     })
                 }
                 else {
                     setTradeReport({
-                        loading: false,
-                        data: []
+                        data: [],
+                        data1: []
                     })
 
                 }
@@ -82,7 +85,7 @@ const TradeReport = () => {
     const strategyType = async () => {
         try {
             const res = await getStrategyType()
-            if ( res.Data && Array.isArray(res.Data )) {
+            if (res.Data && Array.isArray(res.Data)) {
                 setStrategyNames(res.Data)
             }
             else {
@@ -106,12 +109,12 @@ const TradeReport = () => {
     const handleRowSelect = (rowData) => {
         setSelectedRowData(rowData);
     };
-    
+ 
 
     const handleSubmit = async () => {
         const data = {
-            MainStrategy: selectStrategyType,
-            Strategy: selectStrategyType == "Scalping" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectedRowData && selectedRowData.Targetselection,
+            MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
+            Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "",
             Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectedRowData && selectedRowData.Symbol,
             Username: Username,
             ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
@@ -122,6 +125,7 @@ const TradeReport = () => {
             TradePattern: "",
             PatternName: ""
         }
+
 
         await get_Trade_Report(data)
 
@@ -180,7 +184,7 @@ const TradeReport = () => {
                                     <div className="form-group col-lg-4">
                                         <label>Select Strategy Type</label>
                                         <select className="form-select" required=""
-                                            onChange={(e) =>  setStrategyType(e.target.value)}
+                                            onChange={(e) => setStrategyType(e.target.value)}
                                             value={selectStrategyType}>//
                                             <option value="">Select Strategy Type</option>
                                             {strategyNames.map((type, index) => (
@@ -191,28 +195,7 @@ const TradeReport = () => {
 
                                         </select>
                                     </div>
-
-
-                                    {/* <div className="form-group col-lg-4">
-                                        <label>Select Strategy Type</label>
-                                        <select
-                                            className="form-select"
-                                            required=""
-                                            onChange={(e) => setStrategyType(e.target.value)} 
-                                            value={selectStrategyType}                                  >
-                                            <option value="">Select Strategy Type</option>
-                                            {selectStrategyType.map((type, index) => (
-                                                <option key={index} value={type}>
-                                                    {type}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div> */}
-
-
-
-
-
+ 
                                     <div className="form-group col-lg-4">
                                         <label>Select form Date</label>
                                         <DatePicker className="form-select" selected={FromDate == '' ? formattedDate : FromDate} onChange={(date) => setFromDate(date)} />
@@ -224,6 +207,9 @@ const TradeReport = () => {
 
                                     </div>
                                 </div>
+                            </div>
+                            <div className="iq-header-title">
+                                <h4 className="card-title">Scalping</h4>
                             </div>
                             {
                                 <div className="modal-body">
@@ -238,6 +224,23 @@ const TradeReport = () => {
                                     />
                                 </div>
                             }
+                            {selectStrategyType == "Scalping" && <div>
+                                <div className="iq-header-title mt-4">
+                                    <h4 className="card-title">Multi Conditional</h4>
+                                </div>
+                                {
+                                    <div className="modal-body">
+                                        <GridExample
+                                            columns={getColumns9()}
+                                            data={tradeReport?.data1}
+                                            onRowSelect={handleRowSelect}
+                                            checkBox={true}
+                                        />
+                                    </div>
+                                }
+                            </div>
+                            }
+
                             <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>
 
                             {

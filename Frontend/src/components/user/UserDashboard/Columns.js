@@ -655,7 +655,7 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta)}>
+                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta , 1)}>
                    Square Off
                 </button>
                 </>
@@ -689,7 +689,7 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
                 return (
                     <Checkbox
                         checked={isChecked}
-                        onClick={() => handleContinutyDiscontinuty(tableMeta)}
+                        onClick={() => handleContinutyDiscontinuty(tableMeta , 1)}
                     />
 
                 );
@@ -894,7 +894,7 @@ export const getColumns4 = (handleDelete, handleEdit, handleContinutyDiscontinut
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta)}>
+                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta , 2)}>
                     Square Off
                 </button>
 
@@ -928,7 +928,7 @@ export const getColumns4 = (handleDelete, handleEdit, handleContinutyDiscontinut
                 return (
                     <Checkbox
                         checked={isChecked}
-                        onClick={() => handleContinutyDiscontinuty(tableMeta)}
+                        onClick={() => handleContinutyDiscontinuty(tableMeta , 1)}
                     />
 
                 );
@@ -1170,7 +1170,7 @@ export const getColumns5 = (handleDelete, handleEdit, handleContinutyDiscontinut
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn btn-primary ' onClick={() => handleDelete(tableMeta)}>
+                return <><button className='btn btn-primary ' onClick={() => handleDelete(tableMeta , 2)}>
                     Square Off
                 </button>
 
@@ -1204,7 +1204,7 @@ export const getColumns5 = (handleDelete, handleEdit, handleContinutyDiscontinut
                 return (
                     <Checkbox
                         checked={isChecked}
-                        onClick={() => handleContinutyDiscontinuty(tableMeta)}
+                        onClick={() => handleContinutyDiscontinuty(tableMeta, 1)}
 
                     />
 
@@ -1396,7 +1396,7 @@ export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinut
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta)}>
+                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta , 2)}>
                    Square Off
                 </button>
                 </>
@@ -1430,7 +1430,7 @@ export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinut
                 return (
                     <Checkbox
                         checked={isChecked}
-                        onClick={() => handleContinutyDiscontinuty(tableMeta)}
+                        onClick={() => handleContinutyDiscontinuty(tableMeta , 2)}
                     />
 
                 );

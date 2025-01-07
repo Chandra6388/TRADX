@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
-import { getColumns3, getColumns4, getColumns5 , getColumns6 } from './Columns';
+import { getColumns3, getColumns4, getColumns5, getColumns6 } from './Columns';
 import Swal from 'sweetalert2';
 import Formikform from "../../../ExtraComponent/FormData";
 import { useFormik } from 'formik';
@@ -110,7 +110,21 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                             TradePattern: "",
                             PatternName: ""
 
-                        } : ''
+                        } : data == 'NewScalping' ?
+                            {
+                                Username: userName,
+                                MainStrategy: data,
+                                Strategy: getAllService.NewScalping[index].Targetselection,
+                                Symbol: getAllService.NewScalping[index].Symbol,
+                                ETPattern: "",
+                                Timeframe: "",
+                                TType: "",
+                                Group: getAllService.NewScalping[index].GroupN,
+                                TradePattern: "",
+                                TSymbol: "",
+                                PatternName: ""
+                            } : ''
+                            
 
         Swal.fire({
             title: "Are you sure?",
@@ -184,8 +198,14 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         else if (data == 'Pattern') {
             trading = getAllService.PatternData[index].Trading
         }
-        else {
+        else if (data == 'Option Strategy') {
             trading = getAllService.OptionData[index].Trading
+        }
+        else if (data == "NewScalping") {
+            trading = getAllService.NewScalping[index].Trading
+        }
+        else {
+            return
         }
 
         if (trading) {
@@ -242,7 +262,23 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                         TradePattern: "",
                                         PatternName: ""
 
-                                    } : ''
+                                    } : data == 'NewScalping' ?
+                                        {
+                                            Username: userName,
+                                            MainStrategy: data,
+                                            Strategy: getAllService.NewScalping[index].Targetselection,
+                                            Symbol: getAllService.NewScalping[index].Symbol,
+                                            ETPattern: "",
+                                            Timeframe: "",
+                                            TType: "",
+                                            Group: getAllService.NewScalping[index].GroupN,
+                                            TradePattern: "",
+                                            TSymbol: "",
+                                            PatternName: ""
+                                        } : ''
+
+
+
                     await Discontinue(req)
                         .then((response) => {
                             if (response.Status) {
@@ -327,7 +363,22 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                             TradePattern: "",
                                             PatternName: ""
 
-                                        } : ''
+                                        } : data == 'NewScalping' ?
+
+                                            {
+                                                Username: userName,
+                                                MainStrategy: data,
+                                                Strategy: getAllService.NewScalping[index].Targetselection,
+                                                Symbol: getAllService.NewScalping[index].Symbol,
+                                                ETPattern: "",
+                                                Timeframe: "",
+                                                TType: "",
+                                                Group: getAllService.NewScalping[index].GroupN,
+                                                TradePattern: "",
+                                                TSymbol: "",
+                                                PatternName: ""
+                                            } : ''
+
 
 
                         await Continue(req)
@@ -442,7 +493,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                         PatternOption: response.PatternOption,
                         Marketwise: response.Marketwise,
                         PremiumRotation: response.PremiumRotation,
-                        NewScalping : response.NewScalping
+                        NewScalping: response.NewScalping
                     });
                 } else {
                     setAllservice({

@@ -14,8 +14,11 @@ import { columns8, columns7, columns6, columns5, columns4, columns3, columns2, c
 const Tradehistory = () => {
 
     const [selectStrategyType, setStrategyType] = useState('')
-    const [strategyNames , setStrategyNames] = useState([])
-    const [tradeHistory, setTradeHistory] = useState('')
+    const [strategyNames, setStrategyNames] = useState([])
+    const [tradeHistory, setTradeHistory] = useState({
+        data: [],
+        data1: [],
+    })
     const [selectedRowData, setSelectedRowData] = useState('');
     const [ToDate, setToDate] = useState('');
     const [FromDate, setFromDate] = useState('');
@@ -100,16 +103,15 @@ const Tradehistory = () => {
         await get_User_Data(data)
             .then((response) => {
                 if (response.Status) {
-
                     setTradeHistory({
-                        loading: false,
-                        data: response.Data
+                        data: response.Data,
+                        data1: response.NewScalping
                     })
                 }
                 else {
                     setTradeHistory({
-                        loading: false,
-                        data: []
+                        data: [],
+                        data1: []
                     })
 
                 }
@@ -117,12 +119,6 @@ const Tradehistory = () => {
             .catch((err) => {
                 console.log("Error in finding the user data", err)
             })
-
-
-
-        //
-
-
     }
 
 
@@ -137,17 +133,13 @@ const Tradehistory = () => {
             }
         } catch (error) {
             console.log("Error in getting the StrategyType", error)
-            
+
         }
     }
     useEffect(() => {
         strategyType()
         GetTradeHistory()
     }, [selectStrategyType])
-
-
-
-
 
 
     const handleRowSelect = (rowData) => {
@@ -157,17 +149,15 @@ const Tradehistory = () => {
 
     const handleSubmit = async () => {
         const data = {
-            MainStrategy: selectStrategyType,
-            Strategy: selectStrategyType == "Scalping" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : '',
+            MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
+            Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "",
             Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : '',
             Username: Username,
             ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
             Timeframe: selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TimeFrame : '',
             From_date: convertDateFormat(FromDate == '' ? formattedDate : FromDate),
             To_date: convertDateFormat(ToDate == '' ? Defult_To_Date : ToDate),
-
             Group: selectStrategyType == "Scalping" || selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.GroupN : "",
-
             TradePattern: "",
             PatternName: ""
         }
@@ -347,7 +337,7 @@ const Tradehistory = () => {
 
                 }
                 else {
-                     
+
                     setReport({
                         loading: false,
                         data1: [],
@@ -471,15 +461,11 @@ const Tradehistory = () => {
                                         <select className="form-select" required=""
                                             onChange={(e) => setStrategyType(e.target.value)}
                                             value={selectStrategyType}>
-                                                {
-                                                    strategyNames.map((item, index) => {    
-                                                        return <option key={index} value={item}>{item}</option>
-                                                    })
-                                                }
-                                            {/* <option value={"Scalping"}>Scalping</option>
-                                            <option value={"Option Strategy"}>Option Strategy</option>
-                                            <option value={"Pattern"}>Pattern Script</option> */}
-
+                                            {
+                                                strategyNames.map((item, index) => {
+                                                    return <option key={index} value={item}>{item}</option>
+                                                })
+                                            }
                                         </select>
                                     </div>
                                     <div className="form-group col-lg-4 ">
@@ -507,21 +493,34 @@ const Tradehistory = () => {
                                     />
                                 </div>
                             }
-                            <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>
-                            { 
-                                showTable && <>
- 
-                                    <div>
-                                        {/* <p className='bold mt-4' style={{ fontWeight: 'bold', fontSize: '20px', color: 'black' }}>
-                                            Total Profit and Loss : <span style={{ color: getAllTradeData && getAllTradeData.Overall[0].PnL < 0 ? 'red' : 'green' }}>{getAllTradeData && parseFloat(getAllTradeData.Overall[0].PnL).toFixed(4)}</span>
-                                        </p> */}
 
-                                         <p className='bold mt-4' style={{ fontWeight: 'bold', fontSize: '20px', color: 'black' }}>
+                            {
+                                selectStrategyType === "Scalping" && <div>
+
+                                    <div className="iq-header-title mt-4">
+                                        <h4 className="card-title">Multi Conditional</h4>
+                                    </div>
+                                    <div className="modal-body">
+                                        <GridExample
+                                            columns={columns()}
+                                            data={tradeHistory.data1}
+                                            onRowSelect={handleRowSelect}
+                                            checkBox={true}
+                                        />
+                                    </div>
+                                </div>
+                            }
+                            <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>
+                            {
+                                showTable && <>
+
+                                    <div>
+                                        <p className='bold mt-4' style={{ fontWeight: 'bold', fontSize: '20px', color: 'black' }}>
                                             Total Profit and Loss : <span style={{ color: getAllTradeData && getAllTradeData.Overall[0].PnL < 0 ? 'red' : 'green' }}>{getAllTradeData && getAllTradeData.Overall[0].PnL}</span>
                                         </p>
 
 
-                                        
+
 
                                     </div>
                                     <div className='mt-3'>
@@ -532,7 +531,7 @@ const Tradehistory = () => {
                                             checkBox={false}
                                         />
                                     </div>
-                                   
+
 
 
                                     {/* EquityCurve  Graph show */}
@@ -543,29 +542,29 @@ const Tradehistory = () => {
                                         <AgChartsReact options={chartOptions2} />
                                     </div>
 
- 
-                                    <div className='mb-3 mt-3'>
-                                    <div className="accordion" id="accordionExample">
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" id="headingTwo">
-                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style={{fontWeight: 'bold'}}>
-                                                    Drawdown Table
-                                                </button>
 
-                                            </h2>
-                                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                                <div class="accordion-body">
-                                                    <GridExample
-                                                        columns={columns6()}
-                                                        data={getDropDownData.data}
-                                                        onRowSelect={handleRowSelect}
-                                                        checkBox={false}
-                                                    />
+                                    <div className='mb-3 mt-3'>
+                                        <div className="accordion" id="accordionExample">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="headingTwo">
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style={{ fontWeight: 'bold' }}>
+                                                        Drawdown Table
+                                                    </button>
+
+                                                </h2>
+                                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                                    <div class="accordion-body">
+                                                        <GridExample
+                                                            columns={columns6()}
+                                                            data={getDropDownData.data}
+                                                            onRowSelect={handleRowSelect}
+                                                            checkBox={false}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
 
 
@@ -677,7 +676,7 @@ const Tradehistory = () => {
 
                                     </div>
 
-                                    
+
                                     {/* EquityCurve */}
 
                                     {/* <div>
@@ -706,7 +705,7 @@ const Tradehistory = () => {
                                         <div className="accordion" id="accordionExample">
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header" id="headingTwo">
-                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style={{fontWeight: 'bold'}}>
+                                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style={{ fontWeight: 'bold' }}>
                                                         Equity Curve Table
                                                     </button>
                                                 </h2>
@@ -723,12 +722,6 @@ const Tradehistory = () => {
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
-
-
                                 </>
                             }
                         </div>

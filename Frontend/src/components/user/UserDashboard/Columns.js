@@ -1375,3 +1375,306 @@ export const getColumns5 = (handleDelete, handleEdit, handleContinutyDiscontinut
         }
     },
 ];
+
+export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinuty) => [
+    {
+        name: "S.No",
+        label: "S.No",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                const rowIndex = tableMeta.rowIndex;
+                return rowIndex + 1;
+            }
+        },
+    },
+    {
+        name: "Action",
+        label: "Action",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta)}>
+                   Square Off
+                </button>
+                </>
+            }
+        }
+    },
+    {
+        name: "Edit",
+        label: "Edit",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                return <><button className='btn' onClick={() => handleEdit(tableMeta)}>
+                  <SquarePen/>
+
+                </button>
+                </>
+            }
+        }
+    },
+    {
+        name: "Trading",
+        label: "Trading",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                const isChecked = Boolean(value);
+
+                return (
+                    <Checkbox
+                        checked={isChecked}
+                        onClick={() => handleContinutyDiscontinuty(tableMeta)}
+                    />
+
+                );
+            }
+        }
+    },
+    {
+        name: "ScalpType",
+        label: "Scalp Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Exchange",
+        label: "Exchange",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Symbol",
+        label: "Symbol",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Token",
+        label: "Token",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TStype",
+        label: "Measurement Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Booking Point",
+        label: "Target",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Re-entry Point",
+        label: "Stoploss",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "EntryPrice",
+        label: "First Trade Lower Range",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "EntryRange",
+        label: "First Trade Higher Range",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "LowerRange",
+        label: "Lower Range",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "HigherRange",
+        label: "Higher Range",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TType",
+        label: "Trade Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Quantity",
+        label: "Quantity",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExpiryDate",
+        label: "Expiry Date",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TradeExecution",
+        label: "Trade Execution",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitDay",
+        label: "Exit Day",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "EntryTime",
+        label: "Entry Time",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitTime",
+        label: "Exit Time",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "SSDate",
+        label: "SSDate",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "SEDate",
+        label: "SEDate",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "GroupN",
+        label: "Unique ID",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TradeCount",
+        label: "Trade Count",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "StepUp",
+        label: "StepUp",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "IncrementType",
+        label: "Increment Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Incrementvalue",
+        label: "Increment Value",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Targetselection",
+        label: "Target Selection",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Booking Point2",
+        label: "Booking Point2",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Booking Point3",
+        label: "Booking Point3",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Quantity2",
+        label: "Quantity2",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Quantity3",
+        label: "Quantity3",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+];

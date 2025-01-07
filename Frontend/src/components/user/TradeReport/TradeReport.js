@@ -6,7 +6,7 @@ import GridExample from '../../../ExtraComponent/CommanDataTable'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
-import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6 } from './ReportColumn'
+import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6 , getColumns9 } from './ReportColumn'
 
 const TradeReport = () => {
     const [selectStrategyType, setStrategyType] = useState('Scalping');
@@ -16,16 +16,12 @@ const TradeReport = () => {
     const [ToDate, setToDate] = useState('');
     const [FromDate, setFromDate] = useState('');
     const [showTable, setShowTable] = useState(false)
-
     const [getAllTradeData, setAllTradeData] = useState({
         loading: true,
         data1: [],
         data2: []
     })
-
-
     const Username = localStorage.getItem('name')
-
 
     // set Defult Date 
     const currentDate = new Date();
@@ -35,10 +31,8 @@ const TradeReport = () => {
     const day = String(currentDate.getDate()).padStart(2, '0');
     const formattedDate = `${year}.${month}.${day}`;
 
-
     // from date
     const DefultToDate = new Date();
-
     DefultToDate.setDate(DefultToDate.getDate() + 1);
     const year1 = DefultToDate.getFullYear();
     const month1 = String(DefultToDate.getMonth() + 1).padStart(2, '0');
@@ -114,13 +108,11 @@ const TradeReport = () => {
     };
 
 
-
-
     const handleSubmit = async () => {
         const data = {
             MainStrategy: selectStrategyType,
             Strategy: selectStrategyType == "Scalping" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : '',
-            Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : '',
+            Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectedRowData && selectedRowData.Symbol,
             Username: Username,
             ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
             Timeframe: selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TimeFrame : '',
@@ -238,7 +230,7 @@ const TradeReport = () => {
                                     <GridExample
                                         columns={selectStrategyType === "Scalping" ? getColumns() :
                                             selectStrategyType === "Option Strategy" ? getColumns1() :
-                                                selectStrategyType === "Pattern" ? getColumns2() : getColumns()
+                                                selectStrategyType === "Pattern" ? getColumns2() : getColumns9()
                                         }
                                         data={tradeReport.data}
                                         onRowSelect={handleRowSelect}

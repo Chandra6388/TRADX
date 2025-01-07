@@ -36,10 +36,6 @@ import AllScript from '../components/subadmin/SubAdminScript/AllScript';
 import ChangePassword from '../components/subadmin/Password/ChangePassword';
 
 
-
-
-// import ChangePassword from "../components/subadmin/Password/ChangePassword";
-
 const SubAdminRoutes = () => {
   const permission = localStorage.getItem("Permission");
   console.log("---", permission);

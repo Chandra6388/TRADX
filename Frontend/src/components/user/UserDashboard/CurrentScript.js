@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
-import { getColumns3, getColumns4, getColumns5 } from './Columns';
+import { getColumns3, getColumns4, getColumns5 , getColumns6 } from './Columns';
 import Swal from 'sweetalert2';
 import Formikform from "../../../ExtraComponent/FormData";
 import { useFormik } from 'formik';
@@ -27,11 +27,11 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         Marketwise: [],
         PremiumRotation: []
     });
-
-
     useEffect(() => {
         GetUserAllScripts()
     }, [])
+
+    console.log("allScripts", allScripts)
 
     const GetUserAllScripts = async () => {
         const data = { Username: userName }
@@ -441,7 +441,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                         PatternData: response.Pattern,
                         PatternOption: response.PatternOption,
                         Marketwise: response.Marketwise,
-                        PremiumRotation: response.PremiumRotation
+                        PremiumRotation: response.PremiumRotation,
+                        NewScalping : response.NewScalping
                     });
                 } else {
                     setAllservice({
@@ -1180,7 +1181,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             formik.setFieldValue('ExitTime', EditDataScalping.ExitTime)
             formik.setFieldValue('Quantity', EditDataScalping.Quantity)
             formik.setFieldValue('TradeCount', EditDataScalping.TradeCount)
-
         }
         else if (data == "Option Strategy") {
             formik1.setFieldValue('TStype', EditDataOption.strategytype)
@@ -1190,7 +1190,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             formik1.setFieldValue('EntryTime', EditDataOption['Entry Time'])
             formik1.setFieldValue('ExitTime', EditDataOption['Exit Time'])
             formik1.setFieldValue('TradeCount', EditDataOption.TradeCount)
-
         }
         else if (data == "Pattern") {
 
@@ -1200,13 +1199,13 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             formik2.setFieldValue('Quantity', EditDataPattern.Quantity)
             formik2.setFieldValue('EntryTime', EditDataPattern.EntryTime)
             formik2.setFieldValue('ExitTime', EditDataPattern.ExitTime)
-
-
             formik2.setFieldValue('TradeCount', EditDataPattern.TradeCount)
 
         }
     }, [showEditModal, data])
 
+
+    console.log("data", data)
     return (
         <div className="container-fluid">
             <div className="row">
@@ -1232,8 +1231,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
                                                     {getAllService.loading ? <Loader /> :
                                                         <FullDataTable
-                                                            columns={data === "Scalping" ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Option Strategy" ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Pattern" ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue) : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)}
-                                                            data={data === "Scalping" ? getAllService.ScalpingData : data === "Option Strategy" ? getAllService.OptionData : data === "Pattern" ? getAllService.PatternData : []}
+                                                            columns={data === "Scalping" ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Option Strategy" ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Pattern" ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue) : data == "NewScalping" ? getColumns6(handleDelete, handleEdit, HandleContinueDiscontinue) : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)}
+                                                            data={data === "Scalping" ? getAllService.ScalpingData : data === "Option Strategy" ? getAllService.OptionData : data === "Pattern" ? getAllService.PatternData : data == "NewScalping" ? getAllService.NewScalping : []}
                                                             checkBox={false}
                                                         />
                                                     }

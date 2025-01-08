@@ -473,14 +473,15 @@ const AddClient = () => {
             name: "Expirytype",
             label: "Expiry Type",
             type: "select",
-            options: formik.values.Symbol == "BANKNIFTY" ?
-                [
-                    { label: "Monthly", value: "Monthly" },
-                ] :
+            options: formik.values.Symbol == "NIFTY" ?
                 [
                     { label: "Weekly", value: "Weekly" },
                     { label: "Monthly", value: "Monthly" },
-                ],
+                ] :
+                [
+                    { label: "Monthly", value: "Monthly" },
+                ] ,
+               
             hiding: false,
             label_size: 12,
             col_size: 3,
@@ -1057,7 +1058,6 @@ const AddClient = () => {
     }, [formik.values.Strategy, formik.values.Striketype, formik.values.Measurment_Type])
 
 
-    console.log("formik", getExpiry.data)    
 
     const handleCheckPnl = async () => {
 
@@ -1097,7 +1097,7 @@ const AddClient = () => {
             TType: "",
             serendate: getEndData(formik.values.Measurment_Type),
             // expirydata1: formik.values.Expirytype == "Weekly" ? getExpiry && getExpiry.data[0] : formik.values.Expirytype == "Next Week" ? getExpiry && getExpiry.data[1] : getExpiry && getExpiry.data[2],
-            expirydata1:  getExpiry && getExpiry.data[0],
+            expirydata1: getExpiry && getExpiry.data[0],
 
             Expirytype: formik.values.Expirytype,
             Striketype: formik.values.Strategy != "ShortStraddle" && formik.values.Strategy != "LongStraddle" && formik.values.Measurment_Type != "Shifting_FourLeg" && formik.values.Strategy != 'ShortStraddle' && formik.values.Strategy != 'LongStraddle' ? formik.values.Striketype : '',

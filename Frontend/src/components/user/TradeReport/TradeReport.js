@@ -224,7 +224,7 @@ const TradeReport = () => {
                                     />
                                 </div>
                             }
-                            {selectStrategyType == "Scalping" && <div>
+                            {/* {selectStrategyType == "Scalping" && <div>
                                 <div className="iq-header-title mt-4">
                                     <h4 className="card-title">Multi Conditional</h4>
                                 </div>
@@ -239,7 +239,7 @@ const TradeReport = () => {
                                     </div>
                                 }
                             </div>
-                            }
+                            } */}
 
                             <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>
 

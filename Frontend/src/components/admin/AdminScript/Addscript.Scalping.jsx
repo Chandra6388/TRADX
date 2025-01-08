@@ -192,7 +192,7 @@ const AddClient = () => {
         TType: values.TType,
         EntryPrice: values.EntryPrice,
         EntryRange: values.EntryRange,
-        TStype: values.Strategy === "Fixed Price" ? "" : values.TStype,
+        TStype: values.Strategy == "One Directional" || values.Strategy == "Multi Directional" || (values.Strategy == "Multi_Conditional" && values.position_type != "Single") ? values.TStype : "",
         Targetvalue: values.Targetvalue,
         Slvalue: values.Slvalue,
         LowerRange: values.Strategy === "Fixed Price" ? 0 : values.LowerRange,

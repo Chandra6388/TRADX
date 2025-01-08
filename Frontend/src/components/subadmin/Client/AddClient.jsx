@@ -20,7 +20,7 @@ const Adduser = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [optionsArray, setoptionsArray] = useState([]);
     const [GetAllPlans, setAllPlans] = useState({ LivePlanName: [], DemoPlanName: [], data: [] });
-    const permission = localStorage.getItem('Permission');
+    const permission = localStorage.getItem('SubAdminPermission');
     const animatedComponents = makeAnimated();
 
     const Name_regex = (name) => {

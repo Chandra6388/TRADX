@@ -21,7 +21,7 @@ const AllClient = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [brokers, setBrokers] = useState([]);
     const [optionsArray, setOptionsArray] = useState([]);
-    const permission = localStorage.getItem('Permission');
+    const permission = localStorage.getItem('SubAdminPermission');
 
     useEffect(() => {
         fetchAllSubadmin();

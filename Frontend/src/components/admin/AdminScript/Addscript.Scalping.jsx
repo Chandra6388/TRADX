@@ -740,7 +740,9 @@ const AddClient = () => {
       name: "Strategy",
       label: "Scalping Type",
       type: "radio2",
-      title: [{ title: "Fixed Price", value: "Fixed Price" }, { title: "One Directional", value: "One Directional" }, { title: "Multi Directional", value: "Multi Directional" }, { title: "Multi Conditional", value: "Multi_Conditional" }],
+      title: [{ title: "Fixed Price", value: "Fixed Price" }, { title: "One Directional", value: "One Directional" }, { title: "Multi Directional", value: "Multi Directional" }, 
+        // { title: "Multi Conditional", value: "Multi_Conditional" }
+      ],
       hiding: false,
       label_size: 12,
       col_size: 12,

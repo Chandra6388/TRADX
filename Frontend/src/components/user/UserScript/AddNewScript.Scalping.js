@@ -544,9 +544,9 @@ const AddClient = () => {
       label: "Target Type",
       type: "select",
       options: [
-        { label: "Fixed Target", value: "fixedTarget" },
-        { label: "Entry Wise Target", value: "EntryWiseTarget" },
-        { label: "Average Target", value: "AverageTarget" },
+        { label: "Fixed Target", value: "Fixed Target" },
+        { label: "Entry Wise Target", value: "Entry Wise Target" },
+        { label: "Average Target", value: "Average Target" },
 
       ],
       showWhen: (values) => values.position_type == "Multiple" && values.Strategy == "Multi_Conditional",

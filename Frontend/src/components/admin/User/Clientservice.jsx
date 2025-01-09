@@ -246,7 +246,7 @@ const Clientservice = () => {
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (value) => value == '' ? "Admin" : value,
+                customBodyRender: (value) => value == '' || value==null ? "Admin" : value,
             }
         },
         {

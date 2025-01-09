@@ -1295,7 +1295,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                             checkBox={false}
                                                         />
                                                     }
-                                                    {/* {data === "Scalping" && (
+                                                    {data === "Scalping" && (
                                                         <div>
                                                             <div className="iq-header-title mt-4">
                                                                 <h4 className="card-title">Multi Conditional</h4>
@@ -1310,7 +1310,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                                 />
                                                             )}
                                                         </div>
-                                                    )} */}
+                                                    )}
 
                                                 </div>
                                             </div>

@@ -20,7 +20,6 @@ const Login = () => {
         const data = { Username: Username, password: password }
         await LoginPage(data)
             .then((response) => {
-
                 if (response.Status) {
                     if (response.Role === 'Subadmin') {
                         getSubAdminPermission()

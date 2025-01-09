@@ -494,7 +494,7 @@ const Tradehistory = () => {
                                 </div>
                             }
 
-                            {/* {
+                            {
                                 selectStrategyType === "Scalping" && <div>
 
                                     <div className="iq-header-title mt-4">
@@ -509,7 +509,7 @@ const Tradehistory = () => {
                                         />
                                     </div>
                                 </div>
-                            } */}
+                            }
 
                             <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>
                             {

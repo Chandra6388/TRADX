@@ -1009,6 +1009,289 @@ export const columns2 = ()=>[
 
 ];
 
+
+// USER LOG
+export const columns3 =()=> [
+    {
+        name: "S.No",
+        label: "S.No",
+
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                const rowIndex = tableMeta.rowIndex;
+                return rowIndex + 1;
+            }
+        },
+    },
+    {
+        name: "Exchange",
+        label: "Exchange",
+
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Symbol",
+        label: "Symbol",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Token",
+        label: "Token",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TType",
+        label: "Trade Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TStype",
+        label: "Measurement Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Booking Point",
+        label: "Target",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Re-entry Point",
+        label: "Stoploss",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Quantity",
+        label: "Quantity",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExpiryDate",
+        label: "Expiry Date",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TradeExecution",
+        label: "Trade Execution",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "LowerRange",
+        label: "Lower Range",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "HigherRange",
+        label: "Higher Range",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "HoldExit",
+        label: "Hold Exit",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    
+    {
+        name: "Instrument Symbol",
+        label: "Instrument Symbol",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Username",
+        label: "Username",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ScalpType",
+        label: "ScalpType",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "EntryPrice",
+        label: "Entry Price",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "EntryRange",
+        label: "Entry Range",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "GroupN",
+        label: "Unique ID",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    
+    {
+        name: "Profit",
+        label: "Profit",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Loss",
+        label: "Loss",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "FixedSM",
+        label: "FixedSM",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "EntryTime",
+        label: "EntryTime",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitTime",
+        label: "ExitTime",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitDay",
+        label: "ExitDay",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "MTrade",
+        label: "MTrade",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+     
+    
+    {
+        name: "SSDate",
+        label: "SSDate",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "SEDate",
+        label: "SEDate",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+  
+    {
+        name: "TaskStatus",
+        label: "TaskStatus",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TaskTime",
+        label: "TaskTime",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Instrument Type",
+        label: "Instrument Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+     
+    {
+        name: "TradeCount",
+        label: "Trade Count",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+
+];
+
 //User Report Column
 export const ReportColumns3 =()=> [
     {

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import FullDataTable from '../../../ExtraComponent/CommanDataTable'
 import { GetAllTaskStatus, GetClientService, Get_All_Client_Logs } from '../../CommonAPI/Admin'
-import {columns2 , columns1 , columns} from './UserAllColumn'
+import { columns3, columns2, columns1, columns } from './UserAllColumn'
 
 const Pannel = () => {
 
     const [getPanleData, setPanleData] = useState({
         loading: true,
-        data: []
+        data: [],
+        data1: []
     })
     const [userName, setUserName] = useState('')
     const [getScript, setScript] = useState('')
@@ -41,7 +42,7 @@ const Pannel = () => {
                 const response = await GetClientService();
                 if (response.Status) {
 
-                    
+
                     setClientService({
                         loading: false,
                         data: response.Data
@@ -56,7 +57,7 @@ const Pannel = () => {
 
         fetchClientService();
     }, []);
-   
+
     useEffect(() => {
 
         if (!clientService.loading && clientService.data.length > 0) {
@@ -75,18 +76,22 @@ const Pannel = () => {
 
     const getAllUserLogs = async () => {
         const data = { User: userName, Strategy: getScript, TaskStatus: getActivity }
+        console.log("getScript, ", getScript)
         await Get_All_Client_Logs(data)
+
             .then((response) => {
                 if (response.Status) {
                     setPanleData({
                         loading: false,
-                        data: response.Data
+                        data: response.Data,
+                        data1: getScript === "Scalping" ? response?.Multicondition : []
                     })
                 }
                 else {
                     setPanleData({
                         loading: false,
-                        data: []
+                        data: [],
+                        data1: []
                     })
                 }
             })
@@ -146,8 +151,8 @@ const Pannel = () => {
                                             onChange={(e) => setActivity(e.target.value)}
                                             value={getActivity}>
                                             <option value="">Select Task Status</option>
-                                            {gettaskStatus && gettaskStatus.map((item , index) => {
-                                                return <option value={item}  key={index}>{item}</option>
+                                            {gettaskStatus && gettaskStatus.map((item, index) => {
+                                                return <option value={item} key={index}>{item}</option>
                                             })}
                                         </select>
                                     </div>
@@ -159,6 +164,16 @@ const Pannel = () => {
                                     data={getPanleData.data}
                                     checkBox={false}
                                 />
+                                {getScript == 'Scalping' ?
+                                    <>
+                                        <h4 className='mt-3' >Multi Condition</h4>
+                                        <FullDataTable
+
+                                            columns={columns3()}
+                                            data={getPanleData.data1}
+                                            checkBox={false}
+                                        />
+                                    </> : ""}
                             </div >
                         </div>
                     </div >

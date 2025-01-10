@@ -20,6 +20,28 @@ export const CreateAccount = async (data) => {
     }
 
 }
+// getAdminPermission
+export const getAdminPermission = async (data) => {
+    const token = localStorage.getItem('token')
+    try {
+        const res = await axios.get(`${Config.base_url}/AdminPermission`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+
+}
+
+
 
 export const GetAdminDashboard = async (data) => {
     const token = localStorage.getItem('token')

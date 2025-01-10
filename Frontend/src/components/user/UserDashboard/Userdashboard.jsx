@@ -36,7 +36,8 @@ const Userdashboard = () => {
         loading: true,
         Scalping: [],
         Option: [],
-        Pattern: []
+        Pattern: [],
+        NewScalping:[]
     })
 
     useEffect(() => {
@@ -104,11 +105,12 @@ const Userdashboard = () => {
                 if (response.Status) {
 
                     setPositionData({
-                        loading: false,
-                        Scalping: response.Scalping,
-                        Option: response.Option,
-                        Pattern: response.Pattern
-                    })
+                      loading: false,
+                      Scalping: response.Scalping,
+                      Option: response.Option,
+                      Pattern: response.Pattern,
+                      NewScalping: response?.NewScalping,
+                    });
                 }
                 else {
                     setPositionData({
@@ -461,6 +463,103 @@ const Userdashboard = () => {
         },
     ];
 
+    const columns4 = [
+      {
+        name: "S.No",
+        label: "S.No",
+        options: {
+          filter: true,
+          sort: true,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            const rowIndex = tableMeta.rowIndex;
+            return rowIndex + 1;
+          },
+        },
+      },
+      {
+        name: "ScalpType",
+        label: "ScalpType",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+
+      {
+        name: "Symbol",
+        label: "Symbol",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "ETime",
+        label: "Entry Time",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "EPrice",
+        label: "Entry Price",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+
+      {
+        name: "TradeType",
+        label: "Trade Type",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "Quantity",
+        label: "Quantity",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "Trade",
+        label: "Trade",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "Target",
+        label: "Target",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "SL",
+        label: "Stop Loss",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "GroupN",
+        label: "Unique ID",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+    ];
+
    
     const handleAddCharting = async(index) => {
         const data = chartingData[index]
@@ -499,76 +598,88 @@ const Userdashboard = () => {
     }
 
     return (
-        <div className="container-fluid">
-            <div className="row p-0">
-                <div className="col-sm-12">
-                    <div className="iq-card">
-                        <div className="iq-card-body" style={{ padding: "3px" }}>
-                            <ul className="nav nav-tabs justify-content-center" id="myTab-2" role="tablist">
-                                <li className="nav-item" role="presentation">
-                                    <a
-                                        className={`nav-link ${activeTab1 === 'CurrentPosition' ? 'active' : ''}`}
-                                        id="home-tab-justify"
-                                        data-bs-toggle="tab"
-                                        href="#home-justify"
-                                        role="tab"
-                                        aria-controls="home"
-                                        aria-selected={activeTab1 === 'CurrentPosition'}
-                                        onClick={() => setActiveTab1('CurrentPosition')}
-                                    >
-                                        Current Script
-                                    </a>
-                                </li>
-                                <li className="nav-item" role="presentation">
-                                    <a
-                                        className={`nav-link ${activeTab1 === 'OpenPosition' ? 'active' : ''}`}
-                                        id="profile-tab-justify"
-                                        data-bs-toggle="tab"
-                                        href="#profile-justify"
-                                        role="tab"
-                                        aria-controls="profile"
-                                        aria-selected={activeTab1 === 'OpenPosition'}
-                                        onClick={() => setActiveTab1('OpenPosition')}
-                                    >
-                                        Open Position
-                                    </a>
-                                </li>
-                            </ul>
+      <div className="container-fluid">
+        <div className="row p-0">
+          <div className="col-sm-12">
+            <div className="iq-card">
+              <div className="iq-card-body" style={{ padding: "3px" }}>
+                <ul
+                  className="nav nav-tabs justify-content-center"
+                  id="myTab-2"
+                  role="tablist">
+                  <li className="nav-item" role="presentation">
+                    <a
+                      className={`nav-link ${activeTab1 === "CurrentPosition" ? "active" : ""}`}
+                      id="home-tab-justify"
+                      data-bs-toggle="tab"
+                      href="#home-justify"
+                      role="tab"
+                      aria-controls="home"
+                      aria-selected={activeTab1 === "CurrentPosition"}
+                      onClick={() => setActiveTab1("CurrentPosition")}>
+                      Current Script
+                    </a>
+                  </li>
+                  <li className="nav-item" role="presentation">
+                    <a
+                      className={`nav-link ${activeTab1 === "OpenPosition" ? "active" : ""}`}
+                      id="profile-tab-justify"
+                      data-bs-toggle="tab"
+                      href="#profile-justify"
+                      role="tab"
+                      aria-controls="profile"
+                      aria-selected={activeTab1 === "OpenPosition"}
+                      onClick={() => setActiveTab1("OpenPosition")}>
+                      Open Position
+                    </a>
+                  </li>
+                </ul>
 
-                            <div className='row'>
-                                {activeTab1 === 'CurrentPosition' && (
-                                    <div className='d-flex'>
-                                        <div className={`form-group ${activeTab == "currentScript" || activeTab == "copyScript" ? 'col-sm-6' : 'col-md-4'}`}>
-                                            <div className='px-3'>
-                                                <label>Add Via</label>
-                                                <select className="form-select" required=""
-                                                    onChange={(e) => { setActiveTab(e.target.value) }}
-                                                    value={activeTab}>
-                                                    <option value="currentScript">Current Script</option>
-                                                    <option value="group">Group Script</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        {activeTab == "group" && (
-                                            <div className={`form-group col-md-4`}>
-                                                <div className='px-3'>
-                                                    <label>Group Name</label>
-                                                    <select className="form-select" required=""
-                                                        onChange={(e) => { setGroup(e.target.value) }}
-                                                        value={getGroup}>
-                                                        <option value=''>Select Group Name</option>
-                                                        <option value="copyScript">Copy Script</option>
-                                                        {
-                                                            getGroupName && getGroupName.data.map((item) => {
-                                                                return <option value={item}>{item}</option>
-                                                            })
-                                                        }
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        )}
-                                        <div className={`form-group ${activeTab == "currentScript" || activeTab == "copyScript" ? 'col-sm-6' : 'col-md-4'}`}>
-                                            {/* <div className='px-3'>
+                <div className="row">
+                  {activeTab1 === "CurrentPosition" && (
+                    <div className="d-flex">
+                      <div
+                        className={`form-group ${activeTab == "currentScript" || activeTab == "copyScript" ? "col-sm-6" : "col-md-4"}`}>
+                        <div className="px-3">
+                          <label>Add Via</label>
+                          <select
+                            className="form-select"
+                            required=""
+                            onChange={(e) => {
+                              setActiveTab(e.target.value);
+                            }}
+                            value={activeTab}>
+                            <option value="currentScript">
+                              Current Script
+                            </option>
+                            <option value="group">Group Script</option>
+                          </select>
+                        </div>
+                      </div>
+                      {activeTab == "group" && (
+                        <div className={`form-group col-md-4`}>
+                          <div className="px-3">
+                            <label>Group Name</label>
+                            <select
+                              className="form-select"
+                              required=""
+                              onChange={(e) => {
+                                setGroup(e.target.value);
+                              }}
+                              value={getGroup}>
+                              <option value="">Select Group Name</option>
+                              <option value="copyScript">Copy Script</option>
+                              {getGroupName &&
+                                getGroupName.data.map((item) => {
+                                  return <option value={item}>{item}</option>;
+                                })}
+                            </select>
+                          </div>
+                        </div>
+                      )}
+                      <div
+                        className={`form-group ${activeTab == "currentScript" || activeTab == "copyScript" ? "col-sm-6" : "col-md-4"}`}>
+                        {/* <div className='px-3'>
                                                 <label>Strategy Type</label>
                                                 <select className="form-select" required=""
                                                     onChange={(e) => { setSubTab(e.target.value) }}
@@ -579,168 +690,215 @@ const Userdashboard = () => {
                                                 </select>
                                             </div> */}
 
-                                            <div className="px-3">
-                                                <label>Strategy Type</label>
-                                                <select
-                                                    className="form-select"
-                                                    required=""
-                                                    onChange={(e) => {
-                                                        setSubTab(e.target.value);
-                                                    }}
-                                                    value={subTab}
-                                                >
-                                                    {strategyType.map((type, index) => (
-                                                        <option key={index} value={type}>
-                                                            {type}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="">
-                                {activeTab1 === 'CurrentPosition' && (
-                                    <>
-                                        {activeTab === 'group' && (
-                                            <div className="tab-pane fade show active" id="home-justify" role="tabpanel">
-                                                <div className="mt-3">
-                                                    {getGroup == "copyScript" ? subTab && <Coptyscript data={subTab} selectedType={activeTab} data2={serviceStatus && serviceStatus} />
-                                                        :
-                                                        subTab && <GroupScript data={subTab} selectedType={activeTab} GroupName={getGroup} data2={serviceStatus && serviceStatus} />
-
-                                                    }
-                                                </div>
-                                            </div>
-                                        )}
-                                        {activeTab === 'currentScript' && (
-                                            <div className="tab-pane fade show active" id="home-justify" role="tabpanel">
-                                                <div className="tab-content mt-3">
-                                                    {subTab && subTab !== "ChartingPlatform" && (
-                                                        <CurrentScript
-                                                            data={subTab}
-                                                            selectedType={activeTab}
-                                                            data2={serviceStatus && serviceStatus}
-                                                        />
-                                                    )}
-
-                                                    {subTab === "ChartingPlatform" && (
-                                                        <div className="row">
-                                                            {cards.map((item, index) => {
-                                                                return (
-                                                                    <div className="col-md-4 mb-3" key={index}>
-                                                                        <div className="card">
-                                                                            <div className="card-header text-center">
-                                                                                <h5>{item.name}</h5>
-                                                                            </div>
-                                                                            <div className="card-body">
-                                                                                <div className="col-sm-7 d-flex">
-                                                                                    <span className="me-3">Status:</span>
-                                                                                    <div className="form-switch">
-                                                                                        <input
-                                                                                            className="form-check-input"
-                                                                                            style={{ width: "50px", height: "20px" }}
-                                                                                            type="checkbox"
-                                                                                            id="flexSwitchCheckChecked"
-                                                                                            name={`status-${index}`}
-                                                                                            onChange={(e) => {
-                                                                                                const data = [...chartingData]
-                                                                                                data[index].status = e.target.checked
-                                                                                                setChartingData(data)
-                                                                                            }}
-                                                                                            value={chartingData[index].status}
-                                                                                        />
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div className="mb-3">
-                                                                                    <label>{item.type === "cash" ? "Fund" : "Lot"}</label>
-                                                                                    <input
-                                                                                        type="number"
-                                                                                        className="form-control"
-                                                                                        placeholder="Enter funds"
-                                                                                        onChange={(e) => {
-                                                                                            const data = { ...chartingData }
-                                                                                            data[index].fund = e.target.value
-                                                                                            setChartingData(data)
-                                                                                        }}
-                                                                                        value={chartingData[index].fund}
-                                                                                    />
-                                                                                </div>
-                                                                                <div className="mb-3">
-                                                                                    <label>Trade Count</label>
-                                                                                    <input
-                                                                                        type="number"
-                                                                                        className="form-control"
-                                                                                        placeholder="Enter trade count"
-                                                                                        onChange={(e) => {
-                                                                                            const data = { ...chartingData }
-                                                                                            data[index].tradeCount = e.target.value
-                                                                                            setChartingData(data)
-                                                                                        }}
-                                                                                        value={chartingData[index].tradeCount}
-                                                                                    />
-                                                                                </div>
-                                                                                <div>
-                                                                                    <button className='btn btn-primary' onClick={() => handleAddCharting(index)}>Save</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                        </div>
-                                                    )}
-
-                                                </div>
-                                            </div>
-                                        )}
-
-                                    </>
-                                )}
-                            </div>
-
-                            <div className="tab-content">
-                                {activeTab1 === 'OpenPosition' && (
-                                    <>
-                                        <div className='mt-4'>
-                                            <h4>Scalping</h4>
-                                            <FullDataTable
-                                                columns={columns1}
-                                                data={getPositionData.Scalping}
-                                                checkBox={false}
-                                            />
-                                        </div>
-
-                                        <div className='mt-4'>
-                                            <h4>Option</h4>
-                                            <FullDataTable
-                                                columns={columns2}
-                                                data={getPositionData.Option}
-                                                checkBox={false}
-                                            />
-                                        </div>
-
-                                        <div className='mt-4'>
-
-                                            <h4>Pattern</h4>
-                                            <FullDataTable
-                                                columns={columns3}
-                                                data={getPositionData.Pattern}
-                                                checkBox={false}
-                                            />
-                                        </div>
-                                    </>
-                                )}
-                            </div>
+                        <div className="px-3">
+                          <label>Strategy Type</label>
+                          <select
+                            className="form-select"
+                            required=""
+                            onChange={(e) => {
+                              setSubTab(e.target.value);
+                            }}
+                            value={subTab}>
+                            {strategyType.map((type, index) => (
+                              <option key={index} value={type}>
+                                {type}
+                              </option>
+                            ))}
+                          </select>
                         </div>
+                      </div>
                     </div>
+                  )}
                 </div>
+                <div className="">
+                  {activeTab1 === "CurrentPosition" && (
+                    <>
+                      {activeTab === "group" && (
+                        <div
+                          className="tab-pane fade show active"
+                          id="home-justify"
+                          role="tabpanel">
+                          <div className="mt-3">
+                            {getGroup == "copyScript"
+                              ? subTab && (
+                                  <Coptyscript
+                                    data={subTab}
+                                    selectedType={activeTab}
+                                    data2={serviceStatus && serviceStatus}
+                                  />
+                                )
+                              : subTab && (
+                                  <GroupScript
+                                    data={subTab}
+                                    selectedType={activeTab}
+                                    GroupName={getGroup}
+                                    data2={serviceStatus && serviceStatus}
+                                  />
+                                )}
+                          </div>
+                        </div>
+                      )}
+                      {activeTab === "currentScript" && (
+                        <div
+                          className="tab-pane fade show active"
+                          id="home-justify"
+                          role="tabpanel">
+                          <div className="tab-content mt-3">
+                            {subTab && subTab !== "ChartingPlatform" && (
+                              <CurrentScript
+                                data={subTab}
+                                selectedType={activeTab}
+                                data2={serviceStatus && serviceStatus}
+                              />
+                            )}
+
+                            {subTab === "ChartingPlatform" && (
+                              <div className="row">
+                                {cards.map((item, index) => {
+                                  return (
+                                    <div className="col-md-4 mb-3" key={index}>
+                                      <div className="card">
+                                        <div className="card-header text-center">
+                                          <h5>{item.name}</h5>
+                                        </div>
+                                        <div className="card-body">
+                                          <div className="col-sm-7 d-flex">
+                                            <span className="me-3">
+                                              Status:
+                                            </span>
+                                            <div className="form-switch">
+                                              <input
+                                                className="form-check-input"
+                                                style={{
+                                                  width: "50px",
+                                                  height: "20px",
+                                                }}
+                                                type="checkbox"
+                                                id="flexSwitchCheckChecked"
+                                                name={`status-${index}`}
+                                                onChange={(e) => {
+                                                  const data = [
+                                                    ...chartingData,
+                                                  ];
+                                                  data[index].status =
+                                                    e.target.checked;
+                                                  setChartingData(data);
+                                                }}
+                                                value={
+                                                  chartingData[index].status
+                                                }
+                                              />
+                                            </div>
+                                          </div>
+                                          <div className="mb-3">
+                                            <label>
+                                              {item.type === "cash"
+                                                ? "Fund"
+                                                : "Lot"}
+                                            </label>
+                                            <input
+                                              type="number"
+                                              className="form-control"
+                                              placeholder="Enter funds"
+                                              onChange={(e) => {
+                                                const data = {
+                                                  ...chartingData,
+                                                };
+                                                data[index].fund =
+                                                  e.target.value;
+                                                setChartingData(data);
+                                              }}
+                                              value={chartingData[index].fund}
+                                            />
+                                          </div>
+                                          <div className="mb-3">
+                                            <label>Trade Count</label>
+                                            <input
+                                              type="number"
+                                              className="form-control"
+                                              placeholder="Enter trade count"
+                                              onChange={(e) => {
+                                                const data = {
+                                                  ...chartingData,
+                                                };
+                                                data[index].tradeCount =
+                                                  e.target.value;
+                                                setChartingData(data);
+                                              }}
+                                              value={
+                                                chartingData[index].tradeCount
+                                              }
+                                            />
+                                          </div>
+                                          <div>
+                                            <button
+                                              className="btn btn-primary"
+                                              onClick={() =>
+                                                handleAddCharting(index)
+                                              }>
+                                              Save
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
+
+                <div className="tab-content">
+                  {activeTab1 === "OpenPosition" && (
+                    <>
+                      <div className="mt-4">
+                        <h4>Scalping</h4>
+                        <FullDataTable
+                          columns={columns1}
+                          data={getPositionData.Scalping}
+                          checkBox={false}
+                        />
+                      </div>
+                      <div className="mt-4">
+                        <h4>Multi Condition</h4>
+                        <FullDataTable
+                          columns={columns4}
+                          data={getPositionData.NewScalping}
+                          checkBox={false}
+                        />
+                      </div>
+
+                      <div className="mt-4">
+                        <h4>Option</h4>
+                        <FullDataTable
+                          columns={columns2}
+                          data={getPositionData.Option}
+                          checkBox={false}
+                        />
+                      </div>
+
+                      <div className="mt-4">
+                        <h4>Pattern</h4>
+                        <FullDataTable
+                          columns={columns3}
+                          data={getPositionData.Pattern}
+                          checkBox={false}
+                        />
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    )
+      </div>
+    );
 }
 
 export default Userdashboard

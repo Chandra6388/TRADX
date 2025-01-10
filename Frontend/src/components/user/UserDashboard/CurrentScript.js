@@ -149,7 +149,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                 }
                             });
                             setTimeout(() => {
-                                // window.location.reload()
+                                window.location.reload()
                             }, 1500)
                         } else {
                             Swal.fire({

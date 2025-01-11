@@ -11,6 +11,7 @@ import { useFormik } from 'formik';
 
 const Coptyscript = ({ data, selectedType, data2 }) => {
     const userName = localStorage.getItem('name')
+    const adminPermission = localStorage.getItem('adminPermission')
     const navigate = useNavigate();
     const [refresh, setRefresh] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
@@ -18,6 +19,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     const [EditDataOption, setEditDataOption] = useState({})
     const [EditDataPattern, setEditDataPattern] = useState({})
     const [allScripts, setAllScripts] = useState({ data: [], len: 0 })
+    const [editCharting, setEditCharting] = useState();
+
     const [getAllService, setAllservice] = useState({
         loading: true,
         ScalpingData: [],
@@ -64,10 +67,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         });
     }
 
-    const handleDelete = async (rowData , type) => {
+    const handleDelete = async (rowData, type) => {
         const index = rowData.rowIndex
         const req =
-            data == 'Scalping' && type==1 ?
+            data == 'Scalping' && type == 1 ?
                 {
                     Username: userName,
                     MainStrategy: data,
@@ -109,7 +112,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                             TradePattern: "",
                             PatternName: ""
 
-                        } : data == 'Scalping' && type==2?
+                        } : data == 'Scalping' && type == 2 ?
                             {
                                 Username: userName,
                                 MainStrategy: "NewScalping",
@@ -169,12 +172,13 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         });
 
     }
-
+    console.log("getAllService", getAllService)
     const handleEdit = async (rowData) => {
         setShowEditModal(true)
         const index = rowData.rowIndex
         if (data == 'Scalping') {
             setEditDataScalping(getAllService.ScalpingData[index])
+            setEditCharting(getAllService.NewScalping[index])
         }
         else if (data == 'Option Strategy') {
             setEditDataOption(getAllService.OptionData[index])
@@ -193,10 +197,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         let trading;
 
 
-        if (data == 'Scalping' && type==1) {
+        if (data == 'Scalping' && type == 1) {
             trading = getAllService.ScalpingData[index].Trading
         }
-        else if (data == 'Scalping' && type==2) {
+        else if (data == 'Scalping' && type == 2) {
             trading = getAllService.NewScalping[index].Trading
         }
         else if (data == 'Pattern') {
@@ -211,7 +215,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             return
         }
 
-        console.log("trading", trading) 
+        console.log("trading", trading)
 
 
 
@@ -299,7 +303,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                 }).then(() => {
                                     setRefresh(!refresh)
                                 });
-                               
+
                             }
                             else {
                                 Swal.fire({
@@ -330,7 +334,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 }).then(async (result) => {
                     if (result.isConfirmed) {
                         const req =
-                            data == 'Scalping' && type==1 ?
+                            data == 'Scalping' && type == 1 ?
                                 {
                                     Username: userName,
                                     MainStrategy: data,
@@ -372,7 +376,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                             TradePattern: "",
                                             PatternName: ""
 
-                                        } : data == 'Scalping'  && type==2?
+                                        } : data == 'Scalping' && type == 2 ?
 
                                             {
                                                 Username: userName,
@@ -1295,7 +1299,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                             checkBox={false}
                                                         />
                                                     }
-                                                    {data === "Scalping" && (
+                                                    {data === "Scalping" && adminPermission.includes('Charting Platform') && (
                                                         <div>
                                                             <div className="iq-header-title mt-4">
                                                                 <h4 className="card-title">Multi Conditional</h4>

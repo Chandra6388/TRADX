@@ -25,6 +25,7 @@ const TradeReport = () => {
         data2: []
     })
     const Username = localStorage.getItem('name')
+    const adminPermission = localStorage.getItem('adminPermission')
 
     // set Defult Date 
     const currentDate = new Date();
@@ -224,7 +225,7 @@ const TradeReport = () => {
                                     />
                                 </div>
                             }
-                            {selectStrategyType == "Scalping" && <div>
+                            {selectStrategyType == "Scalping" && adminPermission.includes('Charting Platform') && <div>
                                 <div className="iq-header-title mt-4">
                                     <h4 className="card-title">Multi Conditional</h4>
                                 </div>

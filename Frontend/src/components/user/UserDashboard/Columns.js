@@ -1579,6 +1579,7 @@ export const getColumns5 = (handleDelete, handleEdit, handleContinutyDiscontinut
     },
 ];
 
+
 export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinuty) => [
     {
         name: "S.No",
@@ -1641,8 +1642,24 @@ export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinut
         }
     },
     {
-        name: "ScalpType",
-        label: "Scalp Type",
+        name: "Token",
+        label: "Token",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TSymbol",
+        label: "TSymbol",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Lotsize",
+        label: "Lotsize",
         options: {
             filter: true,
             sort: true,
@@ -1657,72 +1674,8 @@ export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinut
         }
     },
     {
-        name: "Symbol",
-        label: "Symbol",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Token",
-        label: "Token",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "TStype",
-        label: "Measurement Type",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Booking Point",
-        label: "Target",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Re-entry Point",
-        label: "Stoploss",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "EntryPrice",
-        label: "First Trade Lower Range",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "EntryRange",
-        label: "First Trade Higher Range",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "LowerRange",
-        label: "Lower Range",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "HigherRange",
-        label: "Higher Range",
+        name: "Planname",
+        label: "Plan Name",
         options: {
             filter: true,
             sort: true,
@@ -1737,147 +1690,60 @@ export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinut
         }
     },
     {
-        name: "Quantity",
-        label: "Quantity",
+        name: "Target",
+        label: "Target",
         options: {
             filter: true,
             sort: true,
         }
     },
     {
-        name: "ExpiryDate",
-        label: "Expiry Date",
+        name: "Sl",
+        label: "Stoploss",
         options: {
             filter: true,
             sort: true,
         }
     },
     {
-        name: "TradeExecution",
-        label: "Trade Execution",
+        name: "Exittime",
+        label: "Exittime",
         options: {
             filter: true,
             sort: true,
         }
     },
     {
-        name: "ExitDay",
-        label: "Exit Day",
+        name: "Ordertype",
+        label: "Ordertype",
         options: {
             filter: true,
             sort: true,
         }
     },
     {
-        name: "EntryTime",
-        label: "Entry Time",
+        name: "AccType",
+        label: "Account Type",
         options: {
             filter: true,
             sort: true,
         }
     },
     {
-        name: "ExitTime",
-        label: "Exit Time",
+        name: "Price",
+        label: "Price",
         options: {
             filter: true,
             sort: true,
         }
     },
     {
-        name: "SSDate",
-        label: "SSDate",
+        name: "Optiontype",
+        label: "Optiontype",
         options: {
             filter: true,
             sort: true,
         }
     },
-    {
-        name: "SEDate",
-        label: "SEDate",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "GroupN",
-        label: "Unique ID",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "TradeCount",
-        label: "Trade Count",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "StepUp",
-        label: "StepUp",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "IncrementType",
-        label: "Increment Type",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Incrementvalue",
-        label: "Increment Value",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Targetselection",
-        label: "Target Selection",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Booking Point2",
-        label: "Booking Point2",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Booking Point3",
-        label: "Booking Point3",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Quantity2",
-        label: "Quantity2",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Quantity3",
-        label: "Quantity3",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
+   
 ];

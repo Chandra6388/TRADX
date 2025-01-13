@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
-import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts , getUserChartingScripts } from '../../CommonAPI/User';
+import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts, getUserChartingScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
-import { getColumns3, getColumns4, getColumns5, getColumns6 } from './Columns';
+import { getColumns3, getColumns4, getColumns5, getColumns6 , getColumns8} from './Columns';
 import Swal from 'sweetalert2';
 import Formikform from "../../../ExtraComponent/FormData";
 import { useFormik } from 'formik';
@@ -494,6 +494,21 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 }
 
             }
+            else if (data === "ChartingPlatform") {
+                if (allScripts?.data?.[allScripts.len]?.CombineChartingSignal?.length >= 1) {
+                    navigate('/user/newscript/charting', { state: { data: { selectStrategyType: 'ChartingPlatform', scriptType: allScripts } } });
+                }
+                else {
+                    Swal.fire({
+                        title: "Warning",
+                        text: "Don't have any script left Please buy some Scripts",
+                        icon: "warning",
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+                }
+            }
+
             else {
                 if (allScripts?.data?.[allScripts.len]?.CombineScalping?.length >= 1) {
                     navigate('/user/newscript/scalping', {
@@ -1320,7 +1335,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
                                                     {getAllService.loading ? <Loader /> :
                                                         <FullDataTable
-                                                            columns={data === "Scalping" ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Option Strategy" ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Pattern" ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue) : data == "ChartingPlatform" ? getColumns6(handleDelete, handleEdit, HandleContinueDiscontinue) : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)}
+                                                            columns={data === "Scalping" ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Option Strategy" ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Pattern" ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue) : data == "ChartingPlatform" ? getColumns8(handleDelete, handleEdit, HandleContinueDiscontinue) : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)}
                                                             data={data === "Scalping" ? getAllService.ScalpingData : data === "Option Strategy" ? getAllService.OptionData : data === "Pattern" ? getAllService.PatternData : data == "ChartingPlatform" ? getCharting : []}
                                                             checkBox={false}
                                                         />
@@ -1393,9 +1408,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                         btn_name="Update"
                                         formik={formik2}
                                     />
-
-
-
                         }
                     </div>
                 </div>

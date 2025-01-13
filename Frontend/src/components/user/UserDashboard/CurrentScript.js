@@ -213,8 +213,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             console.log("Error in finding the trading status")
             return
         }
-
-        console.log("trading", trading)
+ 
 
 
 
@@ -1313,8 +1312,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                                 />
                                                             )}
                                                         </div>
-                                                    )}
-
+                                                    )} 
                                                 </div>
                                             </div>
                                         </>

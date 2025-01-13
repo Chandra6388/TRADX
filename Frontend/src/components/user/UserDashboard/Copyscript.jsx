@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { GetAllUserScript, DeleteUserScript, GetUserScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
-import { getColumns, getColumns1, getColumns2 } from './Columns';
+import { getColumns, getColumns1, getColumns2 , getColumns7 } from './Columns';
 import Swal from 'sweetalert2';
 
 const Coptyscript = ({ data, selectedType, data2 }) => {
     const userName = localStorage.getItem('name')
+    const adminPermission = localStorage.getItem('adminPermission')
     const navigate = useNavigate();
     const [selectGroup, setSelectGroup] = useState('');
     const [allScripts, setAllScripts] = useState({ data: [], len: 0 })
@@ -18,9 +19,12 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         PatternData: [],
         PatternOption: [],
         Marketwise: [],
-        PremiumRotation: []
+        PremiumRotation: [],
+        NewScalping: []
     });
 
+
+    console.log("allScripts?.data?.length", allScripts?.data)
     useEffect(() => {
         GetUserAllScripts()
     }, [])
@@ -48,7 +52,12 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     }
 
     const handleAddScript1 = (data1) => {
+     
+        const selectedRowIndex = data1.rowIndex;
+        const selectedRow = getAllService.NewScalping[selectedRowIndex];
+
         
+
         if (data2.status == false) {
             Swal.fire({
                 title: "Error",
@@ -58,7 +67,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts?.data?.length == 0) {
+        else if (allScripts?.data?.[allScripts?.len]?.CombineScalping?.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -68,9 +77,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             });
         }
         else {
-            const selectedRowIndex = data1.rowIndex;
-            const selectedRow = getAllService.ScalpingData[selectedRowIndex];
-            const isExist = allScripts?.data[allScripts?.len].CombineScalping?.find((item) => item === selectedRow.ScalpType) ?? ""
+           
+            const isExist = allScripts?.data?.[allScripts?.len]?.CombineScalping?.find((item) => item === selectedRow.ScalpType) ?? ""
             if (!isExist) {
                 Swal.fire({
                     title: "Warning",
@@ -96,7 +104,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts?.data?.length == 0) {
+        else if (allScripts?.data?.[allScripts?.len]?.CombineOption?.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -106,10 +114,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             });
         }
         else {
-            
+
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.OptionData[selectedRowIndex];
-            let OptionStgArr = allScripts?.data[allScripts?.len].CombineOption
+            let OptionStgArr = allScripts?.data?.[allScripts?.len]?.CombineOption
 
             if (
                 OptionStgArr?.includes('Straddle_Strangle') &&
@@ -156,7 +164,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts?.data?.length == 0) {
+        else if (allScripts?.data?.[allScripts?.len]?.CombinePattern?.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -165,10 +173,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else { 
+        else {
             const selectedRowIndex = data1.rowIndex;
             const selectedRow = getAllService.PatternData[selectedRowIndex];
-            const isExist = allScripts?.data[allScripts?.len].CombinePattern?.find((item) => item === selectedRow.TradePattern) ?? ""
+            const isExist = allScripts?.data?.[allScripts?.len]?.CombinePattern?.find((item) => item === selectedRow.TradePattern) ?? ""
             if (!isExist) {
                 Swal.fire({
                     title: "Warning",
@@ -197,7 +205,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                         PatternData: response.Pattern,
                         PatternOption: response.PatternOption,
                         Marketwise: response.Marketwise,
-                        PremiumRotation: response.PremiumRotation
+                        PremiumRotation: response.PremiumRotation,
+                        NewScalping: response.NewScalping
 
                     });
                 } else {
@@ -208,7 +217,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                         PatternData: [],
                         PatternOption: [],
                         Marketwise: [],
-                        PremiumRotation: []
+                        PremiumRotation: [],
+                        NewScalping: []
                     });
                 }
             })
@@ -242,6 +252,22 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                             checkBox={false}
                                                         />
                                                     }
+                                                    {data === "Scalping" && adminPermission?.includes('Charting Platform') && (
+                                                        <div>
+                                                            <div className="iq-header-title mt-4">
+                                                                <h4 className="card-title">Multi Conditional</h4>
+                                                            </div>
+                                                            {getAllService.loading ? (
+                                                                <Loader />
+                                                            ) : (
+                                                                <FullDataTable
+                                                                    columns={getColumns7(handleAddScript1)}
+                                                                    data={getAllService.NewScalping}
+                                                                    checkBox={false}
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </>

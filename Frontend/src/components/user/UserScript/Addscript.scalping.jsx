@@ -364,6 +364,7 @@ const AddClient = () => {
         formik.setFieldValue('Group', location.state.data.GroupN)
         formik.setFieldValue('Optiontype', result ? result.type : "")
         formik.setFieldValue('Strike', result ? result.number : "")
+        formik.setFieldValue('position_type', location?.state?.data?.PositionType)
         setinitialvalue(true)
     }, [location.state.data])
 

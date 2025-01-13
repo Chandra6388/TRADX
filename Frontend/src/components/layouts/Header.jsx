@@ -52,7 +52,7 @@ const Header = () => {
   const [userName, setUserName] = useState("");
   const [permissionData, setPermissionData] = useState("");
 
-  console.log("permissiona", permissionData);
+
 
   const AdminPermission = async () => {
     try {

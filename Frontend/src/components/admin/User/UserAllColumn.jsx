@@ -39,6 +39,14 @@ export const ClientActivityPage =()=> [
         }
     },
     {
+        name: "Planname",
+        label: "Planname",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
         name: "Credit Use",
         label: "Credit Use",
         options: {

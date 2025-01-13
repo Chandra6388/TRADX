@@ -510,7 +510,7 @@ const Tradehistory = () => {
                 }
 
                 {selectStrategyType === "Scalping" &&
-                  adminPermission.includes("Charting Platform") && (
+                  adminPermission?.includes("Charting Platform") && (
                     <div>
                       <div className="iq-header-title mt-4">
                         <h4 className="card-title">Multi Conditional</h4>

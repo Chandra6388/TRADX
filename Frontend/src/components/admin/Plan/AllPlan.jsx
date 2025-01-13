@@ -4,10 +4,8 @@ import { useState } from "react";
 import { BadgeCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Get_All_Plans } from "../../CommonAPI/User";
-import FullDataTable from "../../../ExtraComponent/CommanDataTable";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import Swal from "sweetalert2";
 
 import { useEffect } from "react";
 
@@ -44,7 +42,7 @@ const ServicesList = () => {
     data: [],
     data1: [],
   });
-  console.log("GetAllPlans", GetAllPlans);
+
   useEffect(() => {
     GetAllPlansData();
   }, []);
@@ -96,12 +94,6 @@ const ServicesList = () => {
 
     return matchedRange ? <BadgeCheck style={{ color: "green" }} /> : null;
   };
-
-  function getRandomNumber() {
-    return Math.floor(Math.random() * 3) + 1;
-  }
-
-  const columns = [];
 
   return (
     <>

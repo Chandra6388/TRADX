@@ -20,7 +20,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     const [EditDataPattern, setEditDataPattern] = useState({})
     const [allScripts, setAllScripts] = useState({ data: [], len: 0 })
     const [editCharting, setEditCharting] = useState();
-    const [getCharting, setGetCharting] = useState();
+    const [getCharting, setGetCharting] = useState([]);
 
     const [getAllService, setAllservice] = useState({
         loading: true,
@@ -42,8 +42,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     }, [data]);
 
 
-
-    console.log("getCharting", getCharting)
+ 
     const getChartingScript = async () => {
         const req = { Username: userName, Planname: "Chart" }
         await getUserChartingScripts(req)

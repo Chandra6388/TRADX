@@ -26,6 +26,8 @@ import Transection from '../components/user/Transection/AllTransection'
 import AllPlan from '../components/user/Plan/AllPlan'
 import NewStrategy from '../components/user/NewStrategy/NewStrategy';
 
+import AddChartingScript from '../components/user/UserScript/AddChartingScript';
+
 const UserRoute = () => {
 
   return (
@@ -55,6 +57,8 @@ const UserRoute = () => {
             <Route path="all/transection" element={<Transection />} />
             <Route path="all/plan" element={<AllPlan />} />
             <Route path='/newStrategy' element={<NewStrategy />} />
+            <Route path='/newscript/charting' element={<AddChartingScript />} /> 
+
 
           </Routes>
 

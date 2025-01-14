@@ -4,10 +4,8 @@ import { useState } from "react";
 import { BadgeCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Get_All_Plans } from "../../CommonAPI/User";
-import FullDataTable from "../../../ExtraComponent/CommanDataTable";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import Swal from "sweetalert2";
 
 import { useEffect } from "react";
 
@@ -44,7 +42,7 @@ const ServicesList = () => {
     data: [],
     data1: [],
   });
-  console.log("GetAllPlans", GetAllPlans);
+
   useEffect(() => {
     GetAllPlansData();
   }, []);
@@ -97,12 +95,6 @@ const ServicesList = () => {
     return matchedRange ? <BadgeCheck style={{ color: "green" }} /> : null;
   };
 
-  function getRandomNumber() {
-    return Math.floor(Math.random() * 3) + 1;
-  }
-
-  const columns = [];
-
   return (
     <>
       <div className="row">
@@ -120,7 +112,7 @@ const ServicesList = () => {
             <div className="iq-card-body">
               <div className="container mt-4">
                 <Tabs
-                  defaultActiveKey="PendingRequest"
+                  defaultActiveKey="Scalping"
                   id="fill-tab-example"
                   className="mb-3 custom-tabs"
                   fill>
@@ -177,7 +169,7 @@ const ServicesList = () => {
                     </div>
                   </Tab>
                   <Tab eventKey="Charting" title="Charting">
-                    <div className="">
+                    
                       <div className="iq-card-body">
                         <div style={styles.container} className="row">
                           {GetAllPlans?.data1.map((plan, index) => (
@@ -224,58 +216,13 @@ const ServicesList = () => {
                           ))}
                         </div>
                       </div>
-                    </div>
+                    
                   </Tab>
                 </Tabs>
               </div>
             </div>
 
-            <div className="iq-card-body">
-              <div style={styles.container} className="row">
-                {GetAllPlans?.data.map((plan, index) => (
-                  <Card
-                    key={index}
-                    style={styles.card}
-                    className="col-lg-3 col-md-6 mb-3">
-                    {/* <img src={imgArr[getRandomNumber()]} alt={plan.PlanName} style={styles.image} /> */}
-                    <div style={styles.content}>
-                      <h2 style={styles.title}>
-                        {plan.PlanName} {SetPlan(index)}
-                      </h2>
-                      <h4 style={styles.subtitle}>
-                        <FaRupeeSign className="m-1" />
-                        <strong>{plan.payment}</strong>
-                      </h4>
-                      <h5 style={styles.prices}>
-                        No of Scripts: {plan.NumberofScript}
-                      </h5>
-                      <h5 style={styles.prices}>
-                        Duration: {plan?.["Plan Validity"]}
-                      </h5>
-
-                      <div style={styles.prices}>
-                        <p style={styles.priceItem}>
-                          <strong>Scalping Strategy:</strong>{" "}
-                          {plan?.Scalping?.join(", ")}
-                        </p>
-                        <p style={styles.priceItem}>
-                          <strong>Option Strategy:</strong>{" "}
-                          {plan?.["Option Strategy"]?.join(", ")}
-                        </p>
-                        <p style={styles.priceItem}>
-                          <strong>Pattern Strategy:</strong>{" "}
-                          {plan?.Pattern?.join(", ")}
-                        </p>
-                        <p style={styles.priceItem}>
-                          <strong>Pattern Strategy:</strong>{" "}
-                          {plan?.ChartingSignal?.join(", ")}
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>

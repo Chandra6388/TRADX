@@ -3,20 +3,20 @@ import { GetClientService, get_User_Data, get_Trade_History, get_PnL_Data, get_E
 import Loader from '../../../ExtraComponent/Loader'
 import GridExample from '../../../ExtraComponent/CommanDataTable'
 import DatePicker from "react-datepicker";
-import { columns, columns1, columns2, columns3, columns4, columns5, columns6 } from './TradeHistoryColumn'
+import { columns, columns1, columns2, columns3, columns7, columns5, columns6 } from './TradeHistoryColumn'
 import { AgChartsReact } from "ag-charts-react";
 import "ag-charts-enterprise";
 import ApexCharts from 'react-apexcharts';
-
 import Swal from 'sweetalert2';
 import "react-datepicker/dist/react-datepicker.css";
 
 
 const Tradehistory = () => {
+    const adminPermission = localStorage.getItem("adminPermission");
     const [selectGroup, setSelectGroup] = useState('')
     const [selectStrategyType, setStrategyType] = useState('')
     const [selectStrategyName, setStrategyName] = useState('')
-    const [tradeHistory, setTradeHistory] = useState('')
+    const [tradeHistory, setTradeHistory] = useState({ loading: true, data: [], data1: [] })
     const [selectedRowData, setSelectedRowData] = useState('');
     const [ToDate, setToDate] = useState('');
     const [FromDate, setFromDate] = useState('');
@@ -133,13 +133,15 @@ const Tradehistory = () => {
 
                     setTradeHistory({
                         loading: false,
-                        data: response.Data
+                        data: response.Data,
+                        data1: response.NewScalping
                     })
                 }
                 else {
                     setTradeHistory({
                         loading: false,
-                        data: []
+                        data: [],
+                        data1: []
                     })
 
                 }
@@ -171,8 +173,8 @@ const Tradehistory = () => {
 
     const handleSubmit = async () => {
         const data = {
-            MainStrategy: selectStrategyType,
-            Strategy: selectStrategyType == "Scalping" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : '',
+            MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
+            Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "",
             Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : '',
             Username: selectGroup,
             ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
@@ -492,6 +494,23 @@ const Tradehistory = () => {
                                     />
                                 </div>
                             }
+
+                            {selectStrategyType === "Scalping" &&
+                                adminPermission.includes("Charting Platform") && (
+                                    <div>
+                                        <div className="iq-header-title mt-4">
+                                            <h4 className="card-title">Multi Conditional</h4>
+                                        </div>
+                                        <div className="modal-body">
+                                            <GridExample
+                                                columns={columns7()}
+                                                data={tradeHistory.data1}
+                                                onRowSelect={handleRowSelect}
+                                                checkBox={true}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
                             <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>
 
                             {showTable && <>
@@ -505,7 +524,7 @@ const Tradehistory = () => {
                                         Total Profit and Loss : <span style={{ color: getAllTradeData && getAllTradeData.Overall[0].PnL < 0 ? 'red' : 'green' }}>{getAllTradeData && getAllTradeData.Overall[0].PnL}</span>
                                     </p>
 
-                                    
+
 
                                 </div>
 
@@ -517,6 +536,8 @@ const Tradehistory = () => {
                                         checkBox={false}
                                     />
                                 </div>
+
+
 
 
                                 {/* EquityCurve  Graph show */}

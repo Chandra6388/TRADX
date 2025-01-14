@@ -7,55 +7,39 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 const AddChartingScript = () => {
+
   const navigate = useNavigate();
   const userName = localStorage.getItem("name");
-
-  // const [chartingData, setChartingData] = useState([
-  //   { name: "Cash", Status: false, Fund: "", TradeCount: "" },
-  //   { name: "Future", Status: false, Fund: "", TradeCount: "" },
-  //   { name: "Option", Status: false, Fund: "", TradeCount: "" },
-  // ]);
-
   const [chartingData, setChartingData] = useState([]);
 
-  console.log("chartingData", chartingData);
   const getChartingData = async () => {
     const res = await getChargingPlatformDataApi(userName);
-    console.log("apires is ", res.Client);
     setChartingData(res.Client);
   };
-
-  //   const [viewChartingData, setViewChartingData] = useState([]);
 
   useEffect(() => {
     getChartingData();
   }, []);
 
   const cards = [
-    { name: "Cash", type: "cash", Status: false, Fund: "", TradeCount: "" },
-    { name: "Future", type: "future", Status: true, lot: "", TradeCount: "" },
-    {
-      name: "Option",
-      type: "option",
-      Status: false,
-      Fund: "",
-      TradeCount: "",
-    },
+    { name: "Cash", type: "Cash", Status: false, Fund: "", TradeCount: "" },
+    { name: "Future", type: "Future", Status: true, lot: "", TradeCount: "" },
+    { name: "Option", type: "Option", Status: false, Fund: "", TradeCount: "", },
   ];
 
   const handleAddCharting = async (index) => {
     const data = chartingData[index];
-    console.log("data is", data);
+
+
     const req = {
       Username: userName,
       Status: data.Status,
-      Fund: index == 0 ? Number(data.Fund) : 0,
-      Lot: index == 0 ? 0 : Number(data.Fund),
+      Fund: data.Segment == "Cash" ? Number(data.Fund) : 0,
+      Lot: data.Segment == "Cash" ? 0 : Number(data.Quantity),
       Segment: data.Segment,
       TradeCount: Number(data.TradeCount),
     };
-    console.log("req", req);
-    
+   
     await addChartingScript(req)
       .then((response) => {
         if (response.Status) {
@@ -66,9 +50,6 @@ const AddChartingScript = () => {
             timer: 1500,
             timerProgressBar: true,
           });
-          //   setTimeout(() => {
-          //     navigate("/user/dashboard");
-          //   }, 1500);
         } else {
           Swal.fire({
             icon: "error",
@@ -112,38 +93,47 @@ const AddChartingScript = () => {
                           height: "20px",
                         }}
                         type="checkbox"
-                        id={`flexSwitchCheckChecked-${index}`} // Unique ID for each input
+                        id={`flexSwitchCheckChecked-${index}`}
                         name={`status-${index}`}
-                        checked={chartingData[index]?.Status === "On"} // Reflect the correct "On"/"Off" state
+                        checked={chartingData[index]?.Status === "On"}
                         onChange={(e) => {
                           const updatedData = [...chartingData];
                           updatedData[index].Status = e.target.checked
                             ? "On"
-                            : "Off"; // Update based on checkbox state
-                          setChartingData(updatedData); // Update the state
+                            : "Off";
+                          setChartingData(updatedData);
                           console.log(
                             "Updated status:",
                             updatedData[index].Status
-                          ); // Log for debugging
+                          );
                         }}
                       />
                     </div>
                   </div>
                   <div className="mb-3">
-                    <label>{item.type === "cash" ? "Fund" : "Lot"}</label>
+                    <label>{item.type === "Cash" ? "Fund" : "Lot"}</label>
                     <input
                       type="number"
                       className="form-control"
-                      placeholder="Enter funds"
+                      placeholder={item.type === "Cash" ? "Enter Fund" : "Enter Lot"}
                       onChange={(e) => {
-                        const data = {
-                          ...chartingData,
-                        };
-                        data[index].Fund = e.target.value;
-                        setChartingData(data);
+                        const updatedData = [...chartingData];
+                        if (item.type === "Cash") {
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            Fund: e.target.value,
+                          };
+                        } else {
+                          updatedData[index] = {
+                            ...updatedData[index],
+                            Quantity: e.target.value,
+                          };
+                        }
+                        setChartingData(updatedData);
                       }}
-                      value={chartingData[index]?.Fund}
+                      value={item.type === "Cash" ? chartingData[index]?.Fund || '' : chartingData[index]?.Quantity || ''}
                     />
+
                   </div>
                   <div className="mb-3">
                     <label>Trade Count</label>

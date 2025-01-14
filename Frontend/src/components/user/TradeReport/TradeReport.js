@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { get_User_Data, getStrategyType } from '../../CommonAPI/Admin'
-import { get_Trade_Report, getChargingPlatformDataApi, getUserChartingScripts } from '../../CommonAPI/User'
-import Loader from '../../../ExtraComponent/Loader'
+import { get_Trade_Report, getChargingPlatformDataApi, getUserChartingScripts, getChartingReport } from '../../CommonAPI/User'
+import { Eye } from "lucide-react";
 import GridExample from '../../../ExtraComponent/CommanDataTable'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
-import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6, getColumns9, getColumns10, getColumns11 } from './ReportColumn'
+import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6, getColumns9 , getColumns10 } from './ReportColumn'
 
 const TradeReport = () => {
     const userName = localStorage.getItem("name");
 
-    
+
     const [selectStrategyType, setStrategyType] = useState('Scalping');
     const [strategyNames, setStrategyNames] = useState([])
     const [tradeReport, setTradeReport] = useState({
@@ -23,11 +23,10 @@ const TradeReport = () => {
     const [ToDate, setToDate] = useState('');
     const [FromDate, setFromDate] = useState('');
     const [showTable, setShowTable] = useState(false)
-    const [getAllTradeData, setAllTradeData] = useState({
-        loading: true,
-        data1: [],
-        data2: []
-    })
+    const [charting, setCharting] = useState([])
+    const [getAllTradeData, setAllTradeData] = useState({ loading: true, data1: [], data2: [] })
+
+    const [chartingData, setChartingData] = useState([]);
     const Username = localStorage.getItem('name')
     const adminPermission = localStorage.getItem('adminPermission')
 
@@ -59,31 +58,6 @@ const TradeReport = () => {
         const day = String(dateObj.getDate()).padStart(2, '0');
         return `${year}.${month}.${day}`;
     };
-
-
-    useEffect(() => {
-        if (selectStrategyType == "ChartingPlatform")
-            getChartingScript();
-    }, [selectStrategyType]);
-
-
-
-    const getChartingScript = async () => {
-        const req = { Username: Username, Planname: "Chart" }
-        await getUserChartingScripts(req)
-            .then((response) => {
-                if (response.Status) {
-                    setGetCharting(response.Client)
-                }
-                else {
-                    setGetCharting([])
-                }
-            })
-            .catch((err) => {
-                console.log("Error in finding the User Scripts", err)
-            })
-    }
-
 
     const GetTradeReport = async () => {
         const data = { Data: selectStrategyType, Username: Username }
@@ -140,25 +114,22 @@ const TradeReport = () => {
         setSelectedRowData(rowData);
     };
 
-    const [chartingData, setChartingData] = useState([]);
-    
-      console.log("chartingData", chartingData);
-      const getChartingData = async () => {
+
+    const getChartingData = async () => {
         const res = await getChargingPlatformDataApi(userName);
-        console.log("apires is ", res.Client);
         setChartingData(res.Client);
-      };
-    
-    
-      useEffect(() => {
+    };
+
+
+    useEffect(() => {
         getChartingData();
-      }, []);
- 
+    }, []);
+
     const handleSubmit = async () => {
         const data = {
             MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
             Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "",
-            Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName :  selectStrategyType == "ChartingPlatform"  ? selectedRowData && selectedRowData.TSymbol :  selectedRowData && selectedRowData.Symbol,
+            Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform" ? selectedRowData && selectedRowData.TSymbol : selectedRowData && selectedRowData.Symbol,
             Username: Username,
             ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
             Timeframe: selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TimeFrame : '',
@@ -169,8 +140,8 @@ const TradeReport = () => {
             PatternName: ""
         }
 
-          
-        await get_Trade_Report(data) 
+
+        await get_Trade_Report(data)
             .then((response) => {
                 if (response.Status) {
                     setAllTradeData({
@@ -210,6 +181,124 @@ const TradeReport = () => {
     }, [selectStrategyType, FromDate, ToDate, selectedRowData])
 
 
+
+    const handleViewchartingReport = async (rowData) => {
+        const req = { Username: rowData.Username, Segment: rowData.Segment }
+        await getChartingReport(req).then((res) => {
+            if (res.Status) {
+                setShowTable(true)
+                setGetCharting(res.Client)
+            }
+            else {
+                setGetCharting([])
+            }
+        }).catch((err) => {
+            console.log("Error in getting the charting report", err)
+        })
+
+
+    };
+    const getColumns11 = [
+        {
+            name: "S.No",
+            label: "S.No",
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    const rowIndex = tableMeta.rowIndex;
+                    return rowIndex + 1;
+                }
+            },
+        },
+
+
+        {
+            name: "Segment",
+            label: "Segment",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+
+        {
+            name: "View",
+            label: "View",
+            options: {
+                filter: true,
+                sort: true,
+                customBodyRender: (value, tableMeta, updateValue) => {
+                    return (
+                        <button
+                            onClick={() => {
+                                const rowIndex = tableMeta.rowIndex;
+                                const data = chartingData[rowIndex];
+                                handleViewchartingReport(data);
+                                window.scrollTo({
+                                    top: document.body.scrollHeight,
+                                    behavior: "smooth",
+                                });
+                            }}
+                            style={{
+                                border: "none",
+                                background: "transparent",
+                                cursor: "pointer",
+                            }}
+                        >
+                            <Eye color="#007BFF" size={20} />
+                        </button>
+                    );
+                },
+            },
+        },
+
+        {
+            name: "Username",
+            label: "Username",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+
+        {
+            name: "Status",
+            label: "Status",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+
+        {
+            name: "Fund",
+            label: "Fund",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+
+        {
+            name: "Quantity",
+            label: "Quantity",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+
+        {
+            name: "TradeCount",
+            label: "TradeCount",
+            options: {
+                filter: true,
+                sort: true,
+            }
+        },
+
+    ];
     return (
         <div>
             <div className="container-fluid">
@@ -259,12 +348,12 @@ const TradeReport = () => {
                                         columns={selectStrategyType === "Scalping" ? getColumns() :
                                             selectStrategyType === "Option Strategy" ? getColumns1() :
                                                 selectStrategyType === "Pattern" ? getColumns2() :
-                                                    selectStrategyType === "ChartingPlatform" ? getColumns11() :
+                                                    selectStrategyType === "ChartingPlatform" ? getColumns11 :
                                                         getColumns9()
                                         }
                                         data={selectStrategyType === "ChartingPlatform" ? chartingData : tradeReport.data}
                                         onRowSelect={handleRowSelect}
-                                        checkBox={selectStrategyType === "ChartingPlatform" ? false :true}
+                                        checkBox={selectStrategyType === "ChartingPlatform" ? false : true}
                                     />
                                 </div>
                             }
@@ -285,34 +374,56 @@ const TradeReport = () => {
                             </div>
                             }
 
-                            <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>
+                            {selectStrategyType === "ChartingPlatform" ? "" : <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>}
+
 
                             {
-                                showTable && <>
-                                    <h4 className='mt-4 mb-2'>Open Trade</h4>
-                                    <GridExample
-                                        columns={selectStrategyType === "Scalping" ? getColumns3() :
-                                            selectStrategyType === "Option Strategy" ? getColumns4() :
-                                                selectStrategyType === "Pattern" ? getColumns5() : getColumns3()
-                                        }
-                                        data={getAllTradeData.data2}
-                                        onRowSelect={handleRowSelect}
-                                        checkBox={false}
-                                    />
-                                    <div className='mt-3'>
-                                        <h4 className='mt-3 mb-2'>Close Trade</h4>
+                                showTable && selectStrategyType != "ChartingPlatform" && (
+                                    <>
+                                        <h4 className='mt-4 mb-2'>Open Trade</h4>
                                         <GridExample
-                                            columns={selectStrategyType === "Scalping" ? getColumns6() :
-                                                selectStrategyType === "Option Strategy" ? getColumns7() :
-                                                    selectStrategyType === "Pattern" ? getColumns8() : getColumns6()
+                                            columns={
+                                                selectStrategyType === "Scalping"
+                                                    ? getColumns3()
+                                                    : selectStrategyType === "Option Strategy"
+                                                        ? getColumns4()
+                                                        : selectStrategyType === "Pattern"
+                                                            ? getColumns5()
+                                                            : getColumns3()
                                             }
-                                            data={getAllTradeData.data1}
+                                            data={getAllTradeData.data2}
                                             onRowSelect={handleRowSelect}
                                             checkBox={false}
                                         />
-                                    </div>
-                                </>
+                                        <div className='mt-3'>
+                                            <h4 className='mt-3 mb-2'>Close Trade</h4>
+                                            <GridExample
+                                                columns={
+                                                    selectStrategyType === "Scalping"
+                                                        ? getColumns6()
+                                                        : selectStrategyType === "Option Strategy"
+                                                            ? getColumns7()
+                                                            : selectStrategyType === "Pattern"
+                                                                ? getColumns8()
+                                                                : getColumns6()
+                                                }
+                                                data={getAllTradeData.data1}
+                                                onRowSelect={handleRowSelect}
+                                                checkBox={false}
+                                            />
+                                        </div>
+                                    </>
+                                )
                             }
+
+                            {
+                                showTable && selectStrategyType === "ChartingPlatform" && <GridExample
+                                    columns={getColumns10()}
+                                    data={getCharting}
+                                    checkBox={false}
+                                />
+                            }
+
                         </div>
                     </div>
                 </div>

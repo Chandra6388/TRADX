@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
-import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts, getUserChartingScripts } from '../../CommonAPI/User';
+import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts, getUserChartingScripts , DeleteSingleChartingScript } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
-import { getColumns3, getColumns4, getColumns5, getColumns6 , getColumns8} from './Columns';
+import { getColumns3, getColumns4, getColumns5, getColumns6, getColumns8 } from './Columns';
 import Swal from 'sweetalert2';
 import Formikform from "../../../ExtraComponent/FormData";
 import { useFormik } from 'formik';
@@ -42,7 +42,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     }, [data]);
 
 
- 
+
     const getChartingScript = async () => {
         const req = { Username: userName, Planname: "Chart" }
         await getUserChartingScripts(req)
@@ -233,15 +233,13 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         else if (data == 'Option Strategy') {
             trading = getAllService.OptionData[index].Trading
         }
-
+        else if (data == 'ChartingPlatform') {
+            trading = getCharting[index].Trading
+        }
         else {
             console.log("Error in finding the trading status")
             return
         }
-
-
-
-
         if (trading) {
             Swal.fire({
                 title: "Do you want to Discontinue",
@@ -309,40 +307,82 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                             TradePattern: "",
                                             TSymbol: "",
                                             PatternName: ""
-                                        } : ''
+                                        } : data == 'ChartingPlatform' ?
+                                            {
+                                                Username: userName,
+                                                User: "Client",
+                                                Symbol: getCharting[index].TSymbol,
+                                            } : ''
+
+
+                    if (data == 'ChartingPlatform') {
+                        await DeleteSingleChartingScript(req)
+                            .then((response) => {
+                                if (response.Status) {
+                                    Swal.fire({
+                                        title: "Success",
+                                        text: response.message,
+                                        icon: "success",
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        setRefresh(!refresh)
+                                    });
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: "Error !",
+                                        text: response.message,
+                                        icon: "error",
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    });
+                                }
+                            })
+
+                    }
+                    else {
+                        await Discontinue(req)
+                            .then((response) => {
+                                console.log("response", response)
+                                if (response.Status) {
+                                    Swal.fire({
+                                        title: "Success",
+                                        text: response.message,
+                                        icon: "success",
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        setRefresh(!refresh)
+                                    });
+
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: "Error !",
+                                        text: response.message,
+                                        icon: "error",
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log("Error in delete script", err)
+                            })
+
+                    }
 
 
 
-                    await Discontinue(req)
-                        .then((response) => {
-                            console.log("response", response)
-                            if (response.Status) {
-                                Swal.fire({
-                                    title: "Success",
-                                    text: response.message,
-                                    icon: "success",
-                                    timer: 2000,
-                                    timerProgressBar: true
-                                }).then(() => {
-                                    setRefresh(!refresh)
-                                });
 
-                            }
-                            else {
-                                Swal.fire({
-                                    title: "Error !",
-                                    text: response.message,
-                                    icon: "error",
-                                    timer: 2000,
-                                    timerProgressBar: true
-                                });
-                            }
-                        })
-                        .catch((err) => {
-                            console.log("Error in delete script", err)
-                        })
+
                 }
             })
+        }
+
+        else if (data == 'ChartingPlatform') {
+            return;
         }
         else {
             {
@@ -1334,7 +1374,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
                                                     {getAllService.loading ? <Loader /> :
                                                         <FullDataTable
-                                                            columns={data === "Scalping" ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Option Strategy" ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Pattern" ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue) : data == "ChartingPlatform" ? getColumns8(handleDelete, handleEdit, HandleContinueDiscontinue) : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)}
+                                                            columns={data === "Scalping" ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Option Strategy" ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Pattern" ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue) : data == "ChartingPlatform" ? getColumns8(HandleContinueDiscontinue) : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)}
                                                             data={data === "Scalping" ? getAllService.ScalpingData : data === "Option Strategy" ? getAllService.OptionData : data === "Pattern" ? getAllService.PatternData : data == "ChartingPlatform" ? getCharting : []}
                                                             checkBox={false}
                                                         />

@@ -1883,7 +1883,7 @@ export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinut
     },
 ];
 
-export const getColumns8 = (handleDelete, handleEdit, handleContinutyDiscontinuty) => [
+export const getColumns8 = (handleContinutyDiscontinuty) => [
     {
         name: "S.No",
         label: "S.No",
@@ -1896,35 +1896,7 @@ export const getColumns8 = (handleDelete, handleEdit, handleContinutyDiscontinut
             }
         },
     },
-    {
-        name: "Action",
-        label: "Action",
-        options: {
-            filter: true,
-            sort: true,
-            customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta, 2)}>
-                    Square Off
-                </button>
-                </>
-            }
-        }
-    },
-    {
-        name: "Edit",
-        label: "Edit",
-        options: {
-            filter: true,
-            sort: true,
-            customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn' onClick={() => handleEdit(tableMeta)}>
-                    <SquarePen />
-
-                </button>
-                </>
-            }
-        }
-    },
+    
     {
         name: "Trading",
         label: "Trading",

@@ -125,7 +125,7 @@ const ServicesList = () => {
                               <Card
                                 key={index}
                                 style={styles.card}
-                                className="col-lg-3 col-md-6 mb-3">
+                                className="col-lg-3 col-md-6 mb-3 all-plan-card">
                                 {/* <img src={imgArr[getRandomNumber()]} alt={plan.PlanName} style={styles.image} /> */}
                                 <div style={styles.content}>
                                   <h2 style={styles.title}>

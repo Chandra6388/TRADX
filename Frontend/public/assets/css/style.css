@@ -5628,6 +5628,13 @@ option[value='Reject'] {
       row-gap: 20px;
   }
 }
+.all-plan-card {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 15px 10px !important;
+  width: 25% !important;
+}
 
-
-
+ul#fill-tab-example {
+margin: 0px auto;
+}

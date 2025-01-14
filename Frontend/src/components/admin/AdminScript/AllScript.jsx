@@ -142,7 +142,9 @@ const Addscript = () => {
                 else {
                     setAllservice({
                         loading: false,
-                        data: []
+                        data: [],
+                        data1: []
+                        
                     })
                 }
             })

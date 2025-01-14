@@ -342,7 +342,7 @@ const ServicesList = () => {
                                 <Tabs
                                     defaultActiveKey="Scalping"
                                     id="fill-tab-example"
-                                    className="mb-3 custom-tabs"
+                                    className="mb-3 custom-tabs w-50"
                                     fill>
                                     <Tab eventKey="Scalping" title="Scalping">
                                         <div className="">
@@ -351,8 +351,8 @@ const ServicesList = () => {
                                                     <div style={styles.container} className="row">
                                                         {getUpdatedPlans?.map((plan, index) => (
                                                             plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ? "" :
-                                                                <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 ">
-                                                                    <div className="d-flex flex-column justify-content-between h-100">
+                                                                <Card key={index}  className="col-lg-3 col-md-6 mb-3 all-plan-card">
+                                                                    <div className="d-flex flex-column justify-content-between h-100 p-3 border">
                                                                         <div>
                                                                             <div style={styles.content}>
                                                                                 <h2 style={styles.title}>
@@ -404,8 +404,8 @@ const ServicesList = () => {
                                             <div style={styles.container} className="row">
                                                 {getUpdatedPlans1?.map((plan, index) => (
                                                     plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ? "" :
-                                                        <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 ">
-                                                            <div className="d-flex flex-column justify-content-between h-100">
+                                                        <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 all-plan-card">
+                                                            <div className="d-flex flex-column justify-content-between h-100 p-3 border">
                                                                 <div>
                                                                     <div style={styles.content}>
                                                                         <h2 style={styles.title}>
@@ -464,13 +464,12 @@ const ServicesList = () => {
 
 
 const styles = {
-    container: {
-        // display: "flex",
-        // flexWrap: "nowrap",
-        overflowX: "auto",
-        padding: "5px",
-        gap: "20px",
-    },
+    // container: {
+     
+    //     overflowX: "auto",
+    //     padding: "5px",
+    //     gap: "20px",
+    // },
     image: {
         width: "100%",
         height: "150px",

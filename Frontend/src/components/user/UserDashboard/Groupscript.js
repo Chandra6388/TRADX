@@ -15,11 +15,10 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
     const navigate = useNavigate();
     const [selectGroup, setSelectGroup] = useState('');
     const [allScripts, setAllScripts] = useState({ data: [], len: 0 })
-    const [getAllService, setAllservice] = useState({
-        loading: true,
-        data: []
-    });
+    const [getAllService, setAllservice] = useState({ loading: true, data: [] });
 
+
+    console.log("getAllService", getAllService)
     useEffect(() => {
         GetUserAllScripts()
     }, [])
@@ -144,7 +143,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
 
         }
     }
- 
+
     const handleAddScript3 = (data1) => {
         if (data2.status == false) {
             Swal.fire({
@@ -232,6 +231,23 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                                                 </div>
                                             </div>
                                         </>
+                                    )}
+
+                                    {data === "Scalping" && (
+                                        <div>
+                                            <div className="iq-header-title mt-4">
+                                                <h4 className="card-title">Multi Conditional</h4>
+                                            </div>
+                                            {getAllService.loading ? (
+                                                <Loader />
+                                            ) : (
+                                                <FullDataTable
+                                                    columns={getColumns(handleAddScript1)}
+                                                    data={getAllService.data}
+                                                    checkBox={false}
+                                                />
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                             </div>

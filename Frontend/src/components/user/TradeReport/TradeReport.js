@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { get_User_Data, getStrategyType } from '../../CommonAPI/Admin'
-import { get_Trade_Report, getUserChartingScripts } from '../../CommonAPI/User'
+import { get_Trade_Report, getChargingPlatformDataApi, getUserChartingScripts } from '../../CommonAPI/User'
 import Loader from '../../../ExtraComponent/Loader'
 import GridExample from '../../../ExtraComponent/CommanDataTable'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
-import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6, getColumns9, getColumns10 } from './ReportColumn'
+import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6, getColumns9, getColumns10, getColumns11 } from './ReportColumn'
 
 const TradeReport = () => {
+    const userName = localStorage.getItem("name");
+
+    
     const [selectStrategyType, setStrategyType] = useState('Scalping');
     const [strategyNames, setStrategyNames] = useState([])
     const [tradeReport, setTradeReport] = useState({
@@ -137,6 +140,19 @@ const TradeReport = () => {
         setSelectedRowData(rowData);
     };
 
+    const [chartingData, setChartingData] = useState([]);
+    
+      console.log("chartingData", chartingData);
+      const getChartingData = async () => {
+        const res = await getChargingPlatformDataApi(userName);
+        console.log("apires is ", res.Client);
+        setChartingData(res.Client);
+      };
+    
+    
+      useEffect(() => {
+        getChartingData();
+      }, []);
  
     const handleSubmit = async () => {
         const data = {
@@ -243,12 +259,12 @@ const TradeReport = () => {
                                         columns={selectStrategyType === "Scalping" ? getColumns() :
                                             selectStrategyType === "Option Strategy" ? getColumns1() :
                                                 selectStrategyType === "Pattern" ? getColumns2() :
-                                                    selectStrategyType === "ChartingPlatform" ? getColumns10() :
+                                                    selectStrategyType === "ChartingPlatform" ? getColumns11() :
                                                         getColumns9()
                                         }
-                                        data={selectStrategyType === "ChartingPlatform" ? getCharting : tradeReport.data}
+                                        data={selectStrategyType === "ChartingPlatform" ? chartingData : tradeReport.data}
                                         onRowSelect={handleRowSelect}
-                                        checkBox={true}
+                                        checkBox={selectStrategyType === "ChartingPlatform" ? false :true}
                                     />
                                 </div>
                             }

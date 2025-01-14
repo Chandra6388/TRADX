@@ -1,4 +1,6 @@
 
+import { Eye } from "lucide-react";
+
 export const getColumns = () => [
     {
         name: "S.No",
@@ -1718,4 +1720,109 @@ export const getColumns10 = () => [
 
 ];
 
+export const getColumns11 = () => [
+    {
+        name: "S.No",
+        label: "S.No",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                const rowIndex = tableMeta.rowIndex;
+                return rowIndex + 1;
+            }
+        },
+    },
+
+
+    {
+        name: "Segment",
+        label: "Segment",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "View",
+        label: "View",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                return (
+                    <button
+                        onClick={() => {
+                            const rowIndex = tableMeta.rowIndex;
+                            console.log("View clicked for row:", rowIndex);
+
+                            // Scroll to the bottom of the page (or to a specific element)
+                            window.scrollTo({
+                                top: document.body.scrollHeight,
+                                behavior: "smooth", // Smooth scroll
+                            });
+
+                            // Alternatively, you can scroll by a specific amount
+                            // window.scrollBy(0, 500); // Scroll 500px down
+                        }}
+                        style={{
+                            border: "none",
+                            background: "transparent",
+                            cursor: "pointer",
+                        }}
+                    >
+                        <Eye color="#007BFF" size={20} />
+                    </button>
+                );
+            },
+        },
+    },
+
+    {
+        name: "Username",
+        label: "Username",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "Status",
+        label: "Status",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "Fund",
+        label: "Fund",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "Quantity",
+        label: "Quantity",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "TradeCount",
+        label: "TradeCount",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+];
 

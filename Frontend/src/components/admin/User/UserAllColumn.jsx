@@ -1022,7 +1022,7 @@ export const columns2 = ()=>[
 export const columns3 =()=> [
     {
         name: "S.No",
-        label: "S.No",
+        label: "S.No",  
 
         options: {
             filter: true,

@@ -1339,7 +1339,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                             checkBox={false}
                                                         />
                                                     }
-                                                    {data === "Scalping" && (
+                                                    {data === "Scalping" && adminPermission?.includes('Charting Platform') && (
                                                         <div>
                                                             <div className="iq-header-title mt-4">
                                                                 <h4 className="card-title">Multi Conditional</h4>

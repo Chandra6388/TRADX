@@ -130,7 +130,8 @@ const Tradehistory = () => {
     try {
       const res = await getStrategyType();
       if (res.Data) {
-        setStrategyNames(res.Data)
+        const filterData = res.Data.filter(item => item != "ChartingPlatform")
+        setStrategyNames(filterData)
       }
       else {
         console.log("Error in getting the StrategyType")
@@ -155,7 +156,7 @@ const Tradehistory = () => {
     const data = {
       MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
       Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "",
-      Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : '',
+      Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform"  ? selectedRowData && selectedRowData.TSymbol : "",
       Username: Username,
       ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
       Timeframe: selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TimeFrame : '',
@@ -305,7 +306,7 @@ const Tradehistory = () => {
 
     await get_FiveMostProfitTrade(data)
       .then((response) => {
-        if (response.Status) {
+        if (response?.Status) {
           setFiveProfitTrade({
             loading: false,
             data: response.fiveprofittrade,
@@ -331,7 +332,7 @@ const Tradehistory = () => {
     await get_Trade_Data(data)
 
       .then((response) => {
-        if (response.Status) {
+        if (response?.Status) {
           setReport({
             loading: false,
             data1: response.Data1,
@@ -538,7 +539,7 @@ const Tradehistory = () => {
                         style={{
                           color:
                             getAllTradeData &&
-                              getAllTradeData.Overall[0].PnL < 0
+                              getAllTradeData?.Overall[0]?.PnL < 0
                               ? "red"
                               : "green",
                         }}>

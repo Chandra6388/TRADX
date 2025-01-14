@@ -87,7 +87,7 @@ const AddClient = () => {
       Trade_Execution: "Paper Trade",
       quantityselection: "Addition",
       quantityvalue: 0,
-      Targetselection: "fixedTarget",
+      Targetselection: "Fixed Target",
     },
     validate: (values) => {
       let errors = {};
@@ -123,6 +123,8 @@ const AddClient = () => {
       if (!values.TType) {
         errors.TType = "Please Select Transaction Type.";
       }
+
+
       if (!values.Quantity) {
         errors.Quantity = formik.values.Exchange == "NFO" && formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional" ? "Please Enter Quantity 1" : formik.values.Exchange == "NFO" ? "Please Enter Lot Value." : "Please Enter Quantity Value.";
       }
@@ -175,7 +177,7 @@ const AddClient = () => {
       if (!values.HigherRange && values.Strategy != 'Fixed Price' && values.HigherRange != 0) {
         errors.HigherRange = "Please Enter The Higher Range.";
       }
-      if (!values.Group && values.Strategy === "Fixed Price") {
+      if (!values.Group && (values.Strategy === "Fixed Price" || (values.Strategy == "Multi_Conditional" && values.position_type == "Single"))) {
         errors.Group = "Please Select A Unique ID.";
       }
       if (!values.HoldExit && values.Strategy != "Fixed Price") {
@@ -184,13 +186,40 @@ const AddClient = () => {
       if (!values.Slvalue) {
         errors.Slvalue = values.Strategy == "Fixed Price" ? "Please Enter Stop Loss Price." : "Please Select Stop Loss Value.";
       }
+
+      if (values.Strategy == "Multi_Conditional" && values.position_type == "Multiple") {
+
+        if (!values.stepup) {
+          errors.stepup = "Please Enter Step Up";
+        }
+        if (!values.quantityvalue) {
+          errors.quantityvalue = "Please Enter Increment Value";
+        }
+        if (!values.quantityselection) {
+          errors.quantityselection = "Please Select Increment Type";
+        }
+        if (!values.Targetvalue) {
+          errors.Targetvalue = "Please Enter Target Price";
+        }
+        if (!values.Targetselection) {
+          errors.Targetselection = "Please Select Target Type";
+        }
+      }
+      if (values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" && !values.quantityselection) {
+        errors.quantityselection = "Please Select Target Selection";
+      }
+
+      if (values.Strategy == "Multi_Conditional" && !values.position_type) {
+        errors.position_type = "Please Select Position Type";
+      }
+
       return errors;
     },
 
     onSubmit: async (values) => {
       try {
         const req = {
-          MainStrategy: formik.values.Strategy == "Multi_Conditional" ? "NewScalping" : location.state.data.selectStrategyType,
+          MainStrategy: formik.values.Strategy == "Multi_Conditional" ? "NewScalping" : location?.state?.data?.selectStrategyType,
           Username: userName,
           Strategy: values.Strategy,
           Exchange: values.Exchange,
@@ -293,6 +322,14 @@ const AddClient = () => {
 
         if (values.EntryTime >= values.ExitTime) {
           return SweentAlertFun("Exit Time should be greater than Entry Time")
+        }
+        if (values.Strategy == "Multi_Conditional" && values.position_type == "Single") {
+          if (Number(values.quantity2) == 0 && Number(values.quantity3) > 0) {
+            return SweentAlertFun(formik.values.Exchange == "NFO" ? "Please Enter Lot 2" : "Please Enter Quantity 2")
+          }
+          if (Number(values.tgp2) == 0 && Number(values.tgp3) > 0) {
+            return SweentAlertFun("Please Enter Target 2")
+          }
         }
 
         await AddScript(req)
@@ -559,7 +596,7 @@ const AddClient = () => {
 
     {
       name: "Targetvalue",
-      label: formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional" ? "Target Price 1" : formik.values.Strategy == "Fixed Price" ? "Target Price" : formik.values.Strategy == "One Directional" ? "Fixed Target" : formik.values.Strategy == "Multi_Conditional" && formik.values.position_type == "Multiple" && formik.values.Targetselection == "fixedTarget" ? "Fixed Target" : "Booking Point",
+      label: formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional" ? "Target Price 1" : formik.values.Strategy == "Fixed Price" ? "Target Price" : formik.values.Strategy == "One Directional" ? "Fixed Target" : formik.values.Strategy == "Multi_Conditional" && formik.values.position_type == "Multiple" && formik.values.Targetselection == "Fixed Target" ? "Fixed Target" : "Booking Point",
       type: "text3",
       label_size: 12,
       col_size: formik.values.position_type == "Multiple" ? 3 : 4,

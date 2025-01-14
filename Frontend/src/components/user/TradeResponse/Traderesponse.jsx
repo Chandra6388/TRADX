@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { get_User_Data } from '../../CommonAPI/Admin'
 import { get_Trade_Response, getStrategyType } from '../../CommonAPI/User'
-import Loader from '../../../ExtraComponent/Loader'
 import GridExample from '../../../ExtraComponent/CommanDataTable'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
-import { columns3, columns2, columns1, columns, columns5, columns4 } from './TradeReponseColumn'
+import { columns3, columns2, columns1, columns, columns5, columns4, columns6 } from './TradeReponseColumn'
 const TradeResponse = () => {
     const [selectStrategyType, setSelectStrategyType] = useState('')
     const [strategyType, setStrategyType] = useState([]);
     const [tradeHistory, setTradeHistory] = useState({
         loading: true,
-        data: []
+        data: [],
+        data1: []
     })
     const [selectedRowData, setSelectedRowData] = useState('');
     const [ToDate, setToDate] = useState('');
@@ -79,16 +79,21 @@ const TradeResponse = () => {
                     const filterLiveTrade = response.Data.filter((item) => {
                         return item.TradeExecution == 'Live Trade'
                     })
+                    const filterLiveTrade1 = selectStrategyType != "Scalping" ? [] : response?.NewScalping?.filter((item) => {
+                        return item.TradeExecution == 'Live Trade'
+                    })
 
                     setTradeHistory({
                         loading: false,
-                        data: filterLiveTrade
+                        data: filterLiveTrade,
+                        data1: filterLiveTrade1
                     })
                 }
                 else {
                     setTradeHistory({
                         loading: false,
-                        data: []
+                        data: [],
+                        data1: []
                     })
 
                 }
@@ -111,8 +116,8 @@ const TradeResponse = () => {
 
     const handleSubmit = async () => {
         const data = {
-            MainStrategy: selectStrategyType,
-            Strategy: selectStrategyType == "Scalping" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : '',
+            MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
+            Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "",
             Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : '',
             Username: Username,
             ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
@@ -125,7 +130,6 @@ const TradeResponse = () => {
         }
 
         await get_Trade_Response(data)
-
             .then((response) => {
                 if (response.Status) {
                     setAllTradeData({
@@ -183,7 +187,7 @@ const TradeResponse = () => {
                                             className="form-select"
                                             required
                                             onChange={(e) => setSelectStrategyType(e.target.value)}
-                                            value={selectStrategyType} 
+                                            value={selectStrategyType}
                                         >
                                             {strategyType.map((item, index) => (
                                                 <option key={index} value={item}>
@@ -211,11 +215,28 @@ const TradeResponse = () => {
                                             selectStrategyType === "Option Strategy" ? columns1 :
                                                 selectStrategyType === "Pattern" ? columns2 : columns
                                         }
-                                        data={tradeHistory.data}
+                                        data={tradeHistory?.data}
                                         onRowSelect={handleRowSelect}
                                         checkBox={true}
                                     />
                                 </div>
+                            }
+
+                            {selectStrategyType == "Scalping" && <div>
+                                <div className="iq-header-title mt-4">
+                                    <h4 className="card-title">Multi Conditional</h4>
+                                </div>
+                                {
+                                    <div className="modal-body">
+                                        <GridExample
+                                            columns={columns6}
+                                            data={tradeHistory?.data1}
+                                            onRowSelect={handleRowSelect}
+                                            checkBox={true}
+                                        />
+                                    </div>
+                                }
+                            </div>
                             }
                             <button className='btn btn-primary mt-2' onClick={handleSubmit}>Submit</button>
                             {

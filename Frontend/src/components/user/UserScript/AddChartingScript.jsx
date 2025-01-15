@@ -29,8 +29,6 @@ const AddChartingScript = () => {
 
   const handleAddCharting = async (index) => {
     const data = chartingData[index];
-
-
     const req = {
       Username: userName,
       Status: data.Status,
@@ -50,6 +48,7 @@ const AddChartingScript = () => {
             timer: 1500,
             timerProgressBar: true,
           });
+          getChartingData();
         } else {
           Swal.fire({
             icon: "error",

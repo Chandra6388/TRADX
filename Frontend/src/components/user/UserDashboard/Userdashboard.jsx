@@ -15,18 +15,8 @@ const Userdashboard = () => {
   const [getGroup, setGroup] = useState('')
   const [strategyType, setStrategyType] = useState([]);
   const [status, setStatus] = useState(false);
-  
-
-
-
-  const [serviceStatus, setServiceStatus] = useState({
-    status: false,
-    msg: ''
-  })
-  const [getGroupName, setGroupName] = useState({
-    loading: true,
-    data: []
-  })
+  const [serviceStatus, setServiceStatus] = useState({ status: false, msg: '' })
+  const [getGroupName, setGroupName] = useState({ loading: true, data: [] })
   const [getPositionData, setPositionData] = useState({
     loading: true,
     Scalping: [],
@@ -37,8 +27,10 @@ const Userdashboard = () => {
 
   useEffect(() => {
     GetExpriyEndDate()
-    GetOpenPosition()
     fetchStrategyType()
+    if (activeTab1 === "OpenPosition") {
+      GetOpenPosition()
+    }
   }, [])
 
   useEffect(() => {
@@ -98,7 +90,6 @@ const Userdashboard = () => {
     await OpenPosition(data)
       .then((response) => {
         if (response.Status) {
-
           setPositionData({
             loading: false,
             Scalping: response.Scalping,
@@ -556,7 +547,7 @@ const Userdashboard = () => {
   ];
 
 
- 
+
 
   return (
     <div className="container-fluid">
@@ -699,9 +690,9 @@ const Userdashboard = () => {
                             selectedType={activeTab}
                             data2={serviceStatus && serviceStatus}
                           />
-                         
 
-                          
+
+
                         </div>
                       </div>
                     )}

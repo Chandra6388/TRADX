@@ -15,7 +15,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
     const navigate = useNavigate();
     const [selectGroup, setSelectGroup] = useState('');
     const [allScripts, setAllScripts] = useState({ data: [], len: 0 })
-    const [getAllService, setAllservice] = useState({ loading: true, data: [] });
+    const [getAllService, setAllservice] = useState({ loading: true, data: [], data1: [] });
 
 
     console.log("getAllService", getAllService)
@@ -182,22 +182,40 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
         }
     }
 
+    console.log("selectStrategyType", selectStrategyType)
+
     const GetAllUserScriptDetails = async () => {
         const data = { Strategy: stgType, Group: GroupName }
 
         await GetAllGroupService(data)
             .then((response) => {
                 if (response.Status) {
-                    setAllservice({
-                        loading: false,
-                        data: response.Data
+                    if (selectStrategyType == 'Scalping') {
+                        const filterMulticondtion = response?.Data.filter((item) => item?.ScalpType == 'Multi_Conditional')
+                        const filterOthers = response?.Data.filter((item) => item?.ScalpType != 'Multi_Conditional')
 
-                    });
-                } else {
+                        setAllservice({
+                            loading: false,
+                            data: filterOthers,
+                            data1: filterMulticondtion
+                        })
+                    }
+                    else {
+
+                        setAllservice({
+                            loading: false,
+                            data: response.Data,
+                            data1: []
+                        })
+                    }
+                }
+                else {
                     setAllservice({
                         loading: false,
-                        data: []
-                    });
+                        data: [],
+                        data1: []
+
+                    })
                 }
             })
             .catch((err) => {
@@ -243,7 +261,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                                             ) : (
                                                 <FullDataTable
                                                     columns={getColumns(handleAddScript1)}
-                                                    data={getAllService.data}
+                                                    data={getAllService.data1}
                                                     checkBox={false}
                                                 />
                                             )}

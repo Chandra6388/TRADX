@@ -372,9 +372,9 @@ const ServicesList = () => {
                                                                                     <p style={styles.priceItem}>
                                                                                         <strong>Pattern Strategy:</strong> {plan?.Pattern?.join(", ")}
                                                                                     </p>
-                                                                                    <p style={styles.priceItem}>
+                                                                                    {/* <p style={styles.priceItem}>
                                                                                         <strong>Pattern Strategy:</strong> {plan?.ChartingSignal?.join(", ")}
-                                                                                    </p>
+                                                                                    </p> */}
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -416,7 +416,7 @@ const ServicesList = () => {
                                                                         <h4 style={styles.subtitle}>No of Scripts: {plan?.NumberofScript}</h4>
 
                                                                         <div style={styles.prices}>
-                                                                            <p style={styles.priceItem}>
+                                                                            {/* <p style={styles.priceItem}>
                                                                                 <strong>Scalping Strategy:</strong> {plan?.Scalping?.join(", ")}
                                                                             </p>
                                                                             <p style={styles.priceItem}>
@@ -424,9 +424,9 @@ const ServicesList = () => {
                                                                             </p>
                                                                             <p style={styles.priceItem}>
                                                                                 <strong>Pattern Strategy:</strong> {plan?.Pattern?.join(", ")}
-                                                                            </p>
+                                                                            </p> */}
                                                                             <p style={styles.priceItem}>
-                                                                                <strong>Pattern Strategy:</strong> {plan?.ChartingSignal?.join(", ")}
+                                                                                <strong>Charting Script:</strong> {plan?.ChartingSignal?.join(", ")}
                                                                             </p>
                                                                         </div>
                                                                     </div>

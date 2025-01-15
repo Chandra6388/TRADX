@@ -1612,14 +1612,7 @@ export const getColumns10 = () => [
             }
         },
     },
-    {
-        name: "Username",
-        label: "Username",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
+   
     {
         name: "Symbol",
         label: "Symbol",
@@ -1628,14 +1621,7 @@ export const getColumns10 = () => [
             sort: true,
         }
     },
-    {
-        name: "Stretegy",
-        label: "Stretegy",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
+    
 
     {
         name: "AccType",
@@ -1754,22 +1740,7 @@ export const getColumns12 = () => [
             }
         },
     },
-    {
-        name: "Username",
-        label: "Username",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Stretegy",
-        label: "Stretegy",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
+ 
 
     {
         name: "AccType",

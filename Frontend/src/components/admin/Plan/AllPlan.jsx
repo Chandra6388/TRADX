@@ -155,10 +155,10 @@ const ServicesList = () => {
                                       <strong>Pattern Strategy:</strong>{" "}
                                       {plan?.Pattern?.join(", ")}
                                     </p>
-                                    <p style={styles.priceItem}>
-                                      <strong>Pattern Strategy:</strong>{" "}
+                                    {/* <p style={styles.priceItem}>
+                                      <strong>Charting Signal:</strong>{" "}
                                       {plan?.ChartingSignal?.join(", ")}
-                                    </p>
+                                    </p> */}
                                   </div>
                                 </div>
                               </Card>
@@ -194,7 +194,7 @@ const ServicesList = () => {
                                 </h5>
 
                                 <div style={styles.prices}>
-                                  <p style={styles.priceItem}>
+                                  {/* <p style={styles.priceItem}>
                                     <strong>Scalping Strategy:</strong>{" "}
                                     {plan?.Scalping?.join(", ")}
                                   </p>
@@ -205,11 +205,11 @@ const ServicesList = () => {
                                   <p style={styles.priceItem}>
                                     <strong>Pattern Strategy:</strong>{" "}
                                     {plan?.Pattern?.join(", ")}
-                                  </p>
+                                  </p> */}
                                   <p style={styles.priceItem}>
-                                    <strong>Pattern Strategy:</strong>{" "}
-                                    {plan?.ChartingSignal?.join(", ")}
-                                  </p>
+                                      <strong>Charting Script:</strong>{" "}
+                                      {plan?.ChartingSignal?.join(", ")}
+                                    </p>
                                 </div>
                               </div>
                             </Card>

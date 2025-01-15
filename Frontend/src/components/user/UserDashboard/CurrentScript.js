@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
-import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts, getUserChartingScripts , DeleteSingleChartingScript } from '../../CommonAPI/User';
+import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts, getUserChartingScripts, DeleteSingleChartingScript } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
 import { getColumns3, getColumns4, getColumns5, getColumns6, getColumns8 } from './Columns';
 import Swal from 'sweetalert2';
@@ -240,6 +240,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             console.log("Error in finding the trading status")
             return
         }
+
+        console.log("getCharting[index]?.AccType", getCharting[index]?.AccType) 
         if (trading) {
             Swal.fire({
                 title: "Do you want to Discontinue",
@@ -310,8 +312,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                         } : data == 'ChartingPlatform' ?
                                             {
                                                 Username: userName,
-                                                User: "Client",
-                                                Symbol: getCharting[index].TSymbol,
+                                                User: getCharting[index]?.AccType,
+                                                Symbol: getCharting[index]?.TSymbol,
                                             } : ''
 
 
@@ -339,7 +341,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                     });
                                 }
                             })
-
                     }
                     else {
                         await Discontinue(req)

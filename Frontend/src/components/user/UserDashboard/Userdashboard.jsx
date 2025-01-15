@@ -5,86 +5,95 @@ import CurrentScript from './CurrentScript'
 import { GetAllUserGroup, OpenPosition, getStrategyType } from '../../CommonAPI/User'
 import { ExpriyEndDate, } from '../../CommonAPI/Admin'
 import FullDataTable from '../../../ExtraComponent/CommanDataTable'
+import Swal from 'sweetalert2'
 const Userdashboard = () => {
-  const userName = localStorage.getItem('name')
-  const [activeTab1, setActiveTab1] = useState('CurrentPosition')
-  const [activeTab, setActiveTab] = useState('currentScript')
-  const [subTab, setSubTab] = useState('Scalping')
-  const [refresh, setRefresh] = useState(false)
-  const [getGroup, setGroup] = useState('')
+  const userName = localStorage.getItem("name");
+  const [activeTab1, setActiveTab1] = useState("CurrentPosition");
+  const [activeTab, setActiveTab] = useState("currentScript");
+  const [subTab, setSubTab] = useState("Scalping");
+  const [refresh, setRefresh] = useState(false);
+  const [getGroup, setGroup] = useState("");
   const [strategyType, setStrategyType] = useState([]);
   const [status, setStatus] = useState(false);
-  const [serviceStatus, setServiceStatus] = useState({ status: false, msg: '' })
-  const [getGroupName, setGroupName] = useState({ loading: true, data: [] })
+  
+
+
+
+  const [serviceStatus, setServiceStatus] = useState({
+    status: false,
+    msg: ''
+  })
+  const [getGroupName, setGroupName] = useState({
+    loading: true,
+    data: []
+  })
   const [getPositionData, setPositionData] = useState({
     loading: true,
     Scalping: [],
     Option: [],
     Pattern: [],
-    NewScalping: []
-  })
+    NewScalping: [],
+    ChartingData: [],
+  });
 
   useEffect(() => {
     GetExpriyEndDate()
-    fetchStrategyType()
     GetOpenPosition()
-
+    fetchStrategyType()
   }, [])
 
   useEffect(() => {
-    getUserAllGroup()
-  }, [activeTab])
-
+    getUserAllGroup();
+  }, [activeTab]);
 
   const fetchStrategyType = async () => {
     try {
       const res = await getStrategyType();
       if (res.Data) {
-        setStrategyType(res.Data)
+        setStrategyType(res.Data);
       }
     } catch (error) {
-      console.log("Error in finding the strategy type", error)
+      console.log("Error in finding the strategy type", error);
     }
-  }
+  };
   const getUserAllGroup = async () => {
-    const data = { User: userName }
+    const data = { User: userName };
     await GetAllUserGroup(data)
       .then((response) => {
         if (response.Status) {
-          setRefresh(!refresh)
+          setRefresh(!refresh);
           setGroupName({
             loading: false,
-            data: response.Data
-          })
-        }
-        else {
+            data: response.Data,
+          });
+        } else {
           setGroupName({
             loading: false,
-            data: []
-          })
+            data: [],
+          });
         }
       })
       .catch((err) => {
-        console.log("Error in finding the group name", err)
-      })
-  }
+        console.log("Error in finding the group name", err);
+      });
+  };
 
   const GetExpriyEndDate = async () => {
-    const data = { Username: userName }
+    const data = { Username: userName };
     await ExpriyEndDate(data)
       .then((response) => {
         setServiceStatus({
           status: response.Status,
           msg: response.message,
-        })
+        });
       })
       .catch((err) => {
-        console.log("Error in finding the Service end date", err)
-      })
-  }
+        console.log("Error in finding the Service end date", err);
+      });
+  };
 
   const GetOpenPosition = async () => {
-    const data = { userName: userName }
+    const data = { userName: userName };
     await OpenPosition(data)
       .then((response) => {
         if (response.Status) {
@@ -94,21 +103,21 @@ const Userdashboard = () => {
             Option: response.Option,
             Pattern: response.Pattern,
             NewScalping: response?.NewScalping,
+            ChartingData: response?.ChartingData,
           });
-        }
-        else {
+        } else {
           setPositionData({
             loading: false,
             Scalping: [],
             Option: [],
-            Pattern: []
-          })
+            Pattern: [],
+          });
         }
       })
       .catch((err) => {
-        console.log("Error in finding the open postion data", err)
-      })
-  }
+        console.log("Error in finding the open postion data", err);
+      });
+  };
 
   const columns1 = [
     {
@@ -120,7 +129,7 @@ const Userdashboard = () => {
         customBodyRender: (value, tableMeta, updateValue) => {
           const rowIndex = tableMeta.rowIndex;
           return rowIndex + 1;
-        }
+        },
       },
     },
     {
@@ -129,7 +138,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
 
     {
@@ -138,7 +147,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "ETime",
@@ -146,7 +155,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "EPrice",
@@ -154,7 +163,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
 
     {
@@ -163,7 +172,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Quantity",
@@ -171,7 +180,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Trade",
@@ -179,7 +188,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Target",
@@ -187,7 +196,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "SL",
@@ -195,7 +204,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "GroupN",
@@ -203,7 +212,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
   ];
 
@@ -217,7 +226,7 @@ const Userdashboard = () => {
         customBodyRender: (value, tableMeta, updateValue) => {
           const rowIndex = tableMeta.rowIndex;
           return rowIndex + 1;
-        }
+        },
       },
     },
     {
@@ -226,7 +235,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Symbol",
@@ -234,7 +243,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "ETime",
@@ -242,7 +251,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "EPrice",
@@ -250,7 +259,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "LotSize",
@@ -258,7 +267,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Trade",
@@ -266,7 +275,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Option Type",
@@ -274,7 +283,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Strike price",
@@ -282,7 +291,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Token",
@@ -290,7 +299,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Hashing",
@@ -298,7 +307,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "TradeType",
@@ -306,7 +315,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Target",
@@ -314,7 +323,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "SL",
@@ -322,7 +331,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "GroupN",
@@ -330,10 +339,8 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
-
-
   ];
 
   const columns3 = [
@@ -346,7 +353,7 @@ const Userdashboard = () => {
         customBodyRender: (value, tableMeta, updateValue) => {
           const rowIndex = tableMeta.rowIndex;
           return rowIndex + 1;
-        }
+        },
       },
     },
     {
@@ -355,7 +362,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "SPattern",
@@ -363,7 +370,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "PatternTime",
@@ -371,7 +378,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Symbol",
@@ -379,7 +386,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "ETime",
@@ -387,7 +394,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "EPrice",
@@ -395,7 +402,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "TradeType",
@@ -403,7 +410,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Quantity",
@@ -411,7 +418,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Target",
@@ -419,7 +426,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "SL",
@@ -427,7 +434,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "TimeFrame",
@@ -435,7 +442,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
     {
       name: "Trade",
@@ -443,7 +450,7 @@ const Userdashboard = () => {
       options: {
         filter: true,
         sort: true,
-      }
+      },
     },
   ];
 
@@ -545,7 +552,7 @@ const Userdashboard = () => {
   ];
 
 
-
+ 
 
   return (
     <div className="container-fluid">
@@ -599,9 +606,7 @@ const Userdashboard = () => {
                             setActiveTab(e.target.value);
                           }}
                           value={activeTab}>
-                          <option value="currentScript">
-                            Current Script
-                          </option>
+                          <option value="currentScript">Current Script</option>
                           <option value="group">Group Script</option>
                         </select>
                       </div>
@@ -660,20 +665,20 @@ const Userdashboard = () => {
                         <div className="mt-3">
                           {getGroup == "copyScript"
                             ? subTab && (
-                              <Coptyscript
-                                data={subTab}
-                                selectedType={activeTab}
-                                data2={serviceStatus && serviceStatus}
-                              />
-                            )
+                                <Coptyscript
+                                  data={subTab}
+                                  selectedType={activeTab}
+                                  data2={serviceStatus && serviceStatus}
+                                />
+                              )
                             : subTab && (
-                              <GroupScript
-                                data={subTab}
-                                selectedType={activeTab}
-                                GroupName={getGroup}
-                                data2={serviceStatus && serviceStatus}
-                              />
-                            )}
+                                <GroupScript
+                                  data={subTab}
+                                  selectedType={activeTab}
+                                  GroupName={getGroup}
+                                  data2={serviceStatus && serviceStatus}
+                                />
+                              )}
                         </div>
                       </div>
                     )}
@@ -688,9 +693,9 @@ const Userdashboard = () => {
                             selectedType={activeTab}
                             data2={serviceStatus && serviceStatus}
                           />
+                         
 
-
-
+                          
                         </div>
                       </div>
                     )}
@@ -735,6 +740,15 @@ const Userdashboard = () => {
                         checkBox={false}
                       />
                     </div>
+
+                    <div className="mt-4">
+                      <h4>Charting Platform</h4>
+                      <FullDataTable
+                        columns={columns5}
+                        data={getPositionData.ChartingData}
+                        checkBox={false}
+                      />
+                    </div>
                   </>
                 )}
               </div>
@@ -744,6 +758,6 @@ const Userdashboard = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Userdashboard
+export default Userdashboard;

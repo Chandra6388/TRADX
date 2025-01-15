@@ -24,7 +24,7 @@ export const getColumns = (handleAddScript1) => [
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <CopyPlus onClick={(e) => handleAddScript1(tableMeta)} />
+                return <CopyPlus onClick={(e) => handleAddScript1(tableMeta , 1)} />
             }
         }
     },
@@ -227,7 +227,7 @@ export const getColumns7 = (handleAddScript1) => [
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <CopyPlus onClick={(e) => handleAddScript1(tableMeta)} />
+                return <CopyPlus onClick={(e) => handleAddScript1(tableMeta , 2)} />
             }
         }
     },

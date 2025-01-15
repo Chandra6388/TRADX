@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { GetAllUserScript, DeleteUserScript, GetUserScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
-import { getColumns, getColumns1, getColumns2 , getColumns7 } from './Columns';
+import { getColumns, getColumns1, getColumns2, getColumns7 } from './Columns';
 import Swal from 'sweetalert2';
 
 const Coptyscript = ({ data, selectedType, data2 }) => {
@@ -51,12 +51,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             })
     }
 
-    const handleAddScript1 = (data1) => {
-     
-        const selectedRowIndex = data1.rowIndex;
-        const selectedRow = getAllService.NewScalping[selectedRowIndex];
+    const handleAddScript1 = (data1, type) => {
 
-        
+        const selectedRowIndex = data1.rowIndex;
+        const selectedRow = type == 1 ? getAllService.ScalpingData[selectedRowIndex] : getAllService.NewScalping[selectedRowIndex];
 
         if (data2.status == false) {
             Swal.fire({
@@ -77,7 +75,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             });
         }
         else {
-           
             const isExist = allScripts?.data?.[allScripts?.len]?.CombineScalping?.find((item) => item === selectedRow.ScalpType) ?? ""
             if (!isExist) {
                 Swal.fire({

@@ -18,7 +18,6 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
     const [getAllService, setAllservice] = useState({ loading: true, data: [], data1: [] });
 
 
-    console.log("getAllService", getAllService)
     useEffect(() => {
         GetUserAllScripts()
     }, [])

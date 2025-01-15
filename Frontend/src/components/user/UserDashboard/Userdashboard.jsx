@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import Coptyscript from './Copyscript'
-import GroupScript from './Groupscript'
-import CurrentScript from './CurrentScript'
-import { GetAllUserGroup, OpenPosition, getStrategyType } from '../../CommonAPI/User'
-import { ExpriyEndDate, } from '../../CommonAPI/Admin'
-import FullDataTable from '../../../ExtraComponent/CommanDataTable'
-import Swal from 'sweetalert2'
+
+import React, { useEffect, useState } from "react";
+import Coptyscript from "./Copyscript";
+import GroupScript from "./Groupscript";
+import CurrentScript from "./CurrentScript";
+import {
+  GetAllUserGroup,
+  OpenPosition,
+  getStrategyType,
+} from "../../CommonAPI/User";
+import { ExpriyEndDate } from "../../CommonAPI/Admin";
+import FullDataTable from "../../../ExtraComponent/CommanDataTable";
+import Swal from "sweetalert2";
 const Userdashboard = () => {
   const userName = localStorage.getItem("name");
   const [activeTab1, setActiveTab1] = useState("CurrentPosition");
@@ -15,18 +20,8 @@ const Userdashboard = () => {
   const [getGroup, setGroup] = useState("");
   const [strategyType, setStrategyType] = useState([]);
   const [status, setStatus] = useState(false);
-  
-
-
-
-  const [serviceStatus, setServiceStatus] = useState({
-    status: false,
-    msg: ''
-  })
-  const [getGroupName, setGroupName] = useState({
-    loading: true,
-    data: []
-  })
+  const [serviceStatus, setServiceStatus] = useState({ status: false, msg: '' })
+  const [getGroupName, setGroupName] = useState({ loading: true, data: [] })
   const [getPositionData, setPositionData] = useState({
     loading: true,
     Scalping: [],
@@ -38,8 +33,9 @@ const Userdashboard = () => {
 
   useEffect(() => {
     GetExpriyEndDate()
-    GetOpenPosition()
     fetchStrategyType()
+    GetOpenPosition()
+
   }, [])
 
   useEffect(() => {
@@ -551,8 +547,128 @@ const Userdashboard = () => {
     },
   ];
 
+  const columns5 = [
+    {
+      name: "S.No",
+      label: "S.No",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          const rowIndex = tableMeta.rowIndex;
+          return rowIndex + 1;
+        },
+      },
+    },
+    {
+      name: "Symbol",
+      label: "Symbol",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
 
- 
+    {
+      name: "Token",
+      label: "Token",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "ETime",
+      label: "Entry Time",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "EPrice",
+      label: "Entry Price",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "TradeType",
+      label: "Trade Type",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "Quantity",
+      label: "Quantity",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "Trade",
+      label: "Trade",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "Target",
+      label: "Target",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "SL",
+      label: "Stop Loss",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "Username",
+      label: "Username",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "Stretegy",
+      label: "Stretegy",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "AccType",
+      label: "Account Type",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Segmenttype",
+      label: "Segment Type",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+  ];
+  
 
   return (
     <div className="container-fluid">
@@ -693,9 +809,9 @@ const Userdashboard = () => {
                             selectedType={activeTab}
                             data2={serviceStatus && serviceStatus}
                           />
-                         
 
-                          
+
+
                         </div>
                       </div>
                     )}

@@ -745,7 +745,7 @@ export const getUserChartingScripts = async (data) => {
 export const getChartingReport = async (data) => {
     var token = localStorage.getItem('token')
     try {
-        const res = await axios.post(`${Config.base_url}ChartingPlatformsegment`, data,
+        const res = await axios.post(`${Config.base_url}Tradereport`, data,
             {
                 headers: {
                     'Content-Type': 'application/json',

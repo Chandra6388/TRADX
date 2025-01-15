@@ -6,7 +6,7 @@ import GridExample from '../../../ExtraComponent/CommanDataTable'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
-import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6, getColumns9 , getColumns10 } from './ReportColumn'
+import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6, getColumns9, getColumns10 , getColumns12 } from './ReportColumn'
 
 const TradeReport = () => {
     const userName = localStorage.getItem("name");
@@ -110,6 +110,7 @@ const TradeReport = () => {
 
 
 
+    console.log("getAllTradeData", getAllTradeData)
     const handleRowSelect = (rowData) => {
         setSelectedRowData(rowData);
     };
@@ -125,11 +126,28 @@ const TradeReport = () => {
         getChartingData();
     }, []);
 
-    const handleSubmit = async () => {
+    
+    // {
+    //     "MainStrategy":"ChartingPlatform",
+    //     "Strategy": "",
+    //     "Symbol": "BANKNIFTY30JAN25C48000",
+    //     "Username": "shubh",
+    //     "ETPattern": "",
+    //     "Timeframe": "",
+    //     "From_date": "2025.01.13 00:00:00",
+    //     "To_date": "2025.01.14 00:00:00",
+    //     "Group":"",
+    //     "TradePattern": "",
+    //     "PatternName": ""
+    //     }
+
+   
+    const handleSubmit = async (rowData) => {
+        console.log("rowData", rowData?.Segment)
         const data = {
             MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
-            Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "",
-            Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform" ? selectedRowData && selectedRowData.TSymbol : selectedRowData && selectedRowData.Symbol,
+            Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : selectStrategyType == "ChartingPlatform" ? rowData && rowData?.Segment : "",
+            Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform" ? "": selectedRowData && selectedRowData.Symbol,
             Username: Username,
             ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
             Timeframe: selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TimeFrame : '',
@@ -139,11 +157,10 @@ const TradeReport = () => {
             TradePattern: "",
             PatternName: ""
         }
-
-
         await get_Trade_Report(data)
             .then((response) => {
                 if (response.Status) {
+                 console.log("response",response.CloseData)
                     setAllTradeData({
                         loading: false,
                         data1: response.CloseData ? response.CloseData : [],
@@ -180,62 +197,14 @@ const TradeReport = () => {
         setShowTable(false)
     }, [selectStrategyType, FromDate, ToDate, selectedRowData])
 
-    // {
-
-
-
-    //     "MainStrategy":"ChartingPlatform",
-        
-        
-        
-    //     "Strategy": "Cash",
-        
-        
-        
-    //     "Symbol": "",
-        
-        
-        
-    //     "Username": "shubh",
-        
-        
-        
-    //     "ETPattern": "",
-        
-        
-        
-    //     "Timeframe": "",
-        
-        
-        
-    //     "From_date": "2025.01.13 00:00:00",
-        
-        
-        
-    //     "To_date": "2025.01.14 00:00:00",
-        
-        
-        
-    //     "Group":"",
-        
-        
-        
-    //     "TradePattern": "",
-        
-        
-        
-    //     "PatternName": ""
-        
-        
-        
-    //     }
 
     const handleViewchartingReport = async (rowData) => {
-        const req = { 
-            MainStrategy:"ChartingPlatform",
-            Strategy: "Cash",
+        console.log("rowData", rowData)
+        const req = {
+            MainStrategy: "ChartingPlatform",
+            Strategy: rowData?.Segment,
             Symbol: "",
-            Username: rowData.Username,
+            Username: Username,
             ETPattern: "",
             Timeframe: "",
             From_date: convertDateFormat(FromDate == '' ? formattedDate : FromDate),
@@ -244,8 +213,6 @@ const TradeReport = () => {
             TradePattern: "",
             PatternName: ""
         }
-
-        return 
         await getChartingReport(req).then((res) => {
             if (res.Status) {
                 setShowTable(true)
@@ -296,7 +263,7 @@ const TradeReport = () => {
                             onClick={() => {
                                 const rowIndex = tableMeta.rowIndex;
                                 const data = chartingData[rowIndex];
-                                handleViewchartingReport(data);
+                                handleSubmit(data);
                                 window.scrollTo({
                                     top: document.body.scrollHeight,
                                     behavior: "smooth",
@@ -440,7 +407,7 @@ const TradeReport = () => {
 
 
                             {
-                                showTable && selectStrategyType != "ChartingPlatform" && (
+                                showTable && (
                                     <>
                                         <h4 className='mt-4 mb-2'>Open Trade</h4>
                                         <GridExample
@@ -451,7 +418,9 @@ const TradeReport = () => {
                                                         ? getColumns4()
                                                         : selectStrategyType === "Pattern"
                                                             ? getColumns5()
-                                                            : getColumns3()
+                                                            : selectStrategyType === "ChartingPlatform"
+                                                                ? getColumns12() :
+                                                                getColumns3()
                                             }
                                             data={getAllTradeData.data2}
                                             onRowSelect={handleRowSelect}
@@ -467,7 +436,9 @@ const TradeReport = () => {
                                                             ? getColumns7()
                                                             : selectStrategyType === "Pattern"
                                                                 ? getColumns8()
-                                                                : getColumns6()
+                                                                : selectStrategyType === "ChartingPlatform" ?
+                                                                    getColumns10() :
+                                                                    getColumns6()
                                                 }
                                                 data={getAllTradeData.data1}
                                                 onRowSelect={handleRowSelect}
@@ -478,13 +449,13 @@ const TradeReport = () => {
                                 )
                             }
 
-                            {
+                            {/* {
                                 showTable && selectStrategyType === "ChartingPlatform" && <GridExample
                                     columns={getColumns10()}
                                     data={getCharting}
                                     checkBox={false}
                                 />
-                            }
+                            } */}
 
                         </div>
                     </div>

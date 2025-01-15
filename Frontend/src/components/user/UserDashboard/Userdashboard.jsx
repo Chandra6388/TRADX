@@ -5,7 +5,6 @@ import CurrentScript from './CurrentScript'
 import { GetAllUserGroup, OpenPosition, getStrategyType } from '../../CommonAPI/User'
 import { ExpriyEndDate, } from '../../CommonAPI/Admin'
 import FullDataTable from '../../../ExtraComponent/CommanDataTable'
-import Swal from 'sweetalert2'
 const Userdashboard = () => {
   const userName = localStorage.getItem('name')
   const [activeTab1, setActiveTab1] = useState('CurrentPosition')
@@ -28,9 +27,8 @@ const Userdashboard = () => {
   useEffect(() => {
     GetExpriyEndDate()
     fetchStrategyType()
-    if (activeTab1 === "OpenPosition") {
-      GetOpenPosition()
-    }
+    GetOpenPosition()
+
   }, [])
 
   useEffect(() => {

@@ -1484,7 +1484,7 @@ export const getColumns8 = () => [
             filter: true,
             sort: true,
         }
-    }, 
+    },
     {
         name: "Symbol",
         label: "Symbol",
@@ -1541,7 +1541,7 @@ export const getColumns8 = () => [
             sort: true,
         }
     },
-     
+
     {
         name: "Quantity",
         label: "Quantity",
@@ -1550,7 +1550,7 @@ export const getColumns8 = () => [
             sort: true,
         }
     },
-     
+
     {
         name: "Target",
         label: "Target",
@@ -1575,8 +1575,8 @@ export const getColumns8 = () => [
             sort: true,
         }
     },
-   
-     
+
+
     {
         name: "TimeFrame",
         label: "Time Frame",
@@ -1585,7 +1585,7 @@ export const getColumns8 = () => [
             sort: true,
         }
     },
-    
+
     {
         name: "Token",
         label: "Token",
@@ -1598,6 +1598,7 @@ export const getColumns8 = () => [
 ]
 
 
+// close
 export const getColumns10 = () => [
     {
         name: "S.No",
@@ -1611,8 +1612,49 @@ export const getColumns10 = () => [
             }
         },
     },
-    
-    
+    {
+        name: "Username",
+        label: "Username",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Symbol",
+        label: "Symbol",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Stretegy",
+        label: "Stretegy",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "AccType",
+        label: "AccType",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "Segmenttype",
+        label: "Segmenttype",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
     {
         name: "Token",
         label: "Token",
@@ -1621,41 +1663,58 @@ export const getColumns10 = () => [
             sort: true,
         }
     },
+    
     {
-        name: "TSymbol",
-        label: "TSymbol",
+        name: "ETime",
+        label: "ETime",
         options: {
             filter: true,
             sort: true,
         }
     },
     {
-        name: "Lotsize",
-        label: "Lotsize",
+        name: "EPrice",
+        label: "EPrice",
         options: {
             filter: true,
             sort: true,
         }
     },
     {
-        name: "Exchange",
-        label: "Exchange",
+        name: "ExitTime",
+        label: "ExitTime",
         options: {
             filter: true,
             sort: true,
         }
     },
     {
-        name: "Planname",
-        label: "Plan Name",
+        name: "ExitPrice",
+        label: "ExitPrice",
         options: {
             filter: true,
             sort: true,
         }
     },
     {
-        name: "TType",
+        name: "TradeType",
         label: "Trade Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Quantity",
+        label: "Quantity",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Trade",
+        label: "Trade",
         options: {
             filter: true,
             sort: true,
@@ -1670,48 +1729,8 @@ export const getColumns10 = () => [
         }
     },
     {
-        name: "Sl",
+        name: "SL",
         label: "Stoploss",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Exittime",
-        label: "Exittime",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Ordertype",
-        label: "Ordertype",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "AccType",
-        label: "Account Type",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Price",
-        label: "Price",
-        options: {
-            filter: true,
-            sort: true,
-        }
-    },
-    {
-        name: "Optiontype",
-        label: "Optiontype",
         options: {
             filter: true,
             sort: true,
@@ -1719,6 +1738,151 @@ export const getColumns10 = () => [
     },
 
 ];
+
+
+// open
+export const getColumns12 = () => [
+    {
+        name: "S.No",
+        label: "S.No",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                const rowIndex = tableMeta.rowIndex;
+                return rowIndex + 1;
+            }
+        },
+    },
+    {
+        name: "Username",
+        label: "Username",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Stretegy",
+        label: "Stretegy",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "AccType",
+        label: "AccType",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "Segmenttype",
+        label: "Segmenttype",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "Token",
+        label: "Token",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Symbol",
+        label: "Symbol",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ETime",
+        label: "ETime",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "EPrice",
+        label: "EPrice",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitTime",
+        label: "ExitTime",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitPrice",
+        label: "ExitPrice",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TradeType",
+        label: "Trade Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Quantity",
+        label: "Quantity",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Trade",
+        label: "Trade",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Target",
+        label: "Target",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "SL",
+        label: "Stoploss",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+
+
+];
+
+
 
 
 

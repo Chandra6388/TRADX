@@ -7,11 +7,9 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 const AddChartingScript = () => {
-
   const navigate = useNavigate();
   const userName = localStorage.getItem("name");
   const [chartingData, setChartingData] = useState([]);
-
   const getChartingData = async () => {
     const res = await getChargingPlatformDataApi(userName);
     setChartingData(res.Client);
@@ -20,12 +18,6 @@ const AddChartingScript = () => {
   useEffect(() => {
     getChartingData();
   }, []);
-
-  const cards = [
-    { name: "Cash", type: "Cash", Status: false, Fund: "", TradeCount: "" },
-    { name: "Future", type: "Future", Status: true, lot: "", TradeCount: "" },
-    { name: "Option", type: "Option", Status: false, Fund: "", TradeCount: "", },
-  ];
 
   const handleAddCharting = async (index) => {
     const data = chartingData[index];
@@ -74,7 +66,7 @@ const AddChartingScript = () => {
         </button>
       </div>
       <div className="row">
-        {cards.map((item, index) => {
+        {chartingData?.map((item, index) => {
           return (
             <div className="col-md-4 mb-3" key={index}>
               <div className="card">
@@ -110,14 +102,14 @@ const AddChartingScript = () => {
                     </div>
                   </div>
                   <div className="mb-3">
-                    <label>{item.type === "Cash" ? "Fund" : "Lot"}</label>
+                    <label>{item.Segment === "Cash" ? "Fund" : "Lot"}</label>
                     <input
                       type="number"
                       className="form-control"
-                      placeholder={item.type === "Cash" ? "Enter Fund" : "Enter Lot"}
+                      placeholder={item.Segment === "Cash" ? "Enter Fund" : "Enter Lot"}
                       onChange={(e) => {
                         const updatedData = [...chartingData];
-                        if (item.type === "Cash") {
+                        if (item.Segment === "Cash") {
                           updatedData[index] = {
                             ...updatedData[index],
                             Fund: e.target.value,
@@ -130,9 +122,9 @@ const AddChartingScript = () => {
                         }
                         setChartingData(updatedData);
                       }}
-                      value={item.type === "Cash" ? chartingData[index]?.Fund || '' : chartingData[index]?.Quantity || ''}
-                    />
 
+                      value={item.Segment === "Cash" ? chartingData[index]?.Fund || '' : chartingData[index]?.Quantity || ''}
+                      />
                   </div>
                   <div className="mb-3">
                     <label>Trade Count</label>
@@ -141,12 +133,15 @@ const AddChartingScript = () => {
                       className="form-control"
                       placeholder="Enter trade count"
                       onChange={(e) => {
-                        const data = {
-                          ...chartingData,
+                        const updatedData = [...chartingData];
+                        updatedData[index] = {
+                          ...updatedData[index],
+                          TradeCount: e.target.value,
                         };
-                        data[index].TradeCount = e.target.value;
-                        setChartingData(data);
-                      }}
+                        setChartingData(updatedData);
+
+                      }
+                      }
                       value={chartingData[index]?.TradeCount}
                     />
                   </div>

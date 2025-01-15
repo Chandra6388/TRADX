@@ -180,10 +180,72 @@ const TradeReport = () => {
         setShowTable(false)
     }, [selectStrategyType, FromDate, ToDate, selectedRowData])
 
+    // {
 
+
+
+    //     "MainStrategy":"ChartingPlatform",
+        
+        
+        
+    //     "Strategy": "Cash",
+        
+        
+        
+    //     "Symbol": "",
+        
+        
+        
+    //     "Username": "shubh",
+        
+        
+        
+    //     "ETPattern": "",
+        
+        
+        
+    //     "Timeframe": "",
+        
+        
+        
+    //     "From_date": "2025.01.13 00:00:00",
+        
+        
+        
+    //     "To_date": "2025.01.14 00:00:00",
+        
+        
+        
+    //     "Group":"",
+        
+        
+        
+    //     "TradePattern": "",
+        
+        
+        
+    //     "PatternName": ""
+        
+        
+        
+    //     }
 
     const handleViewchartingReport = async (rowData) => {
-        const req = { Username: rowData.Username, Segment: rowData.Segment }
+        const req = { 
+            MainStrategy:"ChartingPlatform",
+            Strategy: "Cash",
+            Symbol: "",
+            Username: rowData.Username,
+            ETPattern: "",
+            Timeframe: "",
+            From_date: convertDateFormat(FromDate == '' ? formattedDate : FromDate),
+            To_date: convertDateFormat(ToDate == '' ? Defult_To_Date : ToDate),
+            Group: "",
+            TradePattern: "",
+            PatternName: ""
+        }
+
+        return 
         await getChartingReport(req).then((res) => {
             if (res.Status) {
                 setShowTable(true)

@@ -182,15 +182,12 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
         }
     }
 
-    console.log("selectStrategyType", selectStrategyType)
-
     const GetAllUserScriptDetails = async () => {
         const data = { Strategy: stgType, Group: GroupName }
-
         await GetAllGroupService(data)
             .then((response) => {
                 if (response.Status) {
-                    if (selectStrategyType == 'Scalping') {
+                    if (stgType == 'Scalping') {
                         const filterMulticondtion = response?.Data.filter((item) => item?.ScalpType == 'Multi_Conditional')
                         const filterOthers = response?.Data.filter((item) => item?.ScalpType != 'Multi_Conditional')
 

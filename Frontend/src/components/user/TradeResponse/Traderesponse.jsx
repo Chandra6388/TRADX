@@ -180,7 +180,7 @@ const TradeResponse = () => {
     },
     {
       name: "View",
-      label: "View",
+      label: "View Report",
       options: {
         filter: true,
         sort: true,
@@ -195,8 +195,6 @@ const TradeResponse = () => {
                   top: document.body.scrollHeight,
                   behavior: "smooth",
                 });
-
-
               }}
               style={{
                 border: "none",
@@ -466,8 +464,7 @@ const TradeResponse = () => {
   const handleRowSelect = (rowData) => {
     setSelectedRowData(rowData);
   };
-
-  console.log("selectedRowData", selectedRowData);
+ 
   const handleSubmitForCharting = async (data) => {
     await ChartingPlatformsegment(data)
       .then((response) => {

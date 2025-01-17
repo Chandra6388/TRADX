@@ -174,6 +174,8 @@ const TradeReport = () => {
             })
     }
 
+    
+
     useEffect(() => {
         setStrategyType('Scalping')
     }, []);

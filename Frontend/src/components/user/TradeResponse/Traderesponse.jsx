@@ -355,23 +355,7 @@ const TradeResponse = () => {
     },
   ];
 
-  const columns9 = [
-    {
-      name: "S.No",
-      label: "S.No",
-      options: {
-        filter: true,
-        sort: true,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          const rowIndex = tableMeta.rowIndex;
-          return rowIndex + 1;
-        },
-      },
-    },
-
-
-
-  ];
+ 
 
 
 
@@ -739,7 +723,7 @@ const TradeResponse = () => {
                 </div>
                 <div className="modal-body">
                   <GridExample
-                    columns={columns9}
+                    columns={columns3}
                     data={ChartingTradeReport}
                     checkBox={false}
                   />

@@ -129,9 +129,8 @@ const Tradehistory = () => {
   const strategyType = async () => {
     try {
       const res = await getStrategyType();
-      if (res.Data) {
-        const filterData = res.Data.filter(item => item != "ChartingPlatform")
-        setStrategyNames(filterData)
+      if (res.Data) { 
+        setStrategyNames(res.Data)
       }
       else {
         console.log("Error in getting the StrategyType")
@@ -155,7 +154,7 @@ const Tradehistory = () => {
   const handleSubmit = async () => {
     const data = {
       MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
-      Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "",
+      Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "Cash",
       Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform"  ? selectedRowData && selectedRowData.TSymbol : "",
       Username: Username,
       ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
@@ -355,10 +354,7 @@ const Tradehistory = () => {
       })
 
   }
-
-
-
-
+ 
   useEffect(() => {
     setStrategyType('Scalping')
   }, []);
@@ -467,6 +463,9 @@ const Tradehistory = () => {
                       })}
                     </select>
                   </div>
+
+
+                  
                   <div className="form-group col-lg-4 ">
                     <label>Select form Date</label>
                     <DatePicker

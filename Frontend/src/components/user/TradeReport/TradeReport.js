@@ -333,7 +333,7 @@ const TradeReport = () => {
                                         <label>Select Strategy Type</label>
                                         <select className="form-select" required=""
                                             onChange={(e) => setStrategyType(e.target.value)}
-                                            value={selectStrategyType}>//
+                                            value={selectStrategyType}>
                                             <option value="">Select Strategy Type</option>
                                             {strategyNames.map((type, index) => (
                                                 <option key={index} value={type}>

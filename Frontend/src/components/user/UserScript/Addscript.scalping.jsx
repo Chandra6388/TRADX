@@ -378,7 +378,7 @@ const AddClient = () => {
     };
 
     const result = extractDetails(location.state.data.Symbol);
-
+ 
     useEffect(() => {
         formik.setFieldValue('Strategy', location.state.data.ScalpType)
         formik.setFieldValue('Exchange', location.state.data.Exchange)
@@ -403,7 +403,7 @@ const AddClient = () => {
         formik.setFieldValue('Group', location.state.data.GroupN)
         formik.setFieldValue('Optiontype', result ? result.type : "")
         formik.setFieldValue('Strike', result ? result.number : "")
-        formik.setFieldValue('position_type', location?.state?.data?.PositionType)
+        formik.setFieldValue('position_type', location.state.data.type=="copy"  ? location?.state?.data?.PositionType : location?.state?.data?.FixedSM)
         formik.setFieldValue('quantity2', location?.state?.data?.Quantity2)
         formik.setFieldValue('quantity3', location?.state?.data?.Quantity3)
         formik.setFieldValue('tgp2', location?.state?.data?.["Booking Point2"])

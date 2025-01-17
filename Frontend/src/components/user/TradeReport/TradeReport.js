@@ -126,21 +126,7 @@ const TradeReport = () => {
         getChartingData();
     }, []);
 
-    
-    // {
-    //     "MainStrategy":"ChartingPlatform",
-    //     "Strategy": "",
-    //     "Symbol": "BANKNIFTY30JAN25C48000",
-    //     "Username": "shubh",
-    //     "ETPattern": "",
-    //     "Timeframe": "",
-    //     "From_date": "2025.01.13 00:00:00",
-    //     "To_date": "2025.01.14 00:00:00",
-    //     "Group":"",
-    //     "TradePattern": "",
-    //     "PatternName": ""
-    //     }
-
+     
    
     const handleSubmit = async (rowData) => {
         console.log("rowData", rowData?.Segment)

@@ -38,6 +38,7 @@ export const getColumns = () => [
             sort: true,
         }
     },
+
     {
         name: "Token",
         label: "Token",
@@ -54,6 +55,7 @@ export const getColumns = () => [
             sort: true,
         }
     },
+    
     {
         name: "Lot",
         label: "Quantity",

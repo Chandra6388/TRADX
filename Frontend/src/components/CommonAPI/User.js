@@ -80,6 +80,24 @@ export const get_Trade_Response = async (data) => {
     }
 }
 
+export const ChartingPlatformsegment = async (data) => {
+    var token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}ChartingPlatformsegment`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+}
+
 export const GetAllUserScript = async (data) => {
     try {
 

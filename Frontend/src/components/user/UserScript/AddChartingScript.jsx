@@ -28,8 +28,10 @@ const AddChartingScript = () => {
       Lot: data.Segment == "Cash" ? 0 : Number(data.Quantity),
       Segment: data.Segment,
       TradeCount: Number(data.TradeCount),
+      MaxProfit: Number(data.MaxProfit),
+      MaxLoss: Number(data.MaxLoss),
     };
-   
+
     await addChartingScript(req)
       .then((response) => {
         if (response.Status) {
@@ -106,7 +108,9 @@ const AddChartingScript = () => {
                     <input
                       type="number"
                       className="form-control"
-                      placeholder={item.Segment === "Cash" ? "Enter Fund" : "Enter Lot"}
+                      placeholder={
+                        item.Segment === "Cash" ? "Enter Fund" : "Enter Lot"
+                      }
                       onChange={(e) => {
                         const updatedData = [...chartingData];
                         if (item.Segment === "Cash") {
@@ -122,10 +126,14 @@ const AddChartingScript = () => {
                         }
                         setChartingData(updatedData);
                       }}
-
-                      value={item.Segment === "Cash" ? chartingData[index]?.Fund || '' : chartingData[index]?.Quantity || ''}
-                      />
+                      value={
+                        item.Segment === "Cash"
+                          ? chartingData[index]?.Fund || ""
+                          : chartingData[index]?.Quantity || ""
+                      }
+                    />
                   </div>
+
                   <div className="mb-3">
                     <label>Trade Count</label>
                     <input
@@ -139,12 +147,49 @@ const AddChartingScript = () => {
                           TradeCount: e.target.value,
                         };
                         setChartingData(updatedData);
-
-                      }
-                      }
-                      value={chartingData[index]?.TradeCount}
+                      }}
+                      value={chartingData[index]?.TradeCount || ""}
                     />
                   </div>
+
+                  {/* MaxProfit input */}
+                  <div className="mb-3">
+                    <label>Max Profit</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Enter max profit"
+                      onChange={(e) => {
+                        const updatedData = [...chartingData];
+                        updatedData[index] = {
+                          ...updatedData[index],
+                          MaxProfit: e.target.value,
+                        };
+                        setChartingData(updatedData);
+                      }}
+                      value={chartingData[index]?.MaxProfit || ""}
+                    />
+                  </div>
+
+                  {/* MaxLoss input */}
+                  <div className="mb-3">
+                    <label>Max Loss</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Enter max loss"
+                      onChange={(e) => {
+                        const updatedData = [...chartingData];
+                        updatedData[index] = {
+                          ...updatedData[index],
+                          MaxLoss: e.target.value,
+                        };
+                        setChartingData(updatedData);
+                      }}
+                      value={chartingData[index]?.MaxLoss || ""}
+                    />
+                  </div>
+
                   <div>
                     <button
                       className="btn btn-primary"

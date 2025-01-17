@@ -45,13 +45,9 @@ const TradeResponse = () => {
     data: [],
   });
   const [showModal, setShowModal] = useState(false);
-  const [modalData, setModalData] = useState(null);
+  const [ChartingTradeReport, setChartingTradeReport] = useState([]);
 
-  const handleClose = () => setShowModal(false);
-  const handleShow = (data) => {
-    setModalData(data); // Set the data to display in the modal
-    setShowModal(true);
-  };
+  console.log("ChartingTradeReport", ChartingTradeReport);
 
   const Username = localStorage.getItem("name");
   const currentDate = new Date();
@@ -105,7 +101,6 @@ const TradeResponse = () => {
               onClick={() => {
                 const rowIndex = tableMeta.rowIndex;
                 const data = chartingData[rowIndex];
-                //   console.log("Data is ", data);
                 handleSubmitForCharting(data);
                 window.scrollTo({
                   top: document.body.scrollHeight,
@@ -194,9 +189,14 @@ const TradeResponse = () => {
             <button
               onClick={() => {
                 const rowIndex = tableMeta.rowIndex;
-                const data = chartingData[rowIndex];
-                console.log("Data is", data);
-                handleShow(data);
+                const data = getAllTradeData?.data?.[rowIndex];
+                handleVewChartingReport(data);
+                window.scrollTo({
+                  top: document.body.scrollHeight,
+                  behavior: "smooth",
+                });
+
+
               }}
               style={{
                 border: "none",
@@ -355,6 +355,59 @@ const TradeResponse = () => {
     },
   ];
 
+  const columns9 = [
+    {
+      name: "S.No",
+      label: "S.No",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          const rowIndex = tableMeta.rowIndex;
+          return rowIndex + 1;
+        },
+      },
+    },
+
+
+
+  ];
+
+
+
+  const handleVewChartingReport = async (data) => {
+    const req = {
+      MainStrategy: "ChartingPlatform",
+      Strategy: data.Optiontype == " " || data?.Optiontype == "" ? "Cash" : data?.Optiontype == "SX" ? "Future" : "Option",
+      Symbol: data?.TSymbol,
+      Username: data?.Username,
+      ETPattern: "",
+      Timeframe: "",
+      From_date: convertDateFormat(FromDate == "" ? formattedDate : FromDate),
+      To_date: convertDateFormat(ToDate == "" ? Defult_To_Date : ToDate),
+      Group: "",
+      TradePattern: "",
+      PatternName: "",
+    };
+    await get_Trade_Response(req)
+      .then((response) => {
+        if (response.Status) {
+          setChartingTradeReport(response.Data);
+          setShowModal(true);
+        } else {
+          Swal.fire({
+            title: "No Records found",
+            icon: "info",
+            timer: 1500,
+            timerProgressBar: true,
+          });
+          setChartingTradeReport([]);
+        }
+      }
+      )
+
+
+  };
   const getChartingData = async () => {
     const res = await getChargingPlatformDataApi(userName);
     setChartingData(res.Client);
@@ -402,8 +455,8 @@ const TradeResponse = () => {
             selectStrategyType != "Scalping"
               ? []
               : response?.NewScalping?.filter((item) => {
-                  return item.TradeExecution == "Live Trade";
-                });
+                return item.TradeExecution == "Live Trade";
+              });
 
           setTradeHistory({
             loading: false,
@@ -430,9 +483,8 @@ const TradeResponse = () => {
     setSelectedRowData(rowData);
   };
 
+  console.log("selectedRowData", selectedRowData);
   const handleSubmitForCharting = async (data) => {
-    // const {Username, Segment} = data;
-    // console.log("username ans ", Username, Segment)
     await ChartingPlatformsegment(data)
       .then((response) => {
         if (response.Status) {
@@ -463,19 +515,19 @@ const TradeResponse = () => {
     const data = {
       MainStrategy:
         selectStrategyType == "Scalping" &&
-        selectedRowData.ScalpType == "Multi_Conditional"
+          selectedRowData.ScalpType == "Multi_Conditional"
           ? "NewScalping"
           : selectStrategyType,
       Strategy:
         selectStrategyType == "Scalping" &&
-        selectedRowData.ScalpType != "Multi_Conditional"
+          selectedRowData.ScalpType != "Multi_Conditional"
           ? selectedRowData && selectedRowData.ScalpType
           : selectStrategyType == "Option Strategy"
             ? selectedRowData && selectedRowData.STG
             : selectStrategyType == "Pattern"
               ? selectedRowData && selectedRowData.TradePattern
               : selectStrategyType == "Scalping" &&
-                  selectedRowData.ScalpType == "Multi_Conditional"
+                selectedRowData.ScalpType == "Multi_Conditional"
                 ? selectedRowData && selectedRowData.Targetselection
                 : "",
       Symbol:
@@ -501,7 +553,7 @@ const TradeResponse = () => {
       To_date: convertDateFormat(ToDate == "" ? Defult_To_Date : ToDate),
       Group:
         selectStrategyType == "Scalping" ||
-        selectStrategyType == "Option Strategy"
+          selectStrategyType == "Option Strategy"
           ? selectedRowData && selectedRowData.GroupN
           : "",
       TradePattern: "",
@@ -545,103 +597,6 @@ const TradeResponse = () => {
 
   return (
     <div>
-      Modal: (
-      <Modal
-        show={showModal}
-        onHide={handleClose}
-        centered
-        style={{
-          width: "100vw", // Full viewport width
-          padding: "0", // Remove padding
-          display: "flex", // Use flexbox for centering and alignment
-          justifyContent: "center", // Center horizontally
-          alignItems: "center",
-          // Center vertically
-        }}>
-        <div
-          style={{
-            width: "90vw", // 90% of the viewport width
-            height: "90vh",
-            marginLeft: "-20rem", // Remove margin
-            // 90% of the viewport height
-            backgroundColor: "#fff", // Modal background
-            borderRadius: "8px", // Rounded corners
-            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)", // Add shadow for better appearance
-            overflowX: "auto", // Clip content overflow
-            overflowY: "auto", // Clip content overflow
-          }}>
-          <Modal.Header
-            closeButton
-            style={{
-              backgroundColor: "#f8f9fa", // Light gray background for header
-              borderBottom: "1px solid #dee2e6",
-              padding: "10px 20px", // Adjust padding
-            }}>
-            <Modal.Title style={{ fontSize: "1.25rem", fontWeight: "bold" }}>
-              Charting Data Details
-            </Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body
-            style={{
-              height: "calc(90vh - 130px)", // Dynamic height based on modal size
-              width: "100%", // Full width
-              overflowY: "auto", // Enable vertical scrolling
-              overflowX: "auto", // Enable horizontal scrolling
-              padding: "15px", // Add padding for content
-              backgroundColor: "#fdfdfd", // Subtle background for body
-            }}>
-            {modalData ? (
-              <div
-                style={{
-                  minWidth: "100%", // Ensures content takes full width
-                  display: "block", // Ensures table does not collapse
-                  overflowX: "auto", // Allow horizontal scrolling
-                }}>
-                <GridExample
-                  columns={
-                    selectStrategyType === "Scalping"
-                      ? columns
-                      : selectStrategyType === "Option Strategy"
-                        ? columns1
-                        : selectStrategyType === "Pattern"
-                          ? columns2
-                          : selectStrategyType === "ChartingPlatform"
-                            ? columns7
-                            : columns
-                  }
-                  data={
-                    selectStrategyType === "ChartingPlatform"
-                      ? chartingData
-                      : tradeHistory?.data
-                  }
-                  onRowSelect={handleRowSelect}
-                  checkBox={
-                    selectStrategyType === "ChartingPlatform" ? false : true
-                  }
-                />
-              </div>
-            ) : (
-              <p style={{ textAlign: "center", color: "#666" }}>
-                No data available.
-              </p>
-            )}
-          </Modal.Body>
-
-          <Modal.Footer
-            style={{
-              backgroundColor: "#f8f9fa", // Light gray background for footer
-              borderTop: "1px solid #dee2e6",
-              justifyContent: "flex-end",
-              padding: "10px 20px",
-            }}>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </div>
-      </Modal>
-      ),
       <div className="container-fluid">
         <div className="row">
           <div className="iq-card">
@@ -760,6 +715,40 @@ const TradeResponse = () => {
           </div>
         </div>
       </div>
+
+      {
+        <>
+          <div
+            className={`modal fade bd-example-modal-lg ${showModal ? 'show' : ''}`}
+            tabIndex={-1}
+            style={{ display: showModal ? 'block' : 'none' }}
+            aria-hidden={!showModal}
+            role="dialog"
+          >
+            <div className="modal-dialog modal-xl modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">All Scripts</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={() => setShowModal(false)}
+                  />
+                </div>
+                <div className="modal-body">
+                  <GridExample
+                    columns={columns9}
+                    data={ChartingTradeReport}
+                    checkBox={false}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      }
     </div>
   );
 };

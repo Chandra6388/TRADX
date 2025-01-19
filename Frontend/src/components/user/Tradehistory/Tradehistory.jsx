@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { get_User_Data, get_Trade_History, get_PnL_Data, get_EQuityCurveData, get_DrapDownData, get_FiveMostProfitTrade, get_FiveMostLossTrade, getStrategyType } from '../../CommonAPI/Admin'
- 
+
 import GridExample from '../../../ExtraComponent/CommanDataTable'
-import { get_Trade_Data , getUserChartingScripts } from '../../CommonAPI/User'
+import { get_Trade_Data, ChartingPlatformsegment, getChargingPlatformDataApi } from '../../CommonAPI/User'
 import DatePicker from "react-datepicker";
 
 import { AgChartsReact } from "ag-charts-react";
@@ -30,7 +30,9 @@ const Tradehistory = () => {
   const [getDropDownData, setDropDownData] = useState({ loading: true, data: [] })
   const [getFiveLossTrade, setFiveLossTrade] = useState({ loading: true, data: [], data1: [] })
   const [getFiveProfitTrade, setFiveProfitTrade] = useState({ loading: true, data: [], data1: [] })
-   const [getCharting, setGetCharting] = useState([]);
+  const [getCharting, setGetCharting] = useState([]);
+  const [selectSegmentType, setSegmentType] = useState('')
+  const [getChartingSegments, setChartingSegments] = useState([])
 
   const [getAllTradeData, setAllTradeData] = useState({
     loading: true,
@@ -42,6 +44,8 @@ const Tradehistory = () => {
     Overall: []
   })
 
+
+  console.log("selectSegmentType", selectSegmentType)
 
   const Username = localStorage.getItem('name')
 
@@ -76,30 +80,51 @@ const Tradehistory = () => {
   };
 
 
-  
-      useEffect(() => {
-          if (selectStrategyType == "ChartingPlatform")
-              getChartingScript();
-      }, [selectStrategyType]);
-  
-  
-  
-      const getChartingScript = async () => {
-          const req = { Username: Username, Planname: "Chart" }
-          await getUserChartingScripts(req)
-              .then((response) => {
-                  if (response.Status) {
-                      setGetCharting(response.Client)
-                  }
-                  else {
-                      setGetCharting([])
-                  }
-              })
-              .catch((err) => {
-                  console.log("Error in finding the User Scripts", err)
-              })
-      }
-  
+
+  useEffect(() => {
+    if (selectSegmentType)
+      getChartingScript();
+  }, [selectSegmentType]);
+
+  useEffect(() => {
+    getChartingData();
+  }, []);
+
+  const getChartingData = async () => {
+    await getChargingPlatformDataApi(Username)
+      .then((res) => {
+        if (res.Status) {
+          setChartingSegments(res.Client);
+          setSegmentType(res?.Client?.[0]?.Segment)
+        }
+        else {
+          setChartingSegments([])
+        }
+      })
+      .catch((err) => {
+        console.log("Error in finding the User Scripts", err
+        )
+      })
+  };
+
+
+  const getChartingScript = async () => {
+    const filterData = getChartingSegments.filter(item => item.Segment == selectSegmentType)
+    const req = { Username: Username, Segment: filterData[0].Segment }
+    await ChartingPlatformsegment(req)
+      .then((response) => {
+        if (response.Status) {
+          setGetCharting(response.Client)
+        }
+        else {
+          setGetCharting([])
+        }
+      })
+      .catch((err) => {
+        console.log("Error in finding the User Scripts", err)
+      })
+  }
+
 
   const GetTradeHistory = async () => {
     const data = { Data: selectStrategyType, Username: Username }
@@ -129,7 +154,7 @@ const Tradehistory = () => {
   const strategyType = async () => {
     try {
       const res = await getStrategyType();
-      if (res.Data) { 
+      if (res.Data) {
         setStrategyNames(res.Data)
       }
       else {
@@ -155,7 +180,7 @@ const Tradehistory = () => {
     const data = {
       MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
       Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "Cash",
-      Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform"  ? selectedRowData && selectedRowData.TSymbol : "",
+      Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform" ? selectedRowData && selectedRowData.TSymbol : "",
       Username: Username,
       ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
       Timeframe: selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TimeFrame : '',
@@ -164,7 +189,7 @@ const Tradehistory = () => {
       Group: selectStrategyType == "Scalping" || selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.GroupN : "",
       TradePattern: "",
       PatternName: ""
-    }  
+    }
     await get_Trade_History(data)
 
       .then((response) => {
@@ -354,7 +379,7 @@ const Tradehistory = () => {
       })
 
   }
- 
+
   useEffect(() => {
     setStrategyType('Scalping')
   }, []);
@@ -430,7 +455,7 @@ const Tradehistory = () => {
 
   useEffect(() => {
     setShowTable(false)
-  }, [selectStrategyType, FromDate, ToDate, selectedRowData])
+  }, [selectStrategyType, FromDate, ToDate, selectedRowData , selectSegmentType])
 
 
 
@@ -447,7 +472,7 @@ const Tradehistory = () => {
             <div className="iq-card-body">
               <div className="was-validated ">
                 <div className="row">
-                  <div className="form-group col-lg-4">
+                  <div className={`form-group ${selectStrategyType == "ChartingPlatform" ? "col-lg-3" : "col-lg-4"}`}>
                     <label>Select Strategy Type</label>
                     <select
                       className="form-select"
@@ -463,10 +488,27 @@ const Tradehistory = () => {
                       })}
                     </select>
                   </div>
+                  {
+                    selectStrategyType == "ChartingPlatform" &&
+                    <div className="form-group col-lg-3">
+                      <label>Select Segment Type</label>
+                      <select
+                        className="form-select"
+                        required=""
+                        onChange={(e) => setSegmentType(e.target.value)}
+                        value={selectSegmentType}>
+                        {getChartingSegments.map((item, index) => {
+                          return (
+                            <option key={index} value={item.Segment}>
+                              {item.Segment}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  }
 
-
-                  
-                  <div className="form-group col-lg-4 ">
+                  <div className={`form-group ${selectStrategyType == "ChartingPlatform" ? "col-lg-3" : "col-lg-4"}`}>
                     <label>Select form Date</label>
                     <DatePicker
                       className="form-select"
@@ -474,7 +516,8 @@ const Tradehistory = () => {
                       onChange={(date) => setFromDate(date)}
                     />
                   </div>
-                  <div className="form-group col-lg-4">
+                  <div className={`form-group ${selectStrategyType == "ChartingPlatform" ? "col-lg-3" : "col-lg-4"}`}>
+
                     <label>Select To Date</label>
                     <DatePicker
                       className="form-select custom-date"
@@ -600,7 +643,7 @@ const Tradehistory = () => {
                         </div>
                       </div>
                     </div>
-                  </div> 
+                  </div>
                   <div className="mt-3">
                     <GridExample
                       columns={columns7()}
@@ -687,8 +730,7 @@ const Tradehistory = () => {
 
                   <div className="row">
                     <div className="col-lg-6">
-                      {/* <p>Consistant Profit : <spam>{parseFloat(getAllTradeData.data1).toFixed(4)}</spam></p>
-                                            <p>Count Consistant Profit : <spam>{parseFloat(getAllTradeData.data2).toFixed(4)}</spam></p> */}
+
 
                       <p>
                         Consistant Profit :{" "}
@@ -700,8 +742,6 @@ const Tradehistory = () => {
                       </p>
                     </div>
                     <div className="col-lg-6">
-                      {/* <p>Consistant Loss : <spam>{parseFloat(getAllTradeData.data4).toFixed(4)}</spam></p>
-                                            <p>Count Consistant Loss : <spam>{parseFloat(getAllTradeData.data3).toFixed(4)}</spam></p> */}
 
                       <p>
                         Consistant Loss : <spam>{getAllTradeData.data4}</spam>
@@ -713,22 +753,7 @@ const Tradehistory = () => {
                     </div>
                   </div>
 
-                  {/* EquityCurve */}
 
-                  {/* <div>
-                                        <p className='bold mt-3' style={{ fontWeight: 'bold', fontSize: '20px', color: 'black' }}>
-                                            EquityCurve
-                                        </p>
-
-                                        <GridExample
-                                            columns={columns5(selectStrategyType)}
-                                            data={getEquityCurveDetails.data}
-                                            onRowSelect={handleRowSelect}
-                                            checkBox={false}
-                                        />
-                                    </div> */}
-
-                  {/* EquityCurve  Graph show */}
                   <p
                     className="bold mt-3"
                     style={{

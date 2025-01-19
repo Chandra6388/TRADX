@@ -20,7 +20,7 @@ const Adduser = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [optionsArray, setoptionsArray] = useState([]);
     const [GetAllPlans, setAllPlans] = useState({ LivePlanName: [], DemoPlanName: [], data: [] });
-    const permission = localStorage.getItem('Permission');
+    const permission = localStorage.getItem('SubAdminPermission');
     const animatedComponents = makeAnimated();
 
     const Name_regex = (name) => {
@@ -206,7 +206,7 @@ const Adduser = () => {
                 password: values.password,
                 cpassword: values.cpassword,
                 mobile_no: values.mobile_no,
-                bname: formik.values.Select_License == 1 ? "Demo" : values.bname,
+                bname: formik.values.Select_License == 1 ? "DEMO" : values.bname,
                 ClientAmmount: formik.values.Select_License == 1 ? 0 : Number(values.ClientAmmount),
                 planname: values.planname,
                 group: selectedOptions.map((item) => item.value),

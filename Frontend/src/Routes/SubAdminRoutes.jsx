@@ -31,18 +31,16 @@ import AddScriptOption from '../components/subadmin/SubAdminScript/AddScript.Opt
 
 // import AllScript from '../components/subAdmin/SubAdminScript/AllScript';
 import AllScript from '../components/subadmin/SubAdminScript/AllScript';
+ 
 
 // import ChangePassword from '../components/subAdmin/Password/ChangePassword';
 import ChangePassword from '../components/subadmin/Password/ChangePassword';
 
 
-
-
 const SubAdminRoutes = () => {
-  const permission = localStorage.getItem('Permission');
-  console.log("---",permission)
+  
   return (
-   <div className='wrapper'>
+    <div className="wrapper">
       <Sidebar />
       <div id="content-page" className="content-page">
         <Header />
@@ -58,13 +56,10 @@ const SubAdminRoutes = () => {
           <Route path="/addscript/option" element={<AddScriptOption />} />
           <Route path="/all-script" element={<AllScript />} />
           <Route path="/change-password" element={<ChangePassword />} />
-
         </Routes>
-
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default SubAdminRoutes
+export default SubAdminRoutes;

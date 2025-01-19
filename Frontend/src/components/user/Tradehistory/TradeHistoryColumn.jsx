@@ -19,14 +19,6 @@ export const columns =()=> [
             sort: true,
         }
     },
-    // {
-    //     name: "Exchange",
-    //     label: "Exchange",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
     {
         name: "Symbol",
         label: "Symbol",
@@ -35,14 +27,7 @@ export const columns =()=> [
             sort: true,
         }
     },
-    // {
-    //     name: "Token",
-    //     label: "Token",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
+    
     {
         name: "Booking Point",
         label: "Target",
@@ -75,15 +60,6 @@ export const columns =()=> [
             sort: true,
         }
     },
-     
-    // {
-    //     name: "ExpiryDate",
-    //     label: "Expiry Date",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
     {
         name: "TradeExecution",
         label: "Trade Execution",
@@ -116,15 +92,6 @@ export const columns =()=> [
             sort: true,
         }
     },
-     
-    // {
-    //     name: "SSDate",
-    //     label: "SS Date",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
     {
         name: "SEDate",
         label: "SE Date",
@@ -134,30 +101,6 @@ export const columns =()=> [
         }
     },
      
-    // {
-    //     name: "TaskStatus",
-    //     label: "Task Status",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
-    // {
-    //     name: "TaskTime",
-    //     label: "Task Time",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
-    // {
-    //     name: "TradeCount",
-    //     label: "Trade Count",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
 ];
 
 export const columns1 =()=> [
@@ -201,26 +144,6 @@ export const columns1 =()=> [
             sort: true,
         }
     },
-     
-    
-    // {
-    //     name: "Expirydate",
-    //     label: "Expiry Date",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
-    // {
-    //     name: "Token",
-    //     label: "Token",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
-   
-    
     {
         name: "strategytype",
         label: "Measurment Type",
@@ -309,15 +232,6 @@ export const columns1 =()=> [
             sort: true,
         }
     },
-   
-    // {
-    //     name: "SSDate",
-    //     label: "SS Date",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
     {
         name: "SEDate",
         label: "SE Date",
@@ -415,15 +329,6 @@ export const columns1 =()=> [
             sort: true,
         }
     },
-    
-    // {
-    //     name: "TradeCount",
-    //     label: "Trade Count",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
 ];
 
 export const columns2 =()=> [
@@ -455,14 +360,6 @@ export const columns2 =()=> [
             sort: true,
         }
     },
-    // {
-    //     name: "Exchange",
-    //     label: "Exchange",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
     {
         name: "Symbol",
         label: "Symbol",
@@ -471,14 +368,6 @@ export const columns2 =()=> [
             sort: true,
         }
     },
-    // {
-    //     name: "Token",
-    //     label: "Token",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
     {
         name: "TType",
         label: "Trade Type",
@@ -519,15 +408,6 @@ export const columns2 =()=> [
             sort: true,
         }
     },
-    
-    // {
-    //     name: "Expiry Date",
-    //     label: "Expiry Date",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
     {
         name: "TradeExecution",
         label: "Trade Execution",
@@ -569,14 +449,6 @@ export const columns2 =()=> [
             sort: true,
         }
     },
-    // {
-    //     name: "SEDate",
-    //     label: "SE Date",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
     {
         name: "SSDate",
         label: "SS Date",
@@ -586,14 +458,6 @@ export const columns2 =()=> [
         }
     },
      
-    // {
-    //     name: "TradeCount",
-    //     label: "Trade Count",
-    //     options: {
-    //         filter: true,
-    //         sort: true,
-    //     }
-    // },
 
 ];
 
@@ -815,7 +679,6 @@ export const columns6 =()=> [
 
 ];
 
-
 export const columns7 =()=> [
     {
         name: "S.No",
@@ -948,5 +811,127 @@ export const columns8 =()=> [
     
 
 
+
+];
+
+export const getColumns10 = () => [
+    {
+        name: "S.No",
+        label: "S.No",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                const rowIndex = tableMeta.rowIndex;
+                return rowIndex + 1;
+            }
+        },
+    },
+    
+    
+    {
+        name: "Token",
+        label: "Token",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TSymbol",
+        label: "TSymbol",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Lotsize",
+        label: "Lotsize",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Exchange",
+        label: "Exchange",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Planname",
+        label: "Plan Name",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TType",
+        label: "Trade Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Target",
+        label: "Target",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Sl",
+        label: "Stoploss",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Exittime",
+        label: "Exittime",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Ordertype",
+        label: "Ordertype",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "AccType",
+        label: "Account Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Price",
+        label: "Price",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Optiontype",
+        label: "Optiontype",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
 
 ];

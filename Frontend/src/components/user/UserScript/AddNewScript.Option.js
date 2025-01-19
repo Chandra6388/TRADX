@@ -271,7 +271,7 @@ const AddClient = () => {
                 FixedSM: "",
                 TType: "",
                 serendate: getEndData(formik.values.Measurment_Type),
-                expirydata1: values.Expirytype == "Weekly" ? getExpiry && getExpiry.data[0] : values.Expirytype == "Next Week" ? getExpiry && getExpiry.data[1] : getExpiry && getExpiry.data[2],
+                expirydata1: getExpiry && getExpiry.data[0],
                 Expirytype: values.Expirytype,
                 Striketype: formik.values.Strategy != "ShortStraddle" && formik.values.Strategy != "LongStraddle" && formik.values.Measurment_Type != "Shifting_FourLeg" && formik.values.Strategy != 'ShortStraddle' && formik.values.Strategy != 'LongStraddle' ? values.Striketype : '',
                 DepthofStrike: (formik.values.Striketype != "Premium_Range" && formik.values.Measurment_Type != "Shifting_FourLeg" && formik.values.Strategy != 'LongStraddle' && formik.values.Strategy != 'ShortStraddle') ? Number(values.DepthofStrike) : formik.values.Measurment_Type == "Shifting_FourLeg" && formik.values.Strategy != 'ShortFourLegStretegy' && formik.values.Strategy != 'LongFourLegStretegy' ? values.Shifting_Value : 0,
@@ -473,10 +473,15 @@ const AddClient = () => {
             name: "Expirytype",
             label: "Expiry Type",
             type: "select",
-            options: [
-                { label: "Weekly", value: "Weekly" },
-                { label: "Monthly", value: "Monthly" },
-            ],
+            options: formik.values.Symbol == "NIFTY" ?
+                [
+                    { label: "Weekly", value: "Weekly" },
+                    { label: "Monthly", value: "Monthly" },
+                ] :
+                [
+                    { label: "Monthly", value: "Monthly" },
+                ],
+
             hiding: false,
             label_size: 12,
             col_size: 3,
@@ -1091,7 +1096,9 @@ const AddClient = () => {
             FixedSM: "",
             TType: "",
             serendate: getEndData(formik.values.Measurment_Type),
-            expirydata1: formik.values.Expirytype == "Weekly" ? getExpiry && getExpiry.data[0] : formik.values.Expirytype == "Next Week" ? getExpiry && getExpiry.data[1] : getExpiry && getExpiry.data[2],
+            // expirydata1: formik.values.Expirytype == "Weekly" ? getExpiry && getExpiry.data[0] : formik.values.Expirytype == "Next Week" ? getExpiry && getExpiry.data[1] : getExpiry && getExpiry.data[2],
+            expirydata1: getExpiry && getExpiry.data[0],
+
             Expirytype: formik.values.Expirytype,
             Striketype: formik.values.Strategy != "ShortStraddle" && formik.values.Strategy != "LongStraddle" && formik.values.Measurment_Type != "Shifting_FourLeg" && formik.values.Strategy != 'ShortStraddle' && formik.values.Strategy != 'LongStraddle' ? formik.values.Striketype : '',
             DepthofStrike: (formik.values.Striketype != "Premium_Range" && formik.values.Measurment_Type != "Shifting_FourLeg" && formik.values.Strategy != 'LongStraddle' && formik.values.Strategy != 'ShortStraddle') ? Number(formik.values.DepthofStrike) : 0,

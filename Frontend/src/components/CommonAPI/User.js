@@ -80,6 +80,24 @@ export const get_Trade_Response = async (data) => {
     }
 }
 
+export const ChartingPlatformsegment = async (data) => {
+    var token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}ChartingPlatformsegment`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+}
+
 export const GetAllUserScript = async (data) => {
     try {
 
@@ -651,7 +669,6 @@ export const Get_All_Buyed_Plans = async (data) => {
     }
 }
 
-
 export const BuyPlan = async (data) => {
     var token = localStorage.getItem('token')
     try {
@@ -670,7 +687,6 @@ export const BuyPlan = async (data) => {
     }
 }
 
-
 export const GetUserScripts = async (data) => {
     var token = localStorage.getItem('token')
     try {
@@ -688,6 +704,101 @@ export const GetUserScripts = async (data) => {
         return err
     }
 }
+
+export const addChartingScript = async (data) => {
+    var token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}ChartingPlatformStatus`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+}
+
+export const getChargingPlatformDataApi = async (username) => {
+    var token = localStorage.getItem('token')
+    try {
+        const res = await axios.get(`${Config.base_url}ChartingPlatformData/${username}`, 
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+}
+
+
+export const getUserChartingScripts = async (data) => {
+    var token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}ChartingPlatformData1`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+}
+
+export const getChartingReport = async (data) => {
+    var token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}Tradereport`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+}
+
+
+export const DeleteSingleChartingScript = async (data) => {
+    var token = localStorage.getItem('token')
+    try {
+        const res = await axios.post(`${Config.base_url}ChartingPlatformDelete`, data,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        )
+        return res?.data
+    }
+    catch (err) {
+        return err
+    }
+}
+
+
+
 
 
 

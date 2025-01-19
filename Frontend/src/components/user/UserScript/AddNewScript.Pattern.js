@@ -223,6 +223,7 @@ const AddClient = () => {
                 quantityvalue: 0.0,
                 targetselection: "",
             }
+
             if (values.EntryTime >= values.ExitTime) {
                 return SweentAlertFun("Exit Time should be greater than Entry Time")
             }

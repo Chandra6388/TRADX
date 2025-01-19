@@ -214,11 +214,7 @@ const Strategygroup = () => {
         setShowAddPermission1(true);
         const index = tableMeta?.rowIndex;
         setSingleAdminData(getAdminDetails[index]);
-
-
-        // Populate formik1 initial values
         formik2.setFieldValue("Permission", getAdminDetails[index].Permission || []);
-
     }
 
 
@@ -228,9 +224,6 @@ const Strategygroup = () => {
         const index = tableMeta?.rowIndex;
         setSingleAdminData(getAdminDetails[index]);
         setShowAddBroker(getAdminDetails[index].BrokerPermission)
-
-        //aaaaaa
-        // Populate formik1 initial values
         formik1.setFieldValue("BrokerPermission", getAdminDetails[index].BrokerPermission || []);
     }
 

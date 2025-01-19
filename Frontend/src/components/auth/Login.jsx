@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom'
 import { LoginPage, ForgotPassword } from '../CommonAPI/Common'
-import { GetHeaderImg2, GetLogo, GetPanleName, GetHeaderImg1, Getfaviconimage, SubAdminPermission } from '../CommonAPI/Admin'
+import { GetHeaderImg2, GetLogo, GetPanleName, GetHeaderImg1, Getfaviconimage, SubAdminPermission , AdminPermission } from '../CommonAPI/Admin'
 
 const Login = () => {
     const [Username, setUserName] = useState('');
@@ -20,11 +20,15 @@ const Login = () => {
         const data = { Username: Username, password: password }
         await LoginPage(data)
             .then((response) => {
-
                 if (response.Status) {
                     if (response.Role === 'Subadmin') {
                         getSubAdminPermission()
                     }
+                    else if (response.Role === 'Admin') {
+                        getAdminPermisson()
+                    }
+
+
                     localStorage.setItem("Role", response.Role)
                     localStorage.setItem("name", Username)
                     localStorage.setItem("token", response.access_token)
@@ -71,13 +75,27 @@ const Login = () => {
         await SubAdminPermission(req)
             .then((response) => {
                 if (response.Status) {
-                    localStorage.setItem("Permission", JSON.stringify(response.Data))
+                    localStorage.setItem("SubAdminPermission", JSON.stringify(response.Data))
                 }
             })
             .catch((err) => {
                 console.log("Error in fetching the permission", err)
             })
     }
+
+    const getAdminPermisson = async () => {
+        const req = { username: Username }
+        await AdminPermission(req)
+            .then((response) => {
+                if (response.Status) {
+                    localStorage.setItem("AdminPermission", JSON.stringify(response.Data))
+                }
+            })
+            .catch((err) => {
+                console.log("Error in fetching the permission", err)
+            })
+    }
+
 
     const toggle = (e) => {
         e.preventDefault();

@@ -1,4 +1,6 @@
 
+
+
 export const getColumns = () => [
     {
         name: "S.No",
@@ -36,6 +38,7 @@ export const getColumns = () => [
             sort: true,
         }
     },
+
     {
         name: "Token",
         label: "Token",
@@ -52,6 +55,7 @@ export const getColumns = () => [
             sort: true,
         }
     },
+    
     {
         name: "Lot",
         label: "Quantity",
@@ -597,6 +601,210 @@ export const getColumns2 = () => [
     },
 
 ];
+
+export const getColumns9 = () => [
+    {
+        name: "S.No",
+        label: "S.No",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                const rowIndex = tableMeta.rowIndex;
+                return rowIndex + 1;
+            }
+        },
+    },
+    {
+        name: "ScalpType",
+        label: "ScalpType",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Exchange",
+        label: "Exchange",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Symbol",
+        label: "Symbol",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Token",
+        label: "Token",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TType",
+        label: "Trade Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Lot",
+        label: "Quantity",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "ExpiryDate",
+        label: "Expiry Date",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TradeExecution",
+        label: "Trade Execution",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitDay",
+        label: "Exit Day",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "EntryTime",
+        label: "Entry Time",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitTime",
+        label: "Exit Time",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "SSDate",
+        label: "SSDate",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "SEDate",
+        label: "SEDate",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+
+    {
+        name: "TaskTime",
+        label: "Task Time",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TradeCount",
+        label: "Trade Count",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "StepUp",
+        label: "StepUp",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "IncrementType",
+        label: "Increment Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Incrementvalue",
+        label: "Increment Value",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Targetselection",
+        label: "Target Selection",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Booking Point2",
+        label: "Booking Point2",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Booking Point3",
+        label: "Booking Point3",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Quantity2",
+        label: "Quantity2",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Quantity3",
+        label: "Quantity3",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+]
 
 
 export const getColumns3 = () => [
@@ -1278,7 +1486,7 @@ export const getColumns8 = () => [
             filter: true,
             sort: true,
         }
-    }, 
+    },
     {
         name: "Symbol",
         label: "Symbol",
@@ -1335,7 +1543,7 @@ export const getColumns8 = () => [
             sort: true,
         }
     },
-     
+
     {
         name: "Quantity",
         label: "Quantity",
@@ -1344,7 +1552,7 @@ export const getColumns8 = () => [
             sort: true,
         }
     },
-     
+
     {
         name: "Target",
         label: "Target",
@@ -1369,8 +1577,8 @@ export const getColumns8 = () => [
             sort: true,
         }
     },
-   
-     
+
+
     {
         name: "TimeFrame",
         label: "Time Frame",
@@ -1379,7 +1587,7 @@ export const getColumns8 = () => [
             sort: true,
         }
     },
-    
+
     {
         name: "Token",
         label: "Token",
@@ -1390,5 +1598,264 @@ export const getColumns8 = () => [
     },
 
 ]
+
+
+// close
+export const getColumns10 = () => [
+    {
+        name: "S.No",
+        label: "S.No",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                const rowIndex = tableMeta.rowIndex;
+                return rowIndex + 1;
+            }
+        },
+    },
+   
+    {
+        name: "Symbol",
+        label: "Symbol",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    
+
+    {
+        name: "AccType",
+        label: "AccType",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "Segmenttype",
+        label: "Segmenttype",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "Token",
+        label: "Token",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    
+    {
+        name: "ETime",
+        label: "ETime",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "EPrice",
+        label: "EPrice",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitTime",
+        label: "ExitTime",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitPrice",
+        label: "ExitPrice",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TradeType",
+        label: "Trade Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Quantity",
+        label: "Quantity",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Trade",
+        label: "Trade",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Target",
+        label: "Target",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "SL",
+        label: "Stoploss",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+];
+
+
+// open
+export const getColumns12 = () => [
+    {
+        name: "S.No",
+        label: "S.No",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                const rowIndex = tableMeta.rowIndex;
+                return rowIndex + 1;
+            }
+        },
+    },
+ 
+
+    {
+        name: "AccType",
+        label: "AccType",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "Segmenttype",
+        label: "Segmenttype",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+    {
+        name: "Token",
+        label: "Token",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Symbol",
+        label: "Symbol",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ETime",
+        label: "ETime",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "EPrice",
+        label: "EPrice",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitTime",
+        label: "ExitTime",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "ExitPrice",
+        label: "ExitPrice",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "TradeType",
+        label: "Trade Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Quantity",
+        label: "Quantity",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Trade",
+        label: "Trade",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "Target",
+        label: "Target",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "SL",
+        label: "Stoploss",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+
+
+
+];
+
+
+
 
 

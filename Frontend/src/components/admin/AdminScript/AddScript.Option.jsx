@@ -191,7 +191,6 @@ const AddClient = () => {
                 }
             }
 
-            console.log("Errors", errors);
             return errors;
         },
 
@@ -311,7 +310,7 @@ const AddClient = () => {
 
     useEffect(() => {
         formik.setFieldValue('Measurment_Type', "Straddle/Strangle")
-        formik.setFieldValue('Symbol', "BANKNIFTY")
+        formik.setFieldValue('Symbol', "NIFTY")
         formik.setFieldValue('Expirytype', "Weekly")
         formik.setFieldValue('ETPattern', "Future")
         formik.setFieldValue('TStype', "Percentage")
@@ -355,10 +354,15 @@ const AddClient = () => {
             name: "Expirytype",
             label: "Expiry Type",
             type: "select",
-            options: [
-                { label: "Weekly", value: "Weekly" },
-                { label: "Monthly", value: "Monthly" },
-            ],
+            options: formik.values.Symbol == "NIFTY" ?
+                [
+                    { label: "Weekly", value: "Weekly" },
+                    { label: "Monthly", value: "Monthly" },
+                ] :
+                [
+                    { label: "Monthly", value: "Monthly" },
+                ]
+            ,
             hiding: false,
             label_size: 12,
             col_size: 4,

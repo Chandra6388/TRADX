@@ -17,8 +17,9 @@ const Addscript = () => {
     const [GroupError, setGroupError] = useState('')
     const [stgError, setStgError] = useState('')
     const [formSubmitted, setFormSubmitted] = useState(false);
-    const [getAllService, setAllservice] = useState({ loading: true, data: [] })
-    
+    const [getAllService, setAllservice] = useState({ loading: true, data: [], data1: [] })
+
+    console.log(getAllService)
 
     const [getGroupData, setGroupData] = useState({ loading: true, data: [] })
 
@@ -119,19 +120,32 @@ const Addscript = () => {
         await GetAllGroupService(data)
             .then((response) => {
                 if (response.Status) {
+                    if (selectStrategyType == 'Scalping') {
+                        const filterMulticondtion = response?.Data.filter((item) => item?.ScalpType == 'Multi_Conditional')
+                        const filterOthers = response?.Data.filter((item) => item?.ScalpType != 'Multi_Conditional')
 
-                    setAllservice({
-                        loading: false,
-                        data: response.Data
-                    })
+                        setAllservice({
+                            loading: false,
+                            data: filterOthers,
+                            data1: filterMulticondtion
+                        })
+                    }
+                    else {
 
+                        setAllservice({
+                            loading: false,
+                            data: response.Data,
+                            data1: []
+                        })
+                    }
                 }
                 else {
                     setAllservice({
                         loading: false,
-                        data: []
+                        data: [],
+                        data1: []
+                        
                     })
-
                 }
             })
             .catch((err) => {
@@ -148,22 +162,7 @@ const Addscript = () => {
         }
     }
 
-    // const fetchStrategyData = async () => {
-    //     try {
-    //       const response = await axios.get("http://217.145.69.50:8000/MainStrategy"); // Replace with your API endpoint
-    //       if (response.data.Status) {
-    //         setStrategyType(response.data.Data); // Update state with the "Data" array
-    //       } else {
-    //         console.error("Error:", response.data.message);
-    //       }
-    //     } catch (error) {
-    //       console.error("Error fetching strategy data:", error);
-    //     }
-    //   };
-  
-
     useEffect(() => {
-        
         setStrategyType('Scalping')
     }, []);
 
@@ -256,6 +255,22 @@ const Addscript = () => {
                                 />
                             }
 
+                            {getAllService.loading ? (
+                                <Loader />
+                            ) : (
+                                selectStrategyType === "Scalping" && (
+                                    <>
+                                        <div>
+                                            <h4 className="bold mt-3 mb-2">Multi Condition</h4>
+                                        </div>
+                                        <FullDataTable
+                                            columns={columns(handleDelete)}
+                                            data={getAllService.data1}
+                                            checkBox={false}
+                                        />
+                                    </>
+                                )
+                            )}
                         </div>
                     </div>
                 </div>

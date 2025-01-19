@@ -4,7 +4,7 @@ import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { GetAllGroupService } from '../../CommonAPI/Admin';
 import { GetUserScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
-import { getColumns, getColumns1, getColumns2 } from './Columns';
+import { getColumns, getColumns1, getColumns2, getColumns7 } from './Columns';
 import Swal from 'sweetalert2';
 
 const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
@@ -15,10 +15,8 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
     const navigate = useNavigate();
     const [selectGroup, setSelectGroup] = useState('');
     const [allScripts, setAllScripts] = useState({ data: [], len: 0 })
-    const [getAllService, setAllservice] = useState({
-        loading: true,
-        data: []
-    });
+    const [getAllService, setAllservice] = useState({ loading: true, data: [], data1: [] });
+
 
     useEffect(() => {
         GetUserAllScripts()
@@ -46,8 +44,12 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
             })
     }
 
-    const handleAddScript1 = (data1) => {
-        if (data2.status == false) {
+    const handleAddScript1 = (data1, type) => {
+ 
+        const selectedRowIndex = data1.rowIndex;
+        const selectedRow = type == 1 ? getAllService.data?.[selectedRowIndex] : getAllService?.data1?.[selectedRowIndex];
+
+        if (data2?.status == false) {
             Swal.fire({
                 title: "Error",
                 text: data2.msg,
@@ -56,7 +58,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts.data.length == 0) {
+        else if (allScripts?.data?.[allScripts?.len]?.CombineScalping?.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -66,9 +68,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
             });
         }
         else {
-            const selectedRowIndex = data1.rowIndex;
-            const selectedRow = getAllService.data[selectedRowIndex];
-            const isExist = allScripts?.data[allScripts?.len].CombineScalping?.find((item) => item === selectedRow.ScalpType) ?? ""
+            const isExist = allScripts?.data?.[allScripts?.len]?.CombineScalping?.find((item) => item === selectedRow?.ScalpType) ?? ""
             if (!isExist) {
                 Swal.fire({
                     title: "Warning",
@@ -79,7 +79,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                 });
                 return;
             }
-            const data = { selectGroup: selectGroup, selectStrategyType: "Scalping", type: "copy", ...selectedRow };
+            const data = { selectGroup: selectGroup, selectStrategyType: "Scalping", type: "group", ...selectedRow };
             navigate('/user/addscript/scalping', { state: { data: data, scriptType: allScripts } });
         }
     }
@@ -144,7 +144,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
 
         }
     }
- 
+
     const handleAddScript3 = (data1) => {
         if (data2.status == false) {
             Swal.fire({
@@ -185,20 +185,35 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
 
     const GetAllUserScriptDetails = async () => {
         const data = { Strategy: stgType, Group: GroupName }
-
         await GetAllGroupService(data)
             .then((response) => {
                 if (response.Status) {
-                    setAllservice({
-                        loading: false,
-                        data: response.Data
+                    if (stgType == 'Scalping') {
+                        const filterMulticondtion = response?.Data.filter((item) => item?.ScalpType == 'Multi_Conditional')
+                        const filterOthers = response?.Data.filter((item) => item?.ScalpType != 'Multi_Conditional')
 
-                    });
-                } else {
+                        setAllservice({
+                            loading: false,
+                            data: filterOthers,
+                            data1: filterMulticondtion
+                        })
+                    }
+                    else {
+
+                        setAllservice({
+                            loading: false,
+                            data: response.Data,
+                            data1: []
+                        })
+                    }
+                }
+                else {
                     setAllservice({
                         loading: false,
-                        data: []
-                    });
+                        data: [],
+                        data1: []
+
+                    })
                 }
             })
             .catch((err) => {
@@ -232,6 +247,23 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                                                 </div>
                                             </div>
                                         </>
+                                    )}
+
+                                    {data === "Scalping" && (
+                                        <div>
+                                            <div className="iq-header-title mt-4">
+                                                <h4 className="card-title">Multi Conditional</h4>
+                                            </div>
+                                            {getAllService.loading ? (
+                                                <Loader />
+                                            ) : (
+                                                <FullDataTable
+                                                    columns={getColumns7(handleAddScript1)}
+                                                    data={getAllService.data1}
+                                                    checkBox={false}
+                                                />
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                             </div>

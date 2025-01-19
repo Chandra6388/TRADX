@@ -13,7 +13,7 @@ const Sidebar = () => {
     const header_img2 = localStorage.getItem("header_img2");
     const logo = localStorage.getItem("logo");
     const pannel_name = localStorage.getItem("pannel_name");
-    const permission = localStorage.getItem('Permission');
+    const permission = localStorage.getItem('SubAdminPermission');
     const expire = localStorage.getItem('expire');
 
     const setImages = async () => {
@@ -243,7 +243,7 @@ const Sidebar = () => {
         {
             path: '/admin/clientreport',
             icon: 'la la-map-marker', // Client Thread Report icon
-            label: 'Client Thread Report',
+            label: 'Client Trade Report',
             permission: [] // No restriction
         },
         {
@@ -295,7 +295,7 @@ const Sidebar = () => {
         {
             path: '/superadmin/client-thread-report',
             icon: <Pyramid />, // Custom icon
-            label: 'Client Thread Report',
+            label: 'Client Trade Report',
             permission: [] // No restriction
         },
         {

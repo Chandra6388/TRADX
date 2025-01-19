@@ -21,7 +21,7 @@ const AllClient = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [brokers, setBrokers] = useState([]);
     const [optionsArray, setOptionsArray] = useState([]);
-    const permission = localStorage.getItem('Permission');
+    const permission = localStorage.getItem('SubAdminPermission');
 
     useEffect(() => {
         fetchAllSubadmin();
@@ -161,15 +161,7 @@ const AllClient = () => {
                 customBodyRender: (value) => viewClient ? value || '-' : '*****'
             }
         },
-        {
-            name: 'Licanse',
-            label: 'Licanse',
-            options: {
-                filter: true,
-                sort: false,
-                customBodyRender: (value) => viewClient ? value || '-' : '*****'
-            }
-        },
+     
         {
             name: 'CreateDate',
             label: 'Create Date',

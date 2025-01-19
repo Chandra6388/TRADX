@@ -110,7 +110,7 @@ const Adduser = () => {
                 errors.Companyname = "Please Enter Company Name";
             }
             if (!values.Url) {
-                errors.Url = "Please Enter Url"
+                errors.Url = "Please Enter URL"
             }
             if (!values.Chartingamount) {
                 errors.Chartingamount = "Please Enter Charting Amount";
@@ -280,7 +280,7 @@ const Adduser = () => {
         <>
             <AddForm
                 fields={fields}
-                page_title="Create Account"
+                page_title="Create Admin"
                 btn_name="Add"
                 btn_name1="Cancel"
                 formik={formik}

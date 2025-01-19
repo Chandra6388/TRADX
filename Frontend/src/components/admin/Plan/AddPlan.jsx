@@ -222,11 +222,11 @@ const CustomMultiSelect = ({ label, options, selected, onChange, disabled }) => 
     const customStyles = {
         option: (provided) => ({
             ...provided,
-            color: 'black',  
+            color: 'black',
         }),
         menu: (provided) => ({
             ...provided,
-            zIndex: 9999,  
+            zIndex: 9999,
         }),
     };
 
@@ -239,7 +239,7 @@ const CustomMultiSelect = ({ label, options, selected, onChange, disabled }) => 
                 value={selected}
                 onChange={onChange}
                 isDisabled={disabled}
-                styles={customStyles} 
+                styles={customStyles}
             />
             <div></div>
         </div>
@@ -256,8 +256,6 @@ const AddPlanPage = () => {
     const [scalpingStratgy, setScalpingStratgy] = useState([]);
     const [OptionStratgy, setOptionStratgy] = useState([]);
     const [PatternStratgy, setPatternStratgy] = useState([]);
-    // const [isFieldsDisabled, setIsFieldsDisabled] = useState(false);
-    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         GetScalpingStratgy();
@@ -294,19 +292,23 @@ const AddPlanPage = () => {
             payment: "",
             planname: "",
             Duration: "",
+            PlanType: "Scalping",
         },
         validate: (values) => {
             const errors = {};
-            if (!values.NumberofScript) errors.NumberofScript = "Please enter the number of scripts.";
+            if (!values.NumberofScript && formik.values.PlanType == "Scalping")
+                errors.NumberofScript = "Please enter the number of scripts.";
             if (!values.payment) errors.payment = "Payment is required.";
             if (!values.planname) errors.planname = "Please provide a plan name.";
             if (!values.Duration) errors.Duration = "Please select a plan duration.";
+            if (formik.values.PlanType == "Charting" && selectedCharting.length == 0)
+                errors.Charting = "Please select at least one charting type.";
+
             return errors;
         },
         onSubmit: async (values) => {
-            setLoading(true);
-            if(selectedCharting.length === 0 && selecteScalping.length === 0 && selecteOptions.length === 0 && selectePattern.length === 0 && selectedCharting.length === 0){ 
-                showError("Error!", "Please select at least one strategy Either Charting or Scalping , Option , Pattern.");
+            if (formik.values.PlanType == "Scalping" && selecteScalping.length === 0 && selecteOptions.length === 0 && selectePattern.length === 0) {
+                showError("Error!", "Please select at least one strategy Either Scalping , Option , Pattern.");
                 return;
             }
             const req = {
@@ -315,9 +317,8 @@ const AddPlanPage = () => {
                 Option: selecteOptions.map((strategy) => strategy.value),
                 PatternS: selectePattern.map((strategy) => strategy.value),
                 Charting: selectedCharting.map((chart) => chart.value),
+                NumberofScript: formik.values.PlanType == "Scalping" ? values.NumberofScript : 0,
             };
-
-              
             try {
                 const response = await AddPlan(req);
                 if (response.Status) {
@@ -336,14 +337,11 @@ const AddPlanPage = () => {
                 }
             } catch (err) {
                 showError("An unexpected error occurred");
-            } finally {
-                setLoading(false);
             }
         },
     });
 
     const handleChartingChange = (selected) => {
-        // When charting is selected, clear all other dropdowns
         setSelectedCharting(selected);
         setSelecteOptions([]);
         setSelecteScalping([]);
@@ -353,21 +351,29 @@ const AddPlanPage = () => {
     const handleSelectChange = (type, selected) => {
         if (type === "scalping") {
             setSelecteScalping(selected);
-            setSelectedCharting([]); // Clear charting if scalping is selected
+            setSelectedCharting([]);
         } else if (type === "option") {
             setSelecteOptions(selected);
-            setSelectedCharting([]); // Clear charting if option is selected
+            setSelectedCharting([]);
         } else if (type === "pattern") {
             setSelectePattern(selected);
-            setSelectedCharting([]); // Clear charting if pattern is selected
+            setSelectedCharting([]);
         }
     };
 
     const fields = [
         {
+            name: "PlanType",
+            label: "Plan Type",
+            type: "select",
+            options: [{ value: "Scalping", label: "Scalping" }, { value: "Charting", label: "Charting" }],
+            col_size: 6,
+        },
+        {
             name: "NumberofScript",
             label: "Number of Script",
             type: "text3",
+            showWhen: (values) => values.PlanType == "Scalping",
             col_size: 6,
         },
         {
@@ -397,6 +403,7 @@ const AddPlanPage = () => {
     ];
 
     return (
+
         <AddForm
             fields={fields.filter((field) => !field.showWhen || field.showWhen(formik.values))}
             page_title="Add Plan"
@@ -406,14 +413,23 @@ const AddPlanPage = () => {
             btn_name1_route={"/admin/clientservice"}
             additional_field={
                 <>
-                    <CustomMultiSelect
-                        label="Charting"
-                        options={[{ value: "Cash", label: "Cash" }, { value: "Future", label: "Future" }, { value: "Option", label: "Option" }]}
-                        selected={selectedCharting}
-                        onChange={handleChartingChange} 
-                    />
+                    {formik.values.PlanType == "Charting" && (
+                        <>
+                            <CustomMultiSelect
+                                label="Charting"
+                                options={[
+                                    { value: "Cash", label: "Cash" },
+                                    { value: "Future", label: "Future" },
+                                    { value: "Option", label: "Option" }
+                                ]}
+                                selected={selectedCharting}
+                                onChange={handleChartingChange}
+                            />
+                            <div><h6 className="text-danger">{formik.errors.Charting}</h6></div>
+                        </>
+                    )}
 
-                    {scalpingStratgy.length > 0 && (
+                    {formik.values.PlanType == "Scalping" && (
                         <CustomMultiSelect
                             label="Scalping"
                             options={scalpingStratgy.map(strategy => ({ value: strategy, label: strategy }))}
@@ -422,8 +438,7 @@ const AddPlanPage = () => {
                         />
                     )}
 
-
-                    {OptionStratgy.length > 0 && (
+                    {formik.values.PlanType == "Scalping" && (
                         <CustomMultiSelect
                             label="Option"
                             options={OptionStratgy.map(strategy => ({ value: strategy, label: strategy }))}
@@ -432,7 +447,7 @@ const AddPlanPage = () => {
                         />
                     )}
 
-                    {PatternStratgy.length > 0 && (
+                    {formik.values.PlanType == "Scalping" && (
                         <CustomMultiSelect
                             label="Pattern"
                             options={PatternStratgy.map(strategy => ({ value: strategy, label: strategy }))}

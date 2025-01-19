@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom'
 import { Get_All_Plans, Get_All_Buyed_Plans, BuyPlan, AddBalance } from "../../CommonAPI/User";
 import Swal from "sweetalert2";
 import NewsTicker from "./Expair";
-
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
 
 import { useEffect } from "react";
 
@@ -73,15 +74,27 @@ const ServicesList = () => {
 
 
     const GetAllPlansData = async () => {
-        await Get_All_Plans()
-            .then((response) => {
-                if (response.Status) {
-                    setAllPlans({
-                        loading: false,
-                        data: response.Admin,
-                    });
-                }
-            });
+        await Get_All_Plans().then((response) => {
+            if (response.Status) {
+                const filterPlan = response?.Admin?.filter(
+                    (plan) =>
+                        plan.PlanName !== "Three Days Live" &&
+                        plan.PlanName !== "Two Days Demo" &&
+                        plan.PlanName !== "One Week Demo"
+                );
+                const filterplanforCharting = response?.Charting?.filter(
+                    (plan) =>
+                        plan.PlanName !== "Three Days Live" &&
+                        plan.PlanName !== "Two Days Demo" &&
+                        plan.PlanName !== "One Week Demo"
+                );
+                setAllPlans({
+                    loading: false,
+                    data: filterPlan,
+                    data1: filterplanforCharting,
+                });
+            }
+        });
     };
 
     const AllBuyedPlans = async () => {
@@ -109,7 +122,6 @@ const ServicesList = () => {
 
     }
 
-
     const SetPlan = (name) => {
         if (BuyedPlan?.data.length === 0) {
             return null;
@@ -123,11 +135,11 @@ const ServicesList = () => {
 
     };
 
-
-
-    const HandleBuyPlan = async (index, type) => {
+    const HandleBuyPlan = async (index, type, isCharting) => {
         try {
-            const planDetails = GetAllPlans?.data[index];
+            const planDetails = isCharting ? GetAllPlans?.data1[index] :  GetAllPlans?.data[index];
+            
+            console.log("planDetails", planDetails);
             const req1 = { Username: username, transactiontype: 'Purchase', money: planDetails.payment };
             const result = await Swal.fire({
                 title: 'Are you sure?',
@@ -157,12 +169,12 @@ const ServicesList = () => {
                             Scalping: planDetails.Scalping,
                             Option: planDetails['Option Strategy'],
                             PatternS: planDetails.Pattern,
-                            ChartingSignal: planDetails.ChartingSignal,
                             NumberofScript: planDetails.NumberofScript,
                             Duration: planDetails['Plan Validity'],
                             Planname: planDetails.PlanName,
                             payment: planDetails.payment,
-                            Extendtype: "ExtendServiceEndDate"
+                            Extendtype: "ExtendServiceEndDate",
+                            Charting: planDetails.ChartingSignal
                         };
                         const buyPlanResponse = await BuyPlan(req);
                         if (buyPlanResponse.Status) {
@@ -195,7 +207,8 @@ const ServicesList = () => {
                             Duration: planDetails['Plan Validity'],
                             Planname: planDetails.PlanName,
                             payment: planDetails.payment,
-                            Extendtype: "ExtendServiceCount"
+                            Extendtype: "ExtendServiceCount",
+                            Charting: planDetails.ChartingSignal
                         };
                         const buyPlanResponse = await BuyPlan(req);
                         if (buyPlanResponse.Status) {
@@ -216,7 +229,6 @@ const ServicesList = () => {
                                 timerProgressBar: true,
                             });
                         }
-
                     }
                 }
                 else if (CheckBalanceResponse.Status && type == 1) {
@@ -229,7 +241,8 @@ const ServicesList = () => {
                         Duration: planDetails['Plan Validity'],
                         Planname: planDetails.PlanName,
                         payment: planDetails.payment,
-                        Extendtype: ""
+                        Extendtype: "",
+                        Charting: planDetails.ChartingSignal
                     };
                     const buyPlanResponse = await BuyPlan(req);
                     if (buyPlanResponse.Status) {
@@ -287,7 +300,17 @@ const ServicesList = () => {
 
     const getUpdatedPlans = GetAllPlans.data?.filter((plan) => {
         if (plan.PlanName == "Three Days Live" || plan.PlanName == "Two Days Demo" || plan.PlanName == "One Week Demo") {
+            if (BuyedPlan.data && BuyedPlan.data.length > 0) {
+                const isBuyed = BuyedPlan.data.find((buyedPlan) => buyedPlan.Planname == plan.PlanName);
+                return isBuyed != undefined && isBuyed
+            }
+        } else {
+            return plan
+        }
+    });
 
+    const getUpdatedPlans1 = GetAllPlans.data1?.filter((plan) => {
+        if (plan.PlanName == "Three Days Live" || plan.PlanName == "Two Days Demo" || plan.PlanName == "One Week Demo") {
             if (BuyedPlan.data && BuyedPlan.data.length > 0) {
                 const isBuyed = BuyedPlan.data.find((buyedPlan) => buyedPlan.Planname == plan.PlanName);
                 return isBuyed != undefined && isBuyed
@@ -307,61 +330,131 @@ const ServicesList = () => {
                                 <h4 className='card-title'>All Plans</h4>
                             </div>
                             {
-                                expire?.includes(1)  ? <div className="col-lg-9">
+                                expire?.includes(1) ? <div className="col-lg-9">
                                     <NewsTicker />
-                                </div>  : ""
-
+                                </div> : ""
                             }
                         </div>
-                        <div className='iq-card-body'>
-                            <div style={styles.container} className="row">
-                                {getUpdatedPlans.map((plan, index) => (
-                                    plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ? "" :
-                                        <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 ">
-                                            <div className="d-flex flex-column justify-content-between h-100">
-                                                <div>
-                                                    <div style={styles.content}>
-                                                        <h2 style={styles.title}>
-                                                            {plan.PlanName} {SetPlan(plan.PlanName)}
-                                                        </h2>
-                                                        <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
-                                                        <h4 style={styles.subtitle}>Duration: {plan?.['Plan Validity']}</h4>
-                                                        <h4 style={styles.subtitle}>No of Scripts: {plan?.NumberofScript}</h4>
 
-                                                        <div style={styles.prices}>
-                                                            <p style={styles.priceItem}>
-                                                                <strong>Scalping Strategy:</strong> {plan?.Scalping?.join(", ")}
-                                                            </p>
-                                                            <p style={styles.priceItem}>
-                                                                <strong>Option Strategy:</strong> {plan?.['Option Strategy']?.join(", ")}
-                                                            </p>
-                                                            <p style={styles.priceItem}>
-                                                                <strong>Pattern Strategy:</strong> {plan?.Pattern?.join(", ")}
-                                                            </p>
-                                                        </div>
+
+                        <div className="iq-card-body">
+                            <div className="container mt-4">
+                                <Tabs
+                                    defaultActiveKey="Scalping"
+                                    id="fill-tab-example"
+                                    className="mb-3 custom-tabs w-50"
+                                    fill>
+                                    <Tab eventKey="Scalping" title="Scalping">
+                                        <div className="">
+                                            <h5 className="mb-4">
+                                                <div className="iq-card-body">
+                                                    <div style={styles.container} className="row">
+                                                        {getUpdatedPlans?.map((plan, index) => (
+                                                            plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ? "" :
+                                                                <Card key={index}  className="col-lg-3 col-md-6 mb-3 all-plan-card">
+                                                                    <div className="d-flex flex-column justify-content-between h-100 p-3 border">
+                                                                        <div>
+                                                                            <div style={styles.content}>
+                                                                                <h2 style={styles.title}>
+                                                                                    {plan.PlanName} {SetPlan(plan.PlanName)}
+                                                                                </h2>
+                                                                                <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
+                                                                                <h4 style={styles.subtitle}>Duration: {plan?.['Plan Validity']}</h4>
+                                                                                <h4 style={styles.subtitle}>No of Scripts: {plan?.NumberofScript}</h4>
+
+                                                                                <div style={styles.prices}>
+                                                                                    <p style={styles.priceItem}>
+                                                                                        <strong>Scalping Strategy:</strong> {plan?.Scalping?.join(", ")}
+                                                                                    </p>
+                                                                                    <p style={styles.priceItem}>
+                                                                                        <strong>Option Strategy:</strong> {plan?.['Option Strategy']?.join(", ")}
+                                                                                    </p>
+                                                                                    <p style={styles.priceItem}>
+                                                                                        <strong>Pattern Strategy:</strong> {plan?.Pattern?.join(", ")}
+                                                                                    </p>
+                                                                                    {/* <p style={styles.priceItem}>
+                                                                                        <strong>Pattern Strategy:</strong> {plan?.ChartingSignal?.join(", ")}
+                                                                                    </p> */}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div style={styles.buttonContainer}>
+                                                                            {SetPlan(plan.PlanName) == null ? (
+                                                                                <Button primary style={styles.button} onClick={() => HandleBuyPlan(index, 1 , false )}>
+                                                                                    BUY NOW
+                                                                                </Button>
+                                                                            )
+                                                                                :
+                                                                                <Button style={styles.subscribedButton} onClick={() => HandleBuyPlan(index, 0 , false)}>
+                                                                                    BUY AGAIN
+                                                                                </Button>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </Card>
+                                                        ))}
                                                     </div>
                                                 </div>
-                                                <div style={styles.buttonContainer}>
-                                                    {SetPlan(plan.PlanName) == null ? (
-                                                        <Button primary style={styles.button} onClick={() => HandleBuyPlan(index, 1)}>
-                                                            BUY NOW
-                                                        </Button>
-                                                    )
-                                                        //  : plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ?
-                                                        //     <Button style={styles.subscribedButton}>
-                                                        //         Subscribed
-                                                        //     </Button>
-                                                        :
-                                                        <Button style={styles.subscribedButton} onClick={() => HandleBuyPlan(index, 0)}>
-                                                            BUY AGAIN
-                                                        </Button>
-                                                    }
-                                                </div>
+                                            </h5>
+                                        </div>
+                                    </Tab>
+                                    <Tab eventKey="Charting" title="Charting">
+
+                                        <div className="iq-card-body">
+                                            <div style={styles.container} className="row">
+                                                {getUpdatedPlans1?.map((plan, index) => (
+                                                    plan.PlanName == "Three Days Live" || plan.PlanName == "One Week Demo" || plan.PlanName == "Two Days Demo" ? "" :
+                                                        <Card key={index} style={styles.card} className="col-lg-3 col-md-6 mb-3 all-plan-card">
+                                                            <div className="d-flex flex-column justify-content-between h-100 p-3 border">
+                                                                <div>
+                                                                    <div style={styles.content}>
+                                                                        <h2 style={styles.title}>
+                                                                            {plan.PlanName} {SetPlan(plan.PlanName)}
+                                                                        </h2>
+                                                                        <h4 style={styles.subtitle}><FaRupeeSign className="m-1" /><strong>{plan.payment}</strong></h4>
+                                                                        <h4 style={styles.subtitle}>Duration: {plan?.['Plan Validity']}</h4>
+                                                                        <h4 style={styles.subtitle}>No of Scripts: {plan?.NumberofScript}</h4>
+
+                                                                        <div style={styles.prices}>
+                                                                            {/* <p style={styles.priceItem}>
+                                                                                <strong>Scalping Strategy:</strong> {plan?.Scalping?.join(", ")}
+                                                                            </p>
+                                                                            <p style={styles.priceItem}>
+                                                                                <strong>Option Strategy:</strong> {plan?.['Option Strategy']?.join(", ")}
+                                                                            </p>
+                                                                            <p style={styles.priceItem}>
+                                                                                <strong>Pattern Strategy:</strong> {plan?.Pattern?.join(", ")}
+                                                                            </p> */}
+                                                                            <p style={styles.priceItem}>
+                                                                                <strong>Charting Script:</strong> {plan?.ChartingSignal?.join(", ")}
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div style={styles.buttonContainer}>
+                                                                    {SetPlan(plan.PlanName) == null ? (
+                                                                        <Button primary style={styles.button} onClick={() => HandleBuyPlan(index, 1 , true)}>
+                                                                            BUY NOW
+                                                                        </Button>
+                                                                    )
+                                                                        :
+                                                                        <Button style={styles.subscribedButton} onClick={() => HandleBuyPlan(index, 0 , true)}>
+                                                                            BUY AGAIN
+                                                                        </Button>
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </Card>
+                                                ))}
                                             </div>
-                                        </Card>
-                                ))}
+                                        </div>
+
+                                    </Tab>
+                                </Tabs>
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -371,13 +464,12 @@ const ServicesList = () => {
 
 
 const styles = {
-    container: {
-        // display: "flex",
-        // flexWrap: "nowrap",
-        overflowX: "auto",
-        padding: "5px",
-        gap: "20px",
-    },
+    // container: {
+     
+    //     overflowX: "auto",
+    //     padding: "5px",
+    //     gap: "20px",
+    // },
     image: {
         width: "100%",
         height: "150px",

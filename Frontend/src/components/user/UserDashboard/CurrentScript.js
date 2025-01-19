@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
-import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts } from '../../CommonAPI/User';
+import { GetAllUserScript, DeleteUserScript, Discontinue, Continue, UpdateUserScript, GetUserScripts, getUserChartingScripts, DeleteSingleChartingScript } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
-import { getColumns3, getColumns4, getColumns5 } from './Columns';
+import { getColumns3, getColumns4, getColumns5, getColumns6, getColumns8 } from './Columns';
 import Swal from 'sweetalert2';
 import Formikform from "../../../ExtraComponent/FormData";
 import { useFormik } from 'formik';
@@ -11,6 +11,7 @@ import { useFormik } from 'formik';
 
 const Coptyscript = ({ data, selectedType, data2 }) => {
     const userName = localStorage.getItem('name')
+    const adminPermission = localStorage.getItem('adminPermission')
     const navigate = useNavigate();
     const [refresh, setRefresh] = useState(false)
     const [showEditModal, setShowEditModal] = useState(false)
@@ -18,6 +19,9 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
     const [EditDataOption, setEditDataOption] = useState({})
     const [EditDataPattern, setEditDataPattern] = useState({})
     const [allScripts, setAllScripts] = useState({ data: [], len: 0 })
+    const [editCharting, setEditCharting] = useState();
+    const [getCharting, setGetCharting] = useState([]);
+
     const [getAllService, setAllservice] = useState({
         loading: true,
         ScalpingData: [],
@@ -27,12 +31,33 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         Marketwise: [],
         PremiumRotation: []
     });
-
-    console.log("data")
-
     useEffect(() => {
         GetUserAllScripts()
+
     }, [])
+
+    useEffect(() => {
+        if (data == "ChartingPlatform")
+            getChartingScript();
+    }, [data]);
+
+
+
+    const getChartingScript = async () => {
+        const req = { Username: userName, Planname: "Chart" }
+        await getUserChartingScripts(req)
+            .then((response) => {
+                if (response.Status) {
+                    setGetCharting(response.Client)
+                }
+                else {
+                    setGetCharting([])
+                }
+            })
+            .catch((err) => {
+                console.log("Error in finding the User Scripts", err)
+            })
+    }
 
     const GetUserAllScripts = async () => {
         const data = { Username: userName }
@@ -66,10 +91,10 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         });
     }
 
-    const handleDelete = async (rowData) => {
+    const handleDelete = async (rowData, type) => {
         const index = rowData.rowIndex
         const req =
-            data == 'Scalping' ?
+            data == 'Scalping' && type == 1 ?
                 {
                     Username: userName,
                     MainStrategy: data,
@@ -111,7 +136,21 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                             TradePattern: "",
                             PatternName: ""
 
-                        } : ''
+                        } : data == 'Scalping' && type == 2 ?
+                            {
+                                Username: userName,
+                                MainStrategy: "NewScalping",
+                                Strategy: getAllService.NewScalping[index].Targetselection,
+                                Symbol: getAllService.NewScalping[index].Symbol,
+                                ETPattern: "",
+                                Timeframe: "",
+                                TType: "",
+                                Group: getAllService.NewScalping[index].GroupN,
+                                TradePattern: "",
+                                TSymbol: "",
+                                PatternName: ""
+                            } : ''
+
 
         Swal.fire({
             title: "Are you sure?",
@@ -163,6 +202,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         const index = rowData.rowIndex
         if (data == 'Scalping') {
             setEditDataScalping(getAllService.ScalpingData[index])
+            setEditCharting(getAllService.NewScalping[index])
         }
         else if (data == 'Option Strategy') {
             setEditDataOption(getAllService.OptionData[index])
@@ -175,20 +215,33 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         }
     }
 
-    const HandleContinueDiscontinue = async (rowData) => {
+    const HandleContinueDiscontinue = async (rowData, type) => {
+
         const index = rowData.rowIndex
         let trading;
 
-        if (data == 'Scalping') {
+
+        if (data == 'Scalping' && type == 1) {
             trading = getAllService.ScalpingData[index].Trading
+        }
+        else if (data == 'Scalping' && type == 2) {
+            trading = getAllService.NewScalping[index].Trading
         }
         else if (data == 'Pattern') {
             trading = getAllService.PatternData[index].Trading
         }
-        else {
+        else if (data == 'Option Strategy') {
             trading = getAllService.OptionData[index].Trading
         }
+        else if (data == 'ChartingPlatform') {
+            trading = getCharting[index].Trading
+        }
+        else {
+            console.log("Error in finding the trading status")
+            return
+        }
 
+        console.log("getCharting[index]?.AccType", getCharting[index]?.AccType) 
         if (trading) {
             Swal.fire({
                 title: "Do you want to Discontinue",
@@ -201,11 +254,11 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     const req =
-                        data == 'Scalping' ?
+                        data == 'Scalping' && type == 1 ?
                             {
                                 Username: userName,
                                 MainStrategy: data,
-                                Strategy: getAllService.ScalpingData[index].ScalpType,
+                                Strategy: getAllService.ScalpingData[index].ScalpType == "Multi_Conditional" ? getAllService.NewScalping[index].Targetselection : getAllService.ScalpingData[index].ScalpType,
                                 Symbol: getAllService.ScalpingData[index].Symbol,
                                 ETPattern: "",
                                 Timeframe: "",
@@ -243,38 +296,97 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                         TradePattern: "",
                                         PatternName: ""
 
-                                    } : ''
-                    await Discontinue(req)
-                        .then((response) => {
-                            if (response.Status) {
-                                Swal.fire({
-                                    title: "Success",
-                                    text: response.message,
-                                    icon: "success",
-                                    timer: 2000,
-                                    timerProgressBar: true
-                                });
-                                setRefresh(!refresh)
-                            }
-                            else {
-                                Swal.fire({
-                                    title: "Error !",
-                                    text: response.message,
-                                    icon: "error",
-                                    timer: 2000,
-                                    timerProgressBar: true
-                                });
-                            }
-                        })
-                        .catch((err) => {
-                            console.log("Error in delete script", err)
-                        })
+                                    } : data == 'Scalping' && type == 2 ?
+                                        {
+                                            Username: userName,
+                                            MainStrategy: "NewScalping",
+                                            Strategy: getAllService.NewScalping[index].Targetselection,
+                                            Symbol: getAllService.NewScalping[index].Symbol,
+                                            ETPattern: "",
+                                            Timeframe: "",
+                                            TType: "",
+                                            Group: getAllService.NewScalping[index].GroupN,
+                                            TradePattern: "",
+                                            TSymbol: "",
+                                            PatternName: ""
+                                        } : data == 'ChartingPlatform' ?
+                                            {
+                                                Username: userName,
+                                                User: getCharting[index]?.AccType,
+                                                Symbol: getCharting[index]?.TSymbol,
+                                            } : ''
+
+
+                    if (data == 'ChartingPlatform') {
+                        await DeleteSingleChartingScript(req)
+                            .then((response) => {
+                                if (response.Status) {
+                                    Swal.fire({
+                                        title: "Success",
+                                        text: response.message,
+                                        icon: "success",
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        setRefresh(!refresh)
+                                    });
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: "Error !",
+                                        text: response.message,
+                                        icon: "error",
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    });
+                                }
+                            })
+                    }
+                    else {
+                        await Discontinue(req)
+                            .then((response) => {
+                                console.log("response", response)
+                                if (response.Status) {
+                                    Swal.fire({
+                                        title: "Success",
+                                        text: response.message,
+                                        icon: "success",
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        setRefresh(!refresh)
+                                    });
+
+                                }
+                                else {
+                                    Swal.fire({
+                                        title: "Error !",
+                                        text: response.message,
+                                        icon: "error",
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    });
+                                }
+                            })
+                            .catch((err) => {
+                                console.log("Error in delete script", err)
+                            })
+
+                    }
+
+
+
+
+
                 }
             })
         }
+
+        else if (data == 'ChartingPlatform') {
+            return;
+        }
         else {
             {
-
                 Swal.fire({
                     title: "Do you want to Continue",
                     text: "You won't be able to revert this!",
@@ -286,7 +398,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 }).then(async (result) => {
                     if (result.isConfirmed) {
                         const req =
-                            data == 'Scalping' ?
+                            data == 'Scalping' && type == 1 ?
                                 {
                                     Username: userName,
                                     MainStrategy: data,
@@ -328,19 +440,35 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                             TradePattern: "",
                                             PatternName: ""
 
-                                        } : ''
+                                        } : data == 'Scalping' && type == 2 ?
+
+                                            {
+                                                Username: userName,
+                                                MainStrategy: "NewScalping",
+                                                Strategy: getAllService.NewScalping[index].Targetselection,
+                                                Symbol: getAllService.NewScalping[index].Symbol,
+                                                ETPattern: "",
+                                                Timeframe: "",
+                                                TType: "",
+                                                Group: getAllService.NewScalping[index].GroupN,
+                                                TradePattern: "",
+                                                TSymbol: "",
+                                                PatternName: ""
+                                            } : ''
+
 
 
                         await Continue(req)
                             .then((response) => {
                                 if (response.Status) {
-                                    setRefresh(!refresh)
                                     Swal.fire({
                                         title: "Success",
                                         text: response.message,
                                         icon: "success",
                                         timer: 1500,
                                         timerProgressBar: true
+                                    }).then(() => {
+                                        setRefresh(!refresh)
                                     });
                                 }
                                 else {
@@ -406,6 +534,21 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                 }
 
             }
+            else if (data === "ChartingPlatform") {
+                if (allScripts?.data?.[allScripts.len]?.CombineChartingSignal?.length >= 1) {
+                    navigate('/user/newscript/charting', { state: { data: { selectStrategyType: 'ChartingPlatform', scriptType: allScripts } } });
+                }
+                else {
+                    Swal.fire({
+                        title: "Warning",
+                        text: "Don't have any script left Please buy some Scripts",
+                        icon: "warning",
+                        timer: 2000,
+                        timerProgressBar: true
+                    });
+                }
+            }
+
             else {
                 if (allScripts?.data?.[allScripts.len]?.CombineScalping?.length >= 1) {
                     navigate('/user/newscript/scalping', {
@@ -442,7 +585,8 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                         PatternData: response.Pattern,
                         PatternOption: response.PatternOption,
                         Marketwise: response.Marketwise,
-                        PremiumRotation: response.PremiumRotation
+                        PremiumRotation: response.PremiumRotation,
+                        NewScalping: response.NewScalping
                     });
                 } else {
                     setAllservice({
@@ -1181,7 +1325,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             formik.setFieldValue('ExitTime', EditDataScalping.ExitTime)
             formik.setFieldValue('Quantity', EditDataScalping.Quantity)
             formik.setFieldValue('TradeCount', EditDataScalping.TradeCount)
-
         }
         else if (data == "Option Strategy") {
             formik1.setFieldValue('TStype', EditDataOption.strategytype)
@@ -1191,7 +1334,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             formik1.setFieldValue('EntryTime', EditDataOption['Entry Time'])
             formik1.setFieldValue('ExitTime', EditDataOption['Exit Time'])
             formik1.setFieldValue('TradeCount', EditDataOption.TradeCount)
-
         }
         else if (data == "Pattern") {
 
@@ -1201,12 +1343,12 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             formik2.setFieldValue('Quantity', EditDataPattern.Quantity)
             formik2.setFieldValue('EntryTime', EditDataPattern.EntryTime)
             formik2.setFieldValue('ExitTime', EditDataPattern.ExitTime)
-
-
             formik2.setFieldValue('TradeCount', EditDataPattern.TradeCount)
 
         }
     }, [showEditModal, data])
+
+
 
     return (
         <div className="container-fluid">
@@ -1233,11 +1375,27 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
                                                     {getAllService.loading ? <Loader /> :
                                                         <FullDataTable
-                                                            columns={data === "Scalping" ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Option Strategy" ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Pattern" ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue) : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)}
-                                                            data={data === "Scalping" ? getAllService.ScalpingData : data === "Option Strategy" ? getAllService.OptionData : data === "Pattern" ? getAllService.PatternData : []}
+                                                            columns={data === "Scalping" ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Option Strategy" ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Pattern" ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue) : data == "ChartingPlatform" ? getColumns8(HandleContinueDiscontinue) : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)}
+                                                            data={data === "Scalping" ? getAllService.ScalpingData : data === "Option Strategy" ? getAllService.OptionData : data === "Pattern" ? getAllService.PatternData : data == "ChartingPlatform" ? getCharting : []}
                                                             checkBox={false}
                                                         />
                                                     }
+                                                    {data === "Scalping" && adminPermission?.includes('Charting Platform') && (
+                                                        <div>
+                                                            <div className="iq-header-title mt-4">
+                                                                <h4 className="card-title">Multi Conditional</h4>
+                                                            </div>
+                                                            {getAllService.loading ? (
+                                                                <Loader />
+                                                            ) : (
+                                                                <FullDataTable
+                                                                    columns={getColumns6(handleDelete, handleEdit, HandleContinueDiscontinue)}
+                                                                    data={getAllService.NewScalping}
+                                                                    checkBox={false}
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         </>
@@ -1290,9 +1448,6 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                         btn_name="Update"
                                         formik={formik2}
                                     />
-
-
-
                         }
                     </div>
                 </div>

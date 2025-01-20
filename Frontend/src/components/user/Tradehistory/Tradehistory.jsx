@@ -43,7 +43,7 @@ const Tradehistory = () => {
     data4: "",
     Overall: []
   })
-
+ 
 
   console.log("selectSegmentType", selectSegmentType)
 

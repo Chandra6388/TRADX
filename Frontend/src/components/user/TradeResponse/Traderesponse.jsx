@@ -47,7 +47,6 @@ const TradeResponse = () => {
   const [showModal, setShowModal] = useState(false);
   const [ChartingTradeReport, setChartingTradeReport] = useState([]);
 
-  console.log("ChartingTradeReport", ChartingTradeReport);
 
   const Username = localStorage.getItem("name");
   const currentDate = new Date();
@@ -390,6 +389,7 @@ const TradeResponse = () => {
 
 
   };
+
   const getChartingData = async () => {
     const res = await getChargingPlatformDataApi(userName);
     setChartingData(res.Client);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { get_User_Data, get_Trade_History, get_PnL_Data, get_EQuityCurveData, get_DrapDownData, get_FiveMostProfitTrade, get_FiveMostLossTrade, getStrategyType } from '../../CommonAPI/Admin'
- 
+
 import GridExample from '../../../ExtraComponent/CommanDataTable'
-import { get_Trade_Data , getUserChartingScripts } from '../../CommonAPI/User'
+import { get_Trade_Data, getUserChartingScripts, getChargingPlatformDataApi, } from '../../CommonAPI/User'
 import DatePicker from "react-datepicker";
 
 import { AgChartsReact } from "ag-charts-react";
@@ -30,8 +30,8 @@ const Tradehistory = () => {
   const [getDropDownData, setDropDownData] = useState({ loading: true, data: [] })
   const [getFiveLossTrade, setFiveLossTrade] = useState({ loading: true, data: [], data1: [] })
   const [getFiveProfitTrade, setFiveProfitTrade] = useState({ loading: true, data: [], data1: [] })
-   const [getCharting, setGetCharting] = useState([]);
-
+  const [getCharting, setGetCharting] = useState([]);
+  const [chartingData, setChartingData] = useState([]);
   const [getAllTradeData, setAllTradeData] = useState({
     loading: true,
     data: [],
@@ -41,7 +41,7 @@ const Tradehistory = () => {
     data4: "",
     Overall: []
   })
-
+ 
 
   const Username = localStorage.getItem('name')
 
@@ -76,30 +76,39 @@ const Tradehistory = () => {
   };
 
 
-  
-      useEffect(() => {
-          if (selectStrategyType == "ChartingPlatform")
-              getChartingScript();
-      }, [selectStrategyType]);
-  
-  
-  
-      const getChartingScript = async () => {
-          const req = { Username: Username, Planname: "Chart" }
-          await getUserChartingScripts(req)
-              .then((response) => {
-                  if (response.Status) {
-                      setGetCharting(response.Client)
-                  }
-                  else {
-                      setGetCharting([])
-                  }
-              })
-              .catch((err) => {
-                  console.log("Error in finding the User Scripts", err)
-              })
-      }
-  
+
+  useEffect(() => {
+    if (selectStrategyType == "ChartingPlatform") {
+      getChartingData();
+      getChartingScript();
+    }
+  }, [selectStrategyType]);
+
+
+
+  const getChartingData = async () => {
+    const res = await getChargingPlatformDataApi(userName);
+    setChartingData(res.Client);
+  };
+
+
+
+  const getChartingScript = async () => {
+    const req = { Username: Username, Planname: "Chart" }
+    await getUserChartingScripts(req)
+      .then((response) => {
+        if (response.Status) {
+          setGetCharting(response.Client)
+        }
+        else {
+          setGetCharting([])
+        }
+      })
+      .catch((err) => {
+        console.log("Error in finding the User Scripts", err)
+      })
+  }
+
 
   const GetTradeHistory = async () => {
     const data = { Data: selectStrategyType, Username: Username }
@@ -129,7 +138,7 @@ const Tradehistory = () => {
   const strategyType = async () => {
     try {
       const res = await getStrategyType();
-      if (res.Data) { 
+      if (res.Data) {
         setStrategyNames(res.Data)
       }
       else {
@@ -155,7 +164,7 @@ const Tradehistory = () => {
     const data = {
       MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
       Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : "Cash",
-      Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform"  ? selectedRowData && selectedRowData.TSymbol : "",
+      Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform" ? selectedRowData && selectedRowData.TSymbol : "",
       Username: Username,
       ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
       Timeframe: selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TimeFrame : '',
@@ -164,7 +173,7 @@ const Tradehistory = () => {
       Group: selectStrategyType == "Scalping" || selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.GroupN : "",
       TradePattern: "",
       PatternName: ""
-    }  
+    }
     await get_Trade_History(data)
 
       .then((response) => {
@@ -354,7 +363,7 @@ const Tradehistory = () => {
       })
 
   }
- 
+
   useEffect(() => {
     setStrategyType('Scalping')
   }, []);
@@ -463,9 +472,22 @@ const Tradehistory = () => {
                       })}
                     </select>
                   </div>
-
-
-                  
+                  <div className="form-group col-lg-4">
+                    <label>Segment</label>
+                    <select
+                      className="form-select"
+                      required=""
+                      onChange={(e) => setStrategyType(e.target.value)}
+                      value={selectStrategyType}>
+                      {strategyNames.map((item, index) => {
+                        return (
+                          <option key={index} value={item}>
+                            {item}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
                   <div className="form-group col-lg-4 ">
                     <label>Select form Date</label>
                     <DatePicker
@@ -600,7 +622,7 @@ const Tradehistory = () => {
                         </div>
                       </div>
                     </div>
-                  </div> 
+                  </div>
                   <div className="mt-3">
                     <GridExample
                       columns={columns7()}

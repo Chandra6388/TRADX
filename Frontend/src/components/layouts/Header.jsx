@@ -749,7 +749,7 @@ const Header = () => {
                     className={`nav-item ${activeElement === "profile" ? "iq-show" : ""}`}>
                     <a
                       href="#"
-                      className={`search-toggle d-flex align-items-center iq-waves-effectt ${activeElement === "profile" ? "active" : ""}`}
+                      className={`text-decoration-none search-toggle d-flex align-items-center iq-waves-effectt ${activeElement === "profile" ? "active" : ""}`}
                       onClick={(e) => handleClick(e, "profile")}>
                       <img
                         src="/assets/images/user/1.jpg"
@@ -774,14 +774,14 @@ const Header = () => {
                           </div>
                           <Link
                             to="/user/profile"
-                            className="iq-sub-card iq-bg-primary-hover">
+                            className="iq-sub-card iq-bg-primary-hover text-decoration-none">
                             <div className="media align-items-center d-flex">
                               <div className="rounded card-icon bg-soft-primary">
                                 <i className="ri-file-user-line" />
                               </div>
                               <div className="media-body ms-3">
                                 <h6 className="mb-0 ">My Profile</h6>
-                                <p className="mb-0 font-size-12">
+                                <p className="mb-0 font-size-12 text-decoration-none">
                                   View personal profile details.
                                 </p>
                               </div>
@@ -789,7 +789,7 @@ const Header = () => {
                           </Link>
                           <Link
                             to="/user/editprofile"
-                            className="iq-sub-card iq-bg-warning-hover">
+                            className="iq-sub-card iq-bg-warning-hover text-decoration-none">
                             <div className="media align-items-center d-flex">
                               <div className="rounded card-icon bg-soft-warning">
                                 <i className="ri-profile-line" />

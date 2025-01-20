@@ -5638,3 +5638,8 @@ option[value='Reject'] {
 ul#fill-tab-example {
 margin: 0px auto;
 }
+button.nav-link.active
+{
+  color: #fff !important;
+  background-color: #3f414d !important;
+}

@@ -499,6 +499,7 @@ const styles = {
         color: "#555",
         padding: "0",
         listStyle: "none",
+        fontSize: "1rem",
     },
     priceItem: {
         margin: "5px 0",

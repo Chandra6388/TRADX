@@ -4,7 +4,7 @@ import FullDataTable from '../../../ExtraComponent/CommanDataTable';
 import { GetAllGroupService } from '../../CommonAPI/Admin';
 import { GetUserScripts } from '../../CommonAPI/User';
 import Loader from '../../../ExtraComponent/Loader';
-import { getColumns, getColumns1, getColumns2 } from './Columns';
+import { getColumns, getColumns1, getColumns2, getColumns7 } from './Columns';
 import Swal from 'sweetalert2';
 
 const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
@@ -44,8 +44,12 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
             })
     }
 
-    const handleAddScript1 = (data1) => {
-        if (data2.status == false) {
+    const handleAddScript1 = (data1, type) => {
+ 
+        const selectedRowIndex = data1.rowIndex;
+        const selectedRow = type == 1 ? getAllService.data?.[selectedRowIndex] : getAllService?.data1?.[selectedRowIndex];
+
+        if (data2?.status == false) {
             Swal.fire({
                 title: "Error",
                 text: data2.msg,
@@ -54,7 +58,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                 timerProgressBar: true
             });
         }
-        else if (allScripts.data.length == 0) {
+        else if (allScripts?.data?.[allScripts?.len]?.CombineScalping?.length == 0) {
             Swal.fire({
                 title: "Warning",
                 text: "Don't have any script left Please buy some Scripts",
@@ -64,9 +68,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
             });
         }
         else {
-            const selectedRowIndex = data1.rowIndex;
-            const selectedRow = getAllService.data[selectedRowIndex];
-            const isExist = allScripts?.data[allScripts?.len].CombineScalping?.find((item) => item === selectedRow.ScalpType) ?? ""
+            const isExist = allScripts?.data?.[allScripts?.len]?.CombineScalping?.find((item) => item === selectedRow?.ScalpType) ?? ""
             if (!isExist) {
                 Swal.fire({
                     title: "Warning",
@@ -77,7 +79,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                 });
                 return;
             }
-            const data = { selectGroup: selectGroup, selectStrategyType: "Scalping", type: "copy", ...selectedRow };
+            const data = { selectGroup: selectGroup, selectStrategyType: "Scalping", type: "group", ...selectedRow };
             navigate('/user/addscript/scalping', { state: { data: data, scriptType: allScripts } });
         }
     }
@@ -256,7 +258,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                                                 <Loader />
                                             ) : (
                                                 <FullDataTable
-                                                    columns={getColumns(handleAddScript1)}
+                                                    columns={getColumns7(handleAddScript1)}
                                                     data={getAllService.data1}
                                                     checkBox={false}
                                                 />

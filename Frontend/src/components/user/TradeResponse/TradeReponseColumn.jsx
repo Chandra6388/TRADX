@@ -1073,3 +1073,166 @@ export const columns5 = [
   },
 ];
 
+
+// charting
+
+export const columns8 = [
+    {
+      name: "S.No",
+      label: "S.No",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          const rowIndex = tableMeta.rowIndex;
+          return rowIndex + 1;
+        },
+      },
+    },
+
+
+    {
+      name: "AccType",
+      label: "Account Type",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "EntryTime",
+      label: "Entry Time",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Exchange",
+      label: "Exchange",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Exittime",
+      label: "Exit Time",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Lotsize",
+      label: "Lot Size",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Optiontype",
+      label: "Option Type ",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Ordertype",
+      label: "Order Type",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Planname",
+      label: "Plan Name",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Price",
+      label: "Price",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Sl",
+      label: "Sl",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "TSymbol",
+      label: "TSymbol",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "TType",
+      label: "TType",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Target",
+      label: "Target",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Token",
+      label: "Token",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Trading",
+      label: "Trading",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+
+    {
+      name: "Username",
+      label: "Username",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+  ];
+

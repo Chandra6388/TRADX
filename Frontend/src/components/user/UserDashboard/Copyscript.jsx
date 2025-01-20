@@ -53,8 +53,14 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
 
     const handleAddScript1 = (data1, type) => {
 
+        console.log("data1", data1)
+        console.log("type", type)
         const selectedRowIndex = data1.rowIndex;
+        console.log("type", type)
+
         const selectedRow = type == 1 ? getAllService.ScalpingData[selectedRowIndex] : getAllService.NewScalping[selectedRowIndex];
+
+        console.log("selectedRow", selectedRow)
 
         if (data2.status == false) {
             Swal.fire({
@@ -75,7 +81,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             });
         }
         else {
-            const isExist = allScripts?.data?.[allScripts?.len]?.CombineScalping?.find((item) => item === selectedRow.ScalpType) ?? ""
+            const isExist = allScripts?.data?.[allScripts?.len]?.CombineScalping?.find((item) => item === selectedRow?.ScalpType) ?? ""
             if (!isExist) {
                 Swal.fire({
                     title: "Warning",

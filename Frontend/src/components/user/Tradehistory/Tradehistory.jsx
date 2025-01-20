@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { get_User_Data, get_Trade_History, get_PnL_Data, get_EQuityCurveData, get_DrapDownData, get_FiveMostProfitTrade, get_FiveMostLossTrade, getStrategyType } from '../../CommonAPI/Admin'
 
 import GridExample from '../../../ExtraComponent/CommanDataTable'
-import { get_Trade_Data, getUserChartingScripts, getChargingPlatformDataApi, } from '../../CommonAPI/User'
+import { get_Trade_Data, ChartingPlatformsegment, getChargingPlatformDataApi } from '../../CommonAPI/User'
 import DatePicker from "react-datepicker";
 
 import { AgChartsReact } from "ag-charts-react";
@@ -31,7 +31,9 @@ const Tradehistory = () => {
   const [getFiveLossTrade, setFiveLossTrade] = useState({ loading: true, data: [], data1: [] })
   const [getFiveProfitTrade, setFiveProfitTrade] = useState({ loading: true, data: [], data1: [] })
   const [getCharting, setGetCharting] = useState([]);
-  const [chartingData, setChartingData] = useState([]);
+  const [selectSegmentType, setSegmentType] = useState('')
+  const [getChartingSegments, setChartingSegments] = useState([])
+
   const [getAllTradeData, setAllTradeData] = useState({
     loading: true,
     data: [],
@@ -42,6 +44,8 @@ const Tradehistory = () => {
     Overall: []
   })
  
+
+  console.log("selectSegmentType", selectSegmentType)
 
   const Username = localStorage.getItem('name')
 
@@ -78,24 +82,36 @@ const Tradehistory = () => {
 
 
   useEffect(() => {
-    if (selectStrategyType == "ChartingPlatform") {
-      getChartingData();
+    if (selectSegmentType)
       getChartingScript();
-    }
-  }, [selectStrategyType]);
+  }, [selectSegmentType]);
 
-
+  useEffect(() => {
+    getChartingData();
+  }, []);
 
   const getChartingData = async () => {
-    const res = await getChargingPlatformDataApi(userName);
-    setChartingData(res.Client);
+    await getChargingPlatformDataApi(Username)
+      .then((res) => {
+        if (res.Status) {
+          setChartingSegments(res.Client);
+          setSegmentType(res?.Client?.[0]?.Segment)
+        }
+        else {
+          setChartingSegments([])
+        }
+      })
+      .catch((err) => {
+        console.log("Error in finding the User Scripts", err
+        )
+      })
   };
 
 
-
   const getChartingScript = async () => {
-    const req = { Username: Username, Planname: "Chart" }
-    await getUserChartingScripts(req)
+    const filterData = getChartingSegments.filter(item => item.Segment == selectSegmentType)
+    const req = { Username: Username, Segment: filterData[0].Segment }
+    await ChartingPlatformsegment(req)
       .then((response) => {
         if (response.Status) {
           setGetCharting(response.Client)
@@ -439,7 +455,7 @@ const Tradehistory = () => {
 
   useEffect(() => {
     setShowTable(false)
-  }, [selectStrategyType, FromDate, ToDate, selectedRowData])
+  }, [selectStrategyType, FromDate, ToDate, selectedRowData , selectSegmentType])
 
 
 
@@ -456,7 +472,7 @@ const Tradehistory = () => {
             <div className="iq-card-body">
               <div className="was-validated ">
                 <div className="row">
-                  <div className="form-group col-lg-4">
+                  <div className={`form-group ${selectStrategyType == "ChartingPlatform" ? "col-lg-3" : "col-lg-4"}`}>
                     <label>Select Strategy Type</label>
                     <select
                       className="form-select"
@@ -472,23 +488,27 @@ const Tradehistory = () => {
                       })}
                     </select>
                   </div>
-                  <div className="form-group col-lg-4">
-                    <label>Segment</label>
-                    <select
-                      className="form-select"
-                      required=""
-                      onChange={(e) => setStrategyType(e.target.value)}
-                      value={selectStrategyType}>
-                      {strategyNames.map((item, index) => {
-                        return (
-                          <option key={index} value={item}>
-                            {item}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="form-group col-lg-4 ">
+                  {
+                    selectStrategyType == "ChartingPlatform" &&
+                    <div className="form-group col-lg-3">
+                      <label>Select Segment Type</label>
+                      <select
+                        className="form-select"
+                        required=""
+                        onChange={(e) => setSegmentType(e.target.value)}
+                        value={selectSegmentType}>
+                        {getChartingSegments.map((item, index) => {
+                          return (
+                            <option key={index} value={item.Segment}>
+                              {item.Segment}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  }
+
+                  <div className={`form-group ${selectStrategyType == "ChartingPlatform" ? "col-lg-3" : "col-lg-4"}`}>
                     <label>Select form Date</label>
                     <DatePicker
                       className="form-select"
@@ -496,7 +516,8 @@ const Tradehistory = () => {
                       onChange={(date) => setFromDate(date)}
                     />
                   </div>
-                  <div className="form-group col-lg-4">
+                  <div className={`form-group ${selectStrategyType == "ChartingPlatform" ? "col-lg-3" : "col-lg-4"}`}>
+
                     <label>Select To Date</label>
                     <DatePicker
                       className="form-select custom-date"
@@ -709,8 +730,7 @@ const Tradehistory = () => {
 
                   <div className="row">
                     <div className="col-lg-6">
-                      {/* <p>Consistant Profit : <spam>{parseFloat(getAllTradeData.data1).toFixed(4)}</spam></p>
-                                            <p>Count Consistant Profit : <spam>{parseFloat(getAllTradeData.data2).toFixed(4)}</spam></p> */}
+
 
                       <p>
                         Consistant Profit :{" "}
@@ -722,8 +742,6 @@ const Tradehistory = () => {
                       </p>
                     </div>
                     <div className="col-lg-6">
-                      {/* <p>Consistant Loss : <spam>{parseFloat(getAllTradeData.data4).toFixed(4)}</spam></p>
-                                            <p>Count Consistant Loss : <spam>{parseFloat(getAllTradeData.data3).toFixed(4)}</spam></p> */}
 
                       <p>
                         Consistant Loss : <spam>{getAllTradeData.data4}</spam>
@@ -735,22 +753,7 @@ const Tradehistory = () => {
                     </div>
                   </div>
 
-                  {/* EquityCurve */}
 
-                  {/* <div>
-                                        <p className='bold mt-3' style={{ fontWeight: 'bold', fontSize: '20px', color: 'black' }}>
-                                            EquityCurve
-                                        </p>
-
-                                        <GridExample
-                                            columns={columns5(selectStrategyType)}
-                                            data={getEquityCurveDetails.data}
-                                            onRowSelect={handleRowSelect}
-                                            checkBox={false}
-                                        />
-                                    </div> */}
-
-                  {/* EquityCurve  Graph show */}
                   <p
                     className="bold mt-3"
                     style={{

@@ -93,6 +93,9 @@ const AddClient = () => {
       let errors = {};
       const maxTime = "15:29:59";
       const minTime = "09:15:00";
+      const minTime2 = "09:00:00"
+      const maxTime2 = "23:30:00"
+
       if (!values.Strategy) {
         errors.Strategy = "Please Select Strategy Type.";
       }
@@ -128,14 +131,28 @@ const AddClient = () => {
       if (!values.Quantity) {
         errors.Quantity = formik.values.Exchange == "NFO" && formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional" ? "Please Enter Quantity 1" : formik.values.Exchange == "NFO" ? "Please Enter Lot Value." : "Please Enter Quantity Value.";
       }
+
+
+
+
       if (!values.ExitTime) {
         errors.ExitTime = "Please Select Exit Time.";
-      } else if (values.ExitTime > maxTime) {
+      } else if (values.ExitTime > maxTime && formik.values.Exchange !== 'MCX') {
         errors.ExitTime = "Exit Time Must be Before 15:29:59.";
       }
-      else if (values.ExitTime < minTime) {
+
+      else if (values.ExitTime > maxTime2 && formik.values.Exchange == 'MCX') {
+        errors.ExitTime = "Exit Time Must be Before 23:30:00.";
+      }
+
+      else if (values.ExitTime < minTime && formik.values.Exchange !== 'MCX') {
         errors.ExitTime = "Exit Time Must be After 09:15:00.";
       }
+      else if (values.ExitTime < minTime2 && formik.values.Exchange == 'MCX') {
+        errors.ExitTime = "Exit Time Must be After 09:00:00.";
+      }
+
+
       if (!values.EntryTime) {
         errors.EntryTime = "Please Select Entry Time.";
       } else if (values.EntryTime < minTime) {

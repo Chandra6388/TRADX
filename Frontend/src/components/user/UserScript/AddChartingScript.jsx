@@ -73,7 +73,7 @@ const AddChartingScript = () => {
             <div className="col-md-4 mb-3" key={index}>
               <div className="card">
                 <div className="card-header text-center">
-                  <h5>{item.name}</h5>
+                  <h5>{item.Segment}</h5>
                 </div>
                 <div className="card-body">
                   <div className="col-sm-7 d-flex">

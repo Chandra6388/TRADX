@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
+// import Dashboards from '../components/admin/Dashboard/Dashboards';
 import Dashboards from '../components/admin/Dashboard/Dashboards';
+
 import Sidebar from '../components/layouts/Sidebar';
 import Header from '../components/layouts/Header';
 import Adduser from '../components/admin/User/Adduser';
@@ -70,3 +72,4 @@ const AdminRoute = () => {
 }
 
 export default AdminRoute;
+

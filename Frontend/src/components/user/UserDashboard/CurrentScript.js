@@ -9,7 +9,7 @@ import Formikform from "../../../ExtraComponent/FormData";
 import { useFormik } from 'formik';
 
 
-const Coptyscript = ({ data, selectedType, data2 }) => {
+const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
     const userName = localStorage.getItem('name')
     const adminPermission = localStorage.getItem('adminPermission')
     const navigate = useNavigate();
@@ -40,6 +40,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
         if (data == "ChartingPlatform")
             getChartingScript();
     }, [data]);
+
 
 
 
@@ -241,7 +242,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
             return
         }
 
-        console.log("getCharting[index]?.AccType", getCharting[index]?.AccType) 
+        // console.log("getCharting[index]?.AccType", getCharting[index]?.AccType)
         if (trading) {
             Swal.fire({
                 title: "Do you want to Discontinue",
@@ -1363,24 +1364,28 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                         <>
                                             <div className="iq-card-header d-flex justify-content-between">
                                                 <div className="iq-header-title">
-                                                    <h4 className="card-title">{data}</h4>
+                                                    {console.log("data Is", data)}
+                                                    {tableType === "MultiCondition" ? "" : <h4 className="card-title">{data}</h4>
+                                                    }
                                                 </div>
                                                 <div className='d-flex justify-content-end'>
-                                                    <button className='btn btn-primary mt-1' style={{ fontSize: '18px', padding: '6px 14px', height: "47px" }} onClick={() => AddScript(data)}>Add Script</button>
+                                                    <button className='btn btn-primary mt-1' style={{ fontSize: '18px', padding: '6px 14px', height: "47px" }} onClick={() => AddScript(data )}>Add Script</button>
                                                 </div>
 
                                             </div>
                                             <div className="iq-card-body " style={{ padding: '3px' }}>
                                                 <div className="table-responsive">
 
+
                                                     {getAllService.loading ? <Loader /> :
-                                                        <FullDataTable
-                                                            columns={data === "Scalping" ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Option Strategy" ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Pattern" ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue) : data == "ChartingPlatform" ? getColumns8(HandleContinueDiscontinue) : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)}
+
+                                                        (tableType === "Scalping" && <FullDataTable
+                                                            columns={data === "Scalping" && tableType === "Scalping" ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Option Strategy" ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue) : data === "Pattern" ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue) : data == "ChartingPlatform" ? getColumns8(HandleContinueDiscontinue) : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)}
                                                             data={data === "Scalping" ? getAllService.ScalpingData : data === "Option Strategy" ? getAllService.OptionData : data === "Pattern" ? getAllService.PatternData : data == "ChartingPlatform" ? getCharting : []}
                                                             checkBox={false}
-                                                        />
-                                                    }
-                                                    {data === "Scalping" && adminPermission?.includes('Charting Platform') && (
+                                                        />)}
+
+                                                    {data === "Scalping" && tableType === "MultiCondition" && (
                                                         <div>
                                                             <div className="iq-header-title mt-4">
                                                                 <h4 className="card-title">Multi Conditional</h4>
@@ -1388,6 +1393,7 @@ const Coptyscript = ({ data, selectedType, data2 }) => {
                                                             {getAllService.loading ? (
                                                                 <Loader />
                                                             ) : (
+                                                                tableType === "MultiCondition" &&
                                                                 <FullDataTable
                                                                     columns={getColumns6(handleDelete, handleEdit, HandleContinueDiscontinue)}
                                                                     data={getAllService.NewScalping}

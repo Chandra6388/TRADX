@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Coptyscript from "./Copyscript";
 import GroupScript from "./Groupscript";
@@ -20,8 +19,12 @@ const Userdashboard = () => {
   const [getGroup, setGroup] = useState("");
   const [strategyType, setStrategyType] = useState([]);
   const [status, setStatus] = useState(false);
-  const [serviceStatus, setServiceStatus] = useState({ status: false, msg: '' })
-  const [getGroupName, setGroupName] = useState({ loading: true, data: [] })
+  const [tableType, setTableType] = useState("Scalping");
+  const [serviceStatus, setServiceStatus] = useState({
+    status: false,
+    msg: "",
+  });
+  const [getGroupName, setGroupName] = useState({ loading: true, data: [] });
   const [getPositionData, setPositionData] = useState({
     loading: true,
     Scalping: [],
@@ -32,11 +35,10 @@ const Userdashboard = () => {
   });
 
   useEffect(() => {
-    GetExpriyEndDate()
-    fetchStrategyType()
-    GetOpenPosition()
-
-  }, [])
+    GetExpriyEndDate();
+    fetchStrategyType();
+    GetOpenPosition();
+  }, []);
 
   useEffect(() => {
     getUserAllGroup();
@@ -668,7 +670,6 @@ const Userdashboard = () => {
       },
     },
   ];
-  
 
   return (
     <div className="container-fluid">
@@ -712,7 +713,7 @@ const Userdashboard = () => {
                 {activeTab1 === "CurrentPosition" && (
                   <div className="d-flex">
                     <div
-                      className={`form-group ${activeTab == "currentScript" || activeTab == "copyScript" ? "col-sm-6" : "col-md-4"}`}>
+                      className={`form-group ${(activeTab == "currentScript" || activeTab == "copyScript") && subTab != "Scalping" ? "col-sm-6" : "col-md-4"}`}>
                       <div className="px-3">
                         <label>Add Via</label>
                         <select
@@ -749,7 +750,7 @@ const Userdashboard = () => {
                       </div>
                     )}
                     <div
-                      className={`form-group ${activeTab == "currentScript" || activeTab == "copyScript" ? "col-sm-6" : "col-md-4"}`}>
+                      className={`form-group ${(activeTab == "currentScript" || activeTab == "copyScript") && subTab != "Scalping" ? "col-sm-6" : subTab === "Scalping" ? "col-md-4" : "col-md-4"}`}>
                       <div className="px-3">
                         <label>Strategy Type</label>
                         <select
@@ -767,6 +768,29 @@ const Userdashboard = () => {
                         </select>
                       </div>
                     </div>
+
+
+
+                    {subTab === "Scalping" && (
+                      <div
+                        className={`form-group ${(activeTab == "currentScript" || activeTab == "copyScript") && subTab != "Scalping" ? "col-sm-6" : subTab === "Scalping" ? "col-md-4" : "col-md-4"}`}>
+                        <div className="px-3">
+                          <label>Table Type</label>
+                          <select
+                            className="form-select"
+                            required=""
+                            onChange={(e) => {
+                              setTableType(e.target.value);
+                            }}
+                            value={tableType}>
+                            <option value="Scalping">Scalping</option>
+                            <option value="MultiCondition">
+                              Multi Condition
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -805,13 +829,11 @@ const Userdashboard = () => {
                         role="tabpanel">
                         <div className="tab-content mt-3">
                           <CurrentScript
+                            tableType={tableType}
                             data={subTab}
                             selectedType={activeTab}
                             data2={serviceStatus && serviceStatus}
                           />
-
-
-
                         </div>
                       </div>
                     )}

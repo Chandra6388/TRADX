@@ -26,7 +26,6 @@ const SuperAdminRoute = () => {
             <Route path="/dashboard" element={<Dashboards />} />
             <Route path="/admin-details" element={<AdminDetails />} />
             <Route path="/create-admin" element={<CreateAdmin />} />
-
             <Route path="/amount-details" element={<AmountDetails />} />
             <Route path="/admin-activity" element={<AdminActivity />} />
             <Route path="/client-thread-report" element={<ClientThreadReport />} />

@@ -15,12 +15,9 @@ import ProfitAndLoss from '../components/user/ProfitAndLoss/ProfitAndLoss';
 import Pannel from '../components/user/TrackPanel/TrackPannel';
 import TradeReport from '../components/user/TradeReport/TradeReport'
 import AddScriptPattern from '../components/user/UserScript/AddScript.Pattern'
-
 import AddNewScalpingScript from '../components/user/UserScript/AddNewScript.Scalping'
-
 import AddNewScalpingOption from '../components/user/UserScript/AddNewScript.Option'
 import AddNewScalpingPattern from '../components/user/UserScript/AddNewScript.Pattern'
-
 import TechnicalPattern from '../components/user/Patterns/TechnicalPattern'
 import Transection from '../components/user/Transection/AllTransection'
 import AllPlan from '../components/user/Plan/AllPlan'
@@ -58,10 +55,7 @@ const UserRoute = () => {
             <Route path="all/plan" element={<AllPlan />} />
             <Route path='/newStrategy' element={<NewStrategy />} />
             <Route path='/newscript/charting' element={<AddChartingScript />} /> 
-
-
           </Routes>
-
         </div>
       </div>
       {/* )} */}

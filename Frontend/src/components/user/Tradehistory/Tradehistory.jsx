@@ -39,8 +39,6 @@ const Tradehistory = () => {
     data4: "",
     Overall: []
   })
- 
-
 
   const Username = localStorage.getItem('name')
 

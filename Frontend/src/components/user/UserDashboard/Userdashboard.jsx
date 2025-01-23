@@ -769,6 +769,8 @@ const Userdashboard = () => {
                       </div>
                     </div>
 
+
+
                     {subTab === "Scalping" && (
                       <div
                         className={`form-group ${(activeTab == "currentScript" || activeTab == "copyScript") && subTab != "Scalping" ? "col-sm-6" : subTab === "Scalping" ? "col-md-4" : "col-md-4"}`}>

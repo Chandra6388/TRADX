@@ -93,6 +93,7 @@ const AddClient = () => {
       let errors = {};
       const maxTime = "15:29:59";
       const minTime = "09:15:00";
+      const minTime2 = "23:30:00"
       if (!values.Strategy) {
         errors.Strategy = "Please Select Strategy Type.";
       }
@@ -130,8 +131,11 @@ const AddClient = () => {
       }
       if (!values.ExitTime) {
         errors.ExitTime = "Please Select Exit Time.";
-      } else if (values.ExitTime > maxTime) {
+      } else if (values.ExitTime > maxTime && formik.values.Exchange !== 'MCX') {
         errors.ExitTime = "Exit Time Must be Before 15:29:59.";
+      }
+      else if (values.ExitTime > minTime2 && formik.values.Exchange == 'MCX') {
+        errors.ExitTime = "Exit Time Must be Before 23:30:00.";
       }
       else if (values.ExitTime < minTime) {
         errors.ExitTime = "Exit Time Must be After 09:15:00.";

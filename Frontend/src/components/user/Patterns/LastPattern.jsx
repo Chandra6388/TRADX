@@ -103,80 +103,121 @@ const LastPattern = () => {
 
      
     return (
-        <div>
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-sm-12">
-                        <div className="iq-card">
-                            <div className="iq-card-header d-flex justify-content-between">
-                                <div className="iq-header-title">
-                                    <h4 className="card-title">Last Pattern</h4>
-                                </div>
-                            </div>
-                            <div className="iq-card-body">
-                                <div className='row'>
-                                    <div className='col-md-6'>
-                                        <div className="form-group">
-                                            <label>Select Pattern</label>
-                                            <select className="form-control form-control-lg mt-2" onChange={(e) => setSelectPattern(e.target.value)}
-                                                value={selectPattern}>
-                                                <option value="">Please Select Patterns</option>
-                                                <option value="Candlestick Patterns">Candlestick Patterns</option>
-                                                <option value="Charting Patterns">Charting Patterns</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className='col-md-6'>
-                                        <div className="form-group">
-                                            <label>Select Specific Pattern</label>
-                                            <select className="form-control form-control-lg mt-2"
-                                                onChange={(e) => setPatternType(e.target.value)}
-                                                value={getPatternType}
-                                            >
-                                                <option value="">Please Select Specific Pattern</option>
-                                                {
-                                                    getChartPattern && getChartPattern.data.map((item) => (
-                                                        <option value={item}>{item}</option>
-                                                    ))
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="table-responsive">
-                                    {getLastPatternData.loading ? <Loader /> :
-                                        <FullDataTable
-                                            columns={selectPattern == 'Candlestick Patterns' ? columns2() : columns3()}
-                                            data={getLastPatternData.data}
-                                            onRowSelect={handleRowSelect}
-                                            checkBox={selectPattern == 'Candlestick Patterns' ? false : true}
-                                        />
-                                    }
-
-                                </div>
-
-                                {selectPattern == "Charting Patterns" ? <div className='mt-3'>
-                                    <button className='btn btn-primary' onClick={HandleSubmit}>Submit</button>
-                                </div> : ""
-                                }
-
-                                {
-                                    showCandle && <div className="row">
-                                        <div className='shadow p-3 mb-5 mt-3 bg-white rounded'>
-                                            <AgChartsReact ChartData={getCandleData && getCandleData.data} type={'lastpattern'} />
-                                        </div>
-                                    </div>
-                                }
-
-                            </div>
-                        </div>
-                    </div>
+      <div>
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="iq-card">
+                <div className="iq-card-header d-flex justify-content-between">
+                  <div className="iq-header-title">
+                    <h4 className="card-title">Last Pattern</h4>
+                  </div>
                 </div>
-            </div>
+                <div className="iq-card-body">
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Select Pattern</label>
+                        <select
+                          className="form-control form-control-lg mt-2"
+                          onChange={(e) => setSelectPattern(e.target.value)}
+                          value={selectPattern}>
+                          <option value="">Please Select Patterns</option>
+                          <option value="Candlestick Patterns">
+                            Candlestick Patterns
+                          </option>
+                          <option value="Charting Patterns">
+                            Charting Patterns
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Select Specific Pattern</label>
+                        <select
+                          className="form-control form-control-lg mt-2"
+                          onChange={(e) => setPatternType(e.target.value)}
+                          value={getPatternType}>
+                          <option value="">
+                            Please Select Specific Pattern
+                          </option>
+                          {getChartPattern &&
+                            getChartPattern.data.map((item) => (
+                              <option value={item}>{item}</option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
 
+                  <div className="table-responsive">
+                    {getLastPatternData.data &&
+                    getLastPatternData.data.length > 0 ? (
+                      getLastPatternData.loading ? (
+                        <Loader />
+                      ) : (
+                        <FullDataTable
+                          columns={
+                            selectPattern === "Candlestick Patterns"
+                              ? columns2()
+                              : columns3()
+                          }
+                          data={getLastPatternData.data}
+                          onRowSelect={handleRowSelect}
+                          checkBox={
+                            selectPattern === "Candlestick Patterns"
+                              ? false
+                              : true
+                          }
+                        />
+                      )
+                    ) : (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          textAlign: "center",
+                        }}>
+                        <img
+                          src="/assets/images/no-record-found.png"
+                          width="30%"
+                          alt=""
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {selectPattern == "Charting Patterns" ? (
+                    <div className="mt-3">
+                      <button
+                        className="btn btn-primary"
+                        onClick={HandleSubmit}>
+                        Submit
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+
+                  {showCandle && (
+                    <div className="row">
+                      <div className="shadow p-3 mb-5 mt-3 bg-white rounded">
+                        <AgChartsReact
+                          ChartData={getCandleData && getCandleData.data}
+                          type={"lastpattern"}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    )
+      </div>
+    );
 }
 
 export default LastPattern

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { get_User_Data, getStrategyType } from '../../CommonAPI/Admin'
 import { get_Trade_Report, getChargingPlatformDataApi, getUserChartingScripts, getChartingReport } from '../../CommonAPI/User'
-import { Eye } from "lucide-react";
+import { Eye, Tablet } from "lucide-react";
 import GridExample from '../../../ExtraComponent/CommanDataTable'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Swal from 'sweetalert2';
-import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6, getColumns9, getColumns10 , getColumns12 } from './ReportColumn'
+import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColumns5, getColumns8, getColumns7, getColumns6, getColumns9, getColumns10, getColumns12 } from './ReportColumn'
 
 const TradeReport = () => {
     const userName = localStorage.getItem("name");
@@ -27,6 +27,9 @@ const TradeReport = () => {
     const [getAllTradeData, setAllTradeData] = useState({ loading: true, data1: [], data2: [] })
 
     const [chartingData, setChartingData] = useState([]);
+    const [tableType, setTableType] = useState('Scalping');
+
+
     const Username = localStorage.getItem('name')
     const adminPermission = localStorage.getItem('adminPermission')
 
@@ -126,14 +129,14 @@ const TradeReport = () => {
         getChartingData();
     }, []);
 
-     
-   
+
+
     const handleSubmit = async (rowData) => {
         console.log("rowData", rowData?.Segment)
         const data = {
             MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
             Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : selectStrategyType == "ChartingPlatform" ? rowData && rowData?.Segment : "",
-            Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform" ? "": selectedRowData && selectedRowData.Symbol,
+            Symbol: selectStrategyType == "Scalping" || selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Symbol : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.IName : selectStrategyType == "ChartingPlatform" ? "" : selectedRowData && selectedRowData.Symbol,
             Username: Username,
             ETPattern: selectStrategyType == "Scalping" ? '' : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.Targettype : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.Pattern : '',
             Timeframe: selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TimeFrame : '',
@@ -146,7 +149,7 @@ const TradeReport = () => {
         await get_Trade_Report(data)
             .then((response) => {
                 if (response.Status) {
-                 console.log("response",response.CloseData)
+                    console.log("response", response.CloseData)
                     setAllTradeData({
                         loading: false,
                         data1: response.CloseData ? response.CloseData : [],
@@ -174,7 +177,7 @@ const TradeReport = () => {
             })
     }
 
-    
+
 
     useEffect(() => {
         setStrategyType('Scalping')
@@ -329,7 +332,8 @@ const TradeReport = () => {
                         <div className="iq-card-body">
                             <div className="was-validated ">
                                 <div className='row'>
-                                    <div className="form-group col-lg-4">
+                                    <div className={`form-group ${selectStrategyType === 'Scalping' ? 'col-lg-3' : 'col-lg-4'}`}>
+
                                         <label>Select Strategy Type</label>
                                         <select className="form-select" required=""
                                             onChange={(e) => setStrategyType(e.target.value)}
@@ -344,12 +348,31 @@ const TradeReport = () => {
                                         </select>
                                     </div>
 
-                                    <div className="form-group col-lg-4">
+                                    {
+                                        selectStrategyType === "Scalping" &&
+                                        (<div className={`form-group ${selectStrategyType === 'Scalping' ? 'col-lg-3' : 'col-lg-4'}`}>
+
+                                            <label>Select Table Type</label>
+                                            <select className="form-select" required=""
+                                                onChange={(e) => setTableType(e.target.value)}
+                                                value={tableType}>
+                                                <option value="">Select Table</option>
+                                                <option value="Scalping">Scalping</option>
+                                                <option value="MultiCondition">Multi Condition</option>
+
+
+
+                                            </select>
+                                        </div>)
+                                    }
+
+
+                                    <div className={`form-group ${selectStrategyType === 'Scalping' ? 'col-lg-3' : 'col-lg-4'}`}>
                                         <label>Select form Date</label>
                                         <DatePicker className="form-select" selected={FromDate == '' ? formattedDate : FromDate} onChange={(date) => setFromDate(date)} />
 
                                     </div>
-                                    <div className="form-group col-lg-4">
+                                    <div className={`form-group ${selectStrategyType === 'Scalping' ? 'col-lg-3' : 'col-lg-4'}`}>
                                         <label>Select To Date</label>
                                         <DatePicker className="form-select" selected={ToDate == '' ? Defult_To_Date : ToDate} onChange={(date) => setToDate(date)} />
 
@@ -357,36 +380,81 @@ const TradeReport = () => {
                                 </div>
                             </div>
                             <div className="iq-header-title">
-                                <h4 className="card-title">{selectStrategyType}</h4>
+                                {
+
+                                    tableType === "Scalping" ? (<h4 className="card-title">{selectStrategyType}</h4>) : ""
+                                }
                             </div>
                             {
                                 <div className="modal-body">
-                                    <GridExample
-                                        columns={selectStrategyType === "Scalping" ? getColumns() :
-                                            selectStrategyType === "Option Strategy" ? getColumns1() :
-                                                selectStrategyType === "Pattern" ? getColumns2() :
-                                                    selectStrategyType === "ChartingPlatform" ? getColumns11 :
-                                                        getColumns9()
-                                        }
-                                        data={selectStrategyType === "ChartingPlatform" ? chartingData : tradeReport.data}
-                                        onRowSelect={handleRowSelect}
-                                        checkBox={selectStrategyType === "ChartingPlatform" ? false : true}
-                                    />
+                                    {(
+                                        selectStrategyType === "ChartingPlatform" ? chartingData : tradeReport.data
+                                    ) && (
+                                        selectStrategyType === "ChartingPlatform" ? chartingData : tradeReport.data).length > 0 ? (
+
+
+                                        (tableType === "Scalping" &&
+                                            <GridExample
+                                                columns={
+                                                    selectStrategyType === "Scalping" ? getColumns() :
+                                                        selectStrategyType === "Option Strategy" ? getColumns1() :
+                                                            selectStrategyType === "Pattern" ? getColumns2() :
+                                                                selectStrategyType === "ChartingPlatform" ? getColumns11 :
+                                                                    getColumns9()
+                                                }
+                                                data={selectStrategyType === "ChartingPlatform" ? chartingData : tradeReport.data}
+                                                onRowSelect={handleRowSelect}
+                                                checkBox={selectStrategyType === "ChartingPlatform" ? false : true}
+                                            />)
+
+
+
+                                    ) : (
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            <img
+                                                src="/assets/images/no-record-found.png"
+                                                width="30%"
+                                                alt=""
+                                            />
+                                        </div>
+                                    )}
                                 </div>
+
                             }
-                            {selectStrategyType == "Scalping" && adminPermission.includes('Charting Platform') && <div>
+                            {tableType === "MultiCondition" && selectStrategyType == "Scalping" && adminPermission.includes('Charting Platform') && <div>
                                 <div className="iq-header-title mt-4">
                                     <h4 className="card-title">Multi Conditional</h4>
                                 </div>
                                 {
-                                    <div className="modal-body">
-                                        <GridExample
-                                            columns={getColumns9()}
-                                            data={tradeReport?.data1}
-                                            onRowSelect={handleRowSelect}
-                                            checkBox={true}
-                                        />
-                                    </div>
+                                    tradeReport?.data1 && tradeReport?.data1.length > 0 ? (
+                                        <div className="modal-body">
+                                            <GridExample
+                                                columns={getColumns9()}
+                                                data={tradeReport?.data1}
+                                                onRowSelect={handleRowSelect}
+                                                checkBox={true}
+                                            />
+                                        </div>)
+                                        : (<div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                textAlign: "center",
+                                            }}>
+                                            <img
+                                                src="/assets/images/no-record-found.png"
+                                                width="30%"
+                                                alt=""
+                                            />
+                                        </div>)
                                 }
                             </div>
                             }

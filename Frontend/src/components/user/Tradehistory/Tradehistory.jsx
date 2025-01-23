@@ -13,13 +13,9 @@ import Swal from 'sweetalert2';
 import { columns8, columns7, columns6, columns5, columns4, columns3, columns2, columns1, columns, getColumns10 } from './TradeHistoryColumn'
 const Tradehistory = () => {
   const adminPermission = localStorage.getItem("adminPermission");
-
   const [selectStrategyType, setStrategyType] = useState('')
   const [strategyNames, setStrategyNames] = useState([])
-  const [tradeHistory, setTradeHistory] = useState({
-    data: [],
-    data1: [],
-  })
+  const [tradeHistory, setTradeHistory] = useState({data: [], data1: [],})
   const [selectedRowData, setSelectedRowData] = useState('');
   const [ToDate, setToDate] = useState('');
   const [FromDate, setFromDate] = useState('');
@@ -45,7 +41,6 @@ const Tradehistory = () => {
   })
  
 
-  console.log("selectSegmentType", selectSegmentType)
 
   const Username = localStorage.getItem('name')
 

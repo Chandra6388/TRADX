@@ -158,8 +158,10 @@ const Clientservice = () => {
 
 
 
+
     const handleApprovalChange = async (e, row) => {
         const value = e.target.value;
+        console.log('Value:', value);
         Swal.fire({
             title: "Are you sure?",
             text: "Do you want to change the status?",
@@ -169,9 +171,11 @@ const Clientservice = () => {
             cancelButtonText: "No, cancel",
         }).then(async (result) => {
             if (result.isConfirmed) {
+                
                 try {
                     const rowIndex = row.rowIndex;
                     const data = getAllRequest.pending[rowIndex];
+                    console.log('Data:', data);
                     const req = {
                         datetime: data.DateTime,
                         Username: data.Username,
@@ -179,6 +183,7 @@ const Clientservice = () => {
                         money: data.money,
                         Status: value,
                     };
+                  
                     const response = await ApprovwRequest(req);
                     if (response.Status) {
                         Swal.fire({

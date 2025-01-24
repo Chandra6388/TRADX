@@ -502,13 +502,7 @@ const Header = () => {
                 className="collapse navbar-collapse"
                 id="navbarSupportedContent">
                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
-                  <li className="nav-item">
-                    <button
-                      className="btn btn-primary mt-3 mx-3 btn1"
-                      style={{ pointerEvents: "none" }}>
-                      Hello, Admin
-                    </button>
-                  </li>
+                  
 
                   <li className="nav-item">
                     <button
@@ -582,13 +576,7 @@ const Header = () => {
                 className="collapse navbar-collapse"
                 id="navbarSupportedContent">
                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
-                  <li className="nav-item">
-                    <button
-                      className="btn btn-primary mt-3 mx-3 btn1"
-                      style={{ pointerEvents: "none" }}>
-                      Hello, SubAdmin
-                    </button>
-                  </li>
+                  
                   {/* <li className="nav-item">
                                         <button
                                             type="button"
@@ -679,13 +667,7 @@ const Header = () => {
                   </div>
                 </div>
                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
-                  <li className="nav-item">
-                    <button
-                      className="btn btn-primary mt-3 mx-3 btn1"
-                      style={{ pointerEvents: "none" }}>
-                      Hello, User
-                    </button>
-                  </li>
+                  
                   {getBrokerName && getBrokerName == "Demo" ? (
                     <li className="nav-item">
                       <button
@@ -843,13 +825,7 @@ const Header = () => {
                 className="collapse navbar-collapse"
                 id="navbarSupportedContent">
                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
-                  <li className="nav-item">
-                    <button
-                      className="btn btn-primary mt-3 mx-3 btn1"
-                      style={{ pointerEvents: "none" }}>
-                      Hello, {userName}
-                    </button>
-                  </li>
+                 
 
                   <li
                     className="nav-item iq-full-screen"

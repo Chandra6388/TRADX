@@ -75,7 +75,7 @@ const Userdashboard = () => {
         console.log("Error in finding the group name", err);
       });
   };
-
+  console.log("serviceStatus", serviceStatus);
   const GetExpriyEndDate = async () => {
     const data = { Username: userName };
     await ExpriyEndDate(data)
@@ -768,8 +768,6 @@ const Userdashboard = () => {
                         </select>
                       </div>
                     </div>
-
-
 
                     {subTab === "Scalping" && (
                       <div

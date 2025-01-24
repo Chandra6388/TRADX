@@ -52,8 +52,6 @@ const Header = () => {
   const [userName, setUserName] = useState("");
   const [permissionData, setPermissionData] = useState("");
 
-
-
   const AdminPermission = async () => {
     try {
       await getAdminPermission()
@@ -686,7 +684,7 @@ const Header = () => {
                       Hello, User
                     </button>
                   </li>
-                  {getBrokerName && getBrokerName == "Demo" ? (
+                  {getBrokerName && getBrokerName == "DEMO" ? (
                     <li className="nav-item">
                       <button
                         type="button"

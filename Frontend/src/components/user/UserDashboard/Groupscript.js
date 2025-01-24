@@ -45,7 +45,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
     }
 
     const handleAddScript1 = (data1, type) => {
- 
+
         const selectedRowIndex = data1.rowIndex;
         const selectedRow = type == 1 ? getAllService.data?.[selectedRowIndex] : getAllService?.data1?.[selectedRowIndex];
 
@@ -238,11 +238,35 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                                             <div className="iq-card-body " style={{ padding: '3px' }}>
                                                 <div className="table-responsive">
                                                     {getAllService.loading ? <Loader /> :
-                                                        <FullDataTable
-                                                            columns={data === "Scalping" ? getColumns(handleAddScript1) : data === "Option Strategy" ? getColumns1(handleAddScript2) : data === "Pattern" ? getColumns2(handleAddScript3) : getColumns(handleAddScript1)}
-                                                            data={getAllService.data}
-                                                            checkBox={false}
-                                                        />
+
+                                                        getAllService.data.length > 0 ? (
+                                                            <FullDataTable
+                                                                columns={
+                                                                    data === "Scalping"
+                                                                        ? getColumns(handleAddScript1)
+                                                                        : data === "Option Strategy"
+                                                                            ? getColumns1(handleAddScript2)
+                                                                            : data === "Pattern"
+                                                                                ? getColumns2(handleAddScript3)
+                                                                                : getColumns(handleAddScript1)
+                                                                }
+                                                                data={getAllService.data}
+                                                                checkBox={false}
+                                                            />
+                                                        ) : (
+                                                            <div
+                                                                style={{
+                                                                    display: "flex",
+                                                                    justifyContent: "center",
+                                                                    alignItems: "center",
+                                                                    textAlign: "center",
+                                                                }}
+                                                            >
+                                                                <img src="/assets/images/no-record-found.png" width="30%" alt="" />
+                                                            </div>
+                                                        )
+
+
                                                     }
                                                 </div>
                                             </div>
@@ -257,11 +281,24 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                                             {getAllService.loading ? (
                                                 <Loader />
                                             ) : (
-                                                <FullDataTable
-                                                    columns={getColumns7(handleAddScript1)}
-                                                    data={getAllService.data1}
-                                                    checkBox={false}
-                                                />
+                                                getAllService.data1 && getAllService.data1.length > 0 ? (
+                                                    <FullDataTable
+                                                        columns={getColumns7(handleAddScript1)}
+                                                        data={getAllService.data1}
+                                                        checkBox={false}
+                                                    />
+                                                ) : (
+                                                    <div
+                                                        style={{
+                                                            display: "flex",
+                                                            justifyContent: "center",
+                                                            alignItems: "center",
+                                                            textAlign: "center",
+                                                        }}
+                                                    >
+                                                        <img src="/assets/images/no-record-found.png" width="30%" alt="No records found" />
+                                                    </div>
+                                                )
                                             )}
                                         </div>
                                     )}

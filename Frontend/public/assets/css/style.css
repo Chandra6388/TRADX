@@ -5643,3 +5643,8 @@ button.nav-link.active
   color: #fff !important;
   background-color: #3f414d !important;
 }
+
+
+.css-1ps6pg7-MuiPaper-root{
+  display: none !important;
+}

@@ -1,20 +1,19 @@
 // import React, { useState } from "react";
 // import MUIDataTable from "mui-datatables";
 
-
 // const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
 //     const [selectedRowData, setSelectedRowData] = useState(null);
 
 //     const NoDataIndication = () => (
 //         <div className="d-flex justify-content-start">
-//             <img 
-//                 src='../../../../assets/images/norecordfound.png' 
+//             <img
+//                 src='../../../../assets/images/norecordfound.png'
 //                 alt="No data found"
 //                 style={{marginLeft:'23rem'}}
 //             />
 //         </div>
 //     );
-    
+
 //     const options = {
 //         responsive: "vertical",  // Improved responsive behavior for mobile view
 //         filterType: false,
@@ -68,7 +67,7 @@
 //             setCellProps: () => ({
 //                 style: {
 //                     width: column.width || 'auto',
-//                     minWidth: '100px',  
+//                     minWidth: '100px',
 //                 }
 //             })
 //         }
@@ -88,11 +87,7 @@
 
 // export default FullDataTable;
 
-
-
-
 // // ___________Testing on table with expand/collapse feature___________
-
 
 // import React, { useState } from "react";
 // import MUIDataTable from "mui-datatables";
@@ -196,12 +191,9 @@
 
 // export default FullDataTable;
 
-
-
 // ______________________________new€Table
 
-
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -214,6 +206,11 @@ const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
     columns.slice(0, 6)
   );
 
+  useEffect(() => {
+    setSelectedColumns(columns.slice(0, 6)); // Reset selected columns to default
+    setTempSelectedColumns(columns.slice(0, 6)); // Reset temp selected columns
+  }, [columns]);
+
   // Memoized modal handlers
   const handleModalOpen = useCallback(() => setIsModalOpen(true), []);
   const handleModalClose = useCallback(() => setIsModalOpen(false), []);
@@ -222,17 +219,21 @@ const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
     (columnName) => {
       const columnToAdd = columns.find((col) => col.name === columnName);
       if (tempSelectedColumns.some((col) => col.name === columnName)) {
-        // Remove column if already selected
         setTempSelectedColumns((prev) =>
           prev.filter((col) => col.name !== columnName)
         );
       } else if (columnToAdd) {
-        // Add column if not selected
         setTempSelectedColumns((prev) => [...prev, columnToAdd]);
       }
     },
     [columns, tempSelectedColumns]
   );
+
+  useEffect(() => {
+    console.log("Columns Updated:", columns);
+    console.log("Data Updated:", data);
+    console.log("Selected Columns:", selectedColumns);
+  }, [columns, data, selectedColumns]);
 
   const handleSubmit = useCallback(() => {
     setSelectedColumns(tempSelectedColumns);
@@ -260,7 +261,7 @@ const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
       viewColumns: false,
       search: false,
       filter: false,
-      sort: false, // Disable sorting feature
+      sort: false,
       setCellProps: () => ({
         style: { textAlign: "center" },
       }),
@@ -276,13 +277,8 @@ const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
         label: (
           <button
             onClick={handleModalOpen}
-            className="btn btn-secondary"
-            style={{
-              padding: "5px 10px",
-              fontSize: "0.875rem",
-              borderRadius: "4px",
-              backgroundColor: "black",
-            }}>
+            style={{ backgroundColor: "black !important" }}
+            className="btn btn-secondary">
             Expand Columns
           </button>
         ),
@@ -303,11 +299,10 @@ const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
         ...column,
         options: {
           ...column.options,
-          sort: false, // Disable sorting
+          sort: false,
           setCellProps: () => ({
             style: { width: column.width || "auto", minWidth: "100px" },
           }),
-          // Disable clicking for all headers except "Action" column
           setHeaderProps: () => ({
             style: {
               pointerEvents: column.name === "Action" ? "auto" : "none",
@@ -319,20 +314,52 @@ const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
     [visibleColumns]
   );
 
+  // Handle 'Select All' checkbox
+  const handleSelectAllChange = useCallback(() => {
+    if (tempSelectedColumns.length === columns.length) {
+      // If all columns are selected, reset to default selected columns
+      setTempSelectedColumns(columns.slice(0, 6)); // Adjust default columns here
+    } else {
+      // Otherwise, select all columns
+      setTempSelectedColumns(columns);
+    }
+  }, [columns, tempSelectedColumns]);
+
   return (
     <div className="modal-body">
-      <MUIDataTable
-        title={""}
-        data={data}
-        columns={customizedColumns}
-        options={options}
-      />
-      <Modal show={isModalOpen} onHide={handleModalClose}>
+      <div className="table-container">
+        <MUIDataTable
+          title={""}
+          data={data}
+          columns={customizedColumns}
+          options={options}
+        />
+      </div>
+      <Modal
+        show={isModalOpen}
+        onHide={handleModalClose}
+        className="custom-modal">
         <Modal.Header closeButton>
           <Modal.Title>Select Columns to Display</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="row">
+            <div className="col-12 mb-2">
+              {/* Select All Checkbox */}
+              <div className="form-check">
+                <input
+                  type="checkbox"
+                  className="form-check-input"
+                  id="select-all"
+                  checked={tempSelectedColumns.length === columns.length}
+                  onChange={handleSelectAllChange}
+                />
+                <label className="form-check-label" htmlFor="select-all">
+                  Select All
+                </label>
+              </div>
+            </div>
+
             <div className="col-6">
               {columns.slice(0, Math.ceil(columns.length / 2)).map((column) => (
                 <div key={column.name} className="form-check mb-2">
@@ -376,14 +403,49 @@ const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleModalClose}>
+          <Button
+            style={{ backgroundColor: "black" }}
+            onClick={handleModalClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button style={{ backgroundColor: "green" }} onClick={handleSubmit}>
             Submit
           </Button>
         </Modal.Footer>
       </Modal>
+      <style jsx>{`
+        .table-container {
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          overflow: hidden;
+        }
+        .expand-btn {
+          background: linear-gradient(135deg, #4caf50, #81c784);
+          color: white;
+          font-weight: bold;
+          padding: 8px 16px;
+          border: none;
+          border-radius: 8px;
+          transition: 0.3s ease;
+        }
+        .expand-btn:hover {
+          background: linear-gradient(135deg, #388e3c, #66bb6a);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+        .custom-modal .modal-content {
+          background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+          border-radius: 12px;
+        }
+        .custom-modal .modal-header {
+          border-bottom: 1px solid #ccc;
+        }
+        .custom-modal .modal-footer {
+          border-top: 1px solid #ccc;
+        }
+      `}</style>
     </div>
   );
 };

@@ -593,13 +593,14 @@ const Tradehistory = () => {
                   </div>
                 </div>
               </div>
-              {(
+              {/* {(
                 selectStrategyType == "ChartingPlatform"
                   ? getCharting
                   : tradeHistory.data
               ) ? (
                 tableType === "Scalping" && (
                   <div className="modal-body">
+                    
                     <GridExample
                       columns={
                         selectStrategyType === "Scalping"
@@ -614,6 +615,50 @@ const Tradehistory = () => {
                       }
                       data={
                         selectStrategyType == "ChartingPlatform"
+                          ? getCharting
+                          : tradeHistory.data
+                      }
+                      onRowSelect={handleRowSelect}
+                      checkBox={true}
+                    />
+                  </div>
+                )
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    textAlign: "center",
+                  }}>
+                  <img
+                    src="/assets/images/no-record-found.png"
+                    width="30%"
+                    alt=""
+                  />
+                </div>
+              )} */}
+
+              {(selectStrategyType === "ChartingPlatform" &&
+                getCharting.length > 0) ||
+              (selectStrategyType !== "ChartingPlatform" &&
+                tradeHistory.data.length > 0) ? (
+                tableType === "Scalping" && (
+                  <div className="modal-body">
+                    <GridExample
+                      columns={
+                        selectStrategyType === "Scalping"
+                          ? columns()
+                          : selectStrategyType === "Option Strategy"
+                            ? columns1()
+                            : selectStrategyType === "Pattern"
+                              ? columns2()
+                              : selectStrategyType === "ChartingPlatform"
+                                ? getColumns10()
+                                : columns()
+                      }
+                      data={
+                        selectStrategyType === "ChartingPlatform"
                           ? getCharting
                           : tradeHistory.data
                       }

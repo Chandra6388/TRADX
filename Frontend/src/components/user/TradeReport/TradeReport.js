@@ -10,26 +10,17 @@ import { getColumns3, getColumns2, getColumns1, getColumns, getColumns4, getColu
 
 const TradeReport = () => {
     const userName = localStorage.getItem("name");
-
-
     const [selectStrategyType, setStrategyType] = useState('Scalping');
     const [strategyNames, setStrategyNames] = useState([])
-    const [tradeReport, setTradeReport] = useState({
-        data: [],
-        data1: [],
-    })
+    const [tradeReport, setTradeReport] = useState({ data: [], data1: [], })
     const [selectedRowData, setSelectedRowData] = useState('');
     const [getCharting, setGetCharting] = useState([]);
     const [ToDate, setToDate] = useState('');
     const [FromDate, setFromDate] = useState('');
     const [showTable, setShowTable] = useState(false)
-    const [charting, setCharting] = useState([])
     const [getAllTradeData, setAllTradeData] = useState({ loading: true, data1: [], data2: [] })
-
     const [chartingData, setChartingData] = useState([]);
     const [tableType, setTableType] = useState('Scalping');
-
-
     const Username = localStorage.getItem('name')
     const adminPermission = localStorage.getItem('adminPermission')
 
@@ -64,7 +55,6 @@ const TradeReport = () => {
 
     const GetTradeReport = async () => {
         const data = { Data: selectStrategyType, Username: Username }
-
         //GET TRADE REPORT
         await get_User_Data(data)
             .then((response) => {
@@ -103,17 +93,10 @@ const TradeReport = () => {
     }
 
     useEffect(() => {
-        strategyType()
-    }, [])
-
-    useEffect(() => {
         if (selectStrategyType != "ChartingPlatform")
             GetTradeReport()
     }, [selectStrategyType])
 
-
-
-    console.log("getAllTradeData", getAllTradeData)
     const handleRowSelect = (rowData) => {
         setSelectedRowData(rowData);
     };
@@ -126,13 +109,14 @@ const TradeReport = () => {
 
 
     useEffect(() => {
+        strategyType()
         getChartingData();
+        setStrategyType('Scalping')
     }, []);
 
 
 
     const handleSubmit = async (rowData) => {
-        console.log("rowData", rowData?.Segment)
         const data = {
             MainStrategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? "NewScalping" : selectStrategyType,
             Strategy: selectStrategyType == "Scalping" && selectedRowData.ScalpType != "Multi_Conditional" ? selectedRowData && selectedRowData.ScalpType : selectStrategyType == "Option Strategy" ? selectedRowData && selectedRowData.STG : selectStrategyType == "Pattern" ? selectedRowData && selectedRowData.TradePattern : selectStrategyType == "Scalping" && selectedRowData.ScalpType == "Multi_Conditional" ? selectedRowData && selectedRowData.Targetselection : selectStrategyType == "ChartingPlatform" ? rowData && rowData?.Segment : "",
@@ -176,12 +160,6 @@ const TradeReport = () => {
                 console.log("Error in finding the All TradeData", err)
             })
     }
-
-
-
-    useEffect(() => {
-        setStrategyType('Scalping')
-    }, []);
 
 
     useEffect(() => {

@@ -84,10 +84,8 @@ const Tradehistory = () => {
     data2: "",
     data3: "",
     data4: "",
-    Overall: [],
-  });
-
-  console.log("selectStrategyType", selectStrategyType);
+    Overall: []
+  })
 
   const Username = localStorage.getItem("name");
 

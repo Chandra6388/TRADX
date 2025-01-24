@@ -29,6 +29,10 @@ import EditSubadmin from '../components/admin/SubAdmin/EditSubadmin';
 import ApiCreateInfo from '../components/admin/apicreateInfo/ApiCreateInfo';
 
 
+import New from '../components/user/New';
+
+
+
 
 
 const AdminRoute = () => {
@@ -64,6 +68,7 @@ const AdminRoute = () => {
             <Route path="/allSubadmin" element={<AllSubadmin/>} />
             <Route path="/editSubadmin" element={<EditSubadmin/>} />
             <Route path="/api-create-info" element={<ApiCreateInfo/>} />
+            <Route path="/new" element={<New />} />
           </Routes>
         </div>
       </div>

@@ -52,8 +52,6 @@ const Header = () => {
   const [userName, setUserName] = useState("");
   const [permissionData, setPermissionData] = useState("");
 
-
-
   const AdminPermission = async () => {
     try {
       await getAdminPermission()
@@ -668,7 +666,7 @@ const Header = () => {
                 </div>
                 <ul className="navbar-nav ms-auto navbar-list align-items-center">
                   
-                  {getBrokerName && getBrokerName == "Demo" ? (
+                  {getBrokerName && getBrokerName == "DEMOI" ? (
                     <li className="nav-item">
                       <button
                         type="button"

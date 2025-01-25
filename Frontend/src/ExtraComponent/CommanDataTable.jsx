@@ -34,11 +34,11 @@ const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
     [columns, tempSelectedColumns]
   );
 
-  useEffect(() => {
-    console.log("Columns Updated:", columns);
-    console.log("Data Updated:", data);
-    console.log("Selected Columns:", selectedColumns);
-  }, [columns, data, selectedColumns]);
+  // useEffect(() => {
+  //   console.log("Columns Updated:", columns);
+  //   console.log("Data Updated:", data);
+  //   console.log("Selected Columns:", selectedColumns);
+  // }, [columns, data, selectedColumns]);
 
   const handleSubmit = useCallback(() => {
     setSelectedColumns(tempSelectedColumns);

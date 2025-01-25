@@ -201,9 +201,6 @@
 
 // export default EditSubadmin;
 
-
-
-
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import {
@@ -326,9 +323,9 @@ const EditSubadmin = () => {
         });
     },
   });
-
+  console.log("permissions", permissions);
   useEffect(() => {
-    if (permissions.length) {
+    if (permissions?.length) {
       formik.setFieldValue("permissions", permissions); // Sync permissions when state changes
     }
   }, [permissions]);

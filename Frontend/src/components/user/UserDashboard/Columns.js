@@ -2,6 +2,7 @@ import React from 'react';
 import { CopyPlus } from 'lucide-react';
 import Checkbox from '@mui/material/Checkbox';
 import { SquarePen } from 'lucide-react';
+import { EllipsisVertical } from 'lucide-react';
 
 
 export const getColumns = (handleAddScript1) => [
@@ -17,6 +18,7 @@ export const getColumns = (handleAddScript1) => [
             }
         },
     },
+
     {
         name: "coptScript",
         label: "Copy Script",
@@ -24,10 +26,11 @@ export const getColumns = (handleAddScript1) => [
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <CopyPlus onClick={(e) => handleAddScript1(tableMeta , 1)} />
+                return <CopyPlus onClick={(e) => handleAddScript1(tableMeta, 1)} />
             }
         }
     },
+    
     {
         name: "ScalpType",
         label: "Scalp Type",
@@ -227,7 +230,7 @@ export const getColumns7 = (handleAddScript1) => [
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <CopyPlus onClick={(e) => handleAddScript1(tableMeta , 2)} />
+                return <CopyPlus onClick={(e) => handleAddScript1(tableMeta, 2)} />
             }
         }
     },
@@ -851,20 +854,7 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
             }
         },
     },
-    {
-        name: "Action",
-        label: "Action",
-        options: {
-            filter: true,
-            sort: true,
-            customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta, 1)}>
-                    Square Off
-                </button>
-                </>
-            }
-        }
-    },
+
     {
         name: "Edit",
         label: "Edit",
@@ -913,6 +903,34 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
         options: {
             filter: true,
             sort: true,
+        }
+    },
+    // {
+    //     name: "Action",
+    //     label: "Action",
+    //     options: {
+    //         filter: true,
+    //         sort: true,
+    //         customBodyRender: (value, tableMeta, updateValue) => {
+    //             return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta, 1)}>
+    //                 Square Off
+    //             </button>
+    //             </>
+    //         }
+    //     }
+    // },
+
+    {
+        name: "Action",
+        label: "Action",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                return <>
+                    <EllipsisVertical />
+                </>
+            }
         }
     },
     {
@@ -1896,7 +1914,7 @@ export const getColumns8 = (handleContinutyDiscontinuty) => [
             }
         },
     },
-    
+
     {
         name: "Trading",
         label: "Trading",

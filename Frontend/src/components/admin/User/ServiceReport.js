@@ -4,10 +4,11 @@ import { Eye, Trash2 } from 'lucide-react';
 import Loader from '../../../ExtraComponent/Loader'
 import FullDataTable from '../../../ExtraComponent/CommanDataTable'
 import { ReportColumns5, ReportColumns4, ReportColumns3 } from './UserAllColumn'
+import NoDataFound from '../../../ExtraComponent/NoDataFound';
 
 const Userlog = () => {
 
-    
+
     const [showModal, setShowModal] = useState(false)
     const [getServiceDetails, setServiceDetails] = useState({
         loading: true,
@@ -174,7 +175,7 @@ const Userlog = () => {
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (value, tableMeta, updateValue) => { 
+                customBodyRender: (value, tableMeta, updateValue) => {
                     return <Eye onClick={(e) => {
                         setShowModal(!showModal);
                         const rowDataWithKeys = {};
@@ -184,7 +185,7 @@ const Userlog = () => {
                         handleModal(rowDataWithKeys)
                     }} />
 
-                        
+
                 }
             }
         },
@@ -501,7 +502,7 @@ const Userlog = () => {
     }, []);
 
 
-    const handleModal = async (rowIndex) => { 
+    const handleModal = async (rowIndex) => {
         const data = { Data: selectStrategyType, Username: rowIndex?.Username }
 
 
@@ -553,28 +554,28 @@ const Userlog = () => {
                                     </div>
                                 </div>
                             </div>
-                            {getServiceDetails.loading ? <Loader /> :
-                                (
-                                    selectStrategyType == "Scalping" ?
-                                        <div className="iq-card-body px-2">
-
-                                            <FullDataTable
-                                                columns={columns}
-                                                data={getServiceDetails.data}
-                                                checkBox={false}
-                                            />
-
-                                        </div> :
-                                        selectStrategyType == "Option Strategy" ?
+                            {
+                                getServiceDetails.data && getServiceDetails.data.length > 0 ? (
+                                    <div>
+                                        {getServiceDetails.loading ? (
+                                            <Loader />
+                                        ) : (
                                             <div className="iq-card-body px-2">
-                                                <FullDataTable
-                                                    columns={columns1}
-                                                    data={getServiceDetails.data}
-                                                    checkBox={false}
-                                                />
-                                            </div> :
-                                            selectStrategyType == "Pattern" ?
-                                                <div className="iq-card-body px-2">
+                                                {selectStrategyType === "Scalping" && (
+                                                    <FullDataTable
+                                                        columns={columns}
+                                                        data={getServiceDetails.data}
+                                                        checkBox={false}
+                                                    />
+                                                )}
+                                                {selectStrategyType === "Option Strategy" && (
+                                                    <FullDataTable
+                                                        columns={columns1}
+                                                        data={getServiceDetails.data}
+                                                        checkBox={false}
+                                                    />
+                                                )}
+                                                {selectStrategyType === "Pattern" && (
                                                     <div className="iq-card-body px-0">
                                                         <FullDataTable
                                                             columns={columns2}
@@ -582,9 +583,16 @@ const Userlog = () => {
                                                             checkBox={false}
                                                         />
                                                     </div>
-                                                </div> : ""
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <NoDataFound />
                                 )
                             }
+
+                           
                         </div>
                     </div>
                 </div>

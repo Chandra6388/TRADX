@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom"
-import AddForm from "../../../ExtraComponent/FormData";
+import AddForm from "../../../ExtraComponent/FormData2";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
@@ -8,6 +8,7 @@ import { AddScript, CheckPnL } from '../../CommonAPI/User'
 // import { base_url } from "../../../Utils/Config";
 import axios from "axios";
 import * as Config from "../../../Utils/Config";
+import { text } from "../../../ExtraComponent/IconTexts";
 
 
 
@@ -508,6 +509,7 @@ const AddClient = () => {
             label_size: 12,
             col_size: 3,
             headingtype: 2,
+            // iconText: text.Strike_Type,
             disable: false,
         },
         {
@@ -519,6 +521,7 @@ const AddClient = () => {
             label_size: 12,
             col_size: 3,
             headingtype: 2,
+            iconText: formik.values.Striketype == "Depth_of_Strike" ? text.Depth_of_Strike : formik.values.Striketype == "Straddle_Width" ? text.Straddle_Width : formik.values.Striketype == "Premium_Range" ? text.Premium_Range : formik.values.Striketype == "Per_ATM" ? text.percent_of_ATM : text.Depth_of_Strike,
             disable: false,
         },
         {
@@ -543,6 +546,7 @@ const AddClient = () => {
             headingtype: 2,
             disable: false,
         },
+
         {
             name: "Higher_Range",
             label: "Higher Range",
@@ -567,7 +571,6 @@ const AddClient = () => {
             disable: false,
         },
 
-
         {
             name: "CEDepthLower",
             label: "CE Main Lower",
@@ -579,6 +582,7 @@ const AddClient = () => {
             headingtype: 2,
             disable: false,
         },
+
         {
             name: "CEDepthHigher",
             label: "CE Main Higher",
@@ -602,6 +606,7 @@ const AddClient = () => {
             headingtype: 2,
             disable: false,
         },
+
         {
             name: "CEDeepHigher",
             label: "CE Hedge Higher",
@@ -613,6 +618,7 @@ const AddClient = () => {
             headingtype: 2,
             disable: false,
         },
+
         {
             name: "PEDepthLower",
             label: "PE Main Lower",
@@ -705,6 +711,7 @@ const AddClient = () => {
             label_size: 12,
             col_size: 4,
             headingtype: 3,
+            iconText: text.Risk_Handle,
             disable: false,
         },
         {

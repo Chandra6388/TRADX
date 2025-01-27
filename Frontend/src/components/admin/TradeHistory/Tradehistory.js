@@ -9,6 +9,7 @@ import "ag-charts-enterprise";
 import ApexCharts from 'react-apexcharts';
 import Swal from 'sweetalert2';
 import "react-datepicker/dist/react-datepicker.css";
+import NoDataFound from '../../../ExtraComponent/NoDataFound';
 
 
 const Tradehistory = () => {
@@ -483,20 +484,28 @@ const Tradehistory = () => {
                             </div>
                             {
                                 <div className="modal-body">
-                                    <GridExample
-                                        columns={selectStrategyType === "Scalping" ? columns() :
-                                            selectStrategyType === "Option Strategy" ? columns1() :
-                                                selectStrategyType === "Pattern" ? columns2() : columns()
-                                        }
-                                        data={tradeHistory.data}
-                                        onRowSelect={handleRowSelect}
-                                        checkBox={true}
-                                    />
+
+                                    {tradeHistory.data && tradeHistory.data.length > 0 ?
+                                        (<GridExample
+                                            columns={selectStrategyType === "Scalping" ? columns() :
+                                                selectStrategyType === "Option Strategy" ? columns1() :
+                                                    selectStrategyType === "Pattern" ? columns2() : columns()
+                                            }
+                                            data={tradeHistory.data}
+                                            onRowSelect={handleRowSelect}
+                                            checkBox={true}
+                                        />)
+                                        :
+                                        (<NoDataFound />)
+                                    }
+
                                 </div>
                             }
 
                             {selectStrategyType === "Scalping" &&
                                 adminPermission.includes("Charting Platform") && (
+
+                                    tradeHistory.data1 && tradeHistory.data1.length > 0 &&
                                     <div>
                                         <div className="iq-header-title mt-4">
                                             <h4 className="card-title">Multi Conditional</h4>

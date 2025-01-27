@@ -1388,7 +1388,7 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
                                                                     <FullDataTable
                                                                         columns={
                                                                             data === "Scalping" && tableType === "Scalping"
-                                                                                ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)
+                                                                                ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue, )
                                                                                 : data === "Option Strategy"
                                                                                     ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue)
                                                                                     : data === "Pattern"

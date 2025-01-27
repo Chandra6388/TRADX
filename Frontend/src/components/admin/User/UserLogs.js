@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import FullDataTable from '../../../ExtraComponent/CommanDataTable'
 import { GetAllTaskStatus, GetClientService, Get_All_Client_Logs } from '../../CommonAPI/Admin'
 import { columns3, columns2, columns1, columns } from './UserAllColumn'
+import NoDataFound from '../../../ExtraComponent/NoDataFound'
 
 const Pannel = () => {
 
@@ -159,21 +160,34 @@ const Pannel = () => {
                                 </div>
                             </div>
                             <div className="table-responsive">
-                                <FullDataTable
-                                    columns={getScript == 'Scalping' ? columns() : getScript == 'Option Strategy' ? columns1() : getScript == 'Pattern' ? columns2() : columns()}
-                                    data={getPanleData.data}
-                                    checkBox={false}
-                                />
-                                {getScript == 'Scalping' ?
-                                    <>
-                                        <h4 className='mt-3' >Multi Condition</h4>
-                                        <FullDataTable
+                                {
+                                    getPanleData.data && getPanleData.data.length > 0 ?
+                                        (
+                                            <div>
+                                                <FullDataTable
+                                                    columns={getScript == 'Scalping' ? columns() : getScript == 'Option Strategy' ? columns1() : getScript == 'Pattern' ? columns2() : columns()}
+                                                    data={getPanleData.data}
+                                                    checkBox={false}
+                                                />
+                                                {getScript == 'Scalping' ?
+                                                    <>
+                                                        <h4 className='mt-3' >Multi Condition</h4>
+                                                        <FullDataTable
 
-                                            columns={columns3()}
-                                            data={getPanleData.data1}
-                                            checkBox={false}
-                                        />
-                                    </> : ""}
+                                                            columns={columns3()}
+                                                            data={getPanleData.data1}
+                                                            checkBox={false}
+                                                        />
+                                                    </> : ""}
+
+                                            </div>
+                                        )
+                                        :
+                                        (
+                                            <NoDataFound />
+                                        )
+                                }
+
                             </div >
                         </div>
                     </div >
@@ -184,4 +198,3 @@ const Pannel = () => {
 }
 export default Pannel
 
-    

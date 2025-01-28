@@ -3,6 +3,7 @@ import { CopyPlus } from 'lucide-react';
 import Checkbox from '@mui/material/Checkbox';
 import { SquarePen } from 'lucide-react';
 import { EllipsisVertical } from 'lucide-react';
+import { Select } from '@mui/material';
 
 
 export const getColumns = (handleAddScript1) => [
@@ -930,6 +931,7 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
                 return <>
                     <EllipsisVertical />
                 </>
+                
             }
         }
     },

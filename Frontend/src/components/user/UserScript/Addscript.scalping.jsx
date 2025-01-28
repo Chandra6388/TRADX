@@ -800,24 +800,6 @@ const AddClient = () => {
 
   const ExitRuleArr = [
     {
-      name: "TStype",
-      label: "Measurement Type",
-      type: "select",
-      options: [
-        { label: "Percentage", value: "Percentage" },
-        { label: "Point", value: "Point" },
-      ],
-      showWhen: (values) =>
-        values.Strategy == "One Directional" ||
-        values.Strategy == "Multi Directional" ||
-        values.Strategy == "Multi_Conditional",
-      label_size: 12,
-      headingtype: 4,
-      col_size: formik.values.position_type == "Multiple" ? 3 : 4,
-      hiding: false,
-      disable: false,
-    },
-    {
       name: "Targetselection",
       label: "Target Type",
       type: "select",
@@ -838,6 +820,24 @@ const AddClient = () => {
       headingtype: 4,
       disable: false,
       hiding: false,
+    },
+    {
+      name: "TStype",
+      label: "Measurement Type",
+      type: "select",
+      options: [
+        { label: "Percentage", value: "Percentage" },
+        { label: "Point", value: "Point" },
+      ],
+      showWhen: (values) =>
+        values.Strategy == "One Directional" ||
+        values.Strategy == "Multi Directional" ||
+        values.Strategy == "Multi_Conditional",
+      label_size: 12,
+      headingtype: 4,
+      col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+      hiding: false,
+      disable: false,
     },
 
     {

@@ -439,80 +439,58 @@ const TradeReport = () => {
 
                             {
                                 showTable && (
-                                    (getAllTradeData.data2.length > 0 && getAllTradeData.data1.length > 0) ? (
+                                    // console.log("---------", getAllTradeData.data2.length, getAllTradeData.data1.length)
+                                        (getAllTradeData.data2.length > 0 || getAllTradeData.data1.length > 0) ? (
                                         <>
-                                            <h4 className="mt-4 mb-2">Open Trade</h4>
+
                                             {
-                                                getAllTradeData.data2.length > 0 ? (
-                                                    <GridExample
-                                                        columns={
-                                                            selectStrategyType === "Scalping"
-                                                                ? getColumns3()
-                                                                : selectStrategyType === "Option Strategy"
-                                                                    ? getColumns4()
-                                                                    : selectStrategyType === "Pattern"
-                                                                        ? getColumns5()
-                                                                        : selectStrategyType === "ChartingPlatform"
-                                                                            ? getColumns12()
-                                                                            : getColumns3()
-                                                        }
-                                                        data={getAllTradeData.data2}
-                                                        onRowSelect={handleRowSelect}
-                                                        checkBox={false}
-                                                    />
-                                                ) : (
-                                                    <div
-                                                        style={{
-                                                            display: "flex",
-                                                            justifyContent: "center",
-                                                            alignItems: "center",
-                                                            textAlign: "center",
-                                                        }}
-                                                    >
-                                                        <img
-                                                            src="/assets/images/no-record-found.png"
-                                                            width="30%"
-                                                            alt="No records found"
+                                                getAllTradeData.data2.length > 0 && (
+                                                    <>
+                                                        <h4 className="mt-4 mb-2">Open Trade</h4>
+                                                        <GridExample
+                                                            columns={
+                                                                selectStrategyType === "Scalping"
+                                                                    ? getColumns3()
+                                                                    : selectStrategyType === "Option Strategy"
+                                                                        ? getColumns4()
+                                                                        : selectStrategyType === "Pattern"
+                                                                            ? getColumns5()
+                                                                            : selectStrategyType === "ChartingPlatform"
+                                                                                ? getColumns12()
+                                                                                : getColumns3()
+                                                            }
+                                                            data={getAllTradeData.data2}
+                                                            onRowSelect={handleRowSelect}
+                                                            checkBox={false}
                                                         />
-                                                    </div>
+                                                    </>
                                                 )
                                             }
 
                                             <div className="mt-3">
-                                                <h4 className="mt-3 mb-2">Close Trade</h4>
+
                                                 {
-                                                    getAllTradeData.data1.length > 0 ? (
-                                                        <GridExample
-                                                            columns={
-                                                                selectStrategyType === "Scalping"
-                                                                    ? getColumns6()
-                                                                    : selectStrategyType === "Option Strategy"
-                                                                        ? getColumns7()
-                                                                        : selectStrategyType === "Pattern"
-                                                                            ? getColumns8()
-                                                                            : selectStrategyType === "ChartingPlatform"
-                                                                                ? getColumns10()
-                                                                                : getColumns6()
-                                                            }
-                                                            data={getAllTradeData.data1}
-                                                            onRowSelect={handleRowSelect}
-                                                            checkBox={false}
-                                                        />
-                                                    ) : (
-                                                        <div
-                                                            style={{
-                                                                display: "flex",
-                                                                justifyContent: "center",
-                                                                alignItems: "center",
-                                                                textAlign: "center",
-                                                            }}
-                                                        >
-                                                            <img
-                                                                src="/assets/images/no-record-found.png"
-                                                                width="30%"
-                                                                alt="No records found"
+                                                    getAllTradeData?.data1?.length > 0 && (
+                                                        <>
+                                                            <h4 className="mt-3 mb-2">Close Trade</h4>
+                                                            <GridExample
+                                                                columns={
+                                                                    selectStrategyType === "Scalping"
+                                                                        ? getColumns6()
+                                                                        : selectStrategyType === "Option Strategy"
+                                                                            ? getColumns7()
+                                                                            : selectStrategyType === "Pattern"
+                                                                                ? getColumns8()
+                                                                                : selectStrategyType === "ChartingPlatform"
+                                                                                    ? getColumns10()
+                                                                                    : getColumns6()
+                                                                }
+                                                                data={getAllTradeData?.data1}
+                                                                onRowSelect={handleRowSelect}
+                                                                checkBox={false}
                                                             />
-                                                        </div>
+                                                        </>
+
                                                     )
                                                 }
                                             </div>

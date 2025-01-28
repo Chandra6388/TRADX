@@ -93,9 +93,7 @@ const AddClient = () => {
       let errors = {};
       const maxTime = "15:29:59";
       const minTime = "09:15:00";
-      const minTime2 = "09:00:00"
-      const maxTime2 = "23:30:00"
-
+      const minTime2 = "23:30:00"
       if (!values.Strategy) {
         errors.Strategy = "Please Select Strategy Type.";
       }
@@ -131,28 +129,17 @@ const AddClient = () => {
       if (!values.Quantity) {
         errors.Quantity = formik.values.Exchange == "NFO" && formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional" ? "Please Enter Quantity 1" : formik.values.Exchange == "NFO" ? "Please Enter Lot Value." : "Please Enter Quantity Value.";
       }
-
-
-
-
       if (!values.ExitTime) {
         errors.ExitTime = "Please Select Exit Time.";
       } else if (values.ExitTime > maxTime && formik.values.Exchange !== 'MCX') {
         errors.ExitTime = "Exit Time Must be Before 15:29:59.";
       }
-
-      else if (values.ExitTime > maxTime2 && formik.values.Exchange == 'MCX') {
+      else if (values.ExitTime > minTime2 && formik.values.Exchange == 'MCX') {
         errors.ExitTime = "Exit Time Must be Before 23:30:00.";
       }
-
-      else if (values.ExitTime < minTime && formik.values.Exchange !== 'MCX') {
+      else if (values.ExitTime < minTime) {
         errors.ExitTime = "Exit Time Must be After 09:15:00.";
       }
-      else if (values.ExitTime < minTime2 && formik.values.Exchange == 'MCX') {
-        errors.ExitTime = "Exit Time Must be After 09:00:00.";
-      }
-
-
       if (!values.EntryTime) {
         errors.EntryTime = "Please Select Entry Time.";
       } else if (values.EntryTime < minTime) {
@@ -578,21 +565,7 @@ const AddClient = () => {
   ]
 
   const ExitRuleArr = [
-    {
-      name: "TStype",
-      label: "Measurement Type",
-      type: "select",
-      options: [
-        { label: "Percentage", value: "Percentage" },
-        { label: "Point", value: "Point" },
-      ],
-      showWhen: (values) => values.Strategy == "One Directional" || values.Strategy == "Multi Directional" || (values.Strategy == "Multi_Conditional"),
-      label_size: 12,
-      headingtype: 4,
-      col_size: formik.values.position_type == "Multiple" ? 3 : 4,
-      hiding: false,
-      disable: false,
-    },
+
     {
       name: "Targetselection",
       label: "Target Type",
@@ -610,7 +583,21 @@ const AddClient = () => {
       disable: false,
       hiding: false,
     },
-
+    {
+      name: "TStype",
+      label: "Measurement Type",
+      type: "select",
+      options: [
+        { label: "Percentage", value: "Percentage" },
+        { label: "Point", value: "Point" },
+      ],
+      showWhen: (values) => values.Strategy == "One Directional" || values.Strategy == "Multi Directional" || (values.Strategy == "Multi_Conditional"),
+      label_size: 12,
+      headingtype: 4,
+      col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+      hiding: false,
+      disable: false,
+    },
     {
       name: "Targetvalue",
       label: formik.values.position_type == "Single" && formik.values.Strategy == "Multi_Conditional" ? "Target Price 1" : formik.values.Strategy == "Fixed Price" ? "Target Price" : formik.values.Strategy == "One Directional" ? "Fixed Target" : formik.values.Strategy == "Multi_Conditional" && formik.values.position_type == "Multiple" && formik.values.Targetselection == "Fixed Target" ? "Fixed Target" : "Booking Point",

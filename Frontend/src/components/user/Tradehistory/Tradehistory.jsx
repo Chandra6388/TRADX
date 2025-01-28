@@ -637,11 +637,11 @@ const Tradehistory = () => {
                 </div>
               )} */}
 
-              {(selectStrategyType === "ChartingPlatform" &&
-                getCharting.length > 0) ||
-              (selectStrategyType !== "ChartingPlatform" &&
-                tradeHistory.data.length > 0) ? (
-                tableType === "Scalping" && (
+              {tableType === "Scalping" ? (
+                (selectStrategyType === "ChartingPlatform" &&
+                  getCharting.length > 0) ||
+                (selectStrategyType !== "ChartingPlatform" &&
+                  tradeHistory.data.length > 0) ? (
                   <div className="modal-body">
                     <GridExample
                       columns={
@@ -664,22 +664,22 @@ const Tradehistory = () => {
                       checkBox={true}
                     />
                   </div>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      textAlign: "center",
+                    }}>
+                    <img
+                      src="/assets/images/no-record-found.png"
+                      width="30%"
+                      alt="No record found"
+                    />
+                  </div>
                 )
-              ) : (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    textAlign: "center",
-                  }}>
-                  <img
-                    src="/assets/images/no-record-found.png"
-                    width="30%"
-                    alt=""
-                  />
-                </div>
-              )}
+              ) : null}
 
               {tableType === "MultiCondition" &&
                 selectStrategyType === "Scalping" &&

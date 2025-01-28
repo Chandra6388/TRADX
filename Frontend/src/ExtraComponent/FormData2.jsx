@@ -1131,6 +1131,70 @@ const DynamicForm = ({
                                           </div>
                                         </div>
                                       </>
+                                    ) : field.type === "timepiker" ? (
+                                      <>
+                                        <div
+                                          className={`col-lg-${field.col_size}`}>
+                                          <div className="input-block mb-3 flex-column">
+                                            <label
+                                              className={`col-lg-${field.label_size}`}>
+                                              {field.label}
+                                              <span className="text-danger">
+                                                *
+                                              </span>
+                                            </label>
+
+                                            <LocalizationProvider
+                                              dateAdapter={AdapterDayjs}>
+                                              <TimePicker
+                                                value={
+                                                  formik.values[field.name]
+                                                    ? dayjs(
+                                                        formik.values[
+                                                          field.name
+                                                        ],
+                                                        "HH:mm:ss"
+                                                      )
+                                                    : null
+                                                }
+                                                onChange={(newValue) => {
+                                                  formik.setFieldValue(
+                                                    field.name,
+                                                    newValue
+                                                      ? newValue.format(
+                                                          "HH:mm:ss"
+                                                        )
+                                                      : ""
+                                                  );
+                                                }}
+                                                minTime={minTime}
+                                                views={[
+                                                  "hours",
+                                                  "minutes",
+                                                  "seconds",
+                                                ]}
+                                                ampm={false} // This sets the time picker to 24-hour format
+                                                renderInput={(params) => (
+                                                  <input
+                                                    {...params.inputProps}
+                                                    aria-describedby="basic-addon1"
+                                                    className="form-control"
+                                                    placeholder={`Enter ${field.label}`}
+                                                    readOnly={field.disable}
+                                                    id={field.name}
+                                                    name={field.name}
+                                                  />
+                                                )}
+                                              />
+                                            </LocalizationProvider>
+                                            {formik.errors[field.name] ? (
+                                              <div style={{ color: "red" }}>
+                                                {formik.errors[field.name]}
+                                              </div>
+                                            ) : null}
+                                          </div>
+                                        </div>
+                                      </>
                                     ) : item.type === "select" ? (
                                       <>
                                         <div
@@ -1258,7 +1322,7 @@ const DynamicForm = ({
                                           )}
                                       </div>
                                     </div>
-                                  ) : item.type === "timepiker" ? (
+                                  ) : field.type === "timepiker" ? (
                                     <>
                                       <div
                                         className={`col-lg-${item.col_size}`}>

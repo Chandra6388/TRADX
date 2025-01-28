@@ -94,7 +94,7 @@ const AddClient = () => {
       Loss: 0,
       RollOver: true,
       NumberOfDays: 0,
-      RollOverExitTime: 0
+      RollOverExitTime: "00:00:00",
 
 
 
@@ -295,7 +295,7 @@ const AddClient = () => {
         values.Strategy == "Multi_Conditional" &&
         values.position_type == "Multiple" && values.RollOver == true
       ) {
-        errors.RollOverExitTime = "Please Enter No. of Days";
+        errors.RollOverExitTime = "Please Enter RollOver Exit Time";
       }
 
       return errors;
@@ -374,7 +374,7 @@ const AddClient = () => {
           NumberOfDays:
             values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" && values.RollOver == true ? values.NumberOfDays : 0,
           RollOverExitTime:
-            values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" && values.RollOver == true ? values.RollOverExitTime : 0
+            values.position_type == "Multiple" && values.Strategy == "Multi_Conditional" && values.RollOver == true ? values.RollOverExitTime : "00:00:00"
         }
 
 
@@ -895,12 +895,18 @@ const AddClient = () => {
       hiding: false,
     },
 
+
     {
-      name: "EntryTime",
-      label: "Entry Time",
-      type: "timepiker",
+      name: "RollOverExitTime",
+      label: "RollOver Exit Time",
+      type: "text3",
       label_size: 12,
-      col_size: 4,
+      showWhen: (values) => {
+        const rollOverBoolean = values.RollOver === "true";
+        return rollOverBoolean;
+      },
+
+      col_size: 3,
       headingtype: 4,
       disable: false,
       hiding: false,

@@ -98,6 +98,8 @@ const AddClient = () => {
       Profit: 0,
       Loss: 0,
       RollOver: false,
+      NumberOfDays: 0,
+      RollOverExitTime: "00:00:00",
     },
     validate: (values) => {
       let errors = {};
@@ -285,6 +287,24 @@ const AddClient = () => {
       ) {
         errors.RollOver = "Please Enter No. of Repeatation";
       }
+      if (
+        !values.NumberOfDays &&
+        values.Strategy == "Multi_Conditional" &&
+        values.position_type == "Multiple" &&
+        values.RollOver == true
+      ) {
+        errors.NumberOfDays = "Please Enter No. of Days";
+      }
+
+      if (
+        !values.RollOverExitTime &&
+        values.Strategy == "Multi_Conditional" &&
+        values.position_type == "Multiple" &&
+        values.RollOver == true
+      ) {
+        errors.RollOverExitTime = "Please Enter RollOver Exit Time";
+      }
+
       // console.log("err", errors);
       return errors;
     },
@@ -426,6 +446,18 @@ const AddClient = () => {
           "Multiple" && values.Strategy == "Multi_Conditional"
             ? values.RollOver
             : false),
+        NumberOfDays:
+          values.position_type == "Multiple" &&
+          values.Strategy == "Multi_Conditional" &&
+          values.RollOver == true
+            ? values.NumberOfDays
+            : 0,
+        RollOverExitTime:
+          values.position_type == "Multiple" &&
+          values.Strategy == "Multi_Conditional" &&
+          values.RollOver == true
+            ? values.RollOverExitTime
+            : "00:00:00",
       };
 
       if (
@@ -1133,8 +1165,37 @@ const AddClient = () => {
       disable: false,
       hiding: false,
     },
+    {
+      name: "NumberOfDays",
+      label: "No. of Days",
+      type: "text3",
+      label_size: 12,
+      showWhen: (values) => {
+        const rollOverBoolean = values.RollOver === "true";
+        return rollOverBoolean;
+      },
 
-    
+      col_size: 3,
+      headingtype: 4,
+      disable: false,
+      hiding: false,
+    },
+
+    {
+      name: "RollOverExitTime",
+      label: "RollOver Exit Time",
+      type: "text3",
+      label_size: 12,
+      showWhen: (values) => {
+        const rollOverBoolean = values.RollOver === "true";
+        return rollOverBoolean;
+      },
+
+      col_size: 3,
+      headingtype: 4,
+      disable: false,
+      hiding: false,
+    },
 
     {
       name: "stepup",

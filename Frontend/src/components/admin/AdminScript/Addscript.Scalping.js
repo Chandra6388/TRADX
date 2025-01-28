@@ -77,6 +77,7 @@ const AddClient = () => {
       RepeatationCount: 0,
       Profit: 0,
       Loss: 0,
+      RollOver: false,
 
 
     },
@@ -236,6 +237,14 @@ const AddClient = () => {
       ) {
         errors.Profit = "Please Enter Maximum Loss";
       }
+
+      if (
+        !values.RollOver &&
+        values.Strategy == "Multi_Conditional" &&
+        values.position_type == "Multiple"
+      ) {
+        errors.RollOver = "Please Enter No. of Repeatation";
+      }
       return errors;
     },
 
@@ -280,7 +289,7 @@ const AddClient = () => {
         Striketype: "",
         DepthofStrike: 0,
         DeepStrike: 0,
-        Group:  values.Group,
+        Group: values.Group,
         CEDepthLower: 0.0,
         CEDepthHigher: 0.0,
         PEDepthLower: 0.0,
@@ -313,6 +322,8 @@ const AddClient = () => {
             values.Strategy == "Multi_Conditional"
             ? values.Profit
             : 0,
+        RollOver:
+          values.position_type = "Multiple" && values.Strategy == "Multi_Conditional" ? values.RollOver : false
       }
 
       if ((Number(values.EntryPrice) > 0 || Number(values.EntryRange) > 0) &&
@@ -787,6 +798,27 @@ const AddClient = () => {
       disable: false,
       hiding: false,
     },
+
+    
+    {
+      name: "RollOver",
+      label: "RollOver ",
+      type: "select",
+      options: [
+        { label: "True", value: "True" },
+        { label: "False", value: "False" },
+      ],
+
+      label_size: 12,
+      col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+      headingtype: 4,
+      showWhen: (values) =>
+        values.Strategy == "Multi_Conditional" &&
+        values.position_type == "Multiple",
+      disable: false,
+      hiding: false,
+    },
+
 
     {
       name: "stepup",

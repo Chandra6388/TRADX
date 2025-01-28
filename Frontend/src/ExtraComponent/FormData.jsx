@@ -771,7 +771,9 @@ const DynamicForm = ({
                                     {field.data.map((item, index) => {
                                       return (
                                         <>
+                                          {console.log("item", item)}
                                           {item.type === "text" ? (
+                                          
                                             <div className={`col-lg-${item.col_size}`}>
                                               <div className="input-block mb-3 flex-column">
                                                 <label className={`col-lg-${item.label_size}`}>
@@ -837,7 +839,49 @@ const DynamicForm = ({
                                               </div>
 
                                             </>
-                                          ) : item.type === "select" ? (
+                                          ) :
+                                          item.type === "timepiker" ? (
+                                            <>
+                                            {console.log("aaaaaaaaaaa")}
+                                              <div className={`col-lg-${item.col_size}`}>
+                                                <div className="input-block mb-3 flex-column">
+                                                  <label className={`col-lg-${item.label_size}`}>
+                                                    {item.label}
+                                                    <span className="text-danger">*</span>
+                                                  </label>
+                                                  <LocalizationProvider dateAdapter={AdapterDayjs}  >
+                                                    <TimePicker
+                                                      value={formik.values[item.name] ? dayjs(formik.values[item.name], 'HH:mm:ss') : null}
+                                                      onChange={(newValue) => {
+                                                        formik.setFieldValue(item.name, newValue ? newValue.format('HH:mm:ss') : '');
+                                                      }}
+                                                      minTime={minTime}
+                                                      views={['hours', 'minutes', 'seconds']}
+                                                      ampm={false}
+                                                      renderInput={(params) => (
+                                                        <input
+
+                                                          {...params.inputProps}
+                                                          aria-describedby="basic-addon1"
+                                                          className="form-control"
+                                                          placeholder={`Enter ${item.label}`}
+                                                          readOnly={item.disable}
+                                                          id={item.name}
+                                                          name={item.name}
+
+                                                        />
+                                                      )}
+                                                    />
+                                                  </LocalizationProvider>
+                                                  {formik.errors[item.name] ? (
+                                                    <div style={{ color: "red" }}>{formik.errors[item.name]}</div>
+                                                  ) : null}
+
+                                                </div>
+                                              </div>
+                                            </>
+                                          ):
+                                           item.type === "select" ? (
                                             <>
                                               <div className={` col-lg-${item.col_size}`}>
 

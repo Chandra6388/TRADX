@@ -58,6 +58,8 @@ const AllSubadmin = () => {
 
     const EditSubadmindetail = (value, tableMeta) => {
         const rowData = clientService.data[tableMeta.rowIndex];
+        console.log("rowData", rowData)
+        return
         navigate(`/admin/editSubadmin`, {
             state: { rowData },
         });
@@ -150,7 +152,28 @@ const AllSubadmin = () => {
                             <div className='mb-3 col-lg-3'>
                                 <input type="text" className=' form-control rounded p-1 px-2' placeholder="Search..." onChange={(e) => setSearchInput(e.target.value)} value={searchInput} />
                             </div>
-                            <FullDataTable columns={columns} data={clientService.data} checkBox={false} />
+                            {
+                                clientService.data && clientService.data.length > 0 ?
+                                    (
+                                        <FullDataTable columns={columns} data={clientService.data} checkBox={false} />
+
+                                    )
+                                    :
+                                    (<div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        <img
+                                            src="/assets/images/no-record-found.png"
+                                            width="30%"
+                                            alt="No records found"
+                                        />
+                                    </div>)
+                            }
                         </div>
                     </div>
                 </div>

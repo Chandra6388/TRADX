@@ -3,7 +3,8 @@ import { GetClientService, GetClientLogs } from '../../CommonAPI/Admin'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import FullDataTable from '../../../ExtraComponent/CommanDataTable';
-import {ClientActivityPage} from './UserAllColumn'
+import { ClientActivityPage } from './UserAllColumn'
+import NoDataFound from '../../../ExtraComponent/NoDataFound';
 
 const Clientactivity = () => {
     const [ToDate, setToDate] = useState('');
@@ -25,7 +26,7 @@ const Clientactivity = () => {
 
     // set Defult Date 
     const currentDate = new Date();
-    currentDate.setDate(currentDate.getDate() );
+    currentDate.setDate(currentDate.getDate());
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
     const day = String(currentDate.getDate()).padStart(2, '0');
@@ -36,12 +37,12 @@ const Clientactivity = () => {
     // from date
     const DefultToDate = new Date();
 
-    DefultToDate.setDate(DefultToDate.getDate()+1);
+    DefultToDate.setDate(DefultToDate.getDate() + 1);
     const year1 = DefultToDate.getFullYear();
     const month1 = String(DefultToDate.getMonth() + 1).padStart(2, '0');
     const day1 = String(DefultToDate.getDate()).padStart(2, '0');
     const Defult_To_Date = `${year1}-${month1}-${day1}`;
- 
+
 
     const GetAllUserDetails = async () => {
         try {
@@ -74,7 +75,7 @@ const Clientactivity = () => {
         GetAllUserDetails()
     }, [])
 
- 
+
 
     const getClientTetails = async () => {
         const data = { User: selectUserName, From_date: FromDate == "" ? formattedDate : FromDate, To_date: ToDate == "" ? Defult_To_Date : ToDate }
@@ -103,7 +104,7 @@ const Clientactivity = () => {
         getClientTetails()
     }, [selectUserName, ToDate, FromDate])
 
- 
+
 
     return (
         <div>
@@ -127,37 +128,43 @@ const Clientactivity = () => {
                                                     onChange={(e) => setSelectUserName(e.target.value)}
                                                     value={selectUserName}
                                                 >
-                                                            <option value="">Select Username</option>
+                                                    <option value="">Select Username</option>
 
-                                                    {getUserName.data && getUserName.data.map((item, index) => 
-                                                         
-                                                            <option value={item.Username}  key={index}>{item.Username}</option>
+                                                    {getUserName.data && getUserName.data.map((item, index) =>
 
-                                                         
+                                                        <option value={item.Username} key={index}>{item.Username}</option>
 
-                                                    
+
+
+
                                                     )}
                                                 </select>
                                             </div>
                                             <div className="form-group col-lg-4 ">
                                                 <label>Select form Date</label>
-                                                <DatePicker className="form-select" selected={FromDate=="" ? formattedDate : FromDate} onChange={(date) => setFromDate(date)} />
+                                                <DatePicker className="form-select" selected={FromDate == "" ? formattedDate : FromDate} onChange={(date) => setFromDate(date)} />
 
                                             </div>
                                             <div className="form-group col-lg-4">
                                                 <label>Select To Date</label>
-                                                <DatePicker className="form-select" selected={ToDate=="" ? Defult_To_Date : ToDate} onChange={(date) => setToDate(date)} />
+                                                <DatePicker className="form-select" selected={ToDate == "" ? Defult_To_Date : ToDate} onChange={(date) => setToDate(date)} />
 
                                             </div>
                                         </div>
 
                                     </form>
                                     <div className="modal-body">
-                                        <FullDataTable
-                                            columns={ClientActivityPage()}
-                                            data={getClientActivityDetails.data}
-                                            checkBox={false}
-                                        />
+                                        {
+                                            getClientActivityDetails.data && getClientActivityDetails.data.length > 0 ?
+                                                (<FullDataTable
+                                                    columns={ClientActivityPage()}
+                                                    data={getClientActivityDetails.data}
+                                                    checkBox={false}
+                                                />)
+                                                :
+                                                (<NoDataFound />)
+                                        }
+
                                     </div>
 
                                 </div>

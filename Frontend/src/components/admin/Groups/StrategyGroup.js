@@ -41,7 +41,7 @@ const Strategygroup = () => {
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (value) => value=='' ? "Admin" : value,
+                customBodyRender: (value) => value == '' ? "Admin" : value,
             }
         },
         {
@@ -68,7 +68,7 @@ const Strategygroup = () => {
                 sort: true,
             }
         },
-        
+
         {
             name: "PRtype",
             label: "Product Type",
@@ -162,7 +162,7 @@ const Strategygroup = () => {
                         setRefresh(!refresh)
                         Swal.fire({
                             title: 'Created successfully!',
-                            text:  response.message,
+                            text: response.message,
                             icon: 'success',
                             timer: 1500,
                             timerProgressBar: true
@@ -276,11 +276,31 @@ const Strategygroup = () => {
 
                         <div className="iq-card-body">
                             <div className="table-responsive customtable">
-                                <GridExample
-                                    columns={columns}
-                                    data={getGroupData.data}
-                                    checkBox={false}
-                                />
+                                {getGroupData.data && getGroupData.data.length > 0 ?
+                                    (
+                                        <GridExample
+                                            columns={columns}
+                                            data={getGroupData.data}
+                                            checkBox={false}
+                                        />
+                                    ) : (
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                textAlign: "center",
+                                            }}
+                                        >
+                                            <img
+                                                src="/assets/images/no-record-found.png"
+                                                width="30%"
+                                                alt="No records found"
+                                            />
+                                        </div>
+                                    )
+                                }
+
                             </div>
                         </div>
                     </div>
@@ -304,7 +324,7 @@ const Strategygroup = () => {
                                 ></button>
                             </div>
                             <hr />
-                            
+
                             <AddForm
                                 fields={fields.filter(
                                     field => !field.showWhen || field.showWhen(formik.values)

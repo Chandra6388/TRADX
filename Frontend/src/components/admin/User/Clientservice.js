@@ -246,7 +246,7 @@ const Clientservice = () => {
             options: {
                 filter: true,
                 sort: true,
-                customBodyRender: (value) => value == '' || value==null ? "Admin" : value,
+                customBodyRender: (value) => value == '' || value == null ? "Admin" : value,
             }
         },
         {
@@ -351,107 +351,126 @@ const Clientservice = () => {
 
 
     return (
-      <>
-        <div className="row">
-          <div className="col-sm-12">
-            <div className="iq-card">
-              <div className="iq-card-header d-flex justify-content-between">
-                <div className="iq-header-title">
-                  <h4 className="card-title">Client Service</h4>
-                </div>
-                <Link to="/admin/adduser" className="btn btn-primary rounded">
-                  Create Account
-                </Link>
-              </div>
-              <div className="iq-card-body">
-                <div className="mb-3 col-lg-3">
-                  <input
-                    type="text"
-                    className=" form-control rounded p-1 px-2"
-                    placeholder="Search..."
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    value={searchInput}
-                  />
-                </div>
-                <FullDataTable
-                  columns={columns}
-                  data={clientService.data}
-                  checkBox={false}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        {showModal && (
-          <>
-            {/* Darkened background overlay */}
-            <div className="modal-backdrop fade show"></div>
-
-            <div
-              className="modal fade show"
-              id="add_vendor"
-              tabIndex="-1"
-              role="dialog"
-              aria-labelledby="modalLabel"
-              aria-hidden="true"
-              style={{ display: "block" }}>
-              <div className="modal-dialog modal-dialog-centered custom-modal-width">
-                <div className="modal-content">
-                  <div className="modal-header p-3">
-                    {" "}
-                    {/* Adjusted padding */}
-                    <h5 className="modal-title" id="modalLabel">
-                      Edit Client: {selectedIndex?.Username}
-                    </h5>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                      onClick={() => {
-                        setShowModal(false);
-                        formik.resetForm();
-                        setSelectedOptions([]);
-                      }}
-                    />
-                  </div>
-                  <hr style={{ margin: "0" }} /> {/* Remove margin from hr */}
-                  <div className="modal-body p-1">
-                    {" "}
-                    {/* Adjusted padding */}
-                    <AddForm
-                      fields={fields.filter(
-                        (field) =>
-                          !field.showWhen || field.showWhen(formik.values)
-                      )}
-                      btn_name="Update"
-                      formik={formik}
-                      btn_name1_route="/admin/clientservice"
-                      additional_field={
-                        <div className="mt-2">
-                          <div className="row">
-                            <div className="col-lg-12">
-                              <h6>Select Group</h6>
-                              <DropdownMultiselect
-                                options={optionsArray}
-                                name="groupName"
-                                handleOnChange={(selected) =>
-                                  setSelectedOptions(selected)
-                                }
-                                selected={showModal ? selectedIndex.Group : ""}
-                              />
+        <>
+            <div className="row">
+                <div className="col-sm-12">
+                    <div className="iq-card">
+                        <div className="iq-card-header d-flex justify-content-between">
+                            <div className="iq-header-title">
+                                <h4 className="card-title">Client Service</h4>
                             </div>
-                          </div>
+                            <Link to="/admin/adduser" className="btn btn-primary rounded">
+                                Create Account
+                            </Link>
                         </div>
-                      }
-                    />
-                  </div>
+                        <div className="iq-card-body">
+                            <div className="mb-3 col-lg-3">
+                                <input
+                                    type="text"
+                                    className=" form-control rounded p-1 px-2"
+                                    placeholder="Search..."
+                                    onChange={(e) => setSearchInput(e.target.value)}
+                                    value={searchInput}
+                                />
+                            </div>
+                            {
+                                clientService.data && clientService.data.length > 0 ?
+                                    (
+                                        <FullDataTable
+                                            columns={columns}
+                                            data={clientService.data}
+                                            checkBox={false}
+                                        />
+                                    ) : (<div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            alignItems: "center",
+                                            textAlign: "center",
+                                        }}
+                                    >
+                                        <img
+                                            src="/assets/images/no-record-found.png"
+                                            width="30%"
+                                            alt="No records found"
+                                        />
+                                    </div>)
+                            }
+
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </>
-        )}
-      </>
+            {showModal && (
+                <>
+                    {/* Darkened background overlay */}
+                    <div className="modal-backdrop fade show"></div>
+
+                    <div
+                        className="modal fade show"
+                        id="add_vendor"
+                        tabIndex="-1"
+                        role="dialog"
+                        aria-labelledby="modalLabel"
+                        aria-hidden="true"
+                        style={{ display: "block" }}>
+                        <div className="modal-dialog modal-dialog-centered custom-modal-width">
+                            <div className="modal-content">
+                                <div className="modal-header p-3">
+                                    {" "}
+                                    {/* Adjusted padding */}
+                                    <h5 className="modal-title" id="modalLabel">
+                                        Edit Client: {selectedIndex?.Username}
+                                    </h5>
+                                    <button
+                                        type="button"
+                                        className="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"
+                                        onClick={() => {
+                                            setShowModal(false);
+                                            formik.resetForm();
+                                            setSelectedOptions([]);
+                                        }}
+                                    />
+                                </div>
+                                <hr style={{ margin: "0" }} /> {/* Remove margin from hr */}
+                                <div className="modal-body p-1">
+                                    {" "}
+                                    {/* Adjusted padding */}
+                                    <AddForm
+                                        fields={fields.filter(
+                                            (field) =>
+                                                !field.showWhen || field.showWhen(formik.values)
+                                        )}
+                                        btn_name="Update"
+                                        formik={formik}
+                                        btn_name1_route="/admin/clientservice"
+                                        additional_field={
+                                            <div className="mt-2">
+                                                <div className="row">
+                                                    <div className="col-lg-12">
+                                                        <h6>Select Group</h6>
+                                                        <DropdownMultiselect
+                                                            options={optionsArray}
+                                                            name="groupName"
+                                                            handleOnChange={(selected) =>
+                                                                setSelectedOptions(selected)
+                                                            }
+                                                            selected={showModal ? selectedIndex.Group : ""}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+        </>
     );
 };
 

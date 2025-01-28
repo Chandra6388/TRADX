@@ -351,8 +351,8 @@ const TradeResponse = () => {
               </div>
               {
                 <div className="modal-body">
-                  {getCharting.length > 0 || tradeHistory?.data.length > 0 ? (
-                    tableType === "Scalping" && (
+                  {tableType === "Scalping" &&
+                    (getCharting.length > 0 || tradeHistory?.data.length > 0 ? (
                       <GridExample
                         columns={
                           selectStrategyType === "Scalping"
@@ -373,22 +373,21 @@ const TradeResponse = () => {
                         onRowSelect={handleRowSelect}
                         checkBox={true}
                       />
-                    )
-                  ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        textAlign: "center",
-                      }}>
-                      <img
-                        src="/assets/images/no-record-found.png"
-                        width="30%"
-                        alt=""
-                      />
-                    </div>
-                  )}
+                    ) : (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          textAlign: "center",
+                        }}>
+                        <img
+                          src="/assets/images/no-record-found.png"
+                          width="30%"
+                          alt="No Records Found"
+                        />
+                      </div>
+                    ))}
                 </div>
               }
 

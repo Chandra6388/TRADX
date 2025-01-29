@@ -505,7 +505,7 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
         }
         else {
             if (data === "Option Strategy") {
-                if (allScripts?.data?.[allScripts.len]?.CombineOption?.length >= 1) {
+                if (allScripts?.data?.[allScripts?.len]?.CombineOption?.length >= 1) {
                     navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy', scriptType: allScripts } } });
                 }
                 else {
@@ -520,7 +520,7 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
                 }
             }
             else if (data === "Pattern" || data === "Pattern Script") {
-                if (allScripts?.data?.[allScripts.len]?.CombinePattern?.length >= 1) {
+                if (allScripts?.data?.[allScripts?.len]?.CombinePattern?.length >= 1) {
                     navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts } } });
                 }
                 else {
@@ -1381,10 +1381,10 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
                                                             <Loader />
                                                         ) : (
                                                             tableType === "Scalping" && (
-                                                                (data === "Scalping" && getAllService.ScalpingData.length > 0) ||
-                                                                    (data === "Option Strategy" && getAllService.OptionData.length > 0) ||
-                                                                    (data === "Pattern" && getAllService.PatternData.length > 0) ||
-                                                                    (data === "ChartingPlatform" && getCharting.length > 0) ? (
+                                                                (data === "Scalping" && getAllService.ScalpingData?.length > 0) ||
+                                                                    (data === "Option Strategy" && getAllService.OptionData?.length > 0) ||
+                                                                    (data === "Pattern" && getAllService.PatternData?.length > 0) ||
+                                                                    (data === "ChartingPlatform" && getCharting?.length > 0) ? (
                                                                     <FullDataTable
                                                                         columns={
                                                                             data === "Scalping" && tableType === "Scalping"
@@ -1429,7 +1429,7 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
 
                                                     {
                                                         data === "Scalping" && tableType === "MultiCondition" && (
-                                                            getAllService.NewScalping.length > 0 ? (
+                                                            getAllService.NewScalping?.length > 0 ? (
                                                                 <div>
                                                                     <div className="iq-header-title mt-4">
                                                                         <h4 className="card-title">Multi Conditional</h4>

@@ -9,7 +9,7 @@ import {
 } from "../../CommonAPI/User";
 import { ExpriyEndDate } from "../../CommonAPI/Admin";
 import FullDataTable from "../../../ExtraComponent/CommanDataTable";
-import Swal from "sweetalert2";
+import NoDataFound from "../../../ExtraComponent/NoDataFound";
 const Userdashboard = () => {
   const userName = localStorage.getItem("name");
   const [activeTab1, setActiveTab1] = useState("CurrentPosition");
@@ -18,8 +18,7 @@ const Userdashboard = () => {
   const [refresh, setRefresh] = useState(false);
   const [getGroup, setGroup] = useState("");
   const [strategyType, setStrategyType] = useState([]);
-  const [status, setStatus] = useState(false);
-  const [tableType, setTableType] = useState("Scalping");
+  const [tableType, setTableType] = useState("MultiCondition");
   const [serviceStatus, setServiceStatus] = useState({
     status: false,
     msg: "",
@@ -840,53 +839,75 @@ const Userdashboard = () => {
               </div>
 
               <div className="tab-content">
-                {activeTab1 === "OpenPosition" && (
-                  <>
-                    <div className="mt-4">
-                      <h4>Scalping</h4>
-                      <FullDataTable
-                        columns={columns1}
-                        data={getPositionData.Scalping}
-                        checkBox={false}
-                      />
-                    </div>
-                    <div className="mt-4">
-                      <h4>Multi Condition</h4>
-                      <FullDataTable
-                        columns={columns4}
-                        data={getPositionData.NewScalping}
-                        checkBox={false}
-                      />
-                    </div>
+                {activeTab1 === "OpenPosition" &&
+                  (getPositionData.Scalping &&
+                  getPositionData.NewScalping &&
+                  getPositionData.Option &&
+                  getPositionData.Pattern &&
+                  getPositionData.ChartingData ? (
+                    <>
+                      {getPositionData.Scalping &&
+                        getPositionData.Scalping.length > 0 && (
+                          <div className="mt-4">
+                            <h4>Scalping</h4>
+                            <FullDataTable
+                              columns={columns1}
+                              data={getPositionData.Scalping}
+                              checkBox={false}
+                            />
+                          </div>
+                        )}
+                      {getPositionData.NewScalping &&
+                        getPositionData.NewScalping.length > 0 && (
+                          <div className="mt-4">
+                            <h4>Multi Condition</h4>
+                            <FullDataTable
+                              columns={columns4}
+                              data={getPositionData.NewScalping}
+                              checkBox={false}
+                            />
+                          </div>
+                        )}
 
-                    <div className="mt-4">
-                      <h4>Option</h4>
-                      <FullDataTable
-                        columns={columns2}
-                        data={getPositionData.Option}
-                        checkBox={false}
-                      />
-                    </div>
+                      {getPositionData.Option &&
+                        getPositionData.Option.length > 0 && (
+                          <div className="mt-4">
+                            <h4>Option</h4>
+                            <FullDataTable
+                              columns={columns2}
+                              data={getPositionData.Option}
+                              checkBox={false}
+                            />
+                          </div>
+                        )}
 
-                    <div className="mt-4">
-                      <h4>Pattern</h4>
-                      <FullDataTable
-                        columns={columns3}
-                        data={getPositionData.Pattern}
-                        checkBox={false}
-                      />
-                    </div>
+                      {getPositionData.Pattern &&
+                        getPositionData.Pattern.length > 0 && (
+                          <div className="mt-4">
+                            <h4>Pattern</h4>
+                            <FullDataTable
+                              columns={columns3}
+                              data={getPositionData.Pattern}
+                              checkBox={false}
+                            />
+                          </div>
+                        )}
 
-                    <div className="mt-4">
-                      <h4>Charting Platform</h4>
-                      <FullDataTable
-                        columns={columns5}
-                        data={getPositionData.ChartingData}
-                        checkBox={false}
-                      />
-                    </div>
-                  </>
-                )}
+                      {getPositionData.ChartingData &&
+                        getPositionData.ChartingData.length > 0 && (
+                          <div className="mt-4">
+                            <h4>Charting Platform</h4>
+                            <FullDataTable
+                              columns={columns5}
+                              data={getPositionData.ChartingData}
+                              checkBox={false}
+                            />
+                          </div>
+                        )}
+                    </>
+                  ) : (
+                    <NoDataFound />
+                  ))}
               </div>
             </div>
           </div>

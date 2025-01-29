@@ -66,7 +66,7 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
                 if (response.Status) {
                     setAllScripts({
                         data: response.data,
-                        len: response.data.length - 1
+                        len: response.data?.length - 1
                     })
                 }
                 else {
@@ -1375,91 +1375,89 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
                                             <div className="iq-card-body " style={{ padding: '3px' }}>
                                                 <div className="table-responsive">
 
-
                                                     {
                                                         getAllService.loading ? (
                                                             <Loader />
                                                         ) : (
-                                                            tableType === "Scalping" && (
-                                                                (data === "Scalping" && getAllService.ScalpingData.length > 0) ||
-                                                                    (data === "Option Strategy" && getAllService.OptionData.length > 0) ||
-                                                                    (data === "Pattern" && getAllService.PatternData.length > 0) ||
-                                                                    (data === "ChartingPlatform" && getCharting.length > 0) ? (
-                                                                    <FullDataTable
-                                                                        columns={
-                                                                            data === "Scalping" && tableType === "Scalping"
-                                                                                ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue, )
-                                                                                : data === "Option Strategy"
-                                                                                    ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue)
-                                                                                    : data === "Pattern"
-                                                                                        ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue)
-                                                                                        : data === "ChartingPlatform"
-                                                                                            ? getColumns8(HandleContinueDiscontinue)
-                                                                                            : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)
-                                                                        }
-                                                                        data={
-                                                                            data === "Scalping"
-                                                                                ? getAllService.ScalpingData
-                                                                                : data === "Option Strategy"
-                                                                                    ? getAllService.OptionData
-                                                                                    : data === "Pattern"
-                                                                                        ? getAllService.PatternData
-                                                                                        : data === "ChartingPlatform"
-                                                                                            ? getCharting
-                                                                                            : []
-                                                                        }
-                                                                        checkBox={false}
-                                                                    />
-                                                                ) : (
-                                                                    <div
-                                                                        style={{
-                                                                            display: "flex",
-                                                                            justifyContent: "center",
-                                                                            alignItems: "center",
-                                                                            textAlign: "center",
-                                                                        }}
-                                                                    >
-                                                                        <img src="/assets/images/no-record-found.png" width="30%" alt="" />
-                                                                    </div>
-                                                                )
-                                                            )
-                                                        )
-                                                    }
+                                                            (() => {
+                                                                const hasPrimaryTableData =
+                                                                    tableType === "Scalping" &&
+                                                                    (
+                                                                        (data === "Scalping" && getAllService.ScalpingData?.length > 0) ||
+                                                                        (data === "Option Strategy" && getAllService.OptionData?.length > 0) ||
+                                                                        (data === "Pattern" && getAllService.PatternData?.length > 0) ||
+                                                                        (data === "ChartingPlatform" && getCharting?.length > 0)
+                                                                    );
 
+                                                                const hasSecondaryTableData =
+                                                                    data === "Scalping" &&
+                                                                    tableType === "MultiCondition" &&
+                                                                    getAllService.NewScalping?.length > 0;
 
-                                                    {
-                                                        data === "Scalping" && tableType === "MultiCondition" && (
-                                                            getAllService.NewScalping.length > 0 ? (
-                                                                <div>
-                                                                    <div className="iq-header-title mt-4">
-                                                                        <h4 className="card-title">Multi Conditional</h4>
-                                                                    </div>
-                                                                    {getAllService.loading ? (
-                                                                        <Loader />
-                                                                    ) : (
-                                                                        tableType === "MultiCondition" && (
+                                                                if (!hasPrimaryTableData && !hasSecondaryTableData) {
+                                                                    return (
+                                                                        <div
+                                                                            style={{
+                                                                                display: "flex",
+                                                                                justifyContent: "center",
+                                                                                alignItems: "center",
+                                                                                textAlign: "center",
+                                                                                height: "200px",
+                                                                            }}
+                                                                        >
+                                                                            <img src="/assets/images/no-record-found.png" width="30%" alt="No Record Found" />
+                                                                        </div>
+                                                                    );
+                                                                }
+
+                                                                return (
+                                                                    <>
+                                                                        {hasPrimaryTableData && (
                                                                             <FullDataTable
-                                                                                columns={getColumns6(handleDelete, handleEdit, HandleContinueDiscontinue)}
-                                                                                data={getAllService.NewScalping}
+                                                                                columns={
+                                                                                    data === "Scalping"
+                                                                                        ? getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)
+                                                                                        : data === "Option Strategy"
+                                                                                            ? getColumns4(handleDelete, handleEdit, HandleContinueDiscontinue)
+                                                                                            : data === "Pattern"
+                                                                                                ? getColumns5(handleDelete, handleEdit, HandleContinueDiscontinue)
+                                                                                                : data === "ChartingPlatform"
+                                                                                                    ? getColumns8(HandleContinueDiscontinue)
+                                                                                                    : getColumns3(handleDelete, handleEdit, HandleContinueDiscontinue)
+                                                                                }
+                                                                                data={
+                                                                                    data === "Scalping"
+                                                                                        ? getAllService.ScalpingData
+                                                                                        : data === "Option Strategy"
+                                                                                            ? getAllService.OptionData
+                                                                                            : data === "Pattern"
+                                                                                                ? getAllService.PatternData
+                                                                                                : data === "ChartingPlatform"
+                                                                                                    ? getCharting
+                                                                                                    : []
+                                                                                }
                                                                                 checkBox={false}
                                                                             />
-                                                                        )
-                                                                    )}
-                                                                </div>
-                                                            ) : (
-                                                                <div
-                                                                    style={{
-                                                                        display: "flex",
-                                                                        justifyContent: "center",
-                                                                        alignItems: "center",
-                                                                        textAlign: "center",
-                                                                    }}
-                                                                >
-                                                                    <img src="/assets/images/no-record-found.png" width="30%" alt="" />
-                                                                </div>
-                                                            )
+                                                                        )}
+
+                                                                        {hasSecondaryTableData && (
+                                                                            <div>
+                                                                                <div className="iq-header-title mt-4">
+                                                                                    <h4 className="card-title">Multi Conditional</h4>
+                                                                                </div>
+                                                                                <FullDataTable
+                                                                                    columns={getColumns6(handleDelete, handleEdit, HandleContinueDiscontinue)}
+                                                                                    data={getAllService.NewScalping}
+                                                                                    checkBox={false}
+                                                                                />
+                                                                            </div>
+                                                                        )}
+                                                                    </>
+                                                                );
+                                                            })()
                                                         )
                                                     }
+
 
                                                 </div>
                                             </div>

@@ -855,6 +855,20 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
             }
         },
     },
+    {
+        name: "Action",
+        label: "Action",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta, 1)}>
+                    Square Off
+                </button>
+                </>
+            }
+        }
+    },
 
     {
         name: "Edit",
@@ -906,20 +920,7 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
             sort: true,
         }
     },
-    {
-        name: "Action",
-        label: "Action",
-        options: {
-            filter: true,
-            sort: true,
-            customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta, 1)}>
-                    Square Off
-                </button>
-                </>
-            }
-        }
-    },
+    
 
     // {
     //     name: "Action",

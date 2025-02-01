@@ -277,11 +277,10 @@ const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
   );
 
   useEffect(() => {
-    setSelectedColumns(columns.slice(0, 6)); // Reset selected columns to default
-    setTempSelectedColumns(columns.slice(0, 6)); // Reset temp selected columns
+    setSelectedColumns(columns.slice(0, 6)); 
+    setTempSelectedColumns(columns.slice(0, 6)); 
   }, [columns]);
 
-  // Memoized modal handlers
   const handleModalOpen = useCallback(() => setIsModalOpen(true), []);
   const handleModalClose = useCallback(() => setIsModalOpen(false), []);
 

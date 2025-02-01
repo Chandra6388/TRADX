@@ -94,6 +94,7 @@ const AddClient = () => {
       quantityselection: "Addition",
       quantityvalue: 0,
       Targetselection: "Fixed Target",
+      OrderType: "Pending",
     },
     validate: (values) => {
       let errors = {};
@@ -253,6 +254,13 @@ const AddClient = () => {
       if (values.Strategy == "Multi_Conditional" && !values.position_type) {
         errors.position_type = "Please Select Position Type";
       }
+      if (
+        !values.OrderType &&
+        values.Strategy == "Multi_Conditional" &&
+        values.Trade_Execution == "Live Trade"
+      ) {
+        errors.OrderType = "Please select Order Type";
+      }
 
       return errors;
     },
@@ -376,6 +384,7 @@ const AddClient = () => {
           values.Strategy == "Multi_Conditional"
             ? values.Targetselection
             : "",
+        OrderType: values.OrderType,
       };
 
       if (
@@ -1119,6 +1128,23 @@ const AddClient = () => {
 
       label_size: 12,
       col_size: 4,
+      disable: false,
+      hiding: false,
+    },
+    {
+      name: "OrderType",
+      label: "OrderType",
+      type: "select",
+      options: [
+        { label: "Pending", value: "Pending" },
+        { label: "Market", value: "Market" },
+      ],
+      showWhen: (values) =>
+        values.Trade_Execution == "Live Trade" &&
+        values.Strategy == "Multi_Conditional",
+      label_size: 12,
+      col_size: 4,
+      headingtype: 4,
       disable: false,
       hiding: false,
     },

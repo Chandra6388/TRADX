@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import AddForm from "../../../ExtraComponent/FormData";
+import AddForm from "../../../ExtraComponent/FormData2";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
@@ -97,9 +97,12 @@ const AddClient = () => {
       RepeatationCount: 0,
       Profit: 0,
       Loss: 0,
-      RollOver: false,
+      RollOver: "",
       NumberOfDays: 0,
       RollOverExitTime: "00:00:00",
+      TargetExit: false,
+      WorkingDay: [],
+      OrderType: "Pending",
     },
     validate: (values) => {
       let errors = {};
@@ -291,7 +294,7 @@ const AddClient = () => {
         !values.NumberOfDays &&
         values.Strategy == "Multi_Conditional" &&
         values.position_type == "Multiple" &&
-        values.RollOver == true
+        values.RollOver == ""
       ) {
         errors.NumberOfDays = "Please Enter No. of Days";
       }
@@ -303,6 +306,28 @@ const AddClient = () => {
         values.RollOver == true
       ) {
         errors.RollOverExitTime = "Please Enter RollOver Exit Time";
+      }
+      if (
+        !values.TargetExit &&
+        values.Strategy == "Multi_Conditional" &&
+        values.position_type == "Multiple"
+      ) {
+        errors.TargetExit = "Please select Continue After Cycle Exit";
+      }
+      if (
+        !values.WorkingDay.length > 0 &&
+        values.Strategy == "Multi_Conditional" &&
+        values.position_type == "Multiple"
+      ) {
+        errors.WorkingDay = "Please select Working day";
+      }
+
+      if (
+        !values.OrderType &&
+        values.Strategy == "Multi_Conditional" &&
+        values.Trade_Execution == "Live Trade"
+      ) {
+        errors.OrderType = "Please select Order Type";
       }
 
       // console.log("err", errors);
@@ -384,6 +409,7 @@ const AddClient = () => {
         PEDeepHigher: 0.0,
         TradeCount: values.Trade_Count,
         TradeExecution: values.Trade_Execution,
+        OrderType: values.OrderType,
         stretegytag: values.Strategy,
         quantity2:
           values.position_type == "Single" &&
@@ -458,6 +484,16 @@ const AddClient = () => {
           values.RollOver == true
             ? values.RollOverExitTime
             : "00:00:00",
+        TargetExit:
+          values.position_type == "Multiple" &&
+          values.Strategy == "Multi_Conditional"
+            ? values.TargetExit
+            : false,
+        WorkingDay:
+          values.position_type == "Multiple" &&
+          values.Strategy == "Multi_Conditional"
+            ? values.WorkingDay
+            : [],
       };
 
       if (
@@ -557,7 +593,7 @@ const AddClient = () => {
         });
     },
   });
-  console.log("formiik", formik.values.HigherRange);
+  // console.log("formiik", formik.values.HigherRange);
 
   // Symbol Break
   const extractDetails = (inputString) => {
@@ -1122,7 +1158,7 @@ const AddClient = () => {
 
     {
       name: "Loss",
-      label: "Loss ",
+      label: "Max Loss ",
       type: "text3",
       label_size: 12,
       col_size: formik.values.position_type == "Multiple" ? 3 : 4,
@@ -1136,7 +1172,7 @@ const AddClient = () => {
 
     {
       name: "Profit",
-      label: "Profit ",
+      label: "Max Profit ",
       type: "text3",
       label_size: 12,
       col_size: formik.values.position_type == "Multiple" ? 3 : 4,
@@ -1152,8 +1188,8 @@ const AddClient = () => {
       label: "RollOver ",
       type: "select",
       options: [
-        { label: "True", value: "True" },
-        { label: "False", value: "False" },
+        { label: "True", value: true },
+        { label: "False", value: false },
       ],
 
       label_size: 12,
@@ -1165,6 +1201,7 @@ const AddClient = () => {
       disable: false,
       hiding: false,
     },
+
     {
       name: "NumberOfDays",
       label: "No. of Days",
@@ -1174,7 +1211,6 @@ const AddClient = () => {
         const rollOverBoolean = values.RollOver === "true";
         return rollOverBoolean;
       },
-
       col_size: 3,
       headingtype: 4,
       disable: false,
@@ -1184,18 +1220,52 @@ const AddClient = () => {
     {
       name: "RollOverExitTime",
       label: "RollOver Exit Time",
-      type: "text3",
+      type: "timepiker",
       label_size: 12,
       showWhen: (values) => {
         const rollOverBoolean = values.RollOver === "true";
         return rollOverBoolean;
       },
-
       col_size: 3,
       headingtype: 4,
       disable: false,
       hiding: false,
     },
+    {
+          name: "TargetExit",
+          label: "Continue after cycle exit",
+          type: "select",
+          options: [
+            { label: "True", value: true },
+            { label: "False", value: false },
+          ],
+          showWhen: (values) => values.position_type == "Multiple" && values.Strategy == "Multi_Conditional",
+          label_size: 12,
+          col_size: formik.values.position_type == "Single" ? 3 : 3,
+          headingtype: 4,
+          disable: false,
+          // iconText: text.Increment_Type,
+          hiding: false,
+        },
+    
+        {
+          name: "WorkingDay",
+          label: "Working Day",
+          type: "multiselect",
+          options: [
+            { label: "Monday", value: "Monday" },
+            { label: "Tuesday", value: "Tuesday" },
+            { label: "Wednesday", value: "Wednesday" },
+            { label: "Thursday", value: "Thursday" },
+            { label: "Friday", value: "Friday" },
+          ],
+          label_size: 12,
+          col_size: 4,
+          headingtype: 4,
+          disable: false,
+          // iconText: text.Increment_Type,
+          hiding: false,
+        },
 
     {
       name: "stepup",
@@ -1291,6 +1361,23 @@ const AddClient = () => {
 
       label_size: 12,
       col_size: 4,
+      disable: false,
+      hiding: false,
+    },
+    {
+      name: "OrderType",
+      label: "OrderType",
+      type: "select",
+      options: [
+        { label: "Pending", value: "Pending" },
+        { label: "Market", value: "Market" },
+      ],
+      showWhen: (values) =>
+        values.Trade_Execution == "Live Trade" &&
+        values.Strategy == "Multi_Conditional",
+      label_size: 12,
+      col_size: 4,
+      headingtype: 4,
       disable: false,
       hiding: false,
     },

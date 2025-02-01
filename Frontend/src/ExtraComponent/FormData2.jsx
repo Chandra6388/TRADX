@@ -7,6 +7,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { Info } from "lucide-react";
+import Select from "react-select";
 
 // import * as Config from "../../Utils/Config";
 
@@ -40,8 +41,18 @@ const DynamicForm = ({
       formik.setFieldValue(name, file);
     }
   };
+  const [selectedOptions1, setSelectedOptions1] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const minTime = dayjs().hour(9).minute(15).second(0);
+
+  const handleChange = (selected, name) => {
+    setSelectedOptions1({ ...selectedOptions1, [name]: selected });
+
+    formik.setFieldValue(
+      name,
+      selected.map((option) => option.value)
+    );
+  };
 
   useEffect(() => {
     setDefultSelect("Scalping");
@@ -259,10 +270,7 @@ const DynamicForm = ({
                                             className={`col-lg-${item.label_size}`}
                                             htmlFor={item.name}>
                                             {item.label}
-                                            {console.log(
-                                              "item.iconTextttttttt",
-                                              item.iconText
-                                            )}
+                                            
                                             {item.iconText && (
                                               <span
                                                 data-toggle="tooltip"
@@ -1073,6 +1081,50 @@ const DynamicForm = ({
                                           ) : null}
                                         </div>
                                       </div>
+                                    ) : item.type === "multiselect" ? (
+                                      <>
+                                        <div
+                                          className={`col-lg-${item.col_size}`}>
+                                          <div className="input-block mb-3 flex-column">
+                                            <label
+                                              className={`col-lg-${item.label_size} mb-1`}>
+                                              {item.label}
+                                              <span className="text-danger">
+                                                *
+                                              </span>
+                                            </label>
+                                            <Select
+                                              options={item.options}
+                                              isMulti
+                                              className="basic-multi-select"
+                                              value={
+                                                selectedOptions1[item.name]
+                                              }
+                                              onChange={(selected) =>
+                                                handleChange(
+                                                  selected,
+                                                  item.name
+                                                )
+                                              }
+                                              placeholder={
+                                                item.placeholder
+                                                  ? item.placeholder
+                                                  : "Select options"
+                                              }
+                                              isDisabled={item.disable}
+                                            />
+                                            <div className="invalid-feedback">
+                                              Please enter {item.label}
+                                            </div>
+                                            {formik.touched[item.name] &&
+                                              formik.errors[item.name] && (
+                                                <div className="error-text">
+                                                  {formik.errors[item.name]}
+                                                </div>
+                                              )}
+                                          </div>
+                                        </div>
+                                      </>
                                     ) : item.type === "text3" ? (
                                       <>
                                         <div
@@ -1131,14 +1183,14 @@ const DynamicForm = ({
                                           </div>
                                         </div>
                                       </>
-                                    ) : field.type === "timepiker" ? (
+                                    ) : item.type === "timepiker" ? (
                                       <>
                                         <div
-                                          className={`col-lg-${field.col_size}`}>
+                                          className={`col-lg-${item.col_size}`}>
                                           <div className="input-block mb-3 flex-column">
                                             <label
-                                              className={`col-lg-${field.label_size}`}>
-                                              {field.label}
+                                              className={`col-lg-${item.label_size}`}>
+                                              {item.label}
                                               <span className="text-danger">
                                                 *
                                               </span>
@@ -1148,10 +1200,10 @@ const DynamicForm = ({
                                               dateAdapter={AdapterDayjs}>
                                               <TimePicker
                                                 value={
-                                                  formik.values[field.name]
+                                                  formik.values[item.name]
                                                     ? dayjs(
                                                         formik.values[
-                                                          field.name
+                                                          item.name
                                                         ],
                                                         "HH:mm:ss"
                                                       )
@@ -1159,7 +1211,7 @@ const DynamicForm = ({
                                                 }
                                                 onChange={(newValue) => {
                                                   formik.setFieldValue(
-                                                    field.name,
+                                                    item.name,
                                                     newValue
                                                       ? newValue.format(
                                                           "HH:mm:ss"
@@ -1179,17 +1231,17 @@ const DynamicForm = ({
                                                     {...params.inputProps}
                                                     aria-describedby="basic-addon1"
                                                     className="form-control"
-                                                    placeholder={`Enter ${field.label}`}
-                                                    readOnly={field.disable}
-                                                    id={field.name}
-                                                    name={field.name}
+                                                    placeholder={`Enter ${item.label}`}
+                                                    readOnly={item.disable}
+                                                    id={item.name}
+                                                    name={item.name}
                                                   />
                                                 )}
                                               />
                                             </LocalizationProvider>
-                                            {formik.errors[field.name] ? (
+                                            {formik.errors[item.name] ? (
                                               <div style={{ color: "red" }}>
-                                                {formik.errors[field.name]}
+                                                {formik.errors[item.name]}
                                               </div>
                                             ) : null}
                                           </div>
@@ -1204,10 +1256,7 @@ const DynamicForm = ({
                                               className={` col-lg-${item.label_size}`}
                                               htmlFor={item.name}>
                                               {item.label}
-                                              {console.log(
-                                                "item.iconText",
-                                                item.iconText
-                                              )}
+                                              
                                               {item.iconText && (
                                                 <span
                                                   data-toggle="tooltip"

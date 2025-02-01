@@ -59,6 +59,7 @@ const TradeResponse = () => {
   const day1 = String(DefultToDate.getDate()).padStart(2, "0");
   const Defult_To_Date = `${year1}.${month1}.${day1}`;
 
+   
   useEffect(() => {
     if (selectSegmentType) getChartingScript();
   }, [selectSegmentType]);
@@ -160,6 +161,10 @@ const TradeResponse = () => {
       });
   };
 
+   useEffect(() => {
+     setTableType("Scalping");
+   }, [selectStrategyType]);
+   
   useEffect(() => {
     GetTradeResposne();
   }, [selectStrategyType, FromDate, ToDate]);

@@ -160,7 +160,9 @@ const TradeReport = () => {
                 console.log("Error in finding the All TradeData", err)
             })
     }
-
+    useEffect(() => {
+        setTableType("Scalping");
+    }, [selectStrategyType]);
 
     useEffect(() => {
         setShowTable(false)

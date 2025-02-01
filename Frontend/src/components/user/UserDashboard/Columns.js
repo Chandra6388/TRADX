@@ -1902,6 +1902,14 @@ export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinut
             sort: true,
         }
     },
+    {
+        name: "OrderType",
+        label: "Order Type",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
 ];
 
 export const getColumns8 = (handleContinutyDiscontinuty) => [

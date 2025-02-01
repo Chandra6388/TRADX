@@ -254,6 +254,7 @@ const GroupScript = ({ data, selectedType, GroupName, data2 }) => {
                                             </div>
 
                                             {data === "Scalping" && (
+                                                getAllService.data1?.length > 0 &&
                                                 <div className="mt-4">
                                                     <div className="iq-header-title">
                                                         <h4 className="card-title">Multi Conditional</h4>

@@ -271,14 +271,14 @@ import Button from "react-bootstrap/Button";
 const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedColumns, setSelectedColumns] = useState(columns.slice(0, 6));
+  const [selectedColumns, setSelectedColumns] = useState(columns.slice(0, 7));
   const [tempSelectedColumns, setTempSelectedColumns] = useState(
-    columns.slice(0, 6)
+    columns.slice(0, 7)
   );
 
   useEffect(() => {
-    setSelectedColumns(columns.slice(0, 6)); // Reset selected columns to default
-    setTempSelectedColumns(columns.slice(0, 6)); // Reset temp selected columns
+    setSelectedColumns(columns.slice(0, 7)); // Reset selected columns to default
+    setTempSelectedColumns(columns.slice(0, 7)); // Reset temp selected columns
   }, [columns]);
 
   // Memoized modal handlers

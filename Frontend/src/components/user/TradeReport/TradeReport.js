@@ -58,6 +58,7 @@ const TradeReport = () => {
         //GET TRADE REPORT
         await get_User_Data(data)
             .then((response) => {
+                console.log("response is ", response)
                 if (response.Status) {
                     setTradeReport({
                         data: response.Data,
@@ -401,7 +402,7 @@ const TradeReport = () => {
 
                                 {tableType === "MultiCondition" &&
                                     selectStrategyType === "Scalping" &&
-                                    adminPermission.includes("Charting Platform") && (
+                                    adminPermission?.includes("Charting Platform") && (
                                         <div>
                                             <div className="iq-header-title mt-4">
                                                 <h4 className="card-title">Multi Conditional</h4>
@@ -442,7 +443,7 @@ const TradeReport = () => {
                             {
                                 showTable && (
                                     // console.log("---------", getAllTradeData.data2.length, getAllTradeData.data1.length)
-                                        (getAllTradeData.data2.length > 0 || getAllTradeData.data1.length > 0) ? (
+                                    (getAllTradeData.data2.length > 0 || getAllTradeData.data1.length > 0) ? (
                                         <>
 
                                             {

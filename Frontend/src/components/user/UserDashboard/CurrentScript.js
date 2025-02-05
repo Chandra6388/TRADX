@@ -36,6 +36,7 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
 
     }, [])
 
+
     useEffect(() => {
         if (data == "ChartingPlatform")
             getChartingScript();
@@ -197,12 +198,15 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
 
     }
 
-    const handleEdit = async (rowData) => {
+    const handleEdit = async (rowData, type) => {
         setShowEditModal(true)
         const index = rowData.rowIndex
-        if (data == 'Scalping') {
+        if (data == 'Scalping' && type == 1) {
             setEditDataScalping(getAllService.ScalpingData[index])
-            setEditCharting(getAllService.NewScalping[index])
+        }
+        else if (data == 'Scalping' && type == 2) {
+            setEditDataScalping(getAllService.NewScalping[index])
+
         }
         else if (data == 'Option Strategy') {
             setEditDataOption(getAllService.OptionData[index])
@@ -901,6 +905,246 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
         }
     });
 
+    const MultiConditionFormik = useFormik({
+
+
+        initialValues: {
+            MainStrategy: "",
+            Strategy: "",
+            Symbol: "",
+            Username: "",
+            ETPattern: "",
+            Timeframe: "",
+            Targetvalue: 0,
+            Slvalue: 0,
+            TStype: "",
+            Quantity: 0,
+            LowerRange: 0,
+            HigherRange: 0,
+            HoldExit: "",
+            EntryPrice: 0,
+            EntryRange: 0,
+            EntryTime: "",
+            ExitTime: "",
+            ExitDay: "",
+            TradeExecution: "",
+            Group: "",
+            CEDepthLower: 0,
+            CEDepthHigher: 0,
+            PEDepthLower: 0,
+            PEDepthHigher: 0,
+            CEDeepLower: 0,
+            CEDeepHigher: 0,
+            PEDeepLower: 0,
+            PEDeepHigher: 0,
+            DepthofStrike: 0,
+            TradeCount: 0,
+            stepup: 0,
+            quantityvalue: 0,
+            tgp2: 0.0,
+            tgp3: 0.0,
+            quantity2: 0,
+            quantity3: 0,
+            RolloverTF: false,
+            RolloverDay: "",
+            RolloverTime: "",
+            TargetExit: false,
+            RepeatationCount: 0,
+            Profit: 0.0,
+            Loss: 0.0,
+
+        },
+        validate: (values) => {
+            let errors = {};
+            const maxTime = "15:29:59";
+            const minTime = "09:15:00";
+            if (!values.TStype && EditDataScalping?.PositionType == "Single") {
+                errors.TStype = "Please Select Measurement Type."
+            }
+            if (!values.EntryRange && EditDataScalping?.PositionType == "Single") {
+                errors.EntryRange = "Please Select Measurement Type."
+            }
+
+            if (!values.LowerRange && EditDataScalping?.PositionType == "Multiple") {
+                errors.LowerRange = "Please Enter Lower Range."
+            }
+
+            if (!values.HigherRange && EditDataScalping?.PositionType == "Multiple") {
+                errors.HigherRange = "Please Enter Higher Range."
+            }
+            if (!values.Quantity && EditDataScalping?.PositionType == "Single") {
+                errors.Quantity = "Please Enter Lot Size."
+            }
+            if (!values.HoldExit && EditDataScalping?.PositionType == "Multiple") {
+                errors.HoldExit = "Please Enter HoldExit."
+            }
+
+            if (!values.Targetvalue && EditDataScalping?.PositionType == "Single") {
+                errors.Targetvalue = "Please Enter Target Value."
+            }
+            if (!values.Slvalue && EditDataScalping?.PositionType == "Single") {
+                errors.Slvalue = "Please Enter Stoploss."
+            }
+
+            if (values.ExitTime == '') {
+                errors.ExitTime = "Please Select Exit Time.";
+            } else if (values.ExitTime > maxTime) {
+                errors.ExitTime = "Exit Time Must be Before 15:29:59.";
+            }
+            else if (values.ExitTime < minTime) {
+                errors.ExitTime = "Exit Time Must be After 09:15:00.";
+            }
+            if (values.EntryTime == '') {
+                errors.EntryTime = "Please Select Entry Time.";
+            } else if (values.EntryTime < minTime) {
+                errors.EntryTime = "Entry Time Must be After 09:15:00.";
+            }
+            else if (values.EntryTime > maxTime) {
+                errors.EntryTime = "Entry Time Must be Before 15:29:59.";
+            }
+
+            if (!values.TradeCount && EditDataScalping?.PositionType == "Single") {
+                errors.TradeCount = "Please Enter Trade Count."
+            }
+
+            console.log("errors are ", errors)
+
+            return errors;
+        },
+        onSubmit: async (values) => {
+
+            const req = {
+                MainStrategy: "NewScalping",
+                Strategy: EditDataScalping.Targetselection,
+                Symbol: EditDataScalping.Symbol,
+                Username: userName,
+                ETPattern: "", // Adjust if applicable
+                Timeframe: "",
+                Targetvalue: Number(values.Targetvalue),
+                Slvalue: Number(values.Slvalue),
+                TStype: values.TStype,
+                Quantity: Number(values.Quantity),
+                LowerRange: Number(values.LowerRange),
+                HigherRange: Number(values.HigherRange),
+                HoldExit: values.HoldExit,
+                EntryPrice: Number(values.EntryPrice),
+                EntryRange: Number(values.EntryRange),
+                EntryTime: values.EntryTime,
+                ExitTime: values.ExitTime,
+                ExitDay: EditDataScalping.ExitDay,
+                TradeExecution: EditDataScalping.TradeExecution,
+                Group: EditDataScalping.GroupN,
+                stepup: Number(EditDataScalping.StepUp),
+                quantity2: Number(values.quantity2),
+                quantity3: Number(values.quantity3),
+                tgp2: Number(values.tgp2),
+                tgp3: Number(values.tgp3),
+                RolloverTF: false,
+                RolloverDay: "",
+                RolloverTime: "",
+                TargetExit: false,
+                RepeatationCount: 0,
+                Profit: 0,
+                Loss: 0,
+                TradeCount: Number(values.TradeCount),
+                CEDepthLower: 0,
+                CEDepthHigher: 0,
+                PEDepthLower: 0,
+                PEDepthHigher: 0,
+                CEDeepLower: 0,
+                CEDeepHigher: 0,
+                PEDeepLower: 0,
+                PEDeepHigher: 0,
+                DepthofStrike: 0,
+                quantityvalue: 0,
+
+
+            };
+            if (
+                (Number(values.EntryPrice) > 0 || Number(values.EntryRange) > 0) &&
+                Number(values.EntryPrice) >= Number(values.EntryRange)
+            ) {
+                return SweentAlertFun(
+                    values.Strategy === "Fixed Price"
+                        ? "Higher Price should be greater than Lower Price"
+                        : "First Trade Higher Range should be greater than First Trade Lower Range"
+                );
+            }
+
+            if (
+                values.Strategy !== "Fixed Price" &&
+                Number(values.LowerRange) >= Number(values.HigherRange) &&
+                (Number(values.LowerRange) > 0 || Number(values.HigherRange) > 0)
+            ) {
+                return SweentAlertFun(
+                    "Higher Price should be greater than Lower Range"
+                );
+            }
+
+            if (
+                values.Strategy === "Fixed Price" &&
+                values.TType === "SELL" &&
+                (Number(values.Targetvalue) >= Number(values.EntryPrice) ||
+                    Number(values.Slvalue) <= Number(values.EntryRange))
+            ) {
+                const alertMessage =
+                    Number(values.Targetvalue) >= Number(values.EntryPrice)
+                        ? "Target should be smaller than Lower Price"
+                        : "Stoploss should be greater than Higher Price";
+
+                return SweentAlertFun(alertMessage);
+            }
+
+            if (
+                values.Strategy == "Multi_Conditional" &&
+                values.position_type == "Single"
+            ) {
+                if (Number(values.quantity2) == 0 && Number(values.quantity3) > 0) {
+                    return SweentAlertFun(
+                        formik.values.Exchange == "NFO"
+                            ? "Please Enter Lot 2"
+                            : "Please Enter Quantity 2"
+                    );
+                }
+                if (Number(values.tgp2) == 0 && Number(values.tgp3) > 0) {
+                    return SweentAlertFun("Please Enter Target 2");
+                }
+            }
+
+            
+
+            console.log("req", req)
+
+
+            await UpdateUserScript(req)
+                .then((response) => {
+                    if (response.Status) {
+                        Swal.fire({
+                            title: "Updated",
+                            text: response.message,
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true,
+                        });
+                        setTimeout(() => {
+                            setShowEditModal(false)
+                            formik.resetForm()
+                        }, 1500)
+                    } else {
+                        Swal.fire({
+                            title: "Error !",
+                            text: response.message,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true
+                        });
+                    }
+                })
+        }
+    });
+
+    console.log("MultiConditionFormik", MultiConditionFormik.values)
+
     const formik2 = useFormik({
         initialValues: {
             MainStrategy: "",
@@ -1165,6 +1409,281 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
 
     ];
 
+
+    const EntryRuleArr = [
+
+        {
+            name: "EntryPrice",
+            label: showEditModal && EditDataScalping?.PositionType == "Single" ? "Lower Price" : "First Trade Lower Range",
+            type: "text3",
+            col_size: 4,
+            disable: false,
+            headingtype: 2,
+            hiding: false,
+        },
+
+        {
+            name: "EntryRange",
+            label: showEditModal && EditDataScalping?.PositionType == "Single" ? "Higher Price" : "First Trade Higher Range",
+            type: "text3",
+            label_size: 12,
+            headingtype: 2,
+            col_size: 4,
+            disable: false,
+            hiding: false,
+        },
+
+
+    ];
+
+    const ExitRuleArr = [
+
+        {
+            name: "TStype",
+            label: "Measurement Type",
+            type: "select",
+            options: [
+                { label: "Percentage", value: "Percentage" },
+                { label: "Point", value: "Point" },
+            ],
+
+            label_size: 12,
+            headingtype: 4,
+            col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+            hiding: false,
+            disable: false,
+        },
+
+        {
+            name: "Targetvalue",
+            label: EditDataScalping?.PositionType == "Single" ? "Target Price 1" : "Fixed Target",
+
+            type: "text3",
+            label_size: 12,
+            col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+            headingtype: 3,
+            disable: false,
+            hiding: false,
+        },
+
+        {
+            name: "tgp2",
+            label: "Target Price 2",
+            type: "text3",
+            label_size: 12,
+            col_size: 4,
+            showWhen: (values) => EditDataScalping?.PositionType == "Single",
+            headingtype: 3,
+            disable: false,
+            hiding: false,
+        },
+
+        {
+            name: "tgp3",
+            label: "Target Price 3",
+            type: "text3",
+            label_size: 12,
+            col_size: 4,
+            showWhen: (values) => EditDataScalping?.PositionType == "Single",
+            headingtype: 3,
+            disable: false,
+            hiding: false,
+        },
+
+        {
+            name: "Slvalue",
+            label: EditDataScalping?.PositionType == "Single" ? "Stoploss Price" : "Re-Entry Point",
+
+            type: "text3",
+            label_size: 12,
+            col_size: 4,
+            headingtype: 3,
+            disable: false,
+            hiding: false,
+        },
+    ];
+
+    console.log("EditDataScalping?.PositionType", EditDataScalping)
+    const RiskManagementArr = [
+        {
+            name: "Quantity",
+            label: EditDataScalping?.PositionType == "Single" ? "Lot1" : "Lot",
+            // showWhen: EditDataScalping?.PositionType == "Single",
+            type: "text3",
+            label_size: 12,
+            col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+            headingtype: 4,
+            hiding: false,
+            disable: false,
+        },
+        {
+            name: "quantity2",
+            label: "Lot2",
+            label_size: 12,
+            showWhen: (values) => EditDataScalping?.PositionType == "Single",
+            type: "text3",
+            label_size: 12,
+            col_size: 4,
+            headingtype: 4,
+            disable: false,
+            hiding: false,
+        },
+        {
+            name: "quantity3",
+            label: 'Lot3',
+            type: "text3",
+            label_size: 12,
+            label_size: 12,
+            showWhen: (values) => EditDataScalping?.PositionType == "Single",
+            col_size: 4,
+            headingtype: 4,
+            disable: false,
+            hiding: false,
+        },
+        {
+            name: "LowerRange",
+            label: "Lower Range ",
+            type: "text3",
+            label_size: 12,
+            col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+            headingtype: 4,
+            showWhen: (values) => EditDataScalping?.PositionType == "Multiple",
+            disable: false,
+            hiding: false,
+        },
+        {
+            name: "HigherRange",
+            label: "Higher Range",
+            type: "text3",
+            label_size: 12,
+            col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+            headingtype: 4,
+            showWhen: (values) => EditDataScalping?.PositionType == "Multiple",
+            disable: false,
+            hiding: false,
+        },
+        {
+            name: "HoldExit",
+            label: "Hold/Exit",
+            type: "select",
+            options: [
+                { label: "Hold", value: "Hold" },
+                { label: "Exit", value: "Exit" },
+            ],
+            showWhen: (values) => EditDataScalping?.PositionType == "Multiple",
+            label_size: 12,
+            col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+            headingtype: 4,
+            disable: false,
+            hiding: false,
+        },
+        {
+            name: "TradeCount",
+            label: "Trade Count",
+            type: "text3",
+            label_size: 12,
+            col_size: formik.values.position_type == "Multiple" ? 3 : 4,
+            headingtype: 4,
+            disable: false,
+            hiding: false,
+        },
+
+
+    ];
+    const TimeDurationArr = [
+        {
+            name: "EntryTime",
+            label: "Entry Time",
+            type: "timepiker",
+            label_size: 12,
+            col_size: 4,
+            headingtype: 5,
+            disable: false,
+            hiding: false,
+        },
+        {
+            name: "ExitTime",
+            label: "Exit Time",
+            type: "timepiker",
+            label_size: 12,
+            col_size: 4,
+            headingtype: 5,
+            disable: false,
+            hiding: false,
+        },
+
+    ];
+
+
+
+    const MultiConditionalField = [
+        {
+            name: "Heading",
+            label: "Entry_Rule",
+            type: "heading",
+            hiding: false,
+            label_size: 12,
+            headingtype: 2,
+            col_size: 12,
+            data: EntryRuleArr.filter(
+                (item) => !item.showWhen || item.showWhen(formik.values)
+            ),
+            disable: false,
+        },
+        {
+            name: "Heading",
+            label: "Risk_Management",
+            type: "heading",
+            hiding: false,
+            label_size: 12,
+            headingtype: 4,
+            col_size: 12,
+            data: RiskManagementArr.filter(
+                (item) => !item.showWhen || item.showWhen(formik.values)
+            ),
+            disable: false,
+        },
+        {
+            name: "Heading",
+            label: "Exit_Rule",
+            type: "heading",
+            hiding: false,
+            label_size: 12,
+            col_size: 12,
+            headingtype: 3,
+            data: ExitRuleArr.filter(
+                (item) => !item.showWhen || item.showWhen(formik.values)
+            ),
+            disable: false,
+        },
+        {
+            name: "Heading",
+            label: "Time_Duration",
+            type: "heading",
+            hiding: false,
+            label_size: 12,
+            col_size: 12,
+            headingtype: 5,
+            data: TimeDurationArr.filter(
+                (item) => !item.showWhen || item.showWhen(formik.values)
+            ),
+            disable: false,
+        },
+        // {
+        //     name: "Heading",
+        //     label: "Other_Parameters",
+        //     type: "heading",
+        //     hiding: false,
+        //     label_size: 12,
+        //     col_size: 12,
+        //     headingtype: 6,
+        //     data: OtherParameterArr.filter(
+        //         (item) => !item.showWhen || item.showWhen(formik.values)
+        //     ),
+        //     disable: false,
+        // },
+    ];
+
     const fields1 = [
         {
             name: "TStype",
@@ -1313,18 +1832,59 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
 
     useEffect(() => {
         if (data == "Scalping") {
-            formik.setFieldValue('EntryPrice', EditDataScalping.EntryPrice)
-            formik.setFieldValue('EntryRange', EditDataScalping.EntryRange)
-            formik.setFieldValue('TStype', EditDataScalping.TStype)
-            formik.setFieldValue('Targetvalue', EditDataScalping['Booking Point'])
-            formik.setFieldValue('Slvalue', EditDataScalping['Re-entry Point'])
-            formik.setFieldValue('LowerRange', EditDataScalping.LowerRange)
-            formik.setFieldValue('HigherRange', EditDataScalping.HigherRange)
-            formik.setFieldValue('HoldExit', EditDataScalping.HoldExit)
-            formik.setFieldValue('EntryTime', EditDataScalping.EntryTime)
-            formik.setFieldValue('ExitTime', EditDataScalping.ExitTime)
-            formik.setFieldValue('Quantity', EditDataScalping.Quantity)
-            formik.setFieldValue('TradeCount', EditDataScalping.TradeCount)
+            if (EditDataScalping?.ScalpType !== "Multi_Conditional") {
+
+                console.log("1")
+                formik.setFieldValue('EntryPrice', EditDataScalping.EntryPrice)
+                formik.setFieldValue('EntryRange', EditDataScalping.EntryRange)
+                formik.setFieldValue('TStype', EditDataScalping.TStype)
+                formik.setFieldValue('Targetvalue', EditDataScalping['Booking Point'])
+                formik.setFieldValue('Slvalue', EditDataScalping['Re-entry Point'])
+                formik.setFieldValue('LowerRange', EditDataScalping.LowerRange)
+                formik.setFieldValue('HigherRange', EditDataScalping.HigherRange)
+                formik.setFieldValue('HoldExit', EditDataScalping.HoldExit)
+                formik.setFieldValue('EntryTime', EditDataScalping.EntryTime)
+                formik.setFieldValue('ExitTime', EditDataScalping.ExitTime)
+                formik.setFieldValue('Quantity', EditDataScalping.Quantity)
+                formik.setFieldValue('TradeCount', EditDataScalping.TradeCount)
+            }
+
+            else if (EditDataScalping?.ScalpType === "Multi_Conditional" && EditDataScalping?.PositionType == "Single") {
+
+                console.log("2")
+                MultiConditionFormik.setFieldValue('EntryPrice', EditDataScalping.EntryPrice)
+                MultiConditionFormik.setFieldValue('EntryRange', EditDataScalping.EntryRange)
+                MultiConditionFormik.setFieldValue('Quantity', EditDataScalping.Quantity)
+                MultiConditionFormik.setFieldValue('quantity2', EditDataScalping.Quantity2)
+                MultiConditionFormik.setFieldValue('quantity3', EditDataScalping.Quantity3)
+                MultiConditionFormik.setFieldValue('TradeCount', EditDataScalping.TradeCount)
+                MultiConditionFormik.setFieldValue('TStype', EditDataScalping.TStype)
+                MultiConditionFormik.setFieldValue('Targetvalue', EditDataScalping['Booking Point'])
+                MultiConditionFormik.setFieldValue('tgp2', EditDataScalping['Booking Point2'])
+                MultiConditionFormik.setFieldValue('tgp3', EditDataScalping['Booking Point3'])
+                MultiConditionFormik.setFieldValue('Slvalue', EditDataScalping['Re-entry Point'])
+                MultiConditionFormik.setFieldValue('EntryTime', EditDataScalping.EntryTime)
+                MultiConditionFormik.setFieldValue('ExitTime', EditDataScalping.ExitTime)
+
+            }
+
+            else if (EditDataScalping?.ScalpType === "Multi_Conditional" && EditDataScalping?.PositionType == "Multiple") {
+
+                MultiConditionFormik.setFieldValue('EntryPrice', EditDataScalping.EntryPrice)
+                MultiConditionFormik.setFieldValue('EntryRange', EditDataScalping.EntryRange)
+                MultiConditionFormik.setFieldValue('Quantity', EditDataScalping.Quantity)
+                MultiConditionFormik.setFieldValue('LowerRange', EditDataScalping.LowerRange)
+                MultiConditionFormik.setFieldValue('HigherRange', EditDataScalping.HigherRange)
+                MultiConditionFormik.setFieldValue('HoldExit', EditDataScalping.HoldExit)
+                MultiConditionFormik.setFieldValue('TradeCount', EditDataScalping.TradeCount)
+                MultiConditionFormik.setFieldValue('TStype', EditDataScalping.TStype)
+                MultiConditionFormik.setFieldValue('Targetvalue', EditDataScalping['Booking Point'])
+                MultiConditionFormik.setFieldValue('Slvalue', EditDataScalping['Re-entry Point'])
+                MultiConditionFormik.setFieldValue('EntryTime', EditDataScalping.EntryTime)
+                MultiConditionFormik.setFieldValue('ExitTime', EditDataScalping.ExitTime)
+
+
+            }
         }
         else if (data == "Option Strategy") {
             formik1.setFieldValue('TStype', EditDataOption.strategytype)
@@ -1346,7 +1906,7 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
             formik2.setFieldValue('TradeCount', EditDataPattern.TradeCount)
 
         }
-    }, [showEditModal, data])
+    }, [showEditModal, data, EditDataScalping])
 
 
 
@@ -1363,7 +1923,7 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
                                         <>
                                             <div className="iq-card-header d-flex justify-content-between">
                                                 <div className="iq-header-title">
-                                                    {console.log("data Is", data)}
+
                                                     {tableType === "MultiCondition" ? "" : <h4 className="card-title">{data}</h4>
                                                     }
                                                 </div>
@@ -1479,19 +2039,19 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
                                 className="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
-                                onClick={() => { setShowEditModal(false); formik.resetForm() }}
+                                onClick={() => { setShowEditModal(false); formik.resetForm(); formik1.resetForm(); formik2.resetForm(); MultiConditionFormik.resetForm(); }}
                             />
                         </div>
 
                         {
                             data == "Scalping" ? <>
                                 <Formikform
-                                    fields={fields.filter(
-                                        (field) => !field.showWhen || field.showWhen(formik.values)
+                                    fields={(EditDataScalping?.ScalpType == "Multi_Conditional" ? MultiConditionalField : fields).filter(
+                                        (field) => !field.showWhen || field.showWhen(EditDataScalping?.ScalpType == "Multi_Conditional" ? MultiConditionFormik.values : formik.values)
                                     )}
 
                                     btn_name="Update"
-                                    formik={formik}
+                                    formik={EditDataScalping?.ScalpType == "Multi_Conditional" ? MultiConditionFormik : formik}
                                 />
                             </> :
                                 data == "Option Strategy" ? <>
@@ -1507,7 +2067,6 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
                                         fields={fields2.filter(
                                             (field) => !field.showWhen || field.showWhen(formik2.values)
                                         )}
-
                                         btn_name="Update"
                                         formik={formik2}
                                     />

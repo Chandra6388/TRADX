@@ -1131,6 +1131,7 @@ const AddClient = () => {
       disable: false,
       hiding: false,
     },
+
     {
       name: "OrderType",
       label: "OrderType",
@@ -1148,6 +1149,7 @@ const AddClient = () => {
       disable: false,
       hiding: false,
     },
+
   ];
 
   const fields = [
@@ -1164,6 +1166,7 @@ const AddClient = () => {
       col_size: 12,
       disable: false,
     },
+
     {
       name: "Heading",
       label: "Symbol_Selection",
@@ -1177,6 +1180,7 @@ const AddClient = () => {
       ),
       disable: false,
     },
+
     {
       name: "Heading",
       label: "Entry_Rule",
@@ -1190,6 +1194,7 @@ const AddClient = () => {
       ),
       disable: false,
     },
+
     {
       name: "Heading",
       label: "Risk_Management",
@@ -1203,6 +1208,7 @@ const AddClient = () => {
       ),
       disable: false,
     },
+
     {
       name: "Heading",
       label: "Exit_Rule",
@@ -1216,6 +1222,7 @@ const AddClient = () => {
       ),
       disable: false,
     },
+
     {
       name: "Heading",
       label: "Time_Duration",
@@ -1229,6 +1236,7 @@ const AddClient = () => {
       ),
       disable: false,
     },
+
     {
       name: "Heading",
       label: "Other_Parameters",
@@ -1242,6 +1250,7 @@ const AddClient = () => {
       ),
       disable: false,
     },
+    
   ];
 
   useEffect(() => {

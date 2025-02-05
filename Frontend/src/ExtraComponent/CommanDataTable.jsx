@@ -281,7 +281,6 @@ const FullDataTable = ({ data, columns, onRowSelect, checkBox }) => {
     setTempSelectedColumns(columns.slice(0, 7)); // Reset temp selected columns
   }, [columns]);
 
-  // Memoized modal handlers
   const handleModalOpen = useCallback(() => setIsModalOpen(true), []);
   const handleModalClose = useCallback(() => setIsModalOpen(false), []);
 

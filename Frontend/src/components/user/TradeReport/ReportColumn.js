@@ -1,6 +1,3 @@
-
-
-
 export const getColumns = () => [
     {
         name: "S.No",
@@ -142,6 +139,7 @@ export const getColumns = () => [
     },
 
 ]
+
 export const getColumns1 = () => [
     {
         name: "S.No",
@@ -428,6 +426,7 @@ export const getColumns1 = () => [
     },
 
 ]
+
 export const getColumns2 = () => [
     {
         name: "S.No",
@@ -806,7 +805,6 @@ export const getColumns9 = () => [
 
 ]
 
-
 export const getColumns3 = () => [
     {
         name: "S.No",
@@ -906,6 +904,7 @@ export const getColumns3 = () => [
         }
     },
 ]
+
 export const getColumns6 = () => [
     {
         name: "S.No",
@@ -1024,6 +1023,7 @@ export const getColumns6 = () => [
         }
     },
 ]
+
 // Option
 export const getColumns4 = () => [
     {
@@ -1166,6 +1166,7 @@ export const getColumns4 = () => [
         }
     },
 ]
+
 export const getColumns7 = () => [
     {
         name: "S.No",
@@ -1325,6 +1326,7 @@ export const getColumns7 = () => [
         }
     },
 ]
+
 //Pattern
 export const getColumns5 = () => [
     {
@@ -1599,7 +1601,6 @@ export const getColumns8 = () => [
 
 ]
 
-
 // close
 export const getColumns10 = () => [
     {
@@ -1726,7 +1727,6 @@ export const getColumns10 = () => [
     },
 
 ];
-
 
 // open
 export const getColumns12 = () => [

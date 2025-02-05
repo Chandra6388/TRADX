@@ -509,7 +509,7 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
         }
         else {
             if (data === "Option Strategy") {
-                if (allScripts?.data?.[allScripts.len]?.CombineOption?.length >= 1) {
+                if (allScripts?.data?.[allScripts?.len]?.CombineOption?.length >= 1) {
                     navigate('/user/newscript/option', { state: { data: { selectStrategyType: 'Option Strategy', scriptType: allScripts } } });
                 }
                 else {
@@ -524,7 +524,7 @@ const Coptyscript = ({ tableType, data, selectedType, data2 }) => {
                 }
             }
             else if (data === "Pattern" || data === "Pattern Script") {
-                if (allScripts?.data?.[allScripts.len]?.CombinePattern?.length >= 1) {
+                if (allScripts?.data?.[allScripts?.len]?.CombinePattern?.length >= 1) {
                     navigate('/user/newscript/pattern', { state: { data: { selectStrategyType: 'Pattern', scriptType: allScripts } } });
                 }
                 else {

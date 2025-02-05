@@ -855,6 +855,20 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
             }
         },
     },
+    {
+        name: "Action",
+        label: "Action",
+        options: {
+            filter: true,
+            sort: true,
+            customBodyRender: (value, tableMeta, updateValue) => {
+                return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta, 1)}>
+                    Square Off
+                </button>
+                </>
+            }
+        }
+    },
 
     {
         name: "Edit",
@@ -906,6 +920,8 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
             sort: true,
         }
     },
+    
+
     // {
     //     name: "Action",
     //     label: "Action",
@@ -913,28 +929,13 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
     //         filter: true,
     //         sort: true,
     //         customBodyRender: (value, tableMeta, updateValue) => {
-    //             return <><button className='btn btn-primary' onClick={() => handleDelete(tableMeta, 1)}>
-    //                 Square Off
-    //             </button>
+    //             return <>
+    //                 <EllipsisVertical />
     //             </>
+                
     //         }
     //     }
     // },
-
-    {
-        name: "Action",
-        label: "Action",
-        options: {
-            filter: true,
-            sort: true,
-            customBodyRender: (value, tableMeta, updateValue) => {
-                return <>
-                    <EllipsisVertical />
-                </>
-                
-            }
-        }
-    },
     {
         name: "Symbol",
         label: "Symbol",
@@ -1896,6 +1897,14 @@ export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinut
     {
         name: "Quantity3",
         label: "Quantity3",
+        options: {
+            filter: true,
+            sort: true,
+        }
+    },
+    {
+        name: "OrderType",
+        label: "Order Type",
         options: {
             filter: true,
             sort: true,

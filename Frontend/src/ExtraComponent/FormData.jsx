@@ -960,7 +960,6 @@ const DynamicForm = ({
                               {field.data.map((item, index) => {
                                 return (
                                   <>
-                                    {console.log("item", item)}
                                     {item.type === "text" ? (
                                       <div
                                         className={`col-lg-${item.col_size}`}>

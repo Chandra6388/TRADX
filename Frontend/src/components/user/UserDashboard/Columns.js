@@ -863,7 +863,7 @@ export const getColumns3 = (handleDelete, handleEdit, handleContinutyDiscontinut
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn' onClick={() => handleEdit(tableMeta)}>
+                return <><button className='btn' onClick={() => handleEdit(tableMeta, 1)}>
                     <SquarePen />
 
                 </button>
@@ -1132,7 +1132,7 @@ export const getColumns4 = (handleDelete, handleEdit, handleContinutyDiscontinut
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn' onClick={() => handleEdit(tableMeta)}>
+                return <><button className='btn' onClick={() => handleEdit(tableMeta, 0)}>
                     <SquarePen />
                 </button>
 
@@ -1408,7 +1408,7 @@ export const getColumns5 = (handleDelete, handleEdit, handleContinutyDiscontinut
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn ' onClick={() => handleEdit(tableMeta)}>
+                return <><button className='btn ' onClick={() => handleEdit(tableMeta ,0 )}>
                     <SquarePen />
                 </button>
 
@@ -1634,7 +1634,7 @@ export const getColumns6 = (handleDelete, handleEdit, handleContinutyDiscontinut
             filter: true,
             sort: true,
             customBodyRender: (value, tableMeta, updateValue) => {
-                return <><button className='btn' onClick={() => handleEdit(tableMeta)}>
+                return <><button className='btn' onClick={() => handleEdit(tableMeta, 2)}>
                     <SquarePen />
 
                 </button>

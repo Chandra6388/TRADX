@@ -114,12 +114,12 @@ const AddClient = () => {
             if (!values.Symbol) {
                 errors.Symbol = "Please Select Symbol Type.";
             }
-            if (!values.Optiontype && (values.Instrument === "OPTSTK" || values.Instrument === "OPTIDX" || values.Exchange === "MCX")) {
+            if (!values.Optiontype && (values.Instrument === "OPTSTK" || values.Instrument === "OPTIDX" || (values.Instrument == "OPTFUT" && values.Exchange === "MCX"))) {
                 console.log("optioni")
 
                 errors.Optiontype = "Please Select Option Type.";
             }
-            if (!values.Strike && (values.Instrument === "OPTSTK" || values.Instrument === "OPTIDX" || values.Exchange === "MCX")) {
+            if (!values.Strike && (values.Instrument === "OPTSTK" || values.Instrument === "OPTIDX" || (values.Instrument == "OPTFUT" && values.Exchange === "MCX"))) {
                 console.log("strike")
                 errors.Strike = "Please Select Strike Price.";
             }
@@ -242,8 +242,8 @@ const AddClient = () => {
                     Exchange: values.Exchange,
                     Instrument: values.Exchange == "NSE" ? "" : values.Instrument,
                     Symbol: values.Symbol,
-                    Optiontype: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" || values.Exchange === "MCX" ? values.Optiontype : "",
-                    Strike: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" || values.Exchange === "MCX" ? values.Strike : "",
+                    Optiontype: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" || (values.Exchange === "MCX" && values.Instrument == "OPTFUT") ? values.Optiontype : "",
+                    Strike: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK"(values.Exchange === "MCX" && values.Instrument == "OPTFUT") ? values.Strike : "",
                     expirydata1: values.expirydata1 == "Monthly" ? getExpiryDate?.data?.[0] : values.expirydata1 == "Next_Month" ? getExpiryDate?.data?.[1] : values.Exchange == "NSE" ? getExpiryDate?.data?.[0] : values.expirydata1,
                     TType: values.TType == 0 ? "" : values.TType,
                     TStype: values.Strategy == "One Directional" || values.Strategy == "Multi Directional" || (values.Strategy == "Multi_Conditional") ? values.TStype : "",
@@ -467,7 +467,7 @@ const AddClient = () => {
                 { label: "CE", value: "CE" },
                 { label: "PE", value: "PE" },
             ],
-            showWhen: (values) => values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" || values.Exchange === "MCX",
+            showWhen: (values) => values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" ||( values.Instrument == "OPTFUT" && values.Exchange === "MCX"),
             label_size: 12,
             hiding: false,
             col_size: 4,
@@ -482,7 +482,7 @@ const AddClient = () => {
                 label: item,
                 value: item
             })),
-            showWhen: (values) => values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" || values.Exchange === "MCX",
+            showWhen: (values) => values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" || (values.Instrument == "OPTFUT" && values.Exchange === "MCX"),
             label_size: 12,
             headingtype: 1,
             col_size: 4,

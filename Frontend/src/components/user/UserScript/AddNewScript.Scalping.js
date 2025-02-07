@@ -243,7 +243,7 @@ const AddClient = () => {
                     Instrument: values.Exchange == "NSE" ? "" : values.Instrument,
                     Symbol: values.Symbol,
                     Optiontype: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" || (values.Exchange === "MCX" && values.Instrument == "OPTFUT") ? values.Optiontype : "",
-                    Strike: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK"(values.Exchange === "MCX" && values.Instrument == "OPTFUT") ? values.Strike : "",
+                    Strike: values.Instrument == "OPTIDX" || values.Instrument == "OPTSTK" || (values.Exchange === "MCX" && values.Instrument == "OPTFUT") ? values.Strike : "",
                     expirydata1: values.expirydata1 == "Monthly" ? getExpiryDate?.data?.[0] : values.expirydata1 == "Next_Month" ? getExpiryDate?.data?.[1] : values.Exchange == "NSE" ? getExpiryDate?.data?.[0] : values.expirydata1,
                     TType: values.TType == 0 ? "" : values.TType,
                     TStype: values.Strategy == "One Directional" || values.Strategy == "Multi Directional" || (values.Strategy == "Multi_Conditional") ? values.TStype : "",
